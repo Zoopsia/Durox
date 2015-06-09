@@ -9,12 +9,17 @@ class Clientes extends CI_Controller {
 		$this->load->database();
 		$this->load->helper('url');
 
+		$this->load->model('empresas_model');
+
 		$this->load->library('grocery_CRUD');
 	}
 
 	public function prueba(){
 		
-		$this->load->view("head.php");
+		$db['empresas']=$this->empresas_model->getEmpresas();
+		
+		$this->load->view("head.php", $db);
+		$this->load->view("menu.php");
 	}
 	
 }
