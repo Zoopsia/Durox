@@ -4,5 +4,5 @@
 						Bootstrap
 ----------------------------------------------------------------------
 --------------------------------------------------------------------->
-<link href="css/bootstrap.min.css" rel="stylesheet">
-<script src="js/bootstrap.min.js"></script>
+<link href="<?php echo base_url().'libraries/bootstrap/css/bootstrap.min.css'?>" rel="stylesheet">
+<script src=<?php echo base_url().'libraries/bootstrap/js/bootstrap.min.js'?>></script>
