@@ -15,6 +15,7 @@ class Clientes extends CI_Controller {
 	public function prueba(){
 		
 		$this->load->view("head.php");
+		pepe
 	}
 	
 }
