@@ -38,7 +38,7 @@
         </li>   
         
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Clientes <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pedidos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
           <ul class="dropdown-menu forAnimate" role="menu">
             <li><a href="#">Crear</a></li>
             <li><a href="#">Modificar</a></li>
@@ -49,7 +49,7 @@
             <li><a href="#">Informes</a></li>
           </ul>
         </li>   
-        <li ><a href="#">Pedidos<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-tags"></span></a></li>    
+        <li ><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/'?>">Clientes<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>    
         <li ><a href="#">Visitas<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-th-list"></span></a></li>        
         <li ><a href="#">Seguridad<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-tags"></span></a></li>
        	<li ><a href="#">Herramientas<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-tags"></span></a></li>
