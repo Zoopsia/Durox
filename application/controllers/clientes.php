@@ -12,6 +12,7 @@ class Clientes extends CI_Controller {
 		$this->load->library('grocery_CRUD');
 		
 		$this->load->model('empresas_model');
+		$this->load->model('clientes_model');
 	}
 
 	public function prueba($output){
@@ -22,7 +23,19 @@ class Clientes extends CI_Controller {
 			$this->load->view("menu.php", $output);
 			$this->load->view("cuerpo.php");	
 			$this->load->view("clientes.php");
+					
+	}
+	
+	public function prueba2(){
+		
+		$db['empresas']=$this->empresas_model->getEmpresas();
+		$db2['clientes']=$this->clientes_model->getClientes($_REQUEST['id']);
 
+			$this->load->view("head.php", $db);
+			$this->load->view("menu2.php");
+			$this->load->view("cuerpo.php");	
+			$this->load->view("clientes2.php", $db2);
+					
 	}
 	
 	public function index()
@@ -60,7 +73,7 @@ class Clientes extends CI_Controller {
 
 	function just_a_test($primary_key , $row)
 	{
-	    return site_url('Selectcliente/prueba').'?id='.$row->id_cliente;
+	    return site_url('Clientes/prueba2').'?id='.$row->id_cliente;
 	}
 	
 		
