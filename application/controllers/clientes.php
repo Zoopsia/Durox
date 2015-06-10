@@ -20,8 +20,7 @@ class Clientes extends CI_Controller {
 		
 		$this->load->view("head.php", $db);
 		$this->load->view("menu.php");
-		$this->load->view("cuerpo.php");
-		
+		$this->load->view("cuerpo.php");	
+		$this->load->view("clientes.php");
 	}
-	
 }
