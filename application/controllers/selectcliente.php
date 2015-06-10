@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Clientes extends CI_Controller {
+class Selectcliente extends CI_Controller {
 
 	public function __construct()
 	{
@@ -14,17 +14,17 @@ class Clientes extends CI_Controller {
 		$this->load->model('empresas_model');
 	}
 
-	public function prueba($output){
+	public function prueba(){
 		
 		$db['empresas']=$this->empresas_model->getEmpresas();
 
 			$this->load->view("head.php", $db);
-			$this->load->view("menu.php", $output);
+			$this->load->view("menu2.php");
 			$this->load->view("cuerpo.php");	
-			$this->load->view("clientes.php");
+			//$this->load->view("clientes2.php");
 
 	}
-	
+		
 	public function index()
 	{
 		$this->prueba((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
@@ -60,7 +60,7 @@ class Clientes extends CI_Controller {
 
 	function just_a_test($primary_key , $row)
 	{
-	    return site_url('Selectcliente/prueba').'?id='.$row->id_cliente;
+	    return site_url('Clientes/clientes_abm').'?id='.$row->id_cliente;
 	}
 	
 		
