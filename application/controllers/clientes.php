@@ -26,15 +26,16 @@ class Clientes extends CI_Controller {
 					
 	}
 	
-	public function prueba2(){
+	public function prueba2($id){
 		
 		$db['empresas']=$this->empresas_model->getEmpresas();
-		$db2['clientes']=$this->clientes_model->getClientes($_REQUEST['id']);
+		$db['clientes']=$this->clientes_model->getClientes($id);
+		$db['perros']=$this->clientes_model->getClientesVendedores($id);
 
 			$this->load->view("head.php", $db);
 			$this->load->view("menu2.php");
 			$this->load->view("cuerpo.php");	
-			$this->load->view("clientes2.php", $db2);
+			$this->load->view("clientes2.php");
 					
 	}
 	
@@ -73,7 +74,7 @@ class Clientes extends CI_Controller {
 
 	function just_a_test($primary_key , $row)
 	{
-	    return site_url('Clientes/prueba2').'?id='.$row->id_cliente;
+	    return site_url('Clientes/prueba2').'/'.$row->id_cliente;
 	}
 	
 		

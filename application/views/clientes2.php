@@ -27,7 +27,13 @@
 	     						panel 2
 	    					</div>
 	    					<div class="tab-pane" id="tab3">
-	     						panel 3
+	     						<?php 
+							      	foreach ($perros as $row) 
+							      	{
+									 	echo "Nombre: ".$row->nombre."   "."Apellido: ".$row->apellido;
+										echo "<br><br>";
+									}
+							    ?>
 	    					</div>
 	    					<div class="tab-pane" id="tab4">
 	     						panel 4
