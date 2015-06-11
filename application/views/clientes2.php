@@ -17,9 +17,9 @@
 	    						<?php 
 							      	foreach ($clientes as $row) 
 							      	{
-									 	echo "Nombre: "."<input type='text' name='nombre_cliente' value='$row->nombre_cliente' >";
+									 	echo "Nombre: "."<input type='text' name='nombre_cliente' value='$row->nombre' >";
 										echo "<br><br>";
-										echo "Apellido: "."<input type='text' name='apellido_cliente' value='$row->apellido_cliente' >";
+										echo "Apellido: "."<input type='text' name='apellido_cliente' value='$row->apellido' >";
 									}
 							    ?>
 	    					</div>

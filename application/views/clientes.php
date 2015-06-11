@@ -8,18 +8,7 @@
 		  			</div>
 		  			<div class="panel-body">
 		  				<div class="tab-content">
-	    					<div class="tab-pane active" id="tab1">
-	    						<?php echo $output; ?>
-	    					</div>
-	     					<div class="tab-pane" id="tab2">
-	     						panel 2
-	    					</div>
-	    					<div class="tab-pane" id="tab3">
-	     						panel 3
-	    					</div>
-	    					<div class="tab-pane" id="tab4">
-	     						panel 4
-	    					</div>
+	    					<?php echo $output; ?>
 	    				</div><!--contenedor de cada pestaña-->	
 		  			</div><!--panel body-->
 				</div><!--panel-->

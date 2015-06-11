@@ -36,7 +36,7 @@ foreach($css_files as $file): ?>
 	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	   	  <ul class="nav navbar-nav">
-	      	<li><a href="#">Novedades <span class="badge">42</span></a></li>
+	      	<li><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/add'?>">Novedades <span class="badge">42</span></a></li>
 	      	<li><a href="#">Documentos <span class="badge">42</span></a></li>
 	        <li><a href="#">Estadísticas <span class="badge">42</span></a></li>
 	      </ul>

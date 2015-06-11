@@ -7,7 +7,7 @@ class Empresas_model extends CI_Model {
 				FROM 
 					empresas 
 				WHERE 
-					empresas.id = 1";
+					empresas.id_empresa = 1";
 		
 		$query = $this->db->query($sql);
 		

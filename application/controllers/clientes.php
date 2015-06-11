@@ -52,16 +52,16 @@ class Clientes extends CI_Controller {
 			//$crud->where('clientes', 0);
 			$crud->set_table('clientes');
 			
-			$crud->columns(	'nombre_cliente',
-							'apellido_cliente');
+			$crud->columns(	'nombre',
+							'apellido');
 			
-			$crud->display_as('nombre_cliente','Nombre')
-				 ->display_as('apellido_cliente','Apellido');
+			$crud->display_as('nombre','Nombre')
+				 ->display_as('apellido','Apellido');
 			
 			$crud->set_subject('Cliente');
 			
-			$crud->fields(	'nombre_cliente',
-							'apellido_cliente');
+			$crud->fields(	'nombre',
+							'apellido');
 							
 			$crud->add_action('Photos', '', '','glyphicon-home',array($this,'just_a_test'));
 			
