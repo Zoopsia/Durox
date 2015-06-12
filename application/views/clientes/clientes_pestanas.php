@@ -18,7 +18,12 @@
 	    						<div class="row">
 	    							
 					                <div class="col-md-3 col-lg-3 " align="center"> 
-					                	<img alt="User Pic" src="<?php echo base_url().'img/descarga.jpg'?>" class="img-circle img-responsive""> 
+					                	<?php
+						                    	foreach ($clientes as $row) 
+							      				{
+					                				echo '<img alt="User Pic" src="'.base_url().'img/User'.$row->id_cliente.'.jpg" class="img-circle img-responsive">';
+					                			}
+					                	?> 
 					                </div>
 					                
 					                <div class=" col-md-9 col-lg-9 "> 
@@ -77,7 +82,6 @@
 										      	foreach ($vendedores as $row) 
 										      	{
 										      		echo '<tr>';
-												 	//echo '<a href="'.base_url().'index.php/Clientes/prueba2/'.$row->id_vendedor.'">';
 													echo '<td>'.$row->id_vendedor.'</td>';
 													echo '<td>'.$row->nombre.'</td>';
 													echo "<td>".$row->apellido."</td>";

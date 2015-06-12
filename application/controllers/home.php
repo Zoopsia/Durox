@@ -20,9 +20,9 @@ class Home extends CI_Controller {
 		$db['empresas']=$this->empresas_model->getEmpresas();
 
 			$this->load->view("head.php", $db);
-			$this->load->view("menu2.php");
-			$this->load->view("cuerpo.php");	
-					
+			$this->load->view("nav_top.php");
+			$this->load->view("nav_left.php");	
+			$this->load->view("home/inicio.php");		
 	}
 
 		

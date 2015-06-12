@@ -15,38 +15,33 @@ class Clientes extends CI_Controller {
 		$this->load->model('clientes_model');
 	}
 
-	public function prueba($output){
+	public function clientes_tabla($output){
 		
 		$db['empresas']=$this->empresas_model->getEmpresas();
 
 			$this->load->view("head.php", $db);
-			$this->load->view("menu.php", $output);
-			$this->load->view("cuerpo.php");	
-			$this->load->view("clientes.php");
+			$this->load->view("nav_top.php", $output);
+			$this->load->view("nav_left.php");	
+			$this->load->view("clientes/clientes_tabla.php");
 					
 	}
 	
-	public function prueba2($id){
+	public function clientes_pestanas($id){
 		
 		$db['empresas']=$this->empresas_model->getEmpresas();
 		$db['clientes']=$this->clientes_model->getClientes($id);
 		$db['vendedores']=$this->clientes_model->getClientesVendedores($id);
 
 			$this->load->view("head.php", $db);
-			$this->load->view("menu2.php");
-			$this->load->view("cuerpo.php");	
-			$this->load->view("clientes2.php");
+			$this->load->view("nav_top.php");
+			$this->load->view("nav_left.php");	
+			$this->load->view("clientes/clientes_pestanas.php");
 					
 	}
 	
-	public function index()
-	{
-		$this->prueba((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
-	
-	}
-	
-	
+
 	public function clientes_abm(){
+			
 			$crud = new grocery_CRUD();
 
 			$crud->set_theme('datatables');
@@ -66,17 +61,17 @@ class Clientes extends CI_Controller {
 			$crud->fields(	'nombre',
 							'apellido');
 							
-			$crud->add_action('Photos', '', '','glyphicon-home',array($this,'just_a_test'));
+			$crud->add_action('Photo', '', '','glyphicon-user',array($this,'just_a_test'));
 			
 			$output = $crud->render();
 			
-			$this->prueba($output);
+			$this->clientes_tabla($output);
 	}
 
 
 	function just_a_test($primary_key , $row)
 	{
-	    return site_url('Clientes/prueba2').'/'.$row->id_cliente;
+	    return site_url('Clientes/clientes_pestanas').'/'.$row->id_cliente;
 	}
 	
 		

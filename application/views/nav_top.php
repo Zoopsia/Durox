@@ -1,4 +1,5 @@
-<nav class="navbar navbar-default navbar-top navbar-inverse">
+
+	<nav class="navbar navbar-default navbar-top navbar-inverse">
 	  <div class="container-fluid">
 	    <!-- Brand and toggle get grouped for better mobile display -->
 	    <div class="navbar-header">
@@ -8,7 +9,7 @@
 	        <span class="icon-bar"></span>
 	        <span class="icon-bar"></span>
 	      </button>
-	      <a style="color:white" class="navbar-brand" href="<?php echo base_url().'index.php/Clientes/clientes_abm/'?>">
+	      <a style="color:white" class="navbar-brand" href="<?php echo base_url().'index.php/Home/home/'?>">
 	      	<?php 
 	      	foreach ($empresas as $row) 
 	      	{
