@@ -6,8 +6,8 @@
 		  			<div class="panel-heading">
 		  				<ul class="nav nav-tabs">
 							<li class="active"><a href="#tab1" data-toggle="tab">Clientes</a></li>
-					    	<li><a href="#tab2" data-toggle="tab">Pedidos</a></li>
-					    	<li><a href="#tab3" data-toggle="tab">Vendedores</a></li>
+					    	<li><a href="#tab2" data-toggle="tab">Vendedores</a></li>
+					    	<li><a href="#tab3" data-toggle="tab">Pedidos</a></li>
 					    	<li><a href="#tab4" data-toggle="tab">Busqueda</a></li>
 						</ul>
 		  			</div>
@@ -24,16 +24,50 @@
 							    ?>
 	    					</div>
 	     					<div class="tab-pane" id="tab2">
-	     						panel 2
+	     						
+	     						<table id="example" class="display" cellspacing="0" width="100%">
+							        <thead>
+							            <tr>
+							            	<th>ID</th>
+							                <th>Nombre</th>
+							                <th>Apellido</th>
+							                <th>Date</th>
+							                <th>Eliminado</th>
+							            </tr>
+							        </thead>
+							 
+							        <tfoot>
+							            <tr>
+							            	<th>ID</th>
+							                <th>Nombre</th>
+							                <th>Apellido</th>
+							                <th>Date</th>
+							                <th>Eliminado</th>
+							            </tr>
+							        </tfoot>
+							 
+							        <tbody>
+							        	<?php 
+							            								                
+										      	foreach ($vendedores as $row) 
+										      	{
+										      		echo '<tr>';
+												 	//echo '<a href="'.base_url().'index.php/Clientes/prueba2/'.$row->id_vendedor.'">';
+													echo '<td>'.$row->id_vendedor.'</td>';
+													echo '<td>'.$row->nombre.'</td>';
+													echo "<td>".$row->apellido."</td>";
+													echo '<td>'.$row->date_add.'</td>';
+													echo "<td>".$row->eliminado."</td>";
+													echo "</a></tr>";
+												}
+									 		
+									 	?>
+							        </tbody>
+							    </table>
+							    
 	    					</div>
 	    					<div class="tab-pane" id="tab3">
-	     						<?php 
-							      	foreach ($perros as $row) 
-							      	{
-									 	echo "Nombre: ".$row->nombre."   "."Apellido: ".$row->apellido;
-										echo "<br><br>";
-									}
-							    ?>
+	     						Panel 3
 	    					</div>
 	    					<div class="tab-pane" id="tab4">
 	     						panel 4

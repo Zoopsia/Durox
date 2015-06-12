@@ -30,7 +30,7 @@ class Clientes extends CI_Controller {
 		
 		$db['empresas']=$this->empresas_model->getEmpresas();
 		$db['clientes']=$this->clientes_model->getClientes($id);
-		$db['perros']=$this->clientes_model->getClientesVendedores($id);
+		$db['vendedores']=$this->clientes_model->getClientesVendedores($id);
 
 			$this->load->view("head.php", $db);
 			$this->load->view("menu2.php");
@@ -49,8 +49,10 @@ class Clientes extends CI_Controller {
 	public function clientes_abm(){
 			$crud = new grocery_CRUD();
 
-			//$crud->set_theme('datatables');
+			$crud->set_theme('datatables');
+			
 			//$crud->where('clientes', 0);
+			
 			$crud->set_table('clientes');
 			
 			$crud->columns(	'nombre',

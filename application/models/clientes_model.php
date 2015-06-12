@@ -23,8 +23,7 @@ class Clientes_model extends CI_Model {
 	
 	function getClientesVendedores($id){
 		$sql = "SELECT 
-					vendedores.nombre, 
-					vendedores.apellido
+					vendedores.*
 				FROM 
 					clientes 
 				INNER JOIN 
