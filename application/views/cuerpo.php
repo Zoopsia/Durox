@@ -1,3 +1,22 @@
+<?php
+if ($this->uri->segment(1) === 'Clientes')
+{
+    $cliente = 'active';
+}
+else
+{
+    $cliente = '';
+}
+if ($this->uri->segment(1) === 'Home')
+{
+    $home = 'active';
+}
+else
+{
+    $home = '';
+}
+
+?>
 <nav id="nav" class="navbar navbar-default sidebar" role="navigation">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -10,7 +29,8 @@
     </div>
     <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>
+      	
+        <li class="<?php echo $home?>"><a href="<?php echo base_url().'index.php/Home/home'?>">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>    
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Vendedores <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
           <ul class="dropdown-menu forAnimate" role="menu">
@@ -49,7 +69,7 @@
             <li><a href="#">Informes</a></li>
           </ul>
         </li>   
-        <li ><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/'?>">Clientes<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>    
+        <li class="<?php echo $cliente?>"><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/'?>">Clientes<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>    
         <li ><a href="#">Visitas<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-th-list"></span></a></li>        
         <li ><a href="#">Seguridad<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-tags"></span></a></li>
        	<li ><a href="#">Herramientas<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-tags"></span></a></li>

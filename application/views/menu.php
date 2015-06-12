@@ -1,8 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <?php 
 foreach($css_files as $file): ?>
 	<link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
@@ -10,9 +5,7 @@ foreach($css_files as $file): ?>
 <?php foreach($js_files as $file): ?>
 	<script src="<?php echo $file; ?>"></script>
 <?php endforeach; ?>
-</head>
-
-<body>	
+	
 	<nav class="navbar navbar-default navbar-top navbar-inverse">
 	  <div class="container-fluid">
 	    <!-- Brand and toggle get grouped for better mobile display -->
@@ -36,7 +29,7 @@ foreach($css_files as $file): ?>
 	    <!-- Collect the nav links, forms, and other content for toggling -->
 	    <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 	   	  <ul class="nav navbar-nav">
-	      	<li><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/add'?>">Novedades <span class="badge">42</span></a></li>
+	      	<li><a href="#">Novedades <span class="badge">42</span></a></li>
 	      	<li><a href="#">Documentos <span class="badge">42</span></a></li>
 	        <li><a href="#">Estadísticas <span class="badge">42</span></a></li>
 	      </ul>
@@ -60,5 +53,3 @@ foreach($css_files as $file): ?>
 	  </div><!-- /.container-fluid -->
 	</nav>
 	
-</body>
-</html>

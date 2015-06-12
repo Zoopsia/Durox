@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html>
-<head>
-	<meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body>	
-	<nav class="navbar navbar-default navbar-top navbar-inverse">
+<nav class="navbar navbar-default navbar-top navbar-inverse">
 	  <div class="container-fluid">
 	    <!-- Brand and toggle get grouped for better mobile display -->
 	    <div class="navbar-header">
@@ -52,5 +45,3 @@
 	  </div><!-- /.container-fluid -->
 	</nav>
 	
-</body>
-</html>

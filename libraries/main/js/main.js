@@ -1,13 +1,16 @@
 $(document).ready(function(){
      
     /*
-    $('#example').DataTable( {
-        responsive: true
+    var table = $('#example').DataTable( {
+        responsive: true,
+        paging: false
     } );
+ 
+    new $.fn.dataTable.FixedHeader( table );
 	*/
      //Cambio el idioma
 	    
-     $('#example').DataTable({
+    $('#example').DataTable({
     	
     	"language": {
 			"sProcessing":     "Procesando...",
@@ -35,12 +38,6 @@ $(document).ready(function(){
 		}
     		
     });
-   
-  
-   
-   	
-    
-    
 	
 	//Funcion para hacer click sobre la fila    
 	/*
@@ -48,6 +45,5 @@ $(document).ready(function(){
     window.open('http://www.example.com');
 
     } );*/
-    
-   
 });
+
