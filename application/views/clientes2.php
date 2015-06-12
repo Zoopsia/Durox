@@ -25,13 +25,14 @@
 	    					</div>
 	     					<div class="tab-pane" id="tab2">
 	     						
-	     						<table id="example" class="display" cellspacing="0" width="100%">
+	     						<table id="example" class="table table-striped table-bordered display responsive nowrap" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>
 							            	<th>ID</th>
 							                <th>Nombre</th>
 							                <th>Apellido</th>
 							                <th>Date</th>
+							                <th>Eliminado</th>
 							                <th>Eliminado</th>
 							            </tr>
 							        </thead>
@@ -43,12 +44,13 @@
 							                <th>Apellido</th>
 							                <th>Date</th>
 							                <th>Eliminado</th>
+							                <th>Eliminado</th>
 							            </tr>
 							        </tfoot>
 							 
 							        <tbody>
 							        	<?php 
-							            								                
+							            	if($vendedores){							                
 										      	foreach ($vendedores as $row) 
 										      	{
 										      		echo '<tr>';
@@ -58,9 +60,11 @@
 													echo "<td>".$row->apellido."</td>";
 													echo '<td>'.$row->date_add.'</td>';
 													echo "<td>".$row->eliminado."</td>";
+													echo "<td><a href='".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
 													echo "</a></tr>";
 												}
-									 		
+											}
+
 									 	?>
 							        </tbody>
 							    </table>

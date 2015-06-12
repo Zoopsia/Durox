@@ -46,6 +46,7 @@
 
 <link href="<?php echo base_url().'libraries/datatables/media/css/jquery.dataTables.min.css'?>" rel="stylesheet"/>
 <script src="<?php echo base_url().'libraries/datatables/media/js/jquery.dataTables.min.js'?>"></script>
+
 <link href="<?php echo base_url().'libraries/datatables/extensions/Responsive/css/dataTables.responsive.css'?>" rel="stylesheet"/>
 <script src="<?php echo base_url().'libraries/datatables/extensions/Responsive/js/dataTables.responsive.js'?>"></script>
 

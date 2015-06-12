@@ -1,5 +1,12 @@
 $(document).ready(function(){
-      
+     
+    /*
+    $('#example').DataTable( {
+        responsive: true
+    } );
+	*/
+     //Cambio el idioma
+	    
      $('#example').DataTable({
     	
     	"language": {
@@ -26,17 +33,21 @@ $(document).ready(function(){
 				"sSortDescending": ": Activar para ordenar la columna de manera descendente"
 			}
 		}
-    	
     		
     });
+   
+  
+   
+   	
     
     
 	
 	//Funcion para hacer click sobre la fila    
+	/*
     $("#example tbody tr").on('click',function() {         
     window.open('http://www.example.com');
 
-    } );
+    } );*/
     
    
 });
