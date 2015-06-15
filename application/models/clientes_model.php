@@ -19,6 +19,7 @@ class Clientes_model extends My_Model {
 	
 	
 	function getClientesVendedores($id){
+		
 		$sql = "SELECT 
 					vendedores.*
 				FROM 

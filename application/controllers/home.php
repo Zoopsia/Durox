@@ -17,7 +17,8 @@ class Home extends CI_Controller {
 
 	public function home(){
 		
-		/*---- PONGO "1" POR LA EMPRESA, SI ES OTRA EMPRESA CAMBIAR EL 2----*/
+		/*---- PONGO "1" POR LA EMPRESA, SI ES OTRA EMPRESA CAMBIARLO----*/
+		
 		$db['empresas']=$this->empresas_model->getRegistro(1);
 
 			$this->load->view("head.php", $db);
