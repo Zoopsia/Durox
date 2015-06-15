@@ -1,15 +1,5 @@
 $(document).ready(function(){
      
-    /*
-    var table = $('#example').DataTable( {
-        responsive: true,
-        paging: false
-    } );
- 
-    new $.fn.dataTable.FixedHeader( table );
-	*/
-     //Cambio el idioma
-	    
     $('#example').DataTable({
     	
     	"language": {
@@ -39,11 +29,5 @@ $(document).ready(function(){
     		
     });
 	
-	//Funcion para hacer click sobre la fila    
-	/*
-    $("#example tbody tr").on('click',function() {         
-    window.open('http://www.example.com');
-
-    } );*/
 });
 

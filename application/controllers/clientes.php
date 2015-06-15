@@ -31,7 +31,8 @@ class Clientes extends CI_Controller {
 		$db['empresas']=$this->empresas_model->getEmpresas();
 		$db['clientes']=$this->clientes_model->getClientes($id);
 		$db['vendedores']=$this->clientes_model->getClientesVendedores($id);
-
+		$db['telefonos']=$this->clientes_model->getClientesTelefonos($id);
+		
 			$this->load->view("head.php", $db);
 			$this->load->view("nav_top.php");
 			$this->load->view("nav_left.php");	
@@ -45,6 +46,8 @@ class Clientes extends CI_Controller {
 			$crud = new grocery_CRUD();
 
 			$crud->set_theme('datatables');
+			
+			$crud->set_language("spanish");
 			
 			//$crud->where('clientes', 0);
 			
@@ -61,7 +64,12 @@ class Clientes extends CI_Controller {
 			$crud->fields(	'nombre',
 							'apellido');
 							
-			$crud->add_action('Photo', '', '','glyphicon-user',array($this,'just_a_test'));
+			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
+			
+			$crud->unset_export();
+			$crud->unset_print();
+			$crud->unset_read();
+			
 			
 			$output = $crud->render();
 			

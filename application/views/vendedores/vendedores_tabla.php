@@ -12,7 +12,12 @@ foreach($css_files as $file): ?>
 			<div class="col-md-12">
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
-		  				Vendedores
+		  				<ul class="nav nav-tabs">
+							<li class="active"><a href="#tab1" data-toggle="tab">CLIENTE</a></li>
+					    	<li><a href="#tab2" data-toggle="tab">Vendedores</a></li>
+					    	<li><a href="#tab3" data-toggle="tab">Pedidos</a></li>
+					    	<li><a href="#tab4" data-toggle="tab">Busqueda</a></li>
+						</ul>
 		  			</div>
 		  			<div class="panel-body">
 		  				<div class="tab-content">

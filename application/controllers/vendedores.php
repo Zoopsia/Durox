@@ -46,6 +46,8 @@ class Vendedores extends CI_Controller {
 
 			$crud->set_theme('datatables');
 			
+			$crud->set_language("spanish");
+			
 			//$crud->where('vendedores', 0);
 			
 			$crud->set_table('vendedores');
@@ -62,6 +64,9 @@ class Vendedores extends CI_Controller {
 							'apellido');
 							
 			$crud->add_action('Photo', '', '','glyphicon-user',array($this,'just_a_test'));
+			
+			$crud->unset_export();
+			$crud->unset_print();
 			
 			$output = $crud->render();
 			
