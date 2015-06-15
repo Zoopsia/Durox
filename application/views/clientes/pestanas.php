@@ -148,11 +148,73 @@
 	    					</div>
 	    					<div class="tab-pane" id="tab5">
 	     						<!--TAB 5 DIRECCIONES CLIENTE -->
-	     						Direcciones
+	     						
+								<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
+							        <thead>
+							            <tr>
+							            	<th>Dirección</th>
+							                <th>Tipo</th>
+							            </tr>
+							        </thead>
+							 
+							        <tfoot>
+							            <tr>
+							            	<th>Dirección</th>
+							                <th>Tipo</th>
+							            </tr>
+							        </tfoot>
+							 
+							        <tbody>
+							        	<?php 
+							            	if($direcciones){							                
+										      	foreach ($direcciones as $row) 
+										      	{
+										      		echo '<tr>';
+													echo '<td>'.$row->direccion_cliente.'</td>';
+													echo '<td>'.$row->tipo.'</td>';
+													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
+													//echo "</a></tr>";
+													echo "</tr>";
+												}
+											}
+									 	?>
+							        </tbody>
+							    </table>
 	    					</div>
 	    					<div class="tab-pane" id="tab6">
 	     						<!--TAB 6 E-MAILS CLIENTE -->
-	     						E-mails
+	     						
+	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
+							        <thead>
+							            <tr>
+							            	<th>Correo</th>
+							                <th>Tipo</th>
+							            </tr>
+							        </thead>
+							 
+							        <tfoot>
+							            <tr>
+							            	<th>Correo</th>
+							                <th>Tipo</th>
+							            </tr>
+							        </tfoot>
+							 
+							        <tbody>
+							        	<?php 
+							            	if($mails){							                
+										      	foreach ($mails as $row) 
+										      	{
+										      		echo '<tr>';
+													echo '<td>'.$row->mail_cliente.'</td>';
+													echo '<td>'.$row->tipo.'</td>';
+													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
+													//echo "</a></tr>";
+													echo "</tr>";
+												}
+											}
+									 	?>
+							        </tbody>
+							    </table>
 	    					</div>
 	    				</div><!--contenedor de cada pestaña-->	
 		  			</div><!--panel body-->
