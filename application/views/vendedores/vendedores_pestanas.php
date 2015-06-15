@@ -5,8 +5,8 @@
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
 		  				<ul class="nav nav-tabs">
-							<li class="active"><a href="#tab1" data-toggle="tab">CLIENTE</a></li>
-					    	<li><a href="#tab2" data-toggle="tab">Vendedores</a></li>
+							<li class="active"><a href="#tab1" data-toggle="tab">VENDEDOR</a></li>
+					    	<li><a href="#tab2" data-toggle="tab">Clientes</a></li>
 					    	<li><a href="#tab3" data-toggle="tab">Pedidos</a></li>
 					    	<li><a href="#tab4" data-toggle="tab">Busqueda</a></li>
 						</ul>
@@ -15,13 +15,13 @@
 		  				<div class="tab-content">
 	    					<div class="tab-pane active" id="tab1">
 	    						
-	    						<div class="row"><!--Cargo imagen cliente-->
+	    						<div class="row"><!--Cargo imagen vendedor-->
 	    							
 					                <div class="col-md-3 col-lg-3 " align="center"> 
 					                	<?php
-						                    	foreach ($clientes as $row) 
+						                    	foreach ($vendedores as $row) 
 							      				{
-					                				echo '<img alt="User Pic" src="'.base_url().'img/clientes/User'.$row->id_cliente.'.jpg" class="img-circle img-responsive">';
+					                				echo '<img alt="User Pic" src="'.base_url().'img/vendedores/User'.$row->id_vendedor.'.jpg" class="img-circle img-responsive">';
 					                			}
 					                	?> 
 					                </div>
@@ -29,7 +29,7 @@
 					                <div class=" col-md-9 col-lg-9 "> 
 					                	<table class="table table-user-information"> 
 						                    <?php
-						                    	foreach ($clientes as $row) 
+						                    	foreach ($vendedores as $row) 
 							      				{
 									            	echo "<tbody>";
 									                echo  "<tr>";
@@ -41,7 +41,7 @@
 									                echo  '<td>'.$row->apellido.'</td>';
 									                echo  "</tr><tr>";	
 									                echo  "<td>ID:</td>";
-									                echo  '<td>'.$row->id_cliente.'</td>';
+									                echo  '<td>'.$row->id_vendedor.'</td>';
 									                echo  "</tr><tr>";	
 									                echo  "</tbody>";
 									            }
@@ -50,7 +50,7 @@
 					                </div>
 					            </div>
 					            			
-	    					</div> <!--TAB 1 INFO CLIENTE -->
+	    					</div> <!--TAB 1 INFO VENDEDOR -->
 	     					<div class="tab-pane" id="tab2">
 	     						
 	     						<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
@@ -78,16 +78,16 @@
 							 
 							        <tbody>
 							        	<?php 
-							            	if($vendedores){							                
-										      	foreach ($vendedores as $row) 
+							            	if($clientes){							                
+										      	foreach ($clientes as $row) 
 										      	{
 										      		echo '<tr>';
-													echo '<td>'.$row->id_vendedor.'</td>';
+													echo '<td>'.$row->id_cliente.'</td>';
 													echo '<td>'.$row->nombre.'</td>';
 													echo "<td>".$row->apellido."</td>";
 													echo '<td>'.$row->date_add.'</td>';
 													echo "<td>".$row->eliminado."</td>";
-													echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
+													echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/clientes_pestanas/".$row->id_cliente."' class='btn btn-default'>Ver</a></td>";
 													echo "</a></tr>";
 												}
 											}
@@ -95,7 +95,7 @@
 							        </tbody>
 							    </table>
 							    
-	    					</div><!--TAB 2 VENDEDORES CLIENTE -->
+	    					</div><!--TAB 2 CLIENTES VENDEDOR -->
 	    					<div class="tab-pane" id="tab3">
 	     						Panel 3
 	    					</div>
