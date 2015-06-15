@@ -17,7 +17,7 @@ class Vendedores extends CI_Controller {
 
 	public function vendedores_tabla($output){
 		
-		$db['empresas']=$this->empresas_model->getEmpresas();
+		$db['empresas']=$this->empresas_model->getRegistro(1);
 
 			$this->load->view("head.php", $db);
 			$this->load->view("nav_top.php", $output);
@@ -28,8 +28,8 @@ class Vendedores extends CI_Controller {
 	
 	public function vendedores_pestanas($id){
 		
-		$db['empresas']=$this->empresas_model->getEmpresas();
-		$db['vendedores']=$this->vendedores_model->getVendedores($id);
+		$db['empresas']=$this->empresas_model->getRegistro(1);
+		$db['vendedores']=$this->vendedores_model->getRegistro($id);
 		$db['clientes']=$this->vendedores_model->getVendedoresClientes($id);
 
 			$this->load->view("head.php", $db);

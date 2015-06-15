@@ -63,7 +63,7 @@
 	    					</div> <!--TAB 1 INFO CLIENTE -->
 	     					<div class="tab-pane" id="tab2">
 	     					<!--TABLA DE VENDEDORES CON RESPECTO AL CLIENTE-->	
-	     						<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>
 							            	<th>ID</th>
@@ -113,7 +113,7 @@
 	    					<div class="tab-pane" id="tab4">
 	     						<!--TAB 4 TELEFONOS CLIENTE -->
 	     						
-	     						<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>
 							            	<th>Teléfono</th>

@@ -1,6 +1,6 @@
 $(document).ready(function(){
      
-    $('#example').DataTable({
+    $('.prueba').DataTable({
     	
     	"language": {
 			"sProcessing":     "Procesando...",

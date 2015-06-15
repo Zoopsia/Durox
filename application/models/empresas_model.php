@@ -1,25 +1,20 @@
 <?php 
-class Empresas_model extends CI_Model {
+class Empresas_model extends My_Model {
+		
+	protected $_tablename	= 'empresas';
+	protected $_id_table	= 'id_empresa';
+	protected $_order		= 'nombre';
 	
-	function getEmpresas(){
-		$sql = "SELECT 
-					* 
-				FROM 
-					empresas 
-				WHERE 
-					empresas.id_empresa = 1";
-		
-		$query = $this->db->query($sql);
-		
-		if($query->num_rows() > 0){
-			foreach ($query->result() as $fila){
-				$data[] = $fila;
-			}
-			return $data;
-		}else{
-			return FALSE;
-		}
+	
+	function __construct()
+	{
+		parent::__construct(
+				$tablename		= $this->_tablename, 
+				$id_table		= $this->_id_table, 
+				$order			= $this->_order
+		);
 	}
+	
 	
 } 
 ?>
