@@ -19,7 +19,7 @@ class Clientes extends My_Controller {
 		$this->load->library('grocery_CRUD');
 		
 		$this->load->model('empresas_model');
-		$this->load->model('clientes_model');
+		$this->load->model($this->_subject.'_model');
 	}
 	
 
@@ -27,8 +27,11 @@ class Clientes extends My_Controller {
 		
 		$db['empresas']=$this->empresas_model->getRegistro(1);
 		$db['clientes']=$this->clientes_model->getRegistro($id);
-		$db['vendedores']=$this->clientes_model->getClientesVendedores($id);
-		$db['telefonos']=$this->clientes_model->getTelefonos($id);
+		$db['vendedores']=$this->clientes_model->getCruce($id,'vendedores');
+	
+		$db['telefonos']=$this->clientes_model->getCruce($id,'telefonos');
+		$db['direcciones']=$this->clientes_model->getCruce($id,'direcciones');
+		$db['mails']=$this->clientes_model->getCruce($id,'mails');
 		
 			$this->load->view("head.php", $db);
 			$this->load->view("nav_top.php");

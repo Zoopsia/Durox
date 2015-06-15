@@ -1,10 +1,17 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Vendedores extends CI_Controller {
-
-	public function __construct()
+class Vendedores extends My_Controller {
+	
+	protected $_subject		= 'vendedores';
+	
+	
+	
+	function __construct()
 	{
-		parent::__construct();
+		parent::__construct(
+				$subjet		= $this->_subject 
+		);
+		
 
 		$this->load->database();
 		$this->load->helper('url');
@@ -12,30 +19,23 @@ class Vendedores extends CI_Controller {
 		$this->load->library('grocery_CRUD');
 		
 		$this->load->model('empresas_model');
-		$this->load->model('vendedores_model');
+		$this->load->model($this->_subject.'_model');
 	}
 
-	public function vendedores_tabla($output){
 		
-		$db['empresas']=$this->empresas_model->getRegistro(1);
-
-			$this->load->view("head.php", $db);
-			$this->load->view("nav_top.php", $output);
-			$this->load->view("nav_left.php");	
-			$this->load->view("vendedores/vendedores_tabla.php");
-					
-	}
-	
-	public function vendedores_pestanas($id){
+	public function pestanas($id){
 		
 		$db['empresas']=$this->empresas_model->getRegistro(1);
 		$db['vendedores']=$this->vendedores_model->getRegistro($id);
-		$db['clientes']=$this->vendedores_model->getVendedoresClientes($id);
-
+		$db['clientes']=$this->vendedores_model->getCruce($id,'clientes');
+		$db['telefonos']=$this->vendedores_model->getCruce($id,'telefonos');
+		$db['direcciones']=$this->vendedores_model->getCruce($id,'direcciones');
+		$db['mails']=$this->vendedores_model->getCruce($id,'mails');
+		
 			$this->load->view("head.php", $db);
 			$this->load->view("nav_top.php");
 			$this->load->view("nav_left.php");	
-			$this->load->view("vendedores/vendedores_pestanas.php");
+			$this->load->view($this->_subject."/pestanas.php");
 					
 	}
 	
@@ -63,20 +63,22 @@ class Vendedores extends CI_Controller {
 			$crud->fields(	'nombre',
 							'apellido');
 							
-			$crud->add_action('Photo', '', '','glyphicon-user',array($this,'just_a_test'));
+			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
 			
 			$crud->unset_export();
 			$crud->unset_print();
+			$crud->unset_read();
+			
 			
 			$output = $crud->render();
 			
-			$this->vendedores_tabla($output);
+			$this->crud_tabla($output);
 	}
 
 
 	function just_a_test($primary_key , $row)
 	{
-	    return site_url('vendedores/vendedores_pestanas').'/'.$row->id_vendedor;
+	    return site_url($this->_subject.'/pestanas').'/'.$row->id_vendedor;
 	}
 	
 		

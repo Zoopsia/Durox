@@ -4,11 +4,21 @@
 			<div class="col-md-12">
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
-		  				<ul class="nav nav-tabs">
+		  				<ul class="nav nav-tabs nav-justified">
 							<li class="active"><a href="#tab1" data-toggle="tab">VENDEDOR</a></li>
 					    	<li><a href="#tab2" data-toggle="tab">Clientes</a></li>
-					    	<li><a href="#tab3" data-toggle="tab">Pedidos</a></li>
-					    	<li><a href="#tab4" data-toggle="tab">Busqueda</a></li>
+					    	<li role="presentation" class="dropdown">
+							    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
+							      Perfiles <span class="caret"></span>
+							    </a>
+							    <ul class="dropdown-menu" role="menu">
+							     	<li><a href="#tab4" data-toggle="tab">Telefonos</a></li>
+							     	<li><a href="#tab5" data-toggle="tab">Direcciones</a></li>
+							     	<li><a href="#tab6" data-toggle="tab">E-mails</a></li>
+							    </ul>
+							</li>
+					    		
+					    	<li><a href="#tab3" data-toggle="tab">Busqueda</a></li>
 						</ul>
 		  			</div>
 		  			<div class="panel-body">
@@ -87,7 +97,7 @@
 													echo "<td>".$row->apellido."</td>";
 													echo '<td>'.$row->date_add.'</td>';
 													echo "<td>".$row->eliminado."</td>";
-													echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/clientes_pestanas/".$row->id_cliente."' class='btn btn-default'>Ver</a></td>";
+													echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-default'>Ver</a></td>";
 													echo "</a></tr>";
 												}
 											}
@@ -97,10 +107,52 @@
 							    
 	    					</div><!--TAB 2 CLIENTES VENDEDOR -->
 	    					<div class="tab-pane" id="tab3">
-	     						Panel 3
+	     						<!--TAB 3 PANEL DE BUSQUEDA -->
+	     						Busqueda
 	    					</div>
 	    					<div class="tab-pane" id="tab4">
-	     						panel 4
+	     						<!--TAB 4 TELEFONOS VENDEDOR -->
+	     						
+	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
+							        <thead>
+							            <tr>
+							            	<th>Teléfono</th>
+							                <th>Tipo</th>
+							            </tr>
+							        </thead>
+							 
+							        <tfoot>
+							            <tr>
+							            	<th>Teléfono</th>
+							                <th>Tipo</th>
+							            </tr>
+							        </tfoot>
+							 
+							        <tbody>
+							        	<?php 
+							            	if($telefonos){							                
+										      	foreach ($telefonos as $row) 
+										      	{
+										      		echo '<tr>';
+													echo '<td>'.$row->telefono_vendedor.'</td>';
+													echo '<td>'.$row->tipo.'</td>';
+													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
+													//echo "</a></tr>";
+													echo "</tr>";
+												}
+											}
+									 	?>
+							        </tbody>
+							    </table>
+							    
+	    					</div>
+	    					<div class="tab-pane" id="tab5">
+	     						<!--TAB 5 DIRECCIONES VENDEDOR -->
+	     						Direcciones
+	    					</div>
+	    					<div class="tab-pane" id="tab6">
+	     						<!--TAB 6 E-MAILS VENDEDOR -->
+	     						E-mails
 	    					</div>
 	    				</div><!--contenedor de cada pestaña-->	
 		  			</div><!--panel body-->

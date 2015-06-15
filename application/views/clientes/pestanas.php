@@ -97,7 +97,7 @@
 													echo "<td>".$row->apellido."</td>";
 													echo '<td>'.$row->date_add.'</td>';
 													echo "<td>".$row->eliminado."</td>";
-													echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
+													echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
 													echo "</a></tr>";
 												}
 											}
@@ -135,7 +135,7 @@
 										      	{
 										      		echo '<tr>';
 													echo '<td>'.$row->telefono_cliente.'</td>';
-													echo '<td>'.$row->tipo_telefono.'</td>';
+													echo '<td>'.$row->tipo.'</td>';
 													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
 													//echo "</a></tr>";
 													echo "</tr>";

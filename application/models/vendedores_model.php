@@ -1,10 +1,38 @@
 <?php 
-class Vendedores_model  extends My_Model {
+class Vendedores_model extends My_Model {
 		
 	protected $_tablename	= 'vendedores';
 	protected $_id_table	= 'id_vendedor';
 	protected $_order		= 'nombre';
 	protected $_subject		= 'vendedor';
+	protected 
+	$_array_cruze	= array(
+	
+		'clientes'	=> array(
+			'table' 		=> 'clientes', 
+			'id_table' 		=> 'id_cliente', 
+			'sin_table' 	=>  'sin_vendedores_clientes'
+		),
+		
+		'telefonos'	=> array(
+			'table' 		=> 'telefonos_vendedores', 
+			'id_table' 		=> 'id_telefono_vendedor', 
+			'sin_table' 	=>  'sin_vendedores_telefonos'
+		),
+		
+		'direcciones'	=> array(
+			'table' 		=> 'direcciones_vendedores', 
+			'id_table' 		=> 'id_direccion_vendedor', 
+			'sin_table' 	=>  'sin_vendedores_direcciones'
+		),
+		
+		'mails'	=> array(
+			'table' 		=> 'mails_vendedores', 
+			'id_table' 		=> 'id_mail_vendedor', 
+			'sin_table' 	=>  'sin_vendedores_mails'
+		),
+		
+	);
 	
 	function __construct()
 	{
@@ -12,34 +40,11 @@ class Vendedores_model  extends My_Model {
 				$tablename		= $this->_tablename, 
 				$id_table		= $this->_id_table, 
 				$order			= $this->_order,
-				$subject		= $this->_subject
+				$subject		= $this->_subject,
+				$_array_cruze	= $this->_array_cruze
 		);
 	}
-	
-	function getVendedoresClientes($id){
-		$sql = "SELECT 
-					clientes.*
-				FROM 
-					vendedores 
-				INNER JOIN 
-					sin_vendedores_clientes USING(id_vendedor) 
-				INNER JOIN 
-					clientes USING(id_cliente)
-				WHERE 
-					vendedores.id_vendedor =  '$id'";
-	
-		$query = $this->db->query($sql);
 		
-		if($query->num_rows() > 0){
-			foreach ($query->result() as $fila){
-				$data[] = $fila;
-			}
-			return $data;
-		}else{
-			return FALSE;
-		}
-	}
-	
 	
 } 
 ?>

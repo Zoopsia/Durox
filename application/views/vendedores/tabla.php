@@ -13,15 +13,22 @@ foreach($css_files as $file): ?>
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
 		  				<ul class="nav nav-tabs">
-							<li class="active"><a href="#tab1" data-toggle="tab">CLIENTE</a></li>
-					    	<li><a href="#tab2" data-toggle="tab">Vendedores</a></li>
-					    	<li><a href="#tab3" data-toggle="tab">Pedidos</a></li>
-					    	<li><a href="#tab4" data-toggle="tab">Busqueda</a></li>
+							<li class="active"><a href="#tab1" data-toggle="tab">Vendedores</a></li>
+					    	<li class="pull-right"><a href="#tab2" data-toggle="tab">Busqueda Avanzada</a></li>
 						</ul>
 		  			</div>
+		  			
 		  			<div class="panel-body">
 		  				<div class="tab-content">
-	    					<?php echo $output; ?>
+		  					<!--TABLA PRINCIPAL CON VENDEDORES-->
+		  					<div class="tab-pane active" id="tab1">
+	    						<?php echo $output; ?>
+	    					</div>
+	    					
+	    					<div class="tab-pane" id="tab2">
+	    						
+	    					</div>
+	
 	    				</div><!--contenedor de cada pestaña-->	
 		  			</div><!--panel body-->
 				</div><!--panel-->
