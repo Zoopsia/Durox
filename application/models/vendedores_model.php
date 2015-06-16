@@ -15,20 +15,20 @@ class Vendedores_model extends My_Model {
 		),
 		
 		'telefonos'	=> array(
-			'table' 		=> 'telefonos_vendedores', 
-			'id_table' 		=> 'id_telefono_vendedor', 
+			'table' 		=> 'telefonos', 
+			'id_table' 		=> 'id_telefono', 
 			'sin_table' 	=> 'sin_vendedores_telefonos'
 		),
 		
 		'direcciones'	=> array(
-			'table' 		=> 'direcciones_vendedores', 
-			'id_table' 		=> 'id_direccion_vendedor', 
+			'table' 		=> 'direcciones', 
+			'id_table' 		=> 'id_direccion', 
 			'sin_table' 	=> 'sin_vendedores_direcciones'
 		),
 		
 		'mails'	=> array(
-			'table' 		=> 'mails_vendedores', 
-			'id_table' 		=> 'id_mail_vendedor', 
+			'table' 		=> 'mails', 
+			'id_table' 		=> 'id_mail', 
 			'sin_table' 	=> 'sin_vendedores_mails'
 		),
 		

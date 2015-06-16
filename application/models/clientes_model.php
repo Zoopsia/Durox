@@ -15,20 +15,20 @@ class Clientes_model extends My_Model {
 		),
 		
 		'telefonos'	=> array(
-			'table' 		=> 'telefonos_clientes', 
-			'id_table' 		=> 'id_telefono_cliente', 
+			'table' 		=> 'telefonos', 
+			'id_table' 		=> 'id_telefono', 
 			'sin_table' 	=> 'sin_clientes_telefonos',
 		),
 		
 		'direcciones'	=> array(
-			'table' 		=> 'direcciones_clientes', 
-			'id_table' 		=> 'id_direccion_cliente', 
+			'table' 		=> 'direcciones', 
+			'id_table' 		=> 'id_direccion', 
 			'sin_table' 	=> 'sin_clientes_direcciones'
 		),
 		
 		'mails'	=> array(
-			'table' 		=> 'mails_clientes', 
-			'id_table' 		=> 'id_mail_cliente', 
+			'table' 		=> 'mails', 
+			'id_table' 		=> 'id_mail', 
 			'sin_table' 	=> 'sin_clientes_mails'
 		),
 				

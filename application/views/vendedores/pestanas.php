@@ -134,7 +134,7 @@
 										      	foreach ($telefonos as $row) 
 										      	{
 										      		echo '<tr>';
-													echo '<td>'.$row->telefono_vendedor.'</td>';
+													echo '<td>'.$row->telefono.'</td>';
 													echo '<td>'.$row->tipo.'</td>';
 													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
 													//echo "</a></tr>";
@@ -174,7 +174,7 @@
 										      	foreach ($direcciones as $row) 
 										      	{
 										      		echo '<tr>';
-													echo '<td>'.$row->direccion_vendedor.'</td>';
+													echo '<td>'.$row->direccion.'</td>';
 													echo '<td>'.$row->tipo.'</td>';
 													echo '<td>'.$row->nombre_provincia.'</td>';
 													echo '<td>'.$row->nombre_pais.'</td>';
@@ -211,7 +211,7 @@
 										      	foreach ($mails as $row) 
 										      	{
 										      		echo '<tr>';
-													echo '<td>'.$row->mail_vendedor.'</td>';
+													echo '<td>'.$row->mail.'</td>';
 													echo '<td>'.$row->tipo.'</td>';
 													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
 													//echo "</a></tr>";

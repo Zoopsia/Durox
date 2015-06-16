@@ -12,7 +12,6 @@ class Home extends CI_Controller {
 		$this->load->library('grocery_CRUD');
 		
 		$this->load->model('empresas_model');
-		$this->load->model('clientes_model');
 	}
 
 	public function home(){
