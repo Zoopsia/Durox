@@ -156,6 +156,7 @@
 							            <tr>
 							            	<th>Dirección</th>
 							                <th>Tipo</th>
+							                <th>Departamento</th>
 							                <th>Provincia</th>
 							                <th>País</th>
 							            </tr>
@@ -165,6 +166,7 @@
 							            <tr>
 							            	<th>Dirección</th>
 							                <th>Tipo</th>
+							                <th>Departamento</th>
 							                <th>Provincia</th>
 							                <th>País</th>
 							            </tr>
@@ -178,6 +180,7 @@
 										      		echo '<tr>';
 													echo '<td>'.$row->direccion.'</td>';
 													echo '<td>'.$row->tipo.'</td>';
+													echo '<td>'.$row->nombre_departamento.'</td>';
 													echo '<td>'.$row->nombre_provincia.'</td>';
 													echo '<td>'.$row->nombre_pais.'</td>';
 													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
