@@ -3,7 +3,7 @@
 	    <div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default">
-		  			<div class="panel-heading">
+		  			<div class="panel-heading"><!---PESTAÑAS DEL PANEL DE NAVEGACION--->
 		  				<ul class="nav nav-tabs nav-justified">
 							<li class="active"><a href="#tab1" data-toggle="tab">VENDEDOR</a></li>
 					    	<li><a href="#tab2" data-toggle="tab">Clientes</a></li>
@@ -44,15 +44,15 @@
 									            	echo "<tbody>";
 									                echo  "<tr>";
 									                echo  "<td>Nombre:</td>";
-									                echo  '<td>'.$row->nombre.'</td>';
+									                echo  '<td class="tabla-datos-importantes">'.$row->nombre.'</td>';
 									                echo  "</tr>";
 													echo  "<tr>";								                     
 									                echo  "<td>Apellido:</td>";
-									                echo  '<td>'.$row->apellido.'</td>';
+									                echo  '<td class="tabla-datos-importantes">'.$row->apellido.'</td>';
 									                echo  "</tr><tr>";	
 									                echo  "<td>ID:</td>";
-									                echo  '<td>'.$row->id_vendedor.'</td>';
-									                echo  "</tr><tr>";	
+									                echo  '<td class="tabla-datos-importantes">'.$row->id_vendedor.'</td>';
+									                echo  "</tr>";	
 									                echo  "</tbody>";
 									            }
 											?>
@@ -154,6 +154,8 @@
 							            <tr>
 							            	<th>Dirección</th>
 							                <th>Tipo</th>
+							                <th>Provincia</th>
+							                <th>País</th>
 							            </tr>
 							        </thead>
 							 
@@ -161,6 +163,8 @@
 							            <tr>
 							            	<th>Dirección</th>
 							                <th>Tipo</th>
+							                <th>Provincia</th>
+							                <th>País</th>
 							            </tr>
 							        </tfoot>
 							 
@@ -170,8 +174,10 @@
 										      	foreach ($direcciones as $row) 
 										      	{
 										      		echo '<tr>';
-													echo '<td>'.$row->direccion_cliente.'</td>';
+													echo '<td>'.$row->direccion_vendedor.'</td>';
 													echo '<td>'.$row->tipo.'</td>';
+													echo '<td>'.$row->nombre_provincia.'</td>';
+													echo '<td>'.$row->nombre_pais.'</td>';
 													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
 													//echo "</a></tr>";
 													echo "</tr>";
@@ -205,7 +211,7 @@
 										      	foreach ($mails as $row) 
 										      	{
 										      		echo '<tr>';
-													echo '<td>'.$row->mail_cliente.'</td>';
+													echo '<td>'.$row->mail_vendedor.'</td>';
 													echo '<td>'.$row->tipo.'</td>';
 													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
 													//echo "</a></tr>";

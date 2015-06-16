@@ -2,7 +2,7 @@
 class Empresas_model extends My_Model {
 		
 	protected $_tablename	= 'empresas';
-	protected $_id_table	= 'id_empresa';
+	protected $_id			= 'id_empresa';
 	protected $_order		= 'nombre';
 	
 	
@@ -10,7 +10,7 @@ class Empresas_model extends My_Model {
 	{
 		parent::__construct(
 				$tablename		= $this->_tablename, 
-				$id_table		= $this->_id_table, 
+				$id				= $this->_id, 
 				$order			= $this->_order
 		);
 	}

@@ -146,4 +146,10 @@ body,html{
 {margin-top:20px;
 }
 
+.tabla-datos-importantes {
+	font-family:"Courier New";
+	font-family: initial;
+  	font-size: 20px;
+	
+}
  

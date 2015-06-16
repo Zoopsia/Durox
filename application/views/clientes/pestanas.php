@@ -12,13 +12,14 @@
 							      Perfiles <span class="caret"></span>
 							    </a>
 							    <ul class="dropdown-menu" role="menu">
-							     	<li><a href="#tab4" data-toggle="tab">Telefonos</a></li>
-							     	<li><a href="#tab5" data-toggle="tab">Direcciones</a></li>
-							     	<li><a href="#tab6" data-toggle="tab">E-mails</a></li>
+							     	<li><a href="#tab3" data-toggle="tab">Telefonos</a></li>
+							     	<li><a href="#tab4" data-toggle="tab">Direcciones</a></li>
+							     	<li><a href="#tab5" data-toggle="tab">E-mails</a></li>
 							    </ul>
 							</li>
 					    		
-					    	<li><a href="#tab3" data-toggle="tab">Busqueda</a></li>
+					    	<li><a href="#tab6" data-toggle="tab">Pedidos</a></li>
+					    	<li><a href="#tab7" data-toggle="tab">Presupuestos</a></li>
 						</ul>
 		  			</div>
 		  			<div class="panel-body">
@@ -44,15 +45,18 @@
 									            	echo "<tbody>";
 									                echo  "<tr>";
 									                echo  "<td>Nombre:</td>";
-									                echo  '<td>'.$row->nombre.'</td>';
+									                echo  '<td class="tabla-datos-importantes">'.$row->nombre.'</td>';
 									                echo  "</tr>";
 													echo  "<tr>";								                     
 									                echo  "<td>Apellido:</td>";
-									                echo  '<td>'.$row->apellido.'</td>';
+									                echo  '<td class="tabla-datos-importantes">'.$row->apellido.'</td>';
 									                echo  "</tr><tr>";	
-									                echo  "<td>ID:</td>";
-									                echo  '<td>'.$row->id_cliente.'</td>';
+									                echo  "<td>Cuit:</td>";
+									                echo  '<td class="tabla-datos-importantes">'.$row->cuit.'</td>';
 									                echo  "</tr><tr>";	
+									                echo  "<td>Razón Social:</td>";
+									                echo  '<td class="tabla-datos-importantes">'.$row->razon_social.'</td>';
+									                echo  "</tr>";	
 									                echo  "</tbody>";
 									            }
 											?>
@@ -106,12 +110,9 @@
 							    </table>
 							    
 	    					</div><!--TAB 2 VENDEDORES CLIENTE -->
+	    				
 	    					<div class="tab-pane" id="tab3">
-	     						<!--TAB 3 PANEL DE BUSQUEDA -->
-	     						Busqueda
-	    					</div>
-	    					<div class="tab-pane" id="tab4">
-	     						<!--TAB 4 TELEFONOS CLIENTE -->
+	     						<!--TAB 3 TELEFONOS CLIENTE -->
 	     						
 	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
@@ -146,14 +147,16 @@
 							    </table>
 							    
 	    					</div>
-	    					<div class="tab-pane" id="tab5">
-	     						<!--TAB 5 DIRECCIONES CLIENTE -->
+	    					<div class="tab-pane" id="tab4">
+	     						<!--TAB 4 DIRECCIONES CLIENTE -->
 	     						
 								<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>
 							            	<th>Dirección</th>
 							                <th>Tipo</th>
+							                <th>Provincia</th>
+							                <th>País</th>
 							            </tr>
 							        </thead>
 							 
@@ -161,6 +164,8 @@
 							            <tr>
 							            	<th>Dirección</th>
 							                <th>Tipo</th>
+							                <th>Provincia</th>
+							                <th>País</th>
 							            </tr>
 							        </tfoot>
 							 
@@ -172,6 +177,8 @@
 										      		echo '<tr>';
 													echo '<td>'.$row->direccion_cliente.'</td>';
 													echo '<td>'.$row->tipo.'</td>';
+													echo '<td>'.$row->nombre_provincia.'</td>';
+													echo '<td>'.$row->nombre_pais.'</td>';
 													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
 													//echo "</a></tr>";
 													echo "</tr>";
@@ -181,8 +188,8 @@
 							        </tbody>
 							    </table>
 	    					</div>
-	    					<div class="tab-pane" id="tab6">
-	     						<!--TAB 6 E-MAILS CLIENTE -->
+	    					<div class="tab-pane" id="tab5">
+	     						<!--TAB 5 E-MAILS CLIENTE -->
 	     						
 	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
@@ -215,6 +222,16 @@
 									 	?>
 							        </tbody>
 							    </table>
+	    					</div>
+	    					
+	    					<div class="tab-pane" id="tab6">
+	     						<!--TAB 6 PANEL DE PEDIDOS -->
+	     						PEDIDOS
+	    					</div>
+	    					
+	    					<div class="tab-pane" id="tab7">
+	     						<!--TAB 7 PANEL DE PRESUPUESTOS -->
+	     						PRESUPUESTOS
 	    					</div>
 	    				</div><!--contenedor de cada pestaña-->	
 		  			</div><!--panel body-->

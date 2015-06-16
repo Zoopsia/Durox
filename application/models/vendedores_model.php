@@ -11,25 +11,25 @@ class Vendedores_model extends My_Model {
 		'clientes'	=> array(
 			'table' 		=> 'clientes', 
 			'id_table' 		=> 'id_cliente', 
-			'sin_table' 	=>  'sin_vendedores_clientes'
+			'sin_table' 	=> 'sin_vendedores_clientes'
 		),
 		
 		'telefonos'	=> array(
 			'table' 		=> 'telefonos_vendedores', 
 			'id_table' 		=> 'id_telefono_vendedor', 
-			'sin_table' 	=>  'sin_vendedores_telefonos'
+			'sin_table' 	=> 'sin_vendedores_telefonos'
 		),
 		
 		'direcciones'	=> array(
 			'table' 		=> 'direcciones_vendedores', 
 			'id_table' 		=> 'id_direccion_vendedor', 
-			'sin_table' 	=>  'sin_vendedores_direcciones'
+			'sin_table' 	=> 'sin_vendedores_direcciones'
 		),
 		
 		'mails'	=> array(
 			'table' 		=> 'mails_vendedores', 
 			'id_table' 		=> 'id_mail_vendedor', 
-			'sin_table' 	=>  'sin_vendedores_mails'
+			'sin_table' 	=> 'sin_vendedores_mails'
 		),
 		
 	);
