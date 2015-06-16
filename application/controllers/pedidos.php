@@ -1,8 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Clientes extends My_Controller {
+class Pedidos extends My_Controller {
 	
-	protected $_subject		= 'clientes';
+	protected $_subject		= 'pedidos';
 	
 	
 	
@@ -26,12 +26,8 @@ class Clientes extends My_Controller {
 	public function pestanas($id){
 		
 		$db['empresas']=$this->empresas_model->getRegistro(1);
-		$db['clientes']=$this->clientes_model->getCliente($id);
-		$db['vendedores']=$this->clientes_model->getCruce($id,'vendedores');	
-		$db['telefonos']=$this->clientes_model->getCruce($id,'telefonos');
-		$db['direcciones']=$this->clientes_model->getCruce($id,'direcciones');
-		$db['mails']=$this->clientes_model->getCruce($id,'mails');
-		$db['pedidos']=$this->clientes_model->getPedidos($id);
+		//$db['pedidos']=$this->pedidos_model->getCliente($id);
+
 		
 			$this->load->view("head.php", $db);
 			$this->load->view("nav_top.php");
@@ -41,7 +37,7 @@ class Clientes extends My_Controller {
 	}
 	
 
-	public function clientes_abm(){
+	public function pedidos_abm(){
 			
 			$crud = new grocery_CRUD();
 
@@ -49,27 +45,41 @@ class Clientes extends My_Controller {
 			
 			$crud->set_language("spanish");
 			
-			//$crud->where('clientes', 0);
+			//$crud->where('pedidos', 0);
 			
-			$crud->set_table('clientes');
+			$crud->set_table('pedidos');
 			
-			$crud->columns(	'nombre',
-							'apellido');
+			$crud->columns('id_pedido',
+							'id_cliente',
+							'id_vendedor',
+							'id_estado_pedido',
+							'date_add');
 			
-			$crud->display_as('nombre','Nombre')
-				 ->display_as('apellido','Apellido');
+			$crud->display_as('id_pedido','N° Pedido')
+				 ->display_as('id_cliente','Cliente')
+				 ->display_as('id_vendedor','Vendedor')
+				 ->display_as('id_estado_pedido','Estado')
+				 ->display_as('date_add','Fecha Ingreso');
 			
-			$crud->set_subject('Cliente');
+			$crud->set_subject('Pedidos');
 			
-			$crud->fields(	'nombre',
-							'apellido');
+			$crud->fields(	'id_pedido',
+							'id_cliente',
+							'id_vendedor',
+							'id_estado_pedido',
+							'date_add');
 							
+			$crud->order_by('date_add','asc');
+							
+			$crud->set_relation('id_cliente','clientes','{apellido} {nombre}');
+			$crud->set_relation('id_vendedor','vendedores','{apellido} {nombre}');
+			$crud->set_relation('id_estado_pedido','estados_pedidos','estado');
+			
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
 			
 			$crud->unset_export();
 			$crud->unset_print();
 			$crud->unset_read();
-			
 			
 			$output = $crud->render();
 			

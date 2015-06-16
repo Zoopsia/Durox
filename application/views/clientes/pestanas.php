@@ -20,6 +20,7 @@
 					    		
 					    	<li><a href="#tab6" data-toggle="tab">Pedidos</a></li>
 					    	<li><a href="#tab7" data-toggle="tab">Presupuestos</a></li>
+					    	<li><a href="#tab8" data-toggle="tab">Alarmas</a></li>
 						</ul>
 		  			</div>
 		  			<div class="panel-body">
@@ -226,7 +227,38 @@
 	    					
 	    					<div class="tab-pane" id="tab6">
 	     						<!--TAB 6 PANEL DE PEDIDOS -->
-	     						PEDIDOS
+	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
+							        <thead>
+							            <tr>
+							            	<th>Pedido</th>
+							                <th>Vendedor</th>
+							            </tr>
+							        </thead>
+							 
+							        <tfoot>
+							            <tr>
+							            	<th>Pedido</th>
+							                <th>Vendedor</th>
+							            </tr>
+							        </tfoot>
+							 
+							        <tbody>        
+			     						<?php 
+									       	if($pedidos){							                
+										      	foreach ($pedidos as $row) 
+										     	{
+										    		echo '<tr>';
+													echo '<td><a href="#">'.$row->id_pedido.'</a>';
+													echo "</td>";
+													echo "<td><a href='".base_url()."index.php/Vendedores/pestanas/".$row->id_vendedor."'>".$row->v_nombre.'</a>';
+													echo "</td>";
+													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
+													//echo "</a></tr>";
+													echo "</tr>";
+												}
+											}
+										?>
+									</tbody> 
 	    					</div>
 	    					
 	    					<div class="tab-pane" id="tab7">

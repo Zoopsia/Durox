@@ -30,7 +30,8 @@ class Clientes_model extends My_Model {
 			'table' 		=> 'mails_clientes', 
 			'id_table' 		=> 'id_mail_cliente', 
 			'sin_table' 	=> 'sin_clientes_mails'
-		),		
+		),
+				
 	);
 		
 	function __construct()
@@ -52,6 +53,37 @@ class Clientes_model extends My_Model {
 					$this->_tablename 
 				INNER JOIN
 					razon_social USING (id_razon_social)
+				WHERE 
+					$this->_id_table = '$id'";
+					
+		$query = $this->db->query($sql);
+		
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+			return $data;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+	function getPedidos($id){
+			
+		$sql = "SELECT 
+					pedidos.*, 
+					vendedores.nombre as v_nombre,
+					clientes.nombre as c_nombre 
+				FROM 
+					$this->_tablename 
+				INNER JOIN
+					pedidos USING (id_cliente)
+				INNER JOIN
+					vendedores USING (id_vendedor)
 				WHERE 
 					$this->_id_table = '$id'";
 					

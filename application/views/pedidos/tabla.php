@@ -30,18 +30,18 @@ else {
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
 		  				<ul class="nav nav-tabs">
-							<li class="<?php echo $listado?>"><a href="#tab1" data-toggle="tab">Clientes</a></li>
+							<li class="<?php echo $listado?>"><a href="#tab1" data-toggle="tab">Pedidos</a></li>
 					    	<li class="pull-right <?php echo $busqueda?>"><a href="#tab2" data-toggle="tab">Busqueda Avanzada</a></li>
 						</ul>
 		  			</div>
 		  			
 		  			<div class="panel-body">
 		  				<div class="tab-content">
-		  					<!--TABLA PRINCIPAL CON CLIENTES-->
+		  					<!--TABLA PRINCIPAL CON PEDIDOS-->
 		  					<div class="tab-pane <?php echo $listado?>" id="tab1">
 	    						<?php echo $output; ?>
 	    					</div>
-	    					<!--BUSQUEDA AVANZADA DE CLIENTES-->
+	    					<!--BUSQUEDA AVANZADA DE PEDIDOS-->
 	    					<div class="tab-pane <?php echo $busqueda?>" id="tab2">
 	    						BUSQUEDA
 	    					</div>
