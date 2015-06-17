@@ -57,14 +57,19 @@ class Clientes extends My_Controller {
 							'apellido');
 			
 			$crud->display_as('nombre','Nombre')
-				 ->display_as('apellido','Apellido');
+				 ->display_as('apellido','Apellido')
+				 ->display_as('id_razon_social','Razón Social');
 			
 			$crud->set_subject('Cliente');
 			
 			$crud->fields(	'nombre',
-							'apellido');
+							'apellido',
+							'cuit',
+							'id_razon_social');
 							
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
+
+			$crud->set_relation('id_razon_social','razon_social','razon_social');
 			
 			$crud->unset_export();
 			$crud->unset_print();

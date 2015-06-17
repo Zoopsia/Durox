@@ -66,8 +66,9 @@ class Pedidos extends My_Controller {
 			$crud->fields(	'id_pedido',
 							'id_cliente',
 							'id_vendedor',
-							'id_estado_pedido',
-							'date_add');
+							'id_estado_pedido');
+			
+			
 							
 			$crud->order_by('date_add','asc');
 							

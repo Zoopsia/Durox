@@ -10,8 +10,8 @@
 	$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/jquery.noty.js');
 	$this->set_js_lib($this->default_javascript_path.'/jquery_plugins/config/jquery.noty.config.js');
 ?>
-<div class='col-md-12 col-lg-12'>
-	<h3>
+<div class='ui-widget-content ui-corner-all datatables'>
+	<h3 class="ui-accordion-header ui-helper-reset ui-state-default form-title">
 		<div class='floatL form-title-left'>
 			<a href="#"><?php echo $this->l('form_edit'); ?> <?php echo $subject?></a>
 		</div>
@@ -19,7 +19,7 @@
 	</h3>
 <div class='form-content form-div'>
 	<?php echo form_open( $update_url, 'method="post" id="crudForm" enctype="multipart/form-data"'); ?>
-		<div style="padding-left: 24px">
+		<div>
 		<?php
 			$counter = 0;
 			foreach($fields as $field)
@@ -27,7 +27,7 @@
 				$even_odd = $counter % 2 == 0 ? 'odd' : 'even';
 				$counter++;
 		?>
-			<div class='form-group <?php echo $even_odd?>' id="<?php echo $field->field_name; ?>_field_box">
+			<div class='form-field-box <?php echo $even_odd?>' id="<?php echo $field->field_name; ?>_field_box">
 				<div class='form-display-as-box' id="<?php echo $field->field_name; ?>_display_as_box">
 					<?php echo $input_fields[$field->field_name]->display_as?><?php echo ($input_fields[$field->field_name]->required)? "<span class='required'>*</span> " : ""?> :
 				</div>
@@ -58,7 +58,7 @@
 				<input type='button' value='<?php echo $this->l('form_update_and_go_back'); ?>' class='btn btn-primary' id="save-and-go-back-button"/>
 			</div>
 			<div class='form-button-box'>
-				<input type='button' value='<?php echo $this->l('form_cancel'); ?>' class='btn btn-danger' id="cancel-button" />
+				<input type='button' value='<?php echo $this->l('form_cancel'); ?>' class='btn btn-dangerui-widget-content ui-corner-all datatables' id="cancel-button" />
 			</div>
 			<?php }?>
 			<div class='form-button-box loading-box'>

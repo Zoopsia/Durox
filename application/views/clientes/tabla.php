@@ -29,7 +29,7 @@ else {
 			<div class="col-md-12">
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
-		  				<ul class="nav nav-tabs">
+		  				<ul class="nav nav-pills">
 							<li class="<?php echo $listado?>"><a href="#tab1" data-toggle="tab">Clientes</a></li>
 					    	<li class="pull-right <?php echo $busqueda?>"><a href="#tab2" data-toggle="tab">Busqueda Avanzada</a></li>
 						</ul>

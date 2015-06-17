@@ -261,7 +261,8 @@
 												}
 											}
 										?>
-									</tbody> 
+									</tbody>
+								</table> 
 	    					</div>
 	    					
 	    					<div class="tab-pane" id="tab7">
