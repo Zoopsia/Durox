@@ -5,7 +5,23 @@ foreach($css_files as $file): ?>
 <?php foreach($js_files as $file): ?>
 	<script src="<?php echo $file; ?>"></script>
 <?php endforeach; ?>
+<?php
+if ($this->uri->segment(3) === 'tab1')
+{
+    $listado = 'active';
+	$busqueda = '';
 	
+}
+else if ($this->uri->segment(3) === 'tab2'){
+	$listado = '';
+	$busqueda = 'active';
+	
+}
+else {
+	$listado = '';
+	$busqueda = '';
+}
+?>	
 <nav class="navbar" role="navigation">
 	<div class="container">
 	    <div class="row">
@@ -13,20 +29,20 @@ foreach($css_files as $file): ?>
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
 		  				<ul class="nav nav-pills">
-							<li class="active"><a href="#tab1" data-toggle="tab">Vendedores</a></li>
-					    	<li class="pull-right"><a href="#tab2" data-toggle="tab">Busqueda Avanzada</a></li>
+							<li class="<?php echo $listado?>"><a href="#tab1" data-toggle="tab">Vendedores</a></li>
+					    	<li class="pull-right <?php echo $busqueda?>"><a href="#tab2" data-toggle="tab">Busqueda Avanzada</a></li>
 						</ul>
 		  			</div>
 		  			
 		  			<div class="panel-body">
 		  				<div class="tab-content">
 		  					<!--TABLA PRINCIPAL CON VENDEDORES-->
-		  					<div class="tab-pane active" id="tab1">
+		  					<div class="tab-pane <?php echo $listado?>" id="tab1">
 	    						<?php echo $output; ?>
 	    					</div>
-	    					
-	    					<div class="tab-pane" id="tab2">
-	    						
+	    					<!--BUSQUEDA AVANZADA DE VENDEDORES-->
+	    					<div class="tab-pane <?php echo $busqueda?>" id="tab2">
+	    						BUSQUEDA
 	    					</div>
 	
 	    				</div><!--contenedor de cada pestaña-->	

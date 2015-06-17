@@ -50,8 +50,17 @@ else
       <ul class="nav navbar-nav">
       	
         <li class="<?php echo $home?>"><a href="<?php echo base_url().'index.php/Home/home'?>">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>    
-        <li class="<?php echo $vendedor?>"><a href="<?php echo base_url().'index.php/Vendedores/vendedores_abm'?>">Vendedores<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a></li>    
-       
+        
+        <li class="dropdown <?php echo $vendedor?>">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Vendedores <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
+          <ul class="dropdown-menu forAnimate" role="menu">
+            <li><a href="<?php echo base_url().'index.php/Vendedores/vendedores_abm/tab1'?>">Listado de vendedores</a></li>
+            <li><a href="<?php echo base_url().'index.php/Vendedores/vendedores_abm/tab1/add'?>">Nuevo</a></li>
+            <li class="divider"></li>
+            <li><a href="<?php echo base_url().'index.php/Vendedores/vendedores_abm/tab2'?>">Busqueda Avanzada</a></li>
+          </ul>
+        </li>   
+        
         <li class="dropdown <?php echo $pedidos?>">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pedidos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-shopping-cart"></span></a>
           <ul class="dropdown-menu forAnimate" role="menu">
