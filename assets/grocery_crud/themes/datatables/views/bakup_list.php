@@ -9,7 +9,7 @@
 			<?php }?>
 		</tr>
 	</thead>
-	<tbody class="mi-tbody">
+	<tbody>
 		<?php foreach($list as $num_row => $row){ ?>
 		<tr id='row-<?php echo $num_row?>'>
 			<?php foreach($columns as $column){?>
