@@ -63,7 +63,7 @@
 	    					</div> <!--TAB 1 INFO VENDEDOR -->
 	     					<div class="tab-pane" id="tab2">
 	     						
-	     						<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+	     						<table id="example" class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>
 							            	<th>ID</th>
@@ -97,7 +97,7 @@
 													echo "<td>".$row->apellido."</td>";
 													echo '<td>'.$row->date_add.'</td>';
 													echo "<td>".$row->eliminado."</td>";
-													echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-default'>Ver</a></td>";
+													echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs'>Ver</a></td>";
 													echo "</a></tr>";
 												}
 											}

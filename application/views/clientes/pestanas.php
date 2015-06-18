@@ -102,7 +102,7 @@
 													echo "<td>".$row->apellido."</td>";
 													echo '<td>'.$row->date_add.'</td>';
 													echo "<td>".$row->eliminado."</td>";
-													echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
+													echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/pestanas/".$row->id_vendedor."' class='btn btn-info btn-xs'>Ver</a></td>";
 													echo "</a></tr>";
 												}
 											}
