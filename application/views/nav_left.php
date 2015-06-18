@@ -1,5 +1,5 @@
 <?php
-if ($this->uri->segment(1) === 'Clientes')
+if ($this->uri->segment(1) === 'Clientes' OR $this->uri->segment(1) === 'clientes')
 {
     $cliente 	= 'active';
 	$home 		= '';
@@ -15,7 +15,7 @@ else if ($this->uri->segment(1) === 'Home')
 	$pedidos	= '';
 	$presupuesto= '';
 }
-else if ($this->uri->segment(1) === 'Vendedores')
+else if ($this->uri->segment(1) === 'Vendedores'OR $this->uri->segment(1) === 'vendedores')
 {
     $cliente 	= '';
 	$home 		= '';
@@ -23,7 +23,7 @@ else if ($this->uri->segment(1) === 'Vendedores')
 	$pedidos	= '';
 	$presupuesto= '';
 }
-else if ($this->uri->segment(1) === 'Pedidos')
+else if ($this->uri->segment(1) === 'Pedidos' OR $this->uri->segment(1) === 'pedidos')
 {
     $cliente 	= '';
 	$home 		= '';
@@ -31,7 +31,7 @@ else if ($this->uri->segment(1) === 'Pedidos')
 	$pedidos	= 'active';
 	$presupuesto= '';
 }
-else if ($this->uri->segment(1) === 'Presupuestos')
+else if ($this->uri->segment(1) === 'Presupuestos' OR $this->uri->segment(1) === 'presupuestos')
 {
     $cliente 	= '';
 	$home 		= '';
