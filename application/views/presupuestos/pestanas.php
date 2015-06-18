@@ -5,7 +5,7 @@
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
 		  				<ul class="nav nav-tabs nav-justified">
-							<li class="active"><a href="#tab1" data-toggle="tab">PEDIDO</a></li>
+							<li class="active"><a href="#tab1" data-toggle="tab">PRESUPUESTO</a></li>
 					    	<li><a href="#tab2" data-toggle="tab">Vendedores</a></li>
 					    	<li role="presentation" class="dropdown">
 							    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
@@ -26,12 +26,35 @@
 		  			<div class="panel-body">
 		  				<div class="tab-content">
 	    					<div class="tab-pane active" id="tab1">
-	    					<!--INFO GRAL DEL PEDIDO-->	
+	    					<!--INFO GRAL DEL PRESUPUESTO-->	
 	    						<div class="row">
 					                <div class=" col-md-12 col-lg-12 "><!--carga info pedido-->
-					                	<table class="table table-striped table-user-information"> 
-						                	
-					                    </table>
+					                	<table class="table table-striped table-bordered" cellspacing="0" width="100%">
+									        <thead>
+									            <tr>
+									            	<th>Nombre</th>
+									                <th>Cantidad</th>
+									                <th>Precio</th>
+									                <th>Estado</th>
+									            </tr>
+									        </thead>
+									 
+									        <tbody>
+									        	<?php 
+									            	if($presupuestos){							                
+												      	foreach ($presupuestos as $row) 
+												      	{
+												      		echo '<tr>';
+															echo '<td>'.$row->nombre.'</td>';
+															echo '<td>'.$row->cantidad.'</td>';
+															echo "<td>".$row->precio."</td>";
+															echo '<td>'.$row->estado.'</td>';
+															echo "</tr>";
+														}
+													}
+											 	?>
+									        </tbody>
+							    		</table>
 					                </div>
 					            </div>
 					            			

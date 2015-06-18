@@ -5,6 +5,7 @@ if ($this->uri->segment(1) === 'Clientes')
 	$home 		= '';
 	$vendedor 	= '';
 	$pedidos	= '';
+	$presupuesto= '';
 }
 else if ($this->uri->segment(1) === 'Home')
 {
@@ -12,6 +13,7 @@ else if ($this->uri->segment(1) === 'Home')
 	$home 		= 'active';
 	$vendedor 	= '';
 	$pedidos	= '';
+	$presupuesto= '';
 }
 else if ($this->uri->segment(1) === 'Vendedores')
 {
@@ -19,6 +21,7 @@ else if ($this->uri->segment(1) === 'Vendedores')
 	$home 		= '';
 	$vendedor 	= 'active';
 	$pedidos	= '';
+	$presupuesto= '';
 }
 else if ($this->uri->segment(1) === 'Pedidos')
 {
@@ -26,6 +29,15 @@ else if ($this->uri->segment(1) === 'Pedidos')
 	$home 		= '';
 	$vendedor 	= '';
 	$pedidos	= 'active';
+	$presupuesto= '';
+}
+else if ($this->uri->segment(1) === 'Presupuestos')
+{
+    $cliente 	= '';
+	$home 		= '';
+	$vendedor 	= '';
+	$pedidos	= '';
+	$presupuesto= 'active';
 }
 else
 {
@@ -33,6 +45,7 @@ else
 	$home 		= '';
 	$vendedor 	= '';
 	$pedidos	= '';
+	$presupuesto= '';
 }
 
 ?>
@@ -80,6 +93,16 @@ else
             <li><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/tab2'?>">Busqueda Avanzada</a></li>
           </ul>
         </li>
+        
+        <li class="dropdown <?php echo $presupuesto?>">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Presupuestos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-shopping-cart"></span></a>
+          <ul class="dropdown-menu forAnimate" role="menu">
+            <li><a href="<?php echo base_url().'index.php/Presupuestos/presupuestos_abm/tab1'?>">Listado de pedidos</a></li>
+            <li><a href="<?php echo base_url().'index.php/Presupuestos/presupuestos_abm/tab1/add'?>">Nuevo</a></li>
+            <li class="divider"></li>
+            <li><a href="<?php echo base_url().'index.php/Presupuestos/presupuestos_abm/tab2'?>">Busqueda Avanzada</a></li>
+          </ul>
+        </li> 
         
               
         </ul>

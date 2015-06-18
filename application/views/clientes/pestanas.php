@@ -234,7 +234,7 @@
 							        <thead>
 							            <tr>
 							            	<th>Pedido</th>
-							                <th>Vendedor</th>}
+							                <th>Vendedor</th>
 							                <th>Fecha</th>
 							            </tr>
 							        </thead>

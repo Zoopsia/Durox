@@ -1,8 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Pedidos extends My_Controller {
+class Presupuestos extends My_Controller {
 	
-	protected $_subject		= 'pedidos';
+	protected $_subject		= 'presupuestos';
 	
 	
 	
@@ -26,7 +26,7 @@ class Pedidos extends My_Controller {
 	public function pestanas($id){
 		
 		$db['empresas']=$this->empresas_model->getRegistro(1);
-		$db['pedidos']=$this->pedidos_model->getDetallePedido($id);
+		$db['presupuestos']=$this->presupuestos_model->getDetallePresupuesto($id);
 
 		
 			$this->load->view("head.php", $db);
@@ -37,7 +37,7 @@ class Pedidos extends My_Controller {
 	}
 	
 
-	public function pedidos_abm(){
+	public function presupuestos_abm(){
 			
 			$crud = new grocery_CRUD();
 
@@ -47,26 +47,26 @@ class Pedidos extends My_Controller {
 			
 			//$crud->where('pedidos', 0);
 			
-			$crud->set_table('pedidos');
+			$crud->set_table('presupuestos');
 			
-			$crud->columns('id_pedido',
+			$crud->columns('id_presupuesto',
 							'id_cliente',
 							'id_vendedor',
-							'id_estado_pedido',
+							'id_estado_presupuesto',
 							'date_add');
 			
-			$crud->display_as('id_pedido','N° Pedido')
+			$crud->display_as('id_presupuesto','N° Pedido')
 				 ->display_as('id_cliente','Cliente')
 				 ->display_as('id_vendedor','Vendedor')
-				 ->display_as('id_estado_pedido','Estado')
+				 ->display_as('id_estado_presupuesto','Estado')
 				 ->display_as('date_add','Fecha Ingreso');
 			
-			$crud->set_subject('Pedidos');
+			$crud->set_subject('Presupuestos');
 			
-			$crud->fields(	'id_pedido',
+			$crud->fields(	'id_presupuesto',
 							'id_cliente',
 							'id_vendedor',
-							'id_estado_pedido');
+							'id_estado_presupuesto');
 			
 			
 							
@@ -74,9 +74,10 @@ class Pedidos extends My_Controller {
 							
 			$crud->set_relation('id_cliente','clientes','{apellido} {nombre}');
 			$crud->set_relation('id_vendedor','vendedores','{apellido} {nombre}');
-			$crud->set_relation('id_estado_pedido','estados_pedidos','estado');
+			$crud->set_relation('id_estado_presupuesto','estados_presupuestos','estado');
 			
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
+			
 			
 			$crud->unset_export();
 			$crud->unset_print();
@@ -90,7 +91,7 @@ class Pedidos extends My_Controller {
 
 	function just_a_test($primary_key , $row)
 	{
-	    return site_url($this->_subject.'/pestanas').'/'.$row->id_pedido;
+	    return site_url($this->_subject.'/pestanas').'/'.$row->id_presupuesto;
 	}
 	
 		

@@ -1,10 +1,10 @@
 <?php 
-class Pedidos_model extends My_Model {
+class Presupuestos_model extends My_Model {
 		
-	protected $_tablename	= 'pedidos';
-	protected $_id_table	= 'id_pedido';
-	protected $_order		= 'id_pedido';
-	protected $_subject		= 'pedido';
+	protected $_tablename	= 'presupuestos';
+	protected $_id_table	= 'id_presupuesto';
+	protected $_order		= 'id_presupuesto';
+	protected $_subject		= 'presupuesto';
 	protected 
 	$_array_cruze	= array(
 		
@@ -21,7 +21,7 @@ class Pedidos_model extends My_Model {
 		);
 	}
 	
-	function getDetallePedido($id)
+	function getDetallePresupuesto($id)
 	{
 		$sql = "SELECT 
 					productos.nombre AS nombre, 
