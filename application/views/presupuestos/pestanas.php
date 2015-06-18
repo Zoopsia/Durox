@@ -29,32 +29,9 @@
 	    					<!--INFO GRAL DEL PEDIDO-->	
 	    						<div class="row">
 					                <div class=" col-md-12 col-lg-12 "><!--carga info pedido-->
-					                	<table class="table table-striped table-bordered" cellspacing="0" width="100%">
-									        <thead>
-									            <tr>
-									            	<th>Nombre</th>
-									                <th>Cantidad</th>
-									                <th>Precio</th>
-									                <th>Estado</th>
-									            </tr>
-									        </thead>
-									 
-									        <tbody>
-									        	<?php 
-									            	if($pedidos){							                
-												      	foreach ($pedidos as $row) 
-												      	{
-												      		echo '<tr>';
-															echo '<td>'.$row->nombre.'</td>';
-															echo '<td>'.$row->cantidad.'</td>';
-															echo "<td>".$row->precio."</td>";
-															echo '<td>'.$row->estado.'</td>';
-															echo "</tr>";
-														}
-													}
-											 	?>
-									        </tbody>
-							    		</table>
+					                	<table class="table table-striped table-user-information"> 
+						                	
+					                    </table>
 					                </div>
 					            </div>
 					            			

@@ -26,7 +26,7 @@ class Pedidos extends My_Controller {
 	public function pestanas($id){
 		
 		$db['empresas']=$this->empresas_model->getRegistro(1);
-		//$db['pedidos']=$this->pedidos_model->getCliente($id);
+		$db['pedidos']=$this->pedidos_model->getDetallePedido($id);
 
 		
 			$this->load->view("head.php", $db);

@@ -234,7 +234,8 @@
 							        <thead>
 							            <tr>
 							            	<th>Pedido</th>
-							                <th>Vendedor</th>
+							                <th>Vendedor</th>}
+							                <th>Fecha</th>
 							            </tr>
 							        </thead>
 							 
@@ -242,6 +243,7 @@
 							            <tr>
 							            	<th>Pedido</th>
 							                <th>Vendedor</th>
+							                <th>Fecha</th>
 							            </tr>
 							        </tfoot>
 							 
@@ -254,6 +256,8 @@
 													echo '<td><a href="#">'.$row->id_pedido.'</a>';
 													echo "</td>";
 													echo "<td><a href='".base_url()."index.php/Vendedores/pestanas/".$row->id_vendedor."'>".$row->v_nombre.'</a>';
+													echo "</td>";
+													echo '<td>'.$row->date_add;
 													echo "</td>";
 													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
 													//echo "</a></tr>";

@@ -79,8 +79,9 @@ else
             <li class="divider"></li>
             <li><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/tab2'?>">Busqueda Avanzada</a></li>
           </ul>
-        </li>   
+        </li>
         
+              
         </ul>
     </div>
   </div>
