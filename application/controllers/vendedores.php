@@ -25,18 +25,17 @@ class Vendedores extends My_Controller {
 		
 	public function pestanas($id){
 		
-		$db['empresas']=$this->empresas_model->getRegistro(1);
-		$db['vendedores']=$this->vendedores_model->getRegistro($id);
-		$db['clientes']=$this->vendedores_model->getCruce($id,'clientes');
-		$db['telefonos']=$this->vendedores_model->getCruce($id,'telefonos');
-		$db['direcciones']=$this->vendedores_model->getCruce($id,'direcciones');
-		$db['mails']=$this->vendedores_model->getCruce($id,'mails');
+		$db['empresas']		= $this->empresas_model->getRegistro(1);
+		$db['vendedores']	= $this->vendedores_model->getRegistro($id);
+		$db['clientes']		= $this->vendedores_model->getCruce($id,'clientes');
+		$db['telefonos']	= $this->vendedores_model->getCruce($id,'telefonos');
+		$db['direcciones']	= $this->vendedores_model->getCruce($id,'direcciones');
+		$db['mails']		= $this->vendedores_model->getCruce($id,'mails');
 		
-			$this->load->view("head.php", $db);
-			$this->load->view("nav_top.php");
-			$this->load->view("nav_left.php");	
-			$this->load->view($this->_subject."/pestanas.php");
-					
+		$this->load->view("head.php", $db);
+		$this->load->view("nav_top.php");
+		$this->load->view("nav_left.php");	
+		$this->load->view($this->_subject."/pestanas.php");					
 	}
 	
 

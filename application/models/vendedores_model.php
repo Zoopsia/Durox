@@ -44,7 +44,7 @@ class Vendedores_model extends My_Model {
 				$_array_cruze	= $this->_array_cruze
 		);
 	}
-		
+	
 	
 } 
 ?>
