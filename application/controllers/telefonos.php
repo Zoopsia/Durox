@@ -52,11 +52,12 @@ class Telefonos extends My_Controller {
 			'cod_area' 		=> $this->input->post('cod_area'), 
 			'telefono' 		=> $this->input->post('telefono'), 
 			'id_tipo'		=> $this->input->post('id_tipo'),
-			'id_vendedor'	=> $this->input->post('id_vendedor'),
 			'fax'			=> $fax,			
 		);
 		
-		$this->telefonos_model->insertarTelefono($telefono);
+		$id_vendedor		= $this->input->post('id_vendedor');
+		
+		$this->telefonos_model->insertarTelefono($telefono,$id_vendedor);
 		
 		/*
 		echo $this->input->post('cod_area');

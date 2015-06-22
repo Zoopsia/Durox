@@ -18,7 +18,7 @@ class Telefonos_model extends My_Model {
 		);
 	}
 	
-	function insertarTelefono($telefono){
+	function insertarTelefono($telefono,$id_vendedor){
 		
 		
 		$sql = "INSERT INTO 
@@ -28,6 +28,8 @@ class Telefonos_model extends My_Model {
 		
 		
 		echo $sql; 
+		echo "<br>";
+		echo $id_vendedor;
 		 
 		/* 		
 		$query = $this->db->query($sql);
@@ -42,7 +44,16 @@ class Telefonos_model extends My_Model {
 		}	
 		*/
 		
-		//$this->db->insert('telefonos', $data); 
+		$this->db->insert('telefonos', $telefono); 
+		$id_telefono	= $this->db->insert_id();
+		
+		$sin_vendedores_telefonos= array(
+		
+			'id_telefono' 		=> $id_telefono, 
+			'id_vendedor' 		=> $id_vendedor		
+		);
+		
+		$this->db->insert('sin_vendedores_telefonos', $sin_vendedores_telefonos);
 		
 	}
 	
