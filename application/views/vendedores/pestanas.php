@@ -180,6 +180,7 @@
 							                <th>Departamento</th>
 							                <th>Provincia</th>
 							                <th>País</th>
+							                <th>Accion</th>
 							            </tr>
 							        </thead>
 							 
@@ -190,6 +191,7 @@
 							                <th>Departamento</th>
 							                <th>Provincia</th>
 							                <th>País</th>
+							                <th>Accion</th>
 							            </tr>
 							        </tfoot>
 							 
@@ -204,8 +206,8 @@
 													echo '<td>'.$row->nombre_departamento.'</td>';
 													echo '<td>'.$row->nombre_provincia.'</td>';
 													echo '<td>'.$row->nombre_pais.'</td>';
-													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
-													//echo "</a></tr>";
+													echo '<td style="text-align: center;"><a href="'.base_url().'index.php/direcciones/cargaEditar/'.$row->id_direccion.'" class="btn btn-primary">';
+													echo "Editar</a></td>";
 													echo "</tr>";
 												}
 											}
