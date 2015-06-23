@@ -116,7 +116,8 @@
 						        	foreach ($vendedores as $row) 
 							    	{
 			     						echo "<div class='datatables-add-button'>";
-											echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/telefonos/telefonos/'.$row->id_vendedor.'">';
+											/*--- IMPORTANTE MANDAR EL TIPO AL FINAL-----*/
+											echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/telefonos/telefonos/'.$row->id_vendedor.'/2">';
 											echo '<span class="ui-button-text">Añadir telefono</span>';
 											echo "</a>";
 										echo "</div>";

@@ -7,7 +7,7 @@
 		  				Nuevo Teléfono
 		  			</div>
 		  			<div class="panel-body"> 				
-		  				<form action="<?php echo base_url().'index.php/telefonos/nuevoTelefono'?>" class="form-horizontal" method="post">
+		  				<form action="<?php echo base_url()."index.php/telefonos/nuevoTelefono/$id/$tipo"?>" class="form-horizontal" method="post">
 							<div class="form-group">
 								<label class="col-sm-1 control-label">Email</label>
 									<div class="col-sm-2">
@@ -41,11 +41,7 @@
 										  </select>
 										</div>
 								 </div>
-							  <?php
-							      foreach ($vendedores as $row) {
-									   echo '<input type="number" value="'.$row->id_vendedor.'" name="id_vendedor" hidden>';
-								  }
-							 ?>
+							 
 							 <div class="form-group">
 							  	<label class="col-sm-1 control-label"></label>
 						      		<div class="col-md-3">

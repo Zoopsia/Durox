@@ -20,16 +20,28 @@ class Telefonos extends My_Controller {
 		
 		$this->load->model('empresas_model');
 		$this->load->model('vendedores_model');
+		$this->load->model('clientes_model');
 		$this->load->model($this->_subject.'_model');
 	}
 
 	
-	public function telefonos($id){
+	public function telefonos($id, $tipo){
 		
+		if($tipo == 1){
+		$db['empresas']		= $this->empresas_model->getRegistro(1);
+		$db['clientes']		= $this->clientes_model->getRegistro($id);
+		$db['telefonos']	= $this->clientes_model->getCruce($id,'telefonos');
+		$db['tipos']		= $this->telefonos_model->getTipos();	
+		}
+		else if($tipo == 2){
 		$db['empresas']		= $this->empresas_model->getRegistro(1);
 		$db['vendedores']	= $this->vendedores_model->getRegistro($id);
 		$db['telefonos']	= $this->vendedores_model->getCruce($id,'telefonos');
 		$db['tipos']		= $this->telefonos_model->getTipos();
+		}
+		
+		$db['id']		= $id;
+		$db['tipo']		= $tipo;
 		
 		$this->load->view("head.php", $db);
 		$this->load->view("nav_top.php");
@@ -38,7 +50,7 @@ class Telefonos extends My_Controller {
 					
 	}
 	
-	public function nuevoTelefono(){
+	public function nuevoTelefono($id,$tipo){
 		
 		if (null!==  $this->input->post('fax')) {	
 			$fax	= 1;		
@@ -55,9 +67,10 @@ class Telefonos extends My_Controller {
 			'fax'			=> $fax,			
 		);
 		
-		$id_vendedor		= $this->input->post('id_vendedor');
+		$id_usuario			= $id;
+		//$tabla				= ;
 		
-		$this->telefonos_model->insertarTelefono($telefono,$id_vendedor);
+		$this->telefonos_model->insertarTelefono($telefono,$id_usuario,$tipo);
 		
 		/*
 		echo $this->input->post('cod_area');

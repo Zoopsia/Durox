@@ -114,7 +114,18 @@
 	    				
 	    					<div class="tab-pane" id="tab3">
 	     						<!--TAB 3 TELEFONOS CLIENTE -->
-	     						
+	     						<?php
+						        	foreach ($clientes as $row) 
+							    	{
+			     						echo "<div class='datatables-add-button'>";
+											/*--- IMPORTANTE MANDAR EL TIPO AL FINAL-----*/
+											echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/telefonos/telefonos/'.$row->id_cliente.'/1">';
+											echo '<span class="ui-button-text">Añadir telefono</span>';
+											echo "</a>";
+										echo "</div>";
+										echo '<div style="height:10px;"></div>';
+									}
+								?>
 	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>
