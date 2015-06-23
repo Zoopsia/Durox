@@ -12,21 +12,26 @@
 						 			
 			  				<form action="<?php echo base_url()."index.php/direcciones/editarDireccion/$row->id_direccion"?>" class="form-horizontal" method="post">
 								<div class="form-group">
-									<label class="col-sm-1 control-label">Dirección</label>
-										<div class="col-sm-2">
-											<input type="text" name="cod_area" class="numeric form-control" pattern="[0-9]*" value="<?php echo $row->cod_area ?>" required>	 
-										</div>
-										<div class="col-sm-4">
-											<div class="input-group">
-												<div class="input-group-addon"><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span></div>
-												<input type="text" name="direccion" class="numeric form-control" pattern="[0-9]*" value="<?php echo $row->direccion ?>" required> 	    	
-										   	</div>
+									<label class="col-sm-1 col-sm-offset-1 control-label">Dirección</label>
+										<div class="col-sm-4">	
+											<div class="input-group">		
+												<div class="input-group-addon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></div>
+												<input type="text" name="direccion" class="numeric form-control" pattern="[0-9]*" value="<?php echo $row->direccion ?>" required> 	    	 	
+											</div>
 										</div> 
 								</div>
+								
+								<div class="form-group">
+									<label class="col-sm-1 col-sm-offset-1 control-label">Código Postal</label>
+										<div class="col-sm-3 col-sm-offset-1">
+											<input type="text" name="cod_postal" class="numeric form-control" pattern="[0-9]*" value="<?php echo $row->cod_postal ?>" required> 	    	
+										</div> 
+								</div>
+							
 	  
 								<div class="form-group">
-									<label class="col-sm-1 control-label">Tipo</label>
-									  	<div class="col-md-3">
+									<label class="col-sm-1 col-sm-offset-1 control-label">Tipo</label>
+									  	<div class="col-md-3 col-sm-offset-1">
 											<select name="id_tipo" class="form-control">
 												<?php
 											  		foreach ($tipos as $key) {

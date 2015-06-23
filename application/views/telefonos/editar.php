@@ -12,7 +12,7 @@
 						 			
 			  				<form action="<?php echo base_url()."index.php/telefonos/editarTelefonos/$row->id_telefono"?>" class="form-horizontal" method="post">
 								<div class="form-group">
-									<label class="col-sm-1 control-label">Teléfono</label>
+									<label class="col-sm-1 col-sm-offset-1 control-label">Teléfono</label>
 										<div class="col-sm-2">
 											<input type="text" name="cod_area" class="numeric form-control" pattern="[0-9]*" value="<?php echo $row->cod_area ?>" required>	 
 										</div>
@@ -26,8 +26,8 @@
 									 
 									  
 									  <div class="form-group">
-									  	<label class="col-sm-1 control-label">Fax</label>
-									  		<div class="col-sm-2">
+									  	<label class="col-sm-1 col-sm-offset-1 control-label">Fax</label>
+									  		<div class="col-sm-1">
 									  			<?php
 									  				if($row->fax == 1)
 									    				echo '<input type="checkbox" class="form-control" name="fax" value="1" checked>';
@@ -38,7 +38,7 @@
 									  </div>
 									  
 									  <div class="form-group">
-									  	<label class="col-sm-1 control-label">Tipo</label>
+									  	<label class="col-sm-1 col-sm-offset-1 control-label">Tipo</label>
 									  		<div class="col-md-3">
 											  <select name="id_tipo" class="form-control">
 											  	<?php
