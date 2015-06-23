@@ -21,11 +21,12 @@ class Telefonos_model extends My_Model {
 	function insertarTelefono($telefono,$id_usuario,$tipo){
 		
 		
-		$sql = "INSERT INTO 
+		/*$sql = "INSERT INTO 
 					telefonos (`id_tipo`, `telefono`, `cod_area`, `fax`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) 
 				VALUES 
 					(".$telefono['id_tipo'].", ".$telefono['telefono'].", ".$telefono['cod_area'].", ".$telefono['fax'].", '2015-06-22 00:00:00', '2015-06-22 00:00:00', '0', '1', '1')";
-		 
+		*/
+		
 		//----INSERTO CAMPOS EN TABLA TELEFONO----//
 		$this->db->insert('telefonos', $telefono);
 		 
@@ -49,6 +50,7 @@ class Telefonos_model extends My_Model {
 			);
 		$this->db->insert('sin_vendedores_telefonos', $sin_vendedores_telefonos);
 		}
+		
 	}
 	
 	function getTipos(){
@@ -69,6 +71,21 @@ class Telefonos_model extends My_Model {
 		}else{
 			return FALSE;
 		}	
+	}
+	
+	function editarTelefonos($telefono, $id){
+		
+		echo $telefono['cod_area'];
+		echo "<br>";
+		echo $telefono['telefono'];
+		echo "<br>";
+		echo $telefono['id_tipo'];
+		echo "<br>";
+		echo $telefono['fax'];
+		
+		$this->db->where('id_telefono', $id);
+		$this->db->update('telefonos', $telefono);
+		
 	}
 } 
 ?>

@@ -49,6 +49,39 @@ class Telefonos extends My_Controller {
 		$this->load->view($this->_subject."/telefonos.php");
 					
 	}
+
+	public function cargaEditar($id){
+	
+			$db['empresas']		= $this->empresas_model->getRegistro(1);
+			$db['telefonos']	= $this->telefonos_model->getRegistro($id);
+			$db['tipos']		= $this->telefonos_model->getTipos();
+	
+			$this->load->view("head.php", $db);
+			$this->load->view("nav_top.php");
+			$this->load->view("nav_left.php");	
+			$this->load->view($this->_subject."/editarTelefonos.php");
+				
+	}
+	
+	public function editarTelefonos($id){
+	
+			if (null!==  $this->input->post('fax')) {	
+				$fax	= 1;		
+			}
+			else {
+				$fax = 0;
+			}
+	
+			$telefono	= array(
+			
+				'cod_area' 		=> $this->input->post('cod_area'), 
+				'telefono' 		=> $this->input->post('telefono'), 
+				'id_tipo'		=> $this->input->post('id_tipo'),
+				'fax'			=> $fax,			
+			);
+			
+			$this->telefonos_model->editarTelefonos($telefono, $id);	
+	}
 	
 	public function nuevoTelefono($id,$tipo){
 		
@@ -71,6 +104,7 @@ class Telefonos extends My_Controller {
 		//$tabla				= ;
 		
 		$this->telefonos_model->insertarTelefono($telefono,$id_usuario,$tipo);
+		
 		
 		/*
 		echo $this->input->post('cod_area');

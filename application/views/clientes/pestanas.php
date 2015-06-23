@@ -118,7 +118,7 @@
 						        	foreach ($clientes as $row) 
 							    	{
 			     						echo "<div class='datatables-add-button'>";
-											/*--- IMPORTANTE MANDAR EL TIPO AL FINAL-----*/
+											/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 											echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/telefonos/telefonos/'.$row->id_cliente.'/1">';
 											echo '<span class="ui-button-text">Añadir telefono</span>';
 											echo "</a>";
@@ -129,15 +129,21 @@
 	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>
+							            	<th>Código Area</th>
 							            	<th>Teléfono</th>
 							                <th>Tipo</th>
+							                <th>Fax</th>
+							                <th>Accion</th>
 							            </tr>
 							        </thead>
 							 
 							        <tfoot>
 							            <tr>
+							            	<th>Código Area</th>
 							            	<th>Teléfono</th>
 							                <th>Tipo</th>
+							                <th>Fax</th>
+							                <th>Accion</th>
 							            </tr>
 							        </tfoot>
 							 
@@ -147,10 +153,16 @@
 										      	foreach ($telefonos as $row) 
 										      	{
 										      		echo '<tr>';
+													echo '<td>'.$row->cod_area.'</td>';
 													echo '<td>'.$row->telefono.'</td>';
 													echo '<td>'.$row->tipo.'</td>';
-													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
-													//echo "</a></tr>";
+													if($row->fax == 0)
+														echo "<td>NO</td>";
+													else
+														echo "<td>SI</td>";
+													
+													echo '<td style="text-align: center;"><a href="'.base_url().'index.php/telefonos/cargaEditar/'.$row->id_telefono.'" class="btn btn-primary">';
+													echo "Editar</a></td>";
 													echo "</tr>";
 												}
 											}
