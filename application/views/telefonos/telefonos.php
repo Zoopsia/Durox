@@ -25,14 +25,14 @@
 								  <div class="form-group">
 								  	<label class="col-sm-1 col-sm-offset-1 control-label">Fax</label>
 								  		<div class="col-sm-1">
-								    		<input type="checkbox" class="form-control" name="fax" value="1">
+								    		<input type="checkbox" name="fax" value="1">
 								 		</div>
 								  </div>
 								  
 								  <div class="form-group">
 								  	<label class="col-sm-1 col-sm-offset-1 control-label">Tipo</label>
 								  		<div class="col-md-3">
-										  <select name="id_tipo" class="form-control">
+										  <select name="id_tipo" class="form-control chosen-select">
 										  	<?php
 										  		foreach ($tipos as $row) {
 													  echo '<option value="'.$row->id_tipo.'">'.$row->tipo.'</option>';

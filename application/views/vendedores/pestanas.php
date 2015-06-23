@@ -37,7 +37,7 @@
 					                </div>
 					                
 					                <div class=" col-md-9 col-lg-9 "> 
-					                	<table class="table table-user-information"> 
+					                	<table class="table table-striped table-user-information"> 
 						                    <?php
 						                    	foreach ($vendedores as $row) 
 							      				{
@@ -159,7 +159,7 @@
 													else
 														echo "<td>SI</td>";
 													
-													echo '<td style="text-align: center;"><a href="'.base_url().'index.php/telefonos/cargaEditar/'.$row->id_telefono.'" class="btn btn-primary">';
+													echo '<td style="text-align: center;"><a href="'.base_url().'index.php/telefonos/cargaEditar/'.$row->id_telefono.'" class="btn btn-primary btn-xs">';
 													echo "Editar</a></td>";
 													echo "</tr>";
 												}
@@ -206,7 +206,7 @@
 													echo '<td>'.$row->nombre_departamento.'</td>';
 													echo '<td>'.$row->nombre_provincia.'</td>';
 													echo '<td>'.$row->nombre_pais.'</td>';
-													echo '<td style="text-align: center;"><a href="'.base_url().'index.php/direcciones/cargaEditar/'.$row->id_direccion.'" class="btn btn-primary">';
+													echo '<td style="text-align: center;"><a href="'.base_url().'index.php/direcciones/cargaEditar/'.$row->id_direccion.'" class="btn btn-primary btn-xs">';
 													echo "Editar</a></td>";
 													echo "</tr>";
 												}

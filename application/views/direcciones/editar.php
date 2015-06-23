@@ -32,7 +32,8 @@
 								<div class="form-group">
 									<label class="col-sm-1 col-sm-offset-1 control-label">Tipo</label>
 									  	<div class="col-md-3 col-sm-offset-1">
-											<select name="id_tipo" class="form-control">
+											<select name="id_tipo" class="form-control chosen-select">
+												
 												<?php
 											  		foreach ($tipos as $key) {
 											  			if($row->id_tipo == $key->id_tipo)

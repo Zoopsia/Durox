@@ -33,6 +33,7 @@
 --------------------------------------------------------------------->
 
 <link href="<?php echo base_url().'libraries/chosen/chosen.css'?>" rel="stylesheet">
+<script src="<?php echo base_url().'libraries/chosen/chosen.jquery.js'?>" type="text/javascript"></script>
 
 <!--------------------------------------------------------------------
 ----------------------------------------------------------------------
