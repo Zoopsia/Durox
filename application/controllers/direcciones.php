@@ -1,8 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Telefonos extends My_Controller {
+class Direcciones extends My_Controller {
 	
-	protected $_subject		= 'telefonos';
+	protected $_subject		= 'direcciones';
 	
 	
 	
@@ -25,19 +25,19 @@ class Telefonos extends My_Controller {
 	}
 
 	
-	public function telefonos($id, $tipo){
+	public function direcciones($id, $tipo){
 		
 		if($tipo == 1){
 		$db['empresas']		= $this->empresas_model->getRegistro(1);
 		$db['clientes']		= $this->clientes_model->getRegistro($id);
-		$db['telefonos']	= $this->clientes_model->getCruce($id,'telefonos');
-		$db['tipos']		= $this->telefonos_model->getTipos();	
+		$db['direcciones']	= $this->clientes_model->getCruce($id,'direcciones');
+		$db['tipos']		= $this->direcciones_model->getTipos();	
 		}
 		else if($tipo == 2){
 		$db['empresas']		= $this->empresas_model->getRegistro(1);
 		$db['vendedores']	= $this->vendedores_model->getRegistro($id);
-		$db['telefonos']	= $this->vendedores_model->getCruce($id,'telefonos');
-		$db['tipos']		= $this->telefonos_model->getTipos();
+		$db['direcciones']	= $this->vendedores_model->getCruce($id,'direcciones');
+		$db['tipos']		= $this->direcciones_model->getTipos();
 		}
 		
 		$db['id']		= $id;
@@ -46,15 +46,15 @@ class Telefonos extends My_Controller {
 		$this->load->view("head.php", $db);
 		$this->load->view("nav_top.php");
 		$this->load->view("nav_left.php");	
-		$this->load->view($this->_subject."/telefonos.php");
+		$this->load->view($this->_subject."/direcciones.php");
 					
 	}
 
 	public function cargaEditar($id){
 	
 			$db['empresas']		= $this->empresas_model->getRegistro(1);
-			$db['telefonos']	= $this->telefonos_model->getRegistro($id);
-			$db['tipos']		= $this->telefonos_model->getTipos();
+			$db['direcciones']	= $this->direcciones_model->getRegistro($id);
+			$db['tipos']		= $this->direcciones_model->getTipos();
 	
 			$this->load->view("head.php", $db);
 			$this->load->view("nav_top.php");
@@ -63,7 +63,7 @@ class Telefonos extends My_Controller {
 				
 	}
 	
-	public function editarTelefonos($id){
+	public function editarDirecciones($id){
 	
 			if (null!==  $this->input->post('fax')) {	
 				$fax	= 1;		
@@ -72,18 +72,17 @@ class Telefonos extends My_Controller {
 				$fax = 0;
 			}
 	
-			$telefono	= array(
+			$direccion	= array(
 			
-				'cod_area' 		=> $this->input->post('cod_area'), 
-				'telefono' 		=> $this->input->post('telefono'), 
-				'id_tipo'		=> $this->input->post('id_tipo'),
-				'fax'			=> $fax,			
+				'cod_postal' 	=> $this->input->post('cod_postal'),  
+				'direccion' 	=> $this->input->post('direccion'), 
+				'id_tipo'		=> $this->input->post('id_tipo'),		
 			);
 			
-			$this->telefonos_model->editarTelefonos($telefono, $id);	
+			$this->direcciones_model->editarDirecciones($direccion, $id);	
 	}
 	
-	public function nuevoTelefono($id,$tipo){
+	public function nuevaDireccion($id,$tipo){
 		
 		if (null!==  $this->input->post('fax')) {	
 			$fax	= 1;		
@@ -92,18 +91,20 @@ class Telefonos extends My_Controller {
 			$fax = 0;
 		}
 
-		$telefono	= array(
+		$direccion	= array(
 		
-			'cod_area' 		=> $this->input->post('cod_area'), 
-			'telefono' 		=> $this->input->post('telefono'), 
+			'cod_postal' 	=> $this->input->post('cod_postal'), 
+			'direccion' 	=> $this->input->post('direccion'), 
 			'id_tipo'		=> $this->input->post('id_tipo'),
-			'fax'			=> $fax,			
+		
 		);
 		
 		$id_usuario			= $id;
 		
-		$this->telefonos_model->insertarTelefono($telefono,$id_usuario,$tipo);
-
+		$this->direcciones_model->insertarDireccion($direccion,$id_usuario,$tipo);
+		
+		
+		
 		
 	}
 		
