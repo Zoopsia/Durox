@@ -102,5 +102,43 @@ class Direcciones extends My_Controller {
 		$this->direcciones_model->insertarDireccion($direccion,$id_usuario,$tipo);
 
 	}
+	
+	public function prueba($id_pais){
+		/*
+		$conexion=mysql_connect("localhost","root","") or die("Problemas en la conexion");
+
+		mysql_select_db("durox",$conexion) or die("Problemas en la seleccion de la base de datos");
+
+		$query = "SELECT nombre_provincia, id_provincia FROM provincias WHERE id_pais = '".$_REQUEST['dni']."'";
+		
+		$registros =mysql_query($query ,$conexion) or die("Problemas en el select".mysql_error());
+		
+		//echo $_REQUEST['dni'];
+		//echo $registros;
+		
+		$nombre = "<select>";
+		
+		while($fila =  mysql_fetch_array($registros)){
+		
+			$nombre .= "<option value=".$fila['id_provincia'].">".$fila['nombre_provincia']."</option>";
+			
+		}
+		
+		$nombre .= "</select>";
+		
+		$numfilas = mysql_num_rows($registros);
+		*/
+		$numfilas=$id_pais;
+		$nombre=2;
+		
+		
+		echo "{
+				'filas': '$numfilas',
+		        'nombre':'$nombre'
+		      }";
+		
+		 
+		//mysql_close($conexion);						
+	}
 		
 }

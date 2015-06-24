@@ -42,8 +42,8 @@
 								<div class="form-group">
 									<label class="col-sm-1 col-sm-offset-1 control-label">Tipo</label>
 									  	<div class="col-md-3">
-											<select id="id_pais" name="id_pais" class="form-control chosen-select" onchange="prueba(this)" data-placeholder="Selecciona una opción...">
-												<option value=""></option>
+											<select id="id_pais" name="id_pais" class="form-control" data-placeholder="Selecciona una opción...">
+												
 												<?php
 											  		foreach ($paises as $row) {
 											  			echo '<option value="'.$row->id_pais.'">'.$row->nombre_pais.'</option>';
@@ -61,6 +61,9 @@
 									  		<button type="submit" class="btn btn-primary">Guardar</button>	  	
 								  	  		<input type="button" value="Cancelar" class="btn btn-danger" id="btn-cancelar">
 								  		</div>
+								 </div>
+								 
+								 <div id="resultados">
 								 </div>
 						</form>						
 		  			</div><!--panel body-->
