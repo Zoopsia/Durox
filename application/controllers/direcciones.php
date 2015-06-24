@@ -28,18 +28,18 @@ class Direcciones extends My_Controller {
 	public function direcciones($id, $tipo){
 		
 		if($tipo == 1){
-		$db['empresas']		= $this->empresas_model->getRegistro(1);
+
 		$db['clientes']		= $this->clientes_model->getRegistro($id);
 		$db['direcciones']	= $this->clientes_model->getCruce($id,'direcciones');
-		$db['tipos']		= $this->direcciones_model->getTipos();	
 		}
 		else if($tipo == 2){
-		$db['empresas']		= $this->empresas_model->getRegistro(1);
 		$db['vendedores']	= $this->vendedores_model->getRegistro($id);
 		$db['direcciones']	= $this->vendedores_model->getCruce($id,'direcciones');
-		$db['tipos']		= $this->direcciones_model->getTipos();
 		}
-		
+
+		$db['empresas']		= $this->empresas_model->getRegistro(1);
+		$db['tipos']		= $this->direcciones_model->getTipos();
+		$db['paises']		= $this->direcciones_model->getPaises();
 		$db['id']		= $id;
 		$db['tipo']		= $tipo;
 		
@@ -63,7 +63,7 @@ class Direcciones extends My_Controller {
 				
 	}
 	
-	public function editarDirecciones($id){
+	public function editarDireccion($id){
 	
 			if (null!==  $this->input->post('fax')) {	
 				$fax	= 1;		
@@ -91,21 +91,16 @@ class Direcciones extends My_Controller {
 			$fax = 0;
 		}
 
-		$direccion	= array(
-		
+		$direccion	= array(	
 			'cod_postal' 	=> $this->input->post('cod_postal'), 
 			'direccion' 	=> $this->input->post('direccion'), 
 			'id_tipo'		=> $this->input->post('id_tipo'),
-		
 		);
 		
 		$id_usuario			= $id;
 		
 		$this->direcciones_model->insertarDireccion($direccion,$id_usuario,$tipo);
-		
-		
-		
-		
+
 	}
 		
 }

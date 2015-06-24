@@ -33,3 +33,9 @@ $(document).ready(function(){
     $(".chosen-select").chosen();
 	
 });
+
+
+function prueba(x){
+	alert("El valor: "+x.value+" y el texto: "+x.options[x.selectedIndex].text);
+	
+}
