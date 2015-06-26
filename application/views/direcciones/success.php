@@ -42,10 +42,11 @@ function provincias_activas(){
 		  			</div>
 		  			<div class="panel-body"> 
 		  					
-		  					<div>
-		  						
-		  						
-		  					</div>
+		  					<div class="panel panel-success">  
+								<div class="panel-body">
+							    	SE GUARDO OK....
+								</div>
+							</div>
 		  					
 		  					<form action="<?php echo base_url()."index.php/direcciones/nuevaDireccion/$id/$tipo"?>" class="form-horizontal" method="post">
 								<div class="form-group">

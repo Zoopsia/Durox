@@ -25,7 +25,7 @@ class Direcciones extends My_Controller {
 	}
 
 	
-	public function direcciones($id, $tipo){
+	public function direcciones($id, $tipo, $save=null){
 		
 		if($tipo == 1){
 
@@ -46,7 +46,14 @@ class Direcciones extends My_Controller {
 		$this->load->view("head.php", $db);
 		$this->load->view("nav_top.php");
 		$this->load->view("nav_left.php");	
-		$this->load->view($this->_subject."/direcciones.php");
+		
+		
+		if($save!=null){
+			$this->load->view($this->_subject."/success.php");
+		}
+		else{
+			$this->load->view($this->_subject."/direcciones.php");
+		}
 					
 	}
 
@@ -91,13 +98,6 @@ class Direcciones extends My_Controller {
 	
 	public function nuevaDireccion($id,$tipo){
 		
-		if (null!==  $this->input->post('fax')) {	
-			$fax	= 1;		
-		}
-		else {
-			$fax = 0;
-		}
-
 		$direccion	= array(	
 			'cod_postal' 			=> $this->input->post('cod_postal'), 
 			'direccion' 			=> $this->input->post('direccion'), 
@@ -109,8 +109,19 @@ class Direcciones extends My_Controller {
 		
 		$id_usuario			= $id;
 		
-		$this->direcciones_model->insertarDireccion($direccion,$id_usuario,$tipo);
-
+		//$id_direccion = $this->direcciones_model->insertarDireccion($direccion,$id_usuario,$tipo);
+		
+		$save = $this->input->post('btn-save');
+		
+		
+		if($save == 1){
+			
+			$this->direcciones($id, $tipo, $save);
+		}
+		else if ($save == 2){
+			
+		
+		}
 	}
 	
 	public function prueba(){

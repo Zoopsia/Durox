@@ -43,6 +43,8 @@ class Direcciones_model extends My_Model {
 			);
 		$this->db->insert('sin_vendedores_direcciones', $sin_vendedores_direcciones);
 		}
+
+		return $id_direccion;
 		
 	}
 	
