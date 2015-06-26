@@ -172,6 +172,18 @@
 	    					<div class="tab-pane" id="tab5">
 	     						<!--TAB 5 DIRECCIONES VENDEDOR -->
 	     						
+								<?php
+						        	foreach ($vendedores as $row) 
+							    	{
+			     						echo "<div class='datatables-add-button'>";
+											/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+											echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/direcciones/direcciones/'.$row->id_vendedor.'/2">';
+											echo '<span class="ui-button-text">Añadir Dirección</span>';
+											echo "</a>";
+										echo "</div>";
+										echo '<div style="height:10px;"></div>';
+									}
+								?>
 								<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>

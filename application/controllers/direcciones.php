@@ -120,27 +120,12 @@ class Direcciones extends My_Controller {
 		
 		$provincias 	= $this->direcciones_model->getProvincias($id_pais);
 		
-		if($id==null){
-			echo '<option value="" disabled selected style="display:none;">Seleccione una opcion...</option>';
-			foreach ($provincias  as $row) {
-				echo '<option value="'.$row->id_provincia.'">'.$row->nombre_provincia.'</option>';
-			}
+		echo '<option value="" disabled selected style="display:none;">Seleccione una opcion...</option>';
+		foreach ($provincias  as $row) {
+			echo '<option value="'.$row->id_provincia.'">'.$row->nombre_provincia.'</option>';
 		}
-		else{	
-			
-			$direccion = $this->direcciones_model->getRegistro($id);
-			
-			foreach ($direccion as $key) {
-
-				foreach ($provincias as $row) {
-					if($row->id_provincia == $key->id_provincia)
-						echo '<option value="'.$row->id_provincia.'" selected>'.$row->nombre_provincia.'</option>';
-					else
-						echo '<option value="'.$row->id_provincia.'">'.$row->nombre_provincia.'</option>';
-				
-				}
-			}
-		}			
+		
+					
 	}
 	
 	public function prueba2(){

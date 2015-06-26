@@ -7,7 +7,7 @@ function paises_activos(){
  	$.ajax({
 	 	type: 'POST',
 	 	url: '<?php echo base_url(); ?>index.php/direcciones/prueba/', //Realizaremos la petición al metodo prueba del controlador direcciones
-	 	data: {id_pais: id_pais, id: id}, //Pasaremos por parámetro POST el id del pais	 		  	
+	 	data: {id_pais: id_pais}, //Pasaremos por parámetro POST el id del pais	 		  	
 	 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
 	 		//Activar y Rellenar el select de partidos
 	 		$('select#provincias').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
@@ -81,7 +81,7 @@ function provincias_activas(){
 								<div class="form-group">
 									<label class="col-sm-2 col-sm-offset-1 control-label">Pais</label>
 									  	<div class="col-md-3">
-											<select id="paises" name="id_pais" class="form-control" onchange="paises_activos()" >	
+											<select id="paises" name="id_pais" class="form-control" onchange="paises_activos(), provincias_activas()" >	
 												<?php
 											  		foreach ($paises as $key) {
 											  			if($row->id_pais == $key->id_pais)
