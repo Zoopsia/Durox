@@ -25,16 +25,15 @@ class Direcciones extends My_Controller {
 	}
 
 	
-	public function direcciones($id, $tipo, $save=null){
+	public function direcciones($id, $tipo, $save=null, $id_direccion=null){
 		
 		if($tipo == 1){
-
-		$db['clientes']		= $this->clientes_model->getRegistro($id);
-		$db['direcciones']	= $this->clientes_model->getCruce($id,'direcciones');
+			$db['clientes']		= $this->clientes_model->getRegistro($id);
+			$db['direcciones']	= $this->clientes_model->getCruce($id,'direcciones');
 		}
 		else if($tipo == 2){
-		$db['vendedores']	= $this->vendedores_model->getRegistro($id);
-		$db['direcciones']	= $this->vendedores_model->getCruce($id,'direcciones');
+			$db['vendedores']	= $this->vendedores_model->getRegistro($id);
+			$db['direcciones']	= $this->vendedores_model->getCruce($id,'direcciones');
 		}
 
 		$db['empresas']		= $this->empresas_model->getRegistro(1);
@@ -49,7 +48,8 @@ class Direcciones extends My_Controller {
 		
 		
 		if($save!=null){
-			$this->load->view($this->_subject."/success.php");
+			echo $id_direccion;
+			$this->load->view($this->_subject."/success.php", $id_direccion);
 		}
 		else{
 			$this->load->view($this->_subject."/direcciones.php");
@@ -109,14 +109,14 @@ class Direcciones extends My_Controller {
 		
 		$id_usuario			= $id;
 		
-		//$id_direccion = $this->direcciones_model->insertarDireccion($direccion,$id_usuario,$tipo);
+		$id_direccion = $this->direcciones_model->insertarDireccion($direccion,$id_usuario,$tipo);
 		
 		$save = $this->input->post('btn-save');
 		
 		
 		if($save == 1){
 			
-			$this->direcciones($id, $tipo, $save);
+			$this->direcciones($id, $tipo, $save, $id_direccion);
 		}
 		else if ($save == 2){
 			

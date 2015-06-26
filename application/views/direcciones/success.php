@@ -44,7 +44,7 @@ function provincias_activas(){
 		  					
 		  					<div class="panel panel-success">  
 								<div class="panel-body">
-							    	SE GUARDO OK....
+							    	SE GUARDO OK.... 
 								</div>
 							</div>
 		  					
