@@ -86,15 +86,54 @@ class Direcciones_model extends My_Model {
 		}	
 	}
 	
+	function getProvincias($id_pais){
+		
+		$sql = "SELECT 
+					* 
+				FROM 
+					paises 
+				INNER JOIN 
+					provincias USING (id_pais)
+				WHERE 
+					id_pais = $id_pais";
+				
+		$query = $this->db->query($sql);
+						
+		if($query->num_rows() > 0){
+			foreach ($query->result() as $fila){
+				$data[] = $fila;
+			}
+			return $data;
+		}else{
+			return FALSE;
+		}	
+	}
+	
+	function getDepartamentos($id_provincia){
+		
+		$sql = "SELECT 
+					* 
+				FROM 
+					provincias
+				INNER JOIN 
+					departamentos USING(id_provincia)
+				WHERE 
+					id_provincia = $id_provincia";
+				
+		$query = $this->db->query($sql);
+						
+		if($query->num_rows() > 0){
+			foreach ($query->result() as $fila){
+				$data[] = $fila;
+			}
+			return $data;
+		}else{
+			return FALSE;
+		}	
+	}
+	
 	function editarDirecciones($direccion, $id){
-		
-		echo $direccion['cod_postal'];
-		echo "<br>";
-		echo $direccion['direccion'];
-		echo "<br>";
-		echo $direccion['id_tipo'];
-		
-		
+			
 		$this->db->where('id_direccion', $id);
 		$this->db->update('direcciones', $direccion);
 	}

@@ -289,7 +289,7 @@
 										      	foreach ($pedidos as $row) 
 										     	{
 										    		echo '<tr>';
-													echo '<td><a href="#">'.$row->id_pedido.'</a>';
+													echo "<td><a href='".base_url()."index.php/pedidos/pestanas/".$row->id_vendedor."'>".$row->id_pedido.'</a>';
 													echo "</td>";
 													echo "<td><a href='".base_url()."index.php/Vendedores/pestanas/".$row->id_vendedor."'>".$row->v_nombre.'</a>';
 													echo "</td>";

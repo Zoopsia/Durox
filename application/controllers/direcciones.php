@@ -40,8 +40,8 @@ class Direcciones extends My_Controller {
 		$db['empresas']		= $this->empresas_model->getRegistro(1);
 		$db['tipos']		= $this->direcciones_model->getTipos();
 		$db['paises']		= $this->direcciones_model->getPaises();
-		$db['id']		= $id;
-		$db['tipo']		= $tipo;
+		$db['id']			= $id;
+		$db['tipo']			= $tipo;
 		
 		$this->load->view("head.php", $db);
 		$this->load->view("nav_top.php");
@@ -54,7 +54,18 @@ class Direcciones extends My_Controller {
 	
 			$db['empresas']		= $this->empresas_model->getRegistro(1);
 			$db['direcciones']	= $this->direcciones_model->getRegistro($id);
+			
+			foreach ($db['direcciones'] as $row) {
+				$db['provincias']	= $this->direcciones_model->getProvincias($row->id_pais);
+			}
+
+			foreach ($db['direcciones'] as $key) {
+					$db['departamentos'] = $this->direcciones_model->getDepartamentos($key->id_provincia);
+			}
 			$db['tipos']		= $this->direcciones_model->getTipos();
+			$db['paises']		= $this->direcciones_model->getPaises();
+			
+			$db['id'] 			= $id;
 	
 			$this->load->view("head.php", $db);
 			$this->load->view("nav_top.php");
@@ -65,18 +76,14 @@ class Direcciones extends My_Controller {
 	
 	public function editarDireccion($id){
 	
-			if (null!==  $this->input->post('fax')) {	
-				$fax	= 1;		
-			}
-			else {
-				$fax = 0;
-			}
-	
 			$direccion	= array(
 			
-				'cod_postal' 	=> $this->input->post('cod_postal'),  
-				'direccion' 	=> $this->input->post('direccion'), 
-				'id_tipo'		=> $this->input->post('id_tipo'),		
+				'cod_postal' 			=> $this->input->post('cod_postal'),  
+				'direccion' 			=> $this->input->post('direccion'), 
+				'id_tipo'				=> $this->input->post('id_tipo'),
+				'id_pais'				=> $this->input->post('id_pais'),
+				'id_provincia'			=> $this->input->post('id_provincia'),
+				'id_departamento'		=> $this->input->post('id_departamento')		
 			);
 			
 			$this->direcciones_model->editarDirecciones($direccion, $id);	
@@ -92,9 +99,12 @@ class Direcciones extends My_Controller {
 		}
 
 		$direccion	= array(	
-			'cod_postal' 	=> $this->input->post('cod_postal'), 
-			'direccion' 	=> $this->input->post('direccion'), 
-			'id_tipo'		=> $this->input->post('id_tipo'),
+			'cod_postal' 			=> $this->input->post('cod_postal'), 
+			'direccion' 			=> $this->input->post('direccion'), 
+			'id_tipo'				=> $this->input->post('id_tipo'),
+			'id_pais'				=> $this->input->post('id_pais'),
+			'id_provincia'			=> $this->input->post('id_provincia'),
+			'id_departamento'		=> $this->input->post('id_departamento')
 		);
 		
 		$id_usuario			= $id;
@@ -103,42 +113,46 @@ class Direcciones extends My_Controller {
 
 	}
 	
-	public function prueba($id_pais){
-		/*
-		$conexion=mysql_connect("localhost","root","") or die("Problemas en la conexion");
-
-		mysql_select_db("durox",$conexion) or die("Problemas en la seleccion de la base de datos");
-
-		$query = "SELECT nombre_provincia, id_provincia FROM provincias WHERE id_pais = '".$_REQUEST['dni']."'";
+	public function prueba(){
 		
-		$registros =mysql_query($query ,$conexion) or die("Problemas en el select".mysql_error());
+		$id_pais = $this->input->post('id_pais');
+		$id = $this->input->post('id');
 		
-		//echo $_REQUEST['dni'];
-		//echo $registros;
+		$provincias 	= $this->direcciones_model->getProvincias($id_pais);
 		
-		$nombre = "<select>";
-		
-		while($fila =  mysql_fetch_array($registros)){
-		
-			$nombre .= "<option value=".$fila['id_provincia'].">".$fila['nombre_provincia']."</option>";
-			
+		if($id==null){
+			echo '<option value="" disabled selected style="display:none;">Seleccione una opcion...</option>';
+			foreach ($provincias  as $row) {
+				echo '<option value="'.$row->id_provincia.'">'.$row->nombre_provincia.'</option>';
+			}
 		}
-		
-		$nombre .= "</select>";
-		
-		$numfilas = mysql_num_rows($registros);
-		*/
-		$numfilas=$id_pais;
-		$nombre=2;
-		
-		
-		echo "{
-				'filas': '$numfilas',
-		        'nombre':'$nombre'
-		      }";
-		
-		 
-		//mysql_close($conexion);						
+		else{	
+			
+			$direccion = $this->direcciones_model->getRegistro($id);
+			
+			foreach ($direccion as $key) {
+
+				foreach ($provincias as $row) {
+					if($row->id_provincia == $key->id_provincia)
+						echo '<option value="'.$row->id_provincia.'" selected>'.$row->nombre_provincia.'</option>';
+					else
+						echo '<option value="'.$row->id_provincia.'">'.$row->nombre_provincia.'</option>';
+				
+				}
+			}
+		}			
 	}
+	
+	public function prueba2(){
 		
+		$id_provincia = $this->input->post('id_provincia');
+		
+		$departamentos 	= $this->direcciones_model->getDepartamentos($id_provincia);
+		
+		echo '<option value="" disabled selected style="display:none;">Seleccione una opcion...</option>';
+		foreach ($departamentos  as $row) {
+			echo '<option value="'.$row->id_departamento.'">'.$row->nombre_departamento.'</option>';
+		}
+					
+	}
 }
