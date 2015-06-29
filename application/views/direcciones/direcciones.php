@@ -8,7 +8,7 @@ function paises_activos(){
  	var id_pais = $('select#paises').val(); //Obtenemos el id del pais seleccionado en la lista
  	$.ajax({
 	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/direcciones/prueba', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	url: '<?php echo base_url(); ?>index.php/direcciones/getProvincias', //Realizaremos la petición al metodo prueba del controlador direcciones
 	 	data: 'id_pais='+id_pais, //Pasaremos por parámetro POST el id del pais
 	 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
 	 		//Activar y Rellenar el select de partidos
@@ -21,7 +21,7 @@ function provincias_activas(){
 	var id_provincia = $('select#provincias').val(); //Obtenemos el id de la provincia seleccionada en la lista
  	$.ajax({
 	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/direcciones/prueba2', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	url: '<?php echo base_url(); ?>index.php/direcciones/getDepartamentos', //Realizaremos la petición al metodo prueba del controlador direcciones
 	 	data: 'id_provincia='+id_provincia, //Pasaremos por parámetro POST el id de la provincia
 	 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
 	 		//Activar y Rellenar el select de partidos
@@ -32,6 +32,7 @@ function provincias_activas(){
 
 </script>
 
+
 <nav class="navbar" role="navigation">
 	<div class="container">
 	    <div class="row">
@@ -41,14 +42,14 @@ function provincias_activas(){
 		  				Nueva Dirección
 		  			</div>
 		  			<div class="panel-body"> 
-		  					
-		  					<div>
-		  						
-		  						
-		  					</div>
-		  					
-		  					<form action="<?php echo base_url()."index.php/direcciones/nuevaDireccion/$id/$tipo"?>" class="form-horizontal" method="post">
-								<div class="form-group">
+		  					<?php 
+		  						if($save){
+		  						$mensaje = get_mensaje($save,$id_direccion);
+								echo $mensaje;	
+								}
+							?>
+							<form action="<?php echo base_url()."index.php/direcciones/nuevaDireccion/$id/$tipo"?>" class="form-horizontal" method="post">	 	  					
+		  						<div class="form-group">
 									<label class="col-sm-2 col-sm-offset-1 control-label">Dirección</label>
 										<div class="col-sm-3">	
 											<div class="input-group">		

@@ -15,6 +15,7 @@ class Direcciones extends My_Controller {
 
 		$this->load->database();
 		$this->load->helper('url');
+		$this->load->helper('view');
 
 		$this->load->library('grocery_CRUD');
 		
@@ -28,32 +29,31 @@ class Direcciones extends My_Controller {
 	public function direcciones($id, $tipo, $save=null, $id_direccion=null){
 		
 		if($tipo == 1){
-			$db['clientes']		= $this->clientes_model->getRegistro($id);
-			$db['direcciones']	= $this->clientes_model->getCruce($id,'direcciones');
+			$db['clientes']			= $this->clientes_model->getRegistro($id);
+			$db['direcciones']		= $this->clientes_model->getCruce($id,'direcciones');
 		}
 		else if($tipo == 2){
-			$db['vendedores']	= $this->vendedores_model->getRegistro($id);
-			$db['direcciones']	= $this->vendedores_model->getCruce($id,'direcciones');
+			$db['vendedores']		= $this->vendedores_model->getRegistro($id);
+			$db['direcciones']		= $this->vendedores_model->getCruce($id,'direcciones');
 		}
 
-		$db['empresas']		= $this->empresas_model->getRegistro(1);
-		$db['tipos']		= $this->direcciones_model->getTipos();
-		$db['paises']		= $this->direcciones_model->getPaises();
-		$db['id']			= $id;
-		$db['tipo']			= $tipo;
+		$db['empresas']				= $this->empresas_model->getRegistro(1);
+		$db['tipos']				= $this->direcciones_model->getTipos();
+		$db['paises']				= $this->direcciones_model->getPaises();
+		$db['id']					= $id;
+		$db['tipo']					= $tipo;
+		
+		
+		$db['save']					= $save;
+		$db['id_direccion']			= $id_direccion;
+		
 		
 		$this->load->view("head.php", $db);
 		$this->load->view("nav_top.php");
 		$this->load->view("nav_left.php");	
 		
 		
-		if($save!=null){
-			echo $id_direccion;
-			$this->load->view($this->_subject."/success.php", $id_direccion);
-		}
-		else{
-			$this->load->view($this->_subject."/direcciones.php");
-		}
+		$this->load->view($this->_subject."/direcciones.php");
 					
 	}
 
@@ -67,7 +67,7 @@ class Direcciones extends My_Controller {
 			}
 
 			foreach ($db['direcciones'] as $key) {
-					$db['departamentos'] = $this->direcciones_model->getDepartamentos($key->id_provincia);
+				$db['departamentos'] = $this->direcciones_model->getDepartamentos($key->id_provincia);
 			}
 			$db['tipos']		= $this->direcciones_model->getTipos();
 			$db['paises']		= $this->direcciones_model->getPaises();
@@ -119,16 +119,20 @@ class Direcciones extends My_Controller {
 			$this->direcciones($id, $tipo, $save, $id_direccion);
 		}
 		else if ($save == 2){
-			
-		
+			if($tipo==1){
+				$url = 'clientes/pestanas/'.$id_usuario;
+			}
+			else if($tipo==2){
+				$url = 'vendedores/pestanas/'.$id_usuario;
+			}			
+			$mensaje = get_mensaje($save,$id_direccion);			
+			redirect($url,'refresh');	
 		}
 	}
 	
-	public function prueba(){
+	public function getProvincias(){
 		
-		$id_pais = $this->input->post('id_pais');
-		$id = $this->input->post('id');
-		
+		$id_pais = $this->input->post('id_pais');	
 		$provincias 	= $this->direcciones_model->getProvincias($id_pais);
 		
 		echo '<option value="" disabled selected style="display:none;">Seleccione una opcion...</option>';
@@ -139,10 +143,9 @@ class Direcciones extends My_Controller {
 					
 	}
 	
-	public function prueba2(){
+	public function getDepartamentos(){
 		
-		$id_provincia = $this->input->post('id_provincia');
-		
+		$id_provincia = $this->input->post('id_provincia');		
 		$departamentos 	= $this->direcciones_model->getDepartamentos($id_provincia);
 		
 		echo '<option value="" disabled selected style="display:none;">Seleccione una opcion...</option>';

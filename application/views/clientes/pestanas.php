@@ -24,6 +24,7 @@
 						</ul>
 		  			</div>
 		  			<div class="panel-body">
+		  				
 		  				<div class="tab-content">
 	    					<div class="tab-pane active" id="tab1">
 	    					<!--INFO GRAL DEL CLIENTE-->	
