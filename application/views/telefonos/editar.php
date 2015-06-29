@@ -10,7 +10,7 @@
 		  				
 		  				<?php
 		  				foreach ($telefonos as $row){ ?>	   			
-			  				<form action="<?php echo base_url()."index.php/telefonos/editarTelefonos/$row->id_telefono"?>" class="form-horizontal" method="post">
+			  				<form action="<?php echo base_url()."index.php/telefonos/editarTelefonos/$row->id_telefono/$id_usuario/$tipo"?>" class="form-horizontal" method="post">
 								<div class="form-group">
 									<label class="col-sm-1 col-sm-offset-1 control-label">Teléfono</label>
 										
@@ -28,19 +28,7 @@
 											<input type="text" name="cod_area" class="numeric form-control" pattern="[0-9]*" value="<?php echo $row->cod_area ?>" required>	 
 										</div>
 								</div>
-									  
-								<div class="form-group">
-								  	<label class="col-sm-1 col-sm-offset-1 control-label">Fax</label>
-								  		<div class="col-sm-1">
-								  			<?php
-												if($row->fax == 1)
-									   				echo '<input type="checkbox" name="fax" value="1" checked>';
-												else 
-													echo '<input type="checkbox" name="fax" value="1">';
-								 			?>
-								 		</div>
-							  	</div>
-									  
+									  									  
 								<div class="form-group">
 								  	<label class="col-sm-1 col-sm-offset-1 control-label">Tipo</label>
 								  		<div class="col-md-3">
@@ -56,14 +44,26 @@
 											</select>
 										</div>
 								</div>
+								
+								<div class="form-group">
+								  	<label class="col-sm-1 col-sm-offset-1 control-label">Fax</label>
+								  		<div class="col-sm-1">
+								  			<?php
+												if($row->fax == 1)
+									   				echo '<input type="checkbox" name="fax" value="1" checked>';
+												else 
+													echo '<input type="checkbox" name="fax" value="1">';
+								 			?>
+								 		</div>
+							  	</div>
 								 
 								<div class="form-group">
-									<label class="col-sm-1 control-label"></label>
-							      		<div class="col-md-3">
-									  		<button type="submit" class="btn btn-primary">Guardar</button>	  	
+								  	<label class="col-sm-1 control-label"></label>
+							      		<div class="col-md-6">
+									  		<button type="submit" class="btn btn-primary" name="btn-save" value="1">Guardar</button> 	
 								  	  		<input type="button" value="Cancelar" class="btn btn-danger" id="btn-cancelar">
 								  		</div>
-								</div>
+							</div>
 							</form>
 						<?php	}	?>	
 											

@@ -42,7 +42,7 @@ function provincias_activas(){
 		  				<?php
 		  				foreach ($direcciones as $row){ ?>	  
 						 			
-			  				<form action="<?php echo base_url()."index.php/direcciones/editarDireccion/$row->id_direccion"?>" class="form-horizontal" method="post">
+			  				<form action="<?php echo base_url()."index.php/direcciones/editarDireccion/$row->id_direccion/$id_usuario/$tipo"?>" class="form-horizontal" method="post">
 								<div class="form-group">
 									<label class="col-sm-2 col-sm-offset-1 control-label">Dirección</label>
 										<div class="col-sm-3">	

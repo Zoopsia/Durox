@@ -153,18 +153,20 @@
 							            	if($telefonos){							                
 										      	foreach ($telefonos as $row) 
 										      	{
-										      		echo '<tr>';
-													echo '<td>'.$row->cod_area.'</td>';
-													echo '<td>'.$row->telefono.'</td>';
-													echo '<td>'.$row->tipo.'</td>';
-													if($row->fax == 0)
-														echo "<td>NO</td>";
-													else
-														echo "<td>SI</td>";
-													
-													echo '<td style="text-align: center;"><a href="'.base_url().'index.php/telefonos/cargaEditar/'.$row->id_telefono.'" class="btn btn-primary btn-xs">';
-													echo "Editar</a></td>";
-													echo "</tr>";
+										      		foreach ($clientes as $key) {
+											      		echo '<tr>';
+														echo '<td>'.$row->cod_area.'</td>';
+														echo '<td>'.$row->telefono.'</td>';
+														echo '<td>'.$row->tipo.'</td>';
+														if($row->fax == 0)
+															echo "<td>NO</td>";
+														else
+															echo "<td>SI</td>";
+														
+														echo '<td style="text-align: center;"><a href="'.base_url().'index.php/telefonos/cargaEditar/'.$row->id_telefono.'/'.$key->id_cliente.'/1" class="btn btn-primary btn-xs">';
+														echo "Editar</a></td>";
+														echo "</tr>";
+													}
 												}
 											}
 									 	?>
@@ -214,15 +216,18 @@
 							            	if($direcciones){							                
 										      	foreach ($direcciones as $row) 
 										      	{
-										      		echo '<tr>';
-													echo '<td>'.$row->direccion.'</td>';
-													echo '<td>'.$row->tipo.'</td>';
-													echo '<td>'.$row->nombre_departamento.'</td>';
-													echo '<td>'.$row->nombre_provincia.'</td>';
-													echo '<td>'.$row->nombre_pais.'</td>';
-													echo '<td style="text-align: center;"><a href="'.base_url().'index.php/direcciones/cargaEditar/'.$row->id_direccion.'" class="btn btn-primary btn-xs">';
-													echo "Editar</a></td>";
-													echo "</tr>";
+										      		foreach ($clientes as $key) 
+							    					{		
+											      		echo '<tr>';
+														echo '<td>'.$row->direccion.'</td>';
+														echo '<td>'.$row->tipo.'</td>';
+														echo '<td>'.$row->nombre_departamento.'</td>';
+														echo '<td>'.$row->nombre_provincia.'</td>';
+														echo '<td>'.$row->nombre_pais.'</td>';
+														echo '<td style="text-align: center;"><a href="'.base_url().'index.php/direcciones/cargaEditar/'.$row->id_direccion.'/'.$key->id_cliente.'/1" class="btn btn-primary btn-xs">';
+														echo "Editar</a></td>";
+														echo "</tr>";
+													}
 												}
 											}
 									 	?>

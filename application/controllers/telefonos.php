@@ -15,6 +15,7 @@ class Telefonos extends My_Controller {
 
 		$this->load->database();
 		$this->load->helper('url');
+		$this->load->helper('view');
 
 		$this->load->library('grocery_CRUD');
 		
@@ -25,36 +26,42 @@ class Telefonos extends My_Controller {
 	}
 
 	
-	public function telefonos($id, $tipo){
+	public function telefonos($id, $tipo, $save=null, $id_telefono=null){
 		
 		if($tipo == 1){
-		$db['empresas']		= $this->empresas_model->getRegistro(1);
-		$db['clientes']		= $this->clientes_model->getRegistro($id);
-		$db['telefonos']	= $this->clientes_model->getCruce($id,'telefonos');
-		$db['tipos']		= $this->telefonos_model->getTipos();	
+			$db['clientes']		= $this->clientes_model->getRegistro($id);
 		}
 		else if($tipo == 2){
-		$db['empresas']		= $this->empresas_model->getRegistro(1);
-		$db['vendedores']	= $this->vendedores_model->getRegistro($id);
-		$db['telefonos']	= $this->vendedores_model->getCruce($id,'telefonos');
-		$db['tipos']		= $this->telefonos_model->getTipos();
+			$db['vendedores']	= $this->vendedores_model->getRegistro($id);
 		}
 		
-		$db['id']		= $id;
-		$db['tipo']		= $tipo;
+		$db['empresas']			= $this->empresas_model->getRegistro(1);
+		$db['telefonos']		= $this->clientes_model->getCruce($id,'telefonos');
+		$db['tipos']			= $this->telefonos_model->getTipos();	
+		$db['id']				= $id;
+		$db['tipo']				= $tipo;
+		
+		$db['save']					= $save;
+		$db['id_telefono']			= $id_telefono;
+		
 		
 		$this->load->view("head.php", $db);
 		$this->load->view("nav_top.php");
 		$this->load->view("nav_left.php");	
+		
 		$this->load->view($this->_subject."/telefonos.php");
 					
 	}
 
-	public function cargaEditar($id){
+	public function cargaEditar($id,$id_usuario,$tipo){
 	
 			$db['empresas']		= $this->empresas_model->getRegistro(1);
 			$db['telefonos']	= $this->telefonos_model->getRegistro($id);
 			$db['tipos']		= $this->telefonos_model->getTipos();
+	
+			$db['id'] 			= $id;
+			$db['id_usuario']	= $id_usuario;
+			$db['tipo']			= $tipo;
 	
 			$this->load->view("head.php", $db);
 			$this->load->view("nav_top.php");
@@ -63,7 +70,7 @@ class Telefonos extends My_Controller {
 				
 	}
 	
-	public function editarTelefonos($id){
+	public function editarTelefonos($id,$id_usuario,$tipo){
 	
 			if (null!==  $this->input->post('fax')) {	
 				$fax	= 1;		
@@ -80,7 +87,16 @@ class Telefonos extends My_Controller {
 				'fax'			=> $fax,			
 			);
 			
-			$this->telefonos_model->editarTelefonos($telefono, $id);	
+			$id_telefono = $this->telefonos_model->update($telefono, $id);
+			
+			if($tipo==1){
+				$url = 'clientes/pestanas/'.$id_usuario;
+			}
+			else if($tipo==2){
+				$url = 'vendedores/pestanas/'.$id_usuario;
+			}
+			$mensaje = get_mensaje(4,$this->_subject,$id_telefono,$id,$id_usuario,$tipo);						
+			redirect($url,'refresh');	
 	}
 	
 	public function nuevoTelefono($id,$tipo){
@@ -102,9 +118,24 @@ class Telefonos extends My_Controller {
 		
 		$id_usuario			= $id;
 		
-		$this->telefonos_model->insertarTelefono($telefono,$id_usuario,$tipo);
-
+		$id_telefono = $this->telefonos_model->insert($telefono);
+		$this->telefonos_model->insertCruce($tipo,$id_telefono,$id_usuario);
 		
+		$save = $this->input->post('btn-save');
+	
+		if($save == 1){			
+			$this->telefonos($id, $tipo, $save, $id_telefono);
+		}
+		else if ($save == 2){
+			if($tipo==1){
+				$url = 'clientes/pestanas/'.$id_usuario;
+			}
+			else if($tipo==2){
+				$url = 'vendedores/pestanas/'.$id_usuario;
+			}			
+			$mensaje = get_mensaje($save,$this->_subject,$id_telefono,$id,$id_usuario,$tipo);			
+			redirect($url,'refresh');	
+		}
 	}
 		
 }

@@ -44,7 +44,7 @@ function provincias_activas(){
 		  			<div class="panel-body"> 
 		  					<?php 
 		  						if($save){
-		  						$mensaje = get_mensaje($save,$id_direccion);
+		  						$mensaje = get_mensaje($save,'direcciones',$id_direccion,$id,$tipo);
 								echo $mensaje;	
 								}
 							?>

@@ -6,7 +6,13 @@
 		  			<div class="panel-heading"><!---PESTAÑAS DEL PANEL DE NAVEGACION--->
 		  				Nuevo Teléfono
 		  			</div>
-		  			<div class="panel-body"> 				
+		  			<div class="panel-body">
+		  				<?php 
+		  						if($save){
+		  						$mensaje = get_mensaje($save,'telefonos',$id_telefono,$id,$tipo);
+								echo $mensaje;	
+								}
+							?> 				
 		  				<form action="<?php echo base_url()."index.php/telefonos/nuevoTelefono/$id/$tipo"?>" class="form-horizontal" method="post">
 							<div class="form-group">
 								<label class="col-sm-1 col-sm-offset-1 control-label">Teléfono</label>
@@ -25,14 +31,7 @@
 										<input type="text" name="cod_area" class="numeric form-control" pattern="[0-9]*" placeholder="Cod Área" required>	 
 								</div>
 							</div>
-								  
-							<div class="form-group">
-								<label class="col-sm-1 col-sm-offset-1 control-label">Fax</label>
-									<div class="col-sm-1">
-								   		<input type="checkbox" name="fax" value="1">
-									</div>
-						    </div>
-								  
+	  
 							<div class="form-group">
 							  	<label class="col-sm-1 col-sm-offset-1 control-label">Tipo</label>
 									<div class="col-md-3">
@@ -45,13 +44,21 @@
 										</select>
 									</div>
 							</div>
-							 
+							
 							<div class="form-group">
-								<label class="col-sm-1 control-label"></label>
-						      		<div class="col-md-3">
-								  		<button type="submit" class="btn btn-primary">Guardar</button>	  	
-							  	  		<input type="button" value="Cancelar" class="btn btn-danger" id="btn-cancelar">
-							  		</div>
+								<label class="col-sm-1 col-sm-offset-1 control-label">Fax</label>
+									<div class="col-sm-1">
+								   		<input type="checkbox" name="fax" value="1">
+									</div>
+						    </div> 
+						    
+							<div class="form-group">
+								  	<label class="col-sm-1 control-label"></label>
+							      		<div class="col-md-6">
+									  		<button type="submit" class="btn btn-primary" name="btn-save" value="1">Guardar</button>	 
+									  		<button type="submit" class="btn btn-primary" name="btn-save" value="2">Guardar y volver</button> 	
+								  	  		<input type="button" value="Cancelar" class="btn btn-danger" id="btn-cancelar">
+								  		</div>
 							</div>
 						</form>						
 		  			</div><!--panel body-->

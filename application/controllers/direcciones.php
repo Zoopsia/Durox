@@ -42,22 +42,20 @@ class Direcciones extends My_Controller {
 		$db['paises']				= $this->direcciones_model->getPaises();
 		$db['id']					= $id;
 		$db['tipo']					= $tipo;
-		
-		
+
 		$db['save']					= $save;
 		$db['id_direccion']			= $id_direccion;
 		
-		
+			
 		$this->load->view("head.php", $db);
 		$this->load->view("nav_top.php");
 		$this->load->view("nav_left.php");	
-		
 		
 		$this->load->view($this->_subject."/direcciones.php");
 					
 	}
 
-	public function cargaEditar($id){
+	public function cargaEditar($id,$id_usuario,$tipo){
 	
 			$db['empresas']		= $this->empresas_model->getRegistro(1);
 			$db['direcciones']	= $this->direcciones_model->getRegistro($id);
@@ -73,6 +71,8 @@ class Direcciones extends My_Controller {
 			$db['paises']		= $this->direcciones_model->getPaises();
 			
 			$db['id'] 			= $id;
+			$db['id_usuario']	= $id_usuario;
+			$db['tipo']			= $tipo;
 	
 			$this->load->view("head.php", $db);
 			$this->load->view("nav_top.php");
@@ -81,10 +81,9 @@ class Direcciones extends My_Controller {
 				
 	}
 	
-	public function editarDireccion($id){
+	public function editarDireccion($id,$id_usuario,$tipo){
 	
-			$direccion	= array(
-			
+			$direccion	= array(		
 				'cod_postal' 			=> $this->input->post('cod_postal'),  
 				'direccion' 			=> $this->input->post('direccion'), 
 				'id_tipo'				=> $this->input->post('id_tipo'),
@@ -93,7 +92,16 @@ class Direcciones extends My_Controller {
 				'id_departamento'		=> $this->input->post('id_departamento')		
 			);
 			
-			$this->direcciones_model->editarDirecciones($direccion, $id);	
+			$id_direccion = $this->direcciones_model->update($direccion, $id);	
+			
+			if($tipo==1){
+				$url = 'clientes/pestanas/'.$id_usuario;
+			}
+			else if($tipo==2){
+				$url = 'vendedores/pestanas/'.$id_usuario;
+			}					
+			$mensaje = get_mensaje(4,$this->_subject,$id_direccion,$id_usuario,$tipo);						
+			redirect($url,'refresh');	
 	}
 	
 	public function nuevaDireccion($id,$tipo){
@@ -108,14 +116,12 @@ class Direcciones extends My_Controller {
 		);
 		
 		$id_usuario			= $id;
-		
-		$id_direccion = $this->direcciones_model->insertarDireccion($direccion,$id_usuario,$tipo);
+		$id_direccion = $this->direcciones_model->insert($direccion);
+		$this->direcciones_model->insertCruce($tipo,$id_direccion,$id_usuario);
 		
 		$save = $this->input->post('btn-save');
-		
-		
-		if($save == 1){
-			
+	
+		if($save == 1){			
 			$this->direcciones($id, $tipo, $save, $id_direccion);
 		}
 		else if ($save == 2){
@@ -125,7 +131,7 @@ class Direcciones extends My_Controller {
 			else if($tipo==2){
 				$url = 'vendedores/pestanas/'.$id_usuario;
 			}			
-			$mensaje = get_mensaje($save,$id_direccion);			
+			$mensaje = get_mensaje($save,$this->_subject,$id_direccion,$id_usuario,$tipo);			
 			redirect($url,'refresh');	
 		}
 	}
