@@ -132,8 +132,8 @@ function provincias_activas(){
 								  	<label class="col-sm-2 control-label"></label>
 							      		<div class="col-md-3">
 									  		<button type="submit" class="btn btn-primary">Guardar</button>	  	
-								  	  		<input type="button" value="Cancelar" class="btn btn-danger" id="btn-cancelar">
-								  		</div>
+								  	  		<input type="button" value="Cancelar" class="btn btn-danger" id="btn-cancelar" onclick="confirmar()">	
+								  	  	</div>
 								  </div>
 							</form>
 						<?php	}	?>						

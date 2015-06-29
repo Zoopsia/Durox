@@ -123,7 +123,7 @@ function provincias_activas(){
 							      		<div class="col-md-6">
 									  		<button type="submit" class="btn btn-primary" name="btn-save" value="1">Guardar</button>	 
 									  		<button type="submit" class="btn btn-primary" name="btn-save" value="2">Guardar y volver</button> 	
-								  	  		<input type="button" value="Cancelar" class="btn btn-danger" id="btn-cancelar">
+								  	  		<input type="button" value="Cancelar" class="btn btn-danger" id="btn-cancelar" onclick="confirmar()">	
 								  		</div>
 								 </div>
 								 

@@ -34,6 +34,11 @@ $(document).ready(function(){
 	
 });
 
-
+function confirmar(){
+	var c = confirm("Los datos no han sido guardados.\n¿Está seguro que quiere salir?");
+	if (c==true){
+		window.history.back();
+	}
+}
 
 
