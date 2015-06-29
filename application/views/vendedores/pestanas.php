@@ -21,9 +21,12 @@
 					    	<li><a href="#tab3" data-toggle="tab">Busqueda</a></li>
 						</ul>
 		  			</div>
+		  			
 		  			<div class="panel-body">
+		  				
+		  				
 		  				<div class="tab-content">
-	    					<div class="tab-pane active" id="tab1">
+	    					<div class="tab-pane fade in active" id="tab1">
 	    						
 	    						<div class="row"><!--Cargo imagen vendedor-->
 	    							
@@ -61,7 +64,7 @@
 					            </div>
 					            			
 	    					</div> <!--TAB 1 INFO VENDEDOR -->
-	     					<div class="tab-pane" id="tab2">
+	     					<div class="tab-pane fade" id="tab2">
 	     						
 	     						<table id="example" class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
@@ -106,11 +109,11 @@
 							    </table>
 							    
 	    					</div><!--TAB 2 CLIENTES VENDEDOR -->
-	    					<div class="tab-pane" id="tab3">
+	    					<div class="tab-pane fade" id="tab3">
 	     						<!--TAB 3 PANEL DE BUSQUEDA -->
 	     						Busqueda
 	    					</div>
-	    					<div class="tab-pane" id="tab4">
+	    					<div class="tab-pane fade" id="tab4">
 	     						<!--TAB 4 TELEFONOS VENDEDOR -->
 	     						<?php
 						        	foreach ($vendedores as $row) 
@@ -171,7 +174,7 @@
 							    </table>
 							    
 	    					</div>
-	    					<div class="tab-pane" id="tab5">
+	    					<div class="tab-pane fade" id="tab5">
 	     						<!--TAB 5 DIRECCIONES VENDEDOR -->
 	     						
 								<?php
@@ -233,7 +236,7 @@
 							        </tbody>
 							    </table>
 	    					</div>
-	    					<div class="tab-pane" id="tab6">
+	    					<div class="tab-pane fade" id="tab6">
 	     						<!--TAB 6 E-MAILS VENDEDOR -->
 	     						<?php
 						        	foreach ($vendedores as $row) 

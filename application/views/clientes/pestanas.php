@@ -24,9 +24,10 @@
 						</ul>
 		  			</div>
 		  			<div class="panel-body">
+		  						  				
 		  				
 		  				<div class="tab-content">
-	    					<div class="tab-pane active" id="tab1">
+	    					<div class="tab-pane fade in active" id="tab1">
 	    					<!--INFO GRAL DEL CLIENTE-->	
 	    						<div class="row">
 	    							
@@ -67,7 +68,7 @@
 					            </div>
 					            			
 	    					</div> <!--TAB 1 INFO CLIENTE -->
-	     					<div class="tab-pane" id="tab2">
+	     					<div class="tab-pane fade" id="tab2">
 	     					<!--TABLA DE VENDEDORES CON RESPECTO AL CLIENTE-->	
 	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
@@ -113,7 +114,7 @@
 							    
 	    					</div><!--TAB 2 VENDEDORES CLIENTE -->
 	    				
-	    					<div class="tab-pane" id="tab3">
+	    					<div class="tab-pane fade" id="tab3">
 	     						<!--TAB 3 TELEFONOS CLIENTE -->
 	     						<?php
 						        	foreach ($clientes as $row) 
@@ -174,7 +175,7 @@
 							    </table>
 							    
 	    					</div>
-	    					<div class="tab-pane" id="tab4">
+	    					<div class="tab-pane fade" id="tab4">
 	     						<!--TAB 4 DIRECCIONES CLIENTE -->
 	     						<?php
 						        	foreach ($clientes as $row) 
@@ -234,7 +235,7 @@
 							        </tbody>
 							    </table>
 	    					</div>
-	    					<div class="tab-pane" id="tab5">
+	    					<div class="tab-pane fade" id="tab5">
 	     						<!--TAB 5 E-MAILS CLIENTE -->					
 	     						<?php
 						        	foreach ($clientes as $row) 
@@ -285,7 +286,7 @@
 							    </table>
 	    					</div>
 	    					
-	    					<div class="tab-pane" id="tab6">
+	    					<div class="tab-pane fade" id="tab6">
 	     						<!--TAB 6 PANEL DE PEDIDOS -->
 	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
@@ -326,7 +327,7 @@
 								</table> 
 	    					</div>
 	    					
-	    					<div class="tab-pane" id="tab7">
+	    					<div class="tab-pane fade" id="tab7">
 	     						<!--TAB 7 PANEL DE PRESUPUESTOS -->
 	     						PRESUPUESTOS
 	    					</div>
