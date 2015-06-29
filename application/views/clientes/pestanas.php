@@ -235,13 +235,25 @@
 							    </table>
 	    					</div>
 	    					<div class="tab-pane" id="tab5">
-	     						<!--TAB 5 E-MAILS CLIENTE -->
-	     						
+	     						<!--TAB 5 E-MAILS CLIENTE -->					
+	     						<?php
+						        	foreach ($clientes as $row) 
+							    	{
+			     						echo "<div class='datatables-add-button'>";
+											/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+											echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/mails/mails/'.$row->id_cliente.'/1">';
+											echo '<span class="ui-button-text">Añadir E-Mail</span>';
+											echo "</a>";
+										echo "</div>";
+										echo '<div style="height:10px;"></div>';
+									}
+								?>
 	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>
 							            	<th>Correo</th>
 							                <th>Tipo</th>
+							                <th>Accion</th>
 							            </tr>
 							        </thead>
 							 
@@ -249,6 +261,7 @@
 							            <tr>
 							            	<th>Correo</th>
 							                <th>Tipo</th>
+							                <th>Accion</th>
 							            </tr>
 							        </tfoot>
 							 
@@ -257,12 +270,14 @@
 							            	if($mails){							                
 										      	foreach ($mails as $row) 
 										      	{
-										      		echo '<tr>';
-													echo '<td>'.$row->mail.'</td>';
-													echo '<td>'.$row->tipo.'</td>';
-													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
-													//echo "</a></tr>";
-													echo "</tr>";
+										      		foreach ($clientes as $key) {
+											      		echo '<tr>';
+														echo '<td>'.$row->mail.'</td>';
+														echo '<td>'.$row->tipo.'</td>';
+														echo '<td style="text-align: center;"><a href="'.base_url().'index.php/mails/cargaEditar/'.$row->id_mail.'/'.$key->id_cliente.'/1" class="btn btn-primary btn-xs">';
+														echo "Editar</a></td>";
+														echo "</tr>";
+													}
 												}
 											}
 									 	?>

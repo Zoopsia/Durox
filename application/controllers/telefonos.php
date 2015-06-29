@@ -30,13 +30,14 @@ class Telefonos extends My_Controller {
 		
 		if($tipo == 1){
 			$db['clientes']		= $this->clientes_model->getRegistro($id);
+			$db['telefonos']	= $this->clientes_model->getCruce($id,'telefonos');
 		}
 		else if($tipo == 2){
 			$db['vendedores']	= $this->vendedores_model->getRegistro($id);
+			$db['telefonos']	= $this->vendedores_model->getCruce($id,'telefonos');
 		}
 		
 		$db['empresas']			= $this->empresas_model->getRegistro(1);
-		$db['telefonos']		= $this->clientes_model->getCruce($id,'telefonos');
 		$db['tipos']			= $this->telefonos_model->getTipos();	
 		$db['id']				= $id;
 		$db['tipo']				= $tipo;
@@ -95,7 +96,16 @@ class Telefonos extends My_Controller {
 			else if($tipo==2){
 				$url = 'vendedores/pestanas/'.$id_usuario;
 			}
-			$mensaje = get_mensaje(4,$this->_subject,$id_telefono,$id,$id_usuario,$tipo);						
+			
+			$arreglo_mensaje = array(			
+				'save' 			=> 4,
+				'tabla'			=> $this->_subject,
+				'id_tabla'		=> $id_telefono,
+				'id_usuario'	=> $id_usuario,
+				'tipo'			=> $tipo	
+			);
+			
+			$mensaje = get_mensaje($arreglo_mensaje);						
 			redirect($url,'refresh');	
 	}
 	
@@ -123,6 +133,14 @@ class Telefonos extends My_Controller {
 		
 		$save = $this->input->post('btn-save');
 	
+		$arreglo_mensaje = array(			
+				'save' 			=> $save,
+				'tabla'			=> $this->_subject,
+				'id_tabla'		=> $id_telefono,
+				'id_usuario'	=> $id_usuario,
+				'tipo'			=> $tipo	
+		);
+		
 		if($save == 1){			
 			$this->telefonos($id, $tipo, $save, $id_telefono);
 		}
@@ -133,7 +151,7 @@ class Telefonos extends My_Controller {
 			else if($tipo==2){
 				$url = 'vendedores/pestanas/'.$id_usuario;
 			}			
-			$mensaje = get_mensaje($save,$this->_subject,$id_telefono,$id,$id_usuario,$tipo);			
+			$mensaje = get_mensaje($arreglo_mensaje);			
 			redirect($url,'refresh');	
 		}
 	}

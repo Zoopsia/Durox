@@ -9,8 +9,15 @@
 		  			<div class="panel-body">
 		  				<?php 
 		  						if($save){
-		  						$mensaje = get_mensaje($save,'telefonos',$id_telefono,$id,$tipo);
-								echo $mensaje;	
+		  							$arreglo_mensaje = array(			
+										'save' 			=> $save,
+										'tabla'			=> 'telefonos',
+										'id_tabla'		=> $id_telefono,
+										'id_usuario'	=> $id,
+										'tipo'			=> $tipo	
+									);
+		  							$mensaje = get_mensaje($arreglo_mensaje);
+									echo $mensaje;	
 								}
 							?> 				
 		  				<form action="<?php echo base_url()."index.php/telefonos/nuevoTelefono/$id/$tipo"?>" class="form-horizontal" method="post">

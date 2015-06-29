@@ -44,8 +44,15 @@ function provincias_activas(){
 		  			<div class="panel-body"> 
 		  					<?php 
 		  						if($save){
-		  						$mensaje = get_mensaje($save,'direcciones',$id_direccion,$id,$tipo);
-								echo $mensaje;	
+		  							$arreglo_mensaje = array(			
+										'save' 			=> $save,
+										'tabla'			=> 'direcciones',
+										'id_tabla'		=> $id_direccion,
+										'id_usuario'	=> $id,
+										'tipo'			=> $tipo	
+									);
+		  							$mensaje = get_mensaje($arreglo_mensaje);
+									echo $mensaje;	
 								}
 							?>
 							<form action="<?php echo base_url()."index.php/direcciones/nuevaDireccion/$id/$tipo"?>" class="form-horizontal" method="post">	 	  					

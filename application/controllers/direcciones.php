@@ -99,8 +99,16 @@ class Direcciones extends My_Controller {
 			}
 			else if($tipo==2){
 				$url = 'vendedores/pestanas/'.$id_usuario;
-			}					
-			$mensaje = get_mensaje(4,$this->_subject,$id_direccion,$id_usuario,$tipo);						
+			}
+			$arreglo_mensaje = array(			
+				'save' 			=> 4,
+				'tabla'			=> $this->_subject,
+				'id_tabla'		=> $id_direccion,
+				'id_usuario'	=> $id_usuario,
+				'tipo'			=> $tipo	
+			);
+								
+			$mensaje = get_mensaje($arreglo_mensaje);						
 			redirect($url,'refresh');	
 	}
 	
@@ -121,6 +129,14 @@ class Direcciones extends My_Controller {
 		
 		$save = $this->input->post('btn-save');
 	
+		$arreglo_mensaje = array(			
+				'save' 			=> $save,
+				'tabla'			=> $this->_subject,
+				'id_tabla'		=> $id_direccion,
+				'id_usuario'	=> $id_usuario,
+				'tipo'			=> $tipo	
+		);
+	
 		if($save == 1){			
 			$this->direcciones($id, $tipo, $save, $id_direccion);
 		}
@@ -131,7 +147,7 @@ class Direcciones extends My_Controller {
 			else if($tipo==2){
 				$url = 'vendedores/pestanas/'.$id_usuario;
 			}			
-			$mensaje = get_mensaje($save,$this->_subject,$id_direccion,$id_usuario,$tipo);			
+			$mensaje = get_mensaje($arreglo_mensaje);			
 			redirect($url,'refresh');	
 		}
 	}
