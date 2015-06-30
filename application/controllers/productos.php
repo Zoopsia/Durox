@@ -1,8 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Pedidos extends My_Controller {
+class Productos extends My_Controller {
 	
-	protected $_subject		= 'pedidos';
+	protected $_subject		= 'productos';
 	
 	
 	
@@ -22,8 +22,7 @@ class Pedidos extends My_Controller {
 	public function pestanas($id){
 		
 		$db['empresas']=$this->empresas_model->getRegistro(1);
-		$db['pedidos']=$this->pedidos_model->getDetallePedido($id);
-
+		
 		
 			$this->load->view("head.php", $db);
 			$this->load->view("nav_top.php");
@@ -33,7 +32,7 @@ class Pedidos extends My_Controller {
 	}
 	
 
-	public function pedidos_abm(){
+	public function productos_abm(){
 			
 			$crud = new grocery_CRUD();
 
@@ -43,34 +42,21 @@ class Pedidos extends My_Controller {
 			
 			//$crud->where('pedidos', 0);
 			
-			$crud->set_table('pedidos');
+			$crud->set_table('productos');
 			
-			$crud->columns('id_pedido',
-							'id_cliente',
-							'id_vendedor',
-							'id_estado_pedido',
-							'date_add');
+			$crud->columns('id_producto',
+							'nombre');
 			
-			$crud->display_as('id_pedido','N° Pedido')
-				 ->display_as('id_cliente','Cliente')
-				 ->display_as('id_vendedor','Vendedor')
-				 ->display_as('id_estado_pedido','Estado')
-				 ->display_as('date_add','Fecha Ingreso');
+			$crud->display_as('id_producto','N° Producto')
+				 ->display_as('nombre','Producto');
 			
-			$crud->set_subject('Pedidos');
+			$crud->set_subject('Productos');
 			
-			$crud->fields(	'id_pedido',
-							'id_cliente',
-							'id_vendedor',
-							'id_estado_pedido');
-			
-			
+			$crud->fields('nombre');
 							
-			$crud->order_by('date_add','asc');
+			$crud->unset_fields('id_producto');		
 							
-			$crud->set_relation('id_cliente','clientes','{apellido} {nombre}');
-			$crud->set_relation('id_vendedor','vendedores','{apellido} {nombre}');
-			$crud->set_relation('id_estado_pedido','estados_pedidos','estado');
+			$crud->order_by('id_producto','asc');
 			
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
 			
@@ -81,12 +67,14 @@ class Pedidos extends My_Controller {
 			$output = $crud->render();
 			
 			$this->crud_tabla($output);
+			
+			 
 	}
 
 
 	function just_a_test($primary_key , $row)
 	{
-	    return site_url($this->_subject.'/pestanas').'/'.$row->id_pedido;
+	    return site_url($this->_subject.'/pestanas').'/'.$row->id_producto;
 	}
 	
 		

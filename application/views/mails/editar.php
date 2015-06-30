@@ -42,7 +42,7 @@
 								  	<label class="col-sm-1 control-label"></label>
 							      		<div class="col-md-6">
 									  		<button type="submit" class="btn btn-primary" name="btn-save" value="1">Guardar</button> 	
-								  	  		<input type="button" value="Cancelar" class="btn btn-danger" id="btn-cancelar" onclick="confirmar()">  		
+								  	  		<input type="button" value="Cancelar" class="btn btn-danger" id="btn-cancelar" onclick="confirmar(<?php echo $id_usuario.",".$tipo; ?>)">  		
 										</div>
 								</div>
 							</form>

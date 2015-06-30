@@ -27,7 +27,7 @@
 									<div class="col-sm-4">
 										<div class="input-group">
 											<div class="input-group-addon"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></div>
-											<input type="text" name="mail" class="numeric form-control" pattern="^[A-Za-z0-9 ._@]+$" placeholder="Correo" required> 	    	
+											<input type="email" name="mail" class="numeric form-control" pattern="^[A-Za-z0-9 ._@]+$" placeholder="Correo" required> 	    	
 									   	</div>
 									</div> 
 							</div>
@@ -50,7 +50,7 @@
 							      		<div class="col-md-6">
 									  		<button type="submit" class="btn btn-primary" name="btn-save" value="1">Guardar</button>	 
 									  		<button type="submit" class="btn btn-primary" name="btn-save" value="2">Guardar y volver</button> 	
-								  	  		<input type="button" value="Cancelar" class="btn btn-danger" id="btn-cancelar" onclick="confirmar()">		  	  	
+								  	  		<input type="button" value="Cancelar" class="btn btn-danger" id="btn-cancelar" onclick="confirmar(<?php echo $id.",".$tipo; ?>)">		  	  	
 										</div>
 							</div>
 						</form>						

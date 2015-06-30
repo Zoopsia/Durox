@@ -34,11 +34,17 @@ $(document).ready(function(){
 	
 });
 
-function confirmar(){
+function confirmar($id,$tipo){
 	var c = confirm("Los datos no han sido guardados.\n¿Está seguro que quiere salir?");
 	if (c==true){
-		window.history.back();
+		if($tipo==1){
+			window.location.assign("/Durox/index.php/clientes/pestanas/"+$id);
+		}
+		else if($tipo==2)
+			window.location.assign("/Durox/index.php/vendedores/pestanas/"+$id);
 	}
 }
+
+
 
 

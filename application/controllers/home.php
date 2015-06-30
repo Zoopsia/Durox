@@ -6,9 +6,6 @@ class Home extends CI_Controller {
 	{
 		parent::__construct();
 
-		$this->load->database();
-		$this->load->helper('url');
-
 		$this->load->library('grocery_CRUD');
 		
 		$this->load->model('empresas_model');

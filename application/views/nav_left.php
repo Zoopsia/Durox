@@ -1,54 +1,4 @@
-<?php
-if ($this->uri->segment(1) === 'Clientes' OR $this->uri->segment(1) === 'clientes')
-{
-    $cliente 	= 'active';
-	$home 		= '';
-	$vendedor 	= '';
-	$pedidos	= '';
-	$presupuesto= '';
-}
-else if ($this->uri->segment(1) === 'Home')
-{
-    $cliente 	= '';
-	$home 		= 'active';
-	$vendedor 	= '';
-	$pedidos	= '';
-	$presupuesto= '';
-}
-else if ($this->uri->segment(1) === 'Vendedores'OR $this->uri->segment(1) === 'vendedores')
-{
-    $cliente 	= '';
-	$home 		= '';
-	$vendedor 	= 'active';
-	$pedidos	= '';
-	$presupuesto= '';
-}
-else if ($this->uri->segment(1) === 'Pedidos' OR $this->uri->segment(1) === 'pedidos')
-{
-    $cliente 	= '';
-	$home 		= '';
-	$vendedor 	= '';
-	$pedidos	= 'active';
-	$presupuesto= '';
-}
-else if ($this->uri->segment(1) === 'Presupuestos' OR $this->uri->segment(1) === 'presupuestos')
-{
-    $cliente 	= '';
-	$home 		= '';
-	$vendedor 	= '';
-	$pedidos	= '';
-	$presupuesto= 'active';
-}
-else
-{
-    $cliente 	= '';
-	$home 		= '';
-	$vendedor 	= '';
-	$pedidos	= '';
-	$presupuesto= '';
-}
-
-?>
+<?php $array_activo = moduloActivo($this->uri->segment(1));?>
 <nav id="nav" class="navbar navbar-default sidebar" role="navigation">
   <div class="container-fluid">
     <div class="navbar-header">
@@ -62,9 +12,9 @@ else
     <div class="collapse navbar-collapse" id="bs-sidebar-navbar-collapse-1">
       <ul class="nav navbar-nav">
       	
-        <li class="<?php echo $home?>"><a href="<?php echo base_url().'index.php/Home/home'?>">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>    
+        <li class="<?php echo $array_activo['home']?>"><a href="<?php echo base_url().'index.php/Home/home'?>">Home<span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-home"></span></a></li>    
         
-        <li class="dropdown <?php echo $vendedor?>">
+        <li class="dropdown <?php echo $array_activo['vendedores']?>">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Vendedores <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
           <ul class="dropdown-menu forAnimate" role="menu">
             <li><a href="<?php echo base_url().'index.php/Vendedores/vendedores_abm/tab1'?>">Listado de vendedores</a></li>
@@ -74,7 +24,7 @@ else
           </ul>
         </li>   
         
-        <li class="dropdown <?php echo $pedidos?>">
+        <li class="dropdown <?php echo $array_activo['pedidos']?>">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pedidos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-shopping-cart"></span></a>
           <ul class="dropdown-menu forAnimate" role="menu">
             <li><a href="<?php echo base_url().'index.php/Pedidos/pedidos_abm/tab1'?>">Listado de pedidos</a></li>
@@ -84,7 +34,7 @@ else
           </ul>
         </li> 
         
-        <li class="dropdown <?php echo $cliente?>">
+        <li class="dropdown <?php echo $array_activo['clientes']?>">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Clientes <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
           <ul class="dropdown-menu forAnimate" role="menu">
             <li><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/tab1'?>">Listado de clientes</a></li>
@@ -94,7 +44,7 @@ else
           </ul>
         </li>
         
-        <li class="dropdown <?php echo $presupuesto?>">
+        <li class="dropdown <?php echo $array_activo['presupuestos']?>">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Presupuestos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-shopping-cart"></span></a>
           <ul class="dropdown-menu forAnimate" role="menu">
             <li><a href="<?php echo base_url().'index.php/Presupuestos/presupuestos_abm/tab1'?>">Listado de pedidos</a></li>
@@ -104,6 +54,15 @@ else
           </ul>
         </li> 
         
+        <li class="dropdown <?php echo $array_activo['productos']?>">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Productos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-shopping-cart"></span></a>
+          <ul class="dropdown-menu forAnimate" role="menu">
+            <li><a href="<?php echo base_url().'index.php/Productos/productos_abm/tab1'?>">Listado de pedidos</a></li>
+            <li><a href="<?php echo base_url().'index.php/Productos/productos_abm/tab1/add'?>">Nuevo</a></li>
+            <li class="divider"></li>
+            <li><a href="<?php echo base_url().'index.php/Productos/productos_abm/tab2'?>">Busqueda Avanzada</a></li>
+          </ul>
+        </li> 
               
         </ul>
     </div>

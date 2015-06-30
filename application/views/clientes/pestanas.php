@@ -23,8 +23,7 @@
 					    	<li><a href="#tab8" data-toggle="tab">Alarmas</a></li>
 						</ul>
 		  			</div>
-		  			<div class="panel-body">
-		  						  				
+		  			<div class="panel-body">		  				
 		  				
 		  				<div class="tab-content">
 	    					<div class="tab-pane fade in active" id="tab1">

@@ -6,7 +6,7 @@ foreach($css_files as $file): ?>
 	<script src="<?php echo $file; ?>"></script>
 <?php endforeach; ?>
 
-<?php $array_n = pestañaActiva($this->uri->segment(3));?>	
+<?php $array_n = pestañaActiva($this->uri->segment(3));?>
 <nav class="navbar" role="navigation">
 	<div class="container">
 	    <div class="row">
@@ -14,18 +14,18 @@ foreach($css_files as $file): ?>
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
 		  				<ul class="nav nav-pills">
-							<li class="<?php echo $array_n['listado']?>"><a href="#tab1" data-toggle="tab">Pedidos</a></li>
+							<li class="<?php echo $array_n['listado']?>"><a href="#tab1" data-toggle="tab">Productos</a></li>
 					    	<li class="pull-right <?php echo $array_n['busqueda']?>"><a href="#tab2" data-toggle="tab">Busqueda Avanzada</a></li>
 						</ul>
 		  			</div>
 		  			
 		  			<div class="panel-body">
 		  				<div class="tab-content">
-		  					<!--TABLA PRINCIPAL CON PEDIDOS-->
+		  					<!--TABLA PRINCIPAL CON PRODUCTOS-->
 		  					<div class="tab-pane <?php echo $array_n['listado']?>" id="tab1">
 	    						<?php echo $output; ?>
 	    					</div>
-	    					<!--BUSQUEDA AVANZADA DE PEDIDOS-->
+	    					<!--BUSQUEDA AVANZADA DE PRODUCTOS-->
 	    					<div class="tab-pane <?php echo $array_n['busqueda']?>" id="tab2">
 	    						BUSQUEDA
 	    					</div>

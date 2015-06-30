@@ -11,10 +11,6 @@ class Presupuestos extends My_Controller {
 		parent::__construct(
 				$subjet		= $this->_subject 
 		);
-		
-		
-		$this->load->database();
-		$this->load->helper('url');
 
 		$this->load->library('grocery_CRUD');
 		

@@ -11,11 +11,6 @@ class Direcciones extends My_Controller {
 		parent::__construct(
 				$subjet		= $this->_subject 
 		);
-		
-
-		$this->load->database();
-		$this->load->helper('url');
-		$this->load->helper('view');
 
 		$this->load->library('grocery_CRUD');
 		
@@ -156,7 +151,7 @@ class Direcciones extends My_Controller {
 		
 		$id_pais = $this->input->post('id_pais');	
 		$provincias 	= $this->direcciones_model->getProvincias($id_pais);
-		
+
 		echo '<option value="" disabled selected style="display:none;">Seleccione una opcion...</option>';
 		foreach ($provincias  as $row) {
 			echo '<option value="'.$row->id_provincia.'">'.$row->nombre_provincia.'</option>';

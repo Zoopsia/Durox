@@ -176,7 +176,6 @@
 	    					</div>
 	    					<div class="tab-pane fade" id="tab5">
 	     						<!--TAB 5 DIRECCIONES VENDEDOR -->
-	     						
 								<?php
 						        	foreach ($vendedores as $row) 
 							    	{
