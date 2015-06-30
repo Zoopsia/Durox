@@ -55,6 +55,12 @@ function provincias_activas(){
 									echo $mensaje;	
 								}
 							?>
+							
+						<h3><div style="padding: 0 0 20px 60px">
+							<a href="#">
+								Nueva Dirección
+							</a>
+						</div></h3>	
 						<div class="form-content form-div">	
 							<form action="<?php echo base_url()."index.php/direcciones/nuevaDireccion/$id/$tipo"?>" class="form-horizontal" method="post" id="crudForm">	 	  					
 		  						
@@ -121,15 +127,16 @@ function provincias_activas(){
 											</div>
 									</div>
 									 
+									<hr />
 									
-									 <div class="form-group">
+									<div class="form-group">
 									  	<label class="col-sm-1 control-label"></label>
 								      		<div class="col-md-6">
 										  		<button type="submit" class="btn btn-primary" name="btn-save" value="1">Guardar</button>	 
 										  		<button type="submit" class="btn btn-primary" name="btn-save" value="2">Guardar y volver</button> 	
 									  	  		<input type="button" value="Cancelar" class="btn btn-danger" id="btn-cancelar" onclick="confirmar(<?php echo $id.",".$tipo; ?>)">	
 									  		</div>
-									 </div>
+									</div>
 								 </div>
 						</form>	
 						</div>					

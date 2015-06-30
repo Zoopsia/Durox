@@ -24,16 +24,6 @@
           </ul>
         </li>   
         
-        <li class="dropdown <?php echo $array_activo['pedidos']?>">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pedidos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-shopping-cart"></span></a>
-          <ul class="dropdown-menu forAnimate" role="menu">
-            <li><a href="<?php echo base_url().'index.php/Pedidos/pedidos_abm/tab1'?>">Listado de pedidos</a></li>
-            <li><a href="<?php echo base_url().'index.php/Pedidos/pedidos_abm/tab1/add'?>">Nuevo</a></li>
-            <li class="divider"></li>
-            <li><a href="<?php echo base_url().'index.php/Pedidos/pedidos_abm/tab2'?>">Busqueda Avanzada</a></li>
-          </ul>
-        </li> 
-        
         <li class="dropdown <?php echo $array_activo['clientes']?>">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Clientes <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-user"></span></a>
           <ul class="dropdown-menu forAnimate" role="menu">
@@ -43,6 +33,16 @@
             <li><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/tab2'?>">Busqueda Avanzada</a></li>
           </ul>
         </li>
+        
+        <li class="dropdown <?php echo $array_activo['pedidos']?>">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pedidos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-shopping-cart"></span></a>
+          <ul class="dropdown-menu forAnimate" role="menu">
+            <li><a href="<?php echo base_url().'index.php/Pedidos/pedidos_abm/tab1'?>">Listado de pedidos</a></li>
+            <li><a href="<?php echo base_url().'index.php/Pedidos/pedidos_abm/tab1/add'?>">Nuevo</a></li>
+            <li class="divider"></li>
+            <li><a href="<?php echo base_url().'index.php/Pedidos/pedidos_abm/tab2'?>">Busqueda Avanzada</a></li>
+          </ul>
+        </li> 
         
         <li class="dropdown <?php echo $array_activo['presupuestos']?>">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">Presupuestos <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-shopping-cart"></span></a>
