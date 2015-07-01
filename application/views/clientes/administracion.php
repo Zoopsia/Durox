@@ -47,6 +47,18 @@ function reglasActivas(){
 	    					<div class="tab-pane fade in active" id="tab1">
 	    					<!--Grupos de Clientes-->
 	    						<div class="row">
+	    							
+	    							<div class="col-md-1 dropdown">
+											<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+												<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+											</button>
+											<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+												<li><a href="#">Agregar Grupo</a></li>
+												<li><a href="#">Administrar Reglas</a></li>
+												<li><a href="#">Agregar Regla</a></li>
+											</ul>
+									</div>
+	    							
 		    						<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupos_clientes') ?></label>
 										<div class="col-md-3">
 											<select id="grupos" name="id_grupo_cliente" class="form-control chosen-select" data-placeholder="Selecciones un Grupo..." onchange="reglasActivas()">
@@ -64,6 +76,7 @@ function reglasActivas(){
 		    									?>
 		    								</select>
 										</div>
+										
 								</div>
 								<div class="row">
 									<div class="col-md-9">
