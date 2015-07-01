@@ -5,22 +5,22 @@
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
 		  				<ul class="nav nav-tabs nav-justified">
-							<li class="active"><a href="#tab1" data-toggle="tab">CLIENTE</a></li>
-					    	<li><a href="#tab2" data-toggle="tab">Vendedores</a></li>
+							<li class="active"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('cliente'); ?></a></li>
+					    	<li><a href="#tab2" data-toggle="tab"><?php echo $this->lang->line('vendedores'); ?></a></li>
 					    	<li role="presentation" class="dropdown">
 							    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-							      <?php echo $this->lang->line('perfiles') ?> <span class="caret"></span>
+							      <?php echo $this->lang->line('perfiles'); ?> <span class="caret"></span>
 							    </a>
 							    <ul class="dropdown-menu" role="menu">
-							     	<li><a href="#tab3" data-toggle="tab"><?php echo $this->lang->line('telefonos') ?></a></li>
-							     	<li><a href="#tab4" data-toggle="tab"><?php echo $this->lang->line('direcciones') ?></a></li>
-							     	<li><a href="#tab5" data-toggle="tab"><?php echo $this->lang->line('correos') ?></a></li>
+							     	<li><a href="#tab3" data-toggle="tab"><?php echo $this->lang->line('telefonos'); ?></a></li>
+							     	<li><a href="#tab4" data-toggle="tab"><?php echo $this->lang->line('direcciones'); ?></a></li>
+							     	<li><a href="#tab5" data-toggle="tab"><?php echo $this->lang->line('correos'); ?></a></li>
 							    </ul>
 							</li>
 					    		
-					    	<li><a href="#tab6" data-toggle="tab">Pedidos</a></li>
-					    	<li><a href="#tab7" data-toggle="tab">Presupuestos</a></li>
-					    	<li><a href="#tab8" data-toggle="tab">Alarmas</a></li>
+					    	<li><a href="#tab6" data-toggle="tab"><?php echo $this->lang->line('pedidos'); ?></a></li>
+					    	<li><a href="#tab7" data-toggle="tab"><?php echo $this->lang->line('presupuestos'); ?></a></li>
+					    	<li><a href="#tab8" data-toggle="tab"><?php echo $this->lang->line('alarmas'); ?></a></li>
 						</ul>
 		  			</div>
 		  			<div class="panel-body">		  				
@@ -38,7 +38,7 @@
 					                				$url = base_url().'index.php/Clientes/clientes_abm/tab1/edit/'.$row->id_cliente; 
 												}
 					                	?>
-					                	<input type="button" class="btn-primary" style="margin-top: 10%" value="Editar" onclick="document.location = '<?php echo $url; ?>'">
+					                	<input type="button" class="btn-primary" style="margin-top: 10%" value="<?php echo $this->lang->line('editar'); ?>" onclick="document.location = '<?php echo $url; ?>'">
 					                </div>
 					                
 					                <div class=" col-md-9 col-lg-9 "><!--carga info cliente-->
@@ -48,20 +48,20 @@
 							      				{
 									            	echo "<tbody>";
 									                echo  "<tr>";
-									                echo  "<td>Nombre:</td>";
+									                echo  '<td>'.$this->lang->line('nombre').':</td>';
 									                echo  '<td class="tabla-datos-importantes">'.$row->nombre.'</td>';
 									                echo  "</tr>";
 													echo  "<tr>";								                     
-									                echo  "<td>Apellido:</td>";
+									                echo  '<td>'.$this->lang->line('apellido').':</td>';
 									                echo  '<td class="tabla-datos-importantes">'.$row->apellido.'</td>';
 									                echo  "</tr><tr>";	
-									                echo  "<td>Cuit:</td>";
+									                echo  '<td>'.$this->lang->line('cuit').':</td>';
 									                echo  '<td class="tabla-datos-importantes">'.$row->cuit.'</td>';
 									                echo  "</tr><tr>";	
-									                echo  "<td>Razón Social:</td>";
+									                echo  '<td>'.$this->lang->line('razon_social').':</td>';
 									                echo  '<td class="tabla-datos-importantes">'.$row->razon_social.'</td>';
 													echo  "</tr><tr>";	
-									                echo  "<td>Grupo de Cliente:</td>";
+									                echo  '<td>'.$this->lang->line('grupos_clientes').':</td>';
 									                echo  '<td class="tabla-datos-importantes"><a href="'.base_url().'index.php/clientes/getReglasGrupos/'.$row->id_grupo_cliente.'">';
 									                echo  $row->grupo_nombre;
 									                echo  "</a></td>";
@@ -79,23 +79,23 @@
 	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>
-							            	<th>ID</th>
-							                <th>Nombre</th>
-							                <th>Apellido</th>
-							                <th>Date</th>
-							                <th>Eliminado</th>
-							                <th>Eliminado</th>
+							            	<th><?php echo $this->lang->line('id'); ?></th>
+							                <th><?php echo $this->lang->line('nombre'); ?></th>
+							                <th><?php echo $this->lang->line('apellido'); ?></th>
+							                <th><?php echo $this->lang->line('date'); ?></th>
+							                <th><?php echo $this->lang->line('eliminado'); ?></th>
+							                <th><?php echo $this->lang->line('acciones'); ?></th>
 							            </tr>
 							        </thead>
 							 
 							        <tfoot>
 							            <tr>
-							            	<th>ID</th>
-							                <th>Nombre</th>
-							                <th>Apellido</th>
-							                <th>Date</th>
-							                <th>Eliminado</th>
-							                <th>Eliminado</th>
+							            	<th><?php echo $this->lang->line('id'); ?></th>
+							                <th><?php echo $this->lang->line('nombre'); ?></th>
+							                <th><?php echo $this->lang->line('apellido'); ?></th>
+							                <th><?php echo $this->lang->line('date'); ?></th>
+							                <th><?php echo $this->lang->line('eliminado'); ?></th>
+							                <th><?php echo $this->lang->line('acciones'); ?></th>
 							            </tr>
 							        </tfoot>
 							 
@@ -110,7 +110,8 @@
 													echo "<td>".$row->apellido."</td>";
 													echo '<td>'.$row->date_add.'</td>';
 													echo "<td>".$row->eliminado."</td>";
-													echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/pestanas/".$row->id_vendedor."' class='btn btn-info btn-xs'>Ver</a></td>";
+													echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/pestanas/".$row->id_vendedor."' class='btn btn-info btn-xs'>";
+													echo $this->lang->line('ver')."</a></td>";
 													echo "</a></tr>";
 												}
 											}
@@ -128,7 +129,8 @@
 			     						echo "<div class='datatables-add-button'>";
 											/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 											echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/telefonos/telefonos/'.$row->id_cliente.'/1">';
-											echo '<span class="ui-button-text">Añadir Teléfono</span>';
+											echo '<span class="ui-button-text">';
+											echo $this->lang->line('añadir').' '.$this->lang->line('telefono').'</span>';
 											echo "</a>";
 										echo "</div>";
 										echo '<div style="height:10px;"></div>';
@@ -137,21 +139,21 @@
 	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>
-							            	<th>Código Area</th>
-							            	<th>Teléfono</th>
-							                <th>Tipo</th>
-							                <th>Fax</th>
-							                <th>Accion</th>
+							            	<th><?php echo $this->lang->line('cod_area'); ?></th>
+							            	<th><?php echo $this->lang->line('telefonos'); ?></th>
+							                <th><?php echo $this->lang->line('tipo'); ?></th>
+							                <th><?php echo $this->lang->line('fax'); ?></th>
+							                <th><?php echo $this->lang->line('acciones'); ?></th>
 							            </tr>
 							        </thead>
 							 
 							        <tfoot>
 							            <tr>
-							            	<th>Código Area</th>
-							            	<th>Teléfono</th>
-							                <th>Tipo</th>
-							                <th>Fax</th>
-							                <th>Accion</th>
+							            	<th><?php echo $this->lang->line('cod_area'); ?></th>
+							            	<th><?php echo $this->lang->line('telefonos'); ?></th>
+							                <th><?php echo $this->lang->line('tipo'); ?></th>
+							                <th><?php echo $this->lang->line('fax'); ?></th>
+							                <th><?php echo $this->lang->line('acciones'); ?></th>
 							            </tr>
 							        </tfoot>
 							 
@@ -171,7 +173,7 @@
 															echo "<td>SI</td>";
 														
 														echo '<td style="text-align: center;"><a href="'.base_url().'index.php/telefonos/cargaEditar/'.$row->id_telefono.'/'.$key->id_cliente.'/1" class="btn btn-primary btn-xs">';
-														echo "Editar</a></td>";
+														echo $this->lang->line('editar')."</a></td>";
 														echo "</tr>";
 													}
 												}
@@ -189,7 +191,8 @@
 			     						echo "<div class='datatables-add-button'>";
 											/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 											echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/direcciones/direcciones/'.$row->id_cliente.'/1">';
-											echo '<span class="ui-button-text">Añadir Dirección</span>';
+											echo '<span class="ui-button-text">';
+											echo $this->lang->line('añadir').' '.$this->lang->line('direccion').'</span>';
 											echo "</a>";
 										echo "</div>";
 										echo '<div style="height:10px;"></div>';
@@ -198,23 +201,23 @@
 								<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>
-							            	<th>Dirección</th>
-							                <th>Tipo</th>
-							                <th>Departamento</th>
-							                <th>Provincia</th>
-							                <th>País</th>
-							                <th>Accion</th>
+							            	<th><?php echo $this->lang->line('direccion'); ?></th>
+							                <th><?php echo $this->lang->line('tipo'); ?></th>
+							                <th><?php echo $this->lang->line('departamento'); ?></th>
+							                <th><?php echo $this->lang->line('provincia'); ?></th>
+							                <th><?php echo $this->lang->line('pais'); ?></th>
+							                <th><?php echo $this->lang->line('acciones'); ?></th>
 							            </tr>
 							        </thead>
 							 
 							        <tfoot>
 							            <tr>
-							            	<th>Dirección</th>
-							                <th>Tipo</th>
-							                <th>Departamento</th>
-							                <th>Provincia</th>
-							                <th>País</th>
-							                <th>Accion</th>
+							            	<th><?php echo $this->lang->line('direccion'); ?></th>
+							                <th><?php echo $this->lang->line('tipo'); ?></th>
+							                <th><?php echo $this->lang->line('departamento'); ?></th>
+							                <th><?php echo $this->lang->line('provincia'); ?></th>
+							                <th><?php echo $this->lang->line('pais'); ?></th>
+							                <th><?php echo $this->lang->line('acciones'); ?></th>
 							            </tr>
 							        </tfoot>
 							 
@@ -232,7 +235,7 @@
 														echo '<td>'.$row->nombre_provincia.'</td>';
 														echo '<td>'.$row->nombre_pais.'</td>';
 														echo '<td style="text-align: center;"><a href="'.base_url().'index.php/direcciones/cargaEditar/'.$row->id_direccion.'/'.$key->id_cliente.'/1" class="btn btn-primary btn-xs">';
-														echo "Editar</a></td>";
+														echo $this->lang->line('editar')."</a></td>";
 														echo "</tr>";
 													}
 												}
@@ -249,7 +252,8 @@
 			     						echo "<div class='datatables-add-button'>";
 											/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 											echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/mails/mails/'.$row->id_cliente.'/1">';
-											echo '<span class="ui-button-text">Añadir E-Mail</span>';
+											echo '<span class="ui-button-text">';
+											echo $this->lang->line('añadir').' '.$this->lang->line('correo').'</span>';
 											echo "</a>";
 										echo "</div>";
 										echo '<div style="height:10px;"></div>';
@@ -258,17 +262,17 @@
 	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>
-							            	<th>Correo</th>
-							                <th>Tipo</th>
-							                <th>Accion</th>
+							            	<th><?php echo $this->lang->line('correo'); ?></th>
+							                <th><?php echo $this->lang->line('tipo'); ?></th>
+							                <th><?php echo $this->lang->line('acciones'); ?></th>
 							            </tr>
 							        </thead>
 							 
 							        <tfoot>
 							            <tr>
-							            	<th>Correo</th>
-							                <th>Tipo</th>
-							                <th>Accion</th>
+							            	<th><?php echo $this->lang->line('correo'); ?></th>
+							                <th><?php echo $this->lang->line('tipo'); ?></th>
+							                <th><?php echo $this->lang->line('acciones'); ?></th>
 							            </tr>
 							        </tfoot>
 							 
@@ -282,7 +286,7 @@
 														echo '<td>'.$row->mail.'</td>';
 														echo '<td>'.$row->tipo.'</td>';
 														echo '<td style="text-align: center;"><a href="'.base_url().'index.php/mails/cargaEditar/'.$row->id_mail.'/'.$key->id_cliente.'/1" class="btn btn-primary btn-xs">';
-														echo "Editar</a></td>";
+														echo $this->lang->line('editar')."</a></td>";
 														echo "</tr>";
 													}
 												}
@@ -297,17 +301,17 @@
 	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>
-							            	<th>Pedido</th>
-							                <th>Vendedor</th>
-							                <th>Fecha</th>
+							            	<th><?php echo $this->lang->line('pedido'); ?></th>
+							                <th><?php echo $this->lang->line('vendedor'); ?></th>
+							                <th><?php echo $this->lang->line('date'); ?></th>
 							            </tr>
 							        </thead>
 							 
 							        <tfoot>
 							            <tr>
-							            	<th>Pedido</th>
-							                <th>Vendedor</th>
-							                <th>Fecha</th>
+							            	<th><?php echo $this->lang->line('pedido'); ?></th>
+							                <th><?php echo $this->lang->line('vendedor'); ?></th>
+							                <th><?php echo $this->lang->line('date'); ?></th>
 							            </tr>
 							        </tfoot>
 							 

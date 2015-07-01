@@ -14,19 +14,19 @@ foreach($css_files as $file): ?>
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
 		  				<ul class="nav nav-pills">
-							<li class="<?php echo $array_n['listado']?>"><a href="#tab1" data-toggle="tab">Clientes</a></li>
-					    	<li class="pull-right <?php echo $array_n['busqueda']?>"><a href="#tab2" data-toggle="tab">Busqueda Avanzada</a></li>
+							<li class="<?php echo $array_n['listado']; ?>"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('clientes'); ?></a></li>
+					    	<li class="pull-right <?php echo $array_n['busqueda']; ?>"><a href="#tab2" data-toggle="tab"><?php echo $this->lang->line('busqueda_avanzada'); ?></a></li>
 						</ul>
 		  			</div>
 		  			
 		  			<div class="panel-body">
 		  				<div class="tab-content">
 		  					<!--TABLA PRINCIPAL CON CLIENTES-->
-		  					<div class="tab-pane <?php echo $array_n['listado']?>" id="tab1">
+		  					<div class="tab-pane <?php echo $array_n['listado']; ?>" id="tab1">
 	    						<?php echo $output; ?>
 	    					</div>
 	    					<!--BUSQUEDA AVANZADA DE CLIENTES-->
-	    					<div class="tab-pane <?php echo $array_n['busqueda']?>" id="tab2">
+	    					<div class="tab-pane <?php echo $array_n['busqueda']; ?>" id="tab2">
 	    						BUSQUEDA
 	    					</div>
 	

@@ -23,7 +23,7 @@ function reglasActivas(){
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
 		  				<ul class="nav nav-tabs nav-justified">
-							<li class="active"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('grupos_clientes') ?></a></li>
+							<li class="active"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('grupos_clientes'); ?></a></li>
 					    	<li><a href="#tab2" data-toggle="tab"></a></li>
 					    	<li role="presentation" class="dropdown">
 							    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
@@ -53,13 +53,13 @@ function reglasActivas(){
 												<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
 											</button>
 											<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-												<li><a href="#">Agregar Grupo</a></li>
-												<li><a href="#">Administrar Reglas</a></li>
-												<li><a href="#">Agregar Regla</a></li>
+												<li><a href="#"><?php echo $this->lang->line('agregar_grupos'); ?></a></li>
+												<li><a href="#"><?php echo $this->lang->line('administrar_reglas'); ?></a></li>
+												<li><a href="#"><?php echo $this->lang->line('agregar_reglas'); ?></a></li>
 											</ul>
 									</div>
 	    							
-		    						<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupos_clientes') ?></label>
+		    						<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupos_clientes'); ?></label>
 										<div class="col-md-3">
 											<select id="grupos" name="id_grupo_cliente" class="form-control chosen-select" data-placeholder="Selecciones un Grupo..." onchange="reglasActivas()">
 		    									<option></option>
