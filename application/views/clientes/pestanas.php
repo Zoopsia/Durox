@@ -35,8 +35,10 @@
 						                    	foreach ($clientes as $row) 
 							      				{
 					                				echo '<img alt="User Pic" src="'.base_url().'img/clientes/User'.$row->id_cliente.'.jpg" class="img-circle img-responsive">';
-					                			}
-					                	?> 
+					                				$url = base_url().'index.php/Clientes/clientes_abm/tab1/edit/'.$row->id_cliente; 
+												}
+					                	?>
+					                	<input type="button" class="btn-primary" style="margin-top: 10%" value="Editar" onclick="document.location = '<?php echo $url; ?>'">
 					                </div>
 					                
 					                <div class=" col-md-9 col-lg-9 "><!--carga info cliente-->
@@ -60,7 +62,9 @@
 									                echo  '<td class="tabla-datos-importantes">'.$row->razon_social.'</td>';
 													echo  "</tr><tr>";	
 									                echo  "<td>Grupo de Cliente:</td>";
-									                echo  '<td class="tabla-datos-importantes">'.$row->grupo_nombre.'</td>';
+									                echo  '<td class="tabla-datos-importantes"><a href="'.base_url().'index.php/clientes/getReglasGrupos/'.$row->id_grupo_cliente.'">';
+									                echo  $row->grupo_nombre;
+									                echo  "</a></td>";
 									                echo  "</tr>";		
 									                echo  "</tbody>";
 									            }

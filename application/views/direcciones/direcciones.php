@@ -86,7 +86,8 @@ function provincias_activas(){
 									<div class="form-group odd">
 										<label class="col-sm-2 col-sm-offset-1 control-label">Tipo</label>
 										  	<div class="col-md-3">
-												<select name="id_tipo" class="form-control chosen-select">
+												<select name="id_tipo" class="form-control chosen-select" data-placeholder="Seleccione un tipo..." required>
+													<option></option>
 													<?php
 												  		foreach ($tipos as $row) {
 																echo '<option value="'.$row->id_tipo.'">'.$row->tipo.'</option>';

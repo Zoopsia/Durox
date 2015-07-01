@@ -21,18 +21,18 @@ class Clientes extends My_Controller {
 
 	public function pestanas($id){
 		
-		$db['empresas']=$this->empresas_model->getRegistro(1);
-		$db['clientes']=$this->clientes_model->getCliente($id);
-		$db['vendedores']=$this->clientes_model->getCruce($id,'vendedores');	
-		$db['telefonos']=$this->clientes_model->getCruce($id,'telefonos');
-		$db['direcciones']=$this->clientes_model->getCruce($id,'direcciones');
-		$db['mails']=$this->clientes_model->getCruce($id,'mails');
-		$db['pedidos']=$this->clientes_model->getPedidos($id);
+		$db['empresas']		=$this->empresas_model->getRegistro(1);
+		$db['clientes']		=$this->clientes_model->getCliente($id);
+		$db['vendedores']	=$this->clientes_model->getCruce($id,'vendedores');	
+		$db['telefonos']	=$this->clientes_model->getCruce($id,'telefonos');
+		$db['direcciones']	=$this->clientes_model->getCruce($id,'direcciones');
+		$db['mails']		=$this->clientes_model->getCruce($id,'mails');
+		$db['pedidos']		=$this->clientes_model->getPedidos($id);
 		
-			$this->load->view("head.php", $db);
-			$this->load->view("nav_top.php");
-			$this->load->view("nav_left.php");	
-			$this->load->view($this->_subject."/pestanas.php");
+		$this->load->view("head.php", $db);
+		$this->load->view("nav_top.php");
+		$this->load->view("nav_left.php");	
+		$this->load->view($this->_subject."/pestanas.php");
 			
 					
 	}
@@ -70,7 +70,7 @@ class Clientes extends My_Controller {
 
 			$crud->set_relation('id_razon_social','razon_social','razon_social');
 			
-			$crud->set_relation('id_grupo_cliente','grupos_clientes','nombre');
+			$crud->set_relation('id_grupo_cliente','grupos_clientes','grupo_nombre');
 			
 			$crud->unset_export();
 			$crud->unset_print();
@@ -88,13 +88,73 @@ class Clientes extends My_Controller {
 	    return site_url($this->_subject.'/pestanas').'/'.$row->id_cliente;
 	}
 	
-	public function adminClientes(){
+	public function adminClientes($id_grupo_cliente=null){
 		
-		$db['empresas']=$this->empresas_model->getRegistro(1);
+		$db['empresas']		=$this->empresas_model->getRegistro(1);
+		$db['grupos']		=$this->clientes_model->getGrupos();
+		
+		if($id_grupo_cliente!=null)
+			$db['id_grupo'] =$id_grupo_cliente;
 
-			$this->load->view("head.php", $db);
-			$this->load->view("nav_top.php");
-			$this->load->view("nav_left.php");
-			$this->load->view($this->_subject."/administracion.php");
+		$this->load->view("head.php", $db);
+		$this->load->view("nav_top.php");
+		$this->load->view("nav_left.php");
+		$this->load->view($this->_subject."/administracion.php");
 	}	
+	
+/*--------------------------------------------------------------------------------	
+ --------------------------------------------------------------------------------
+ 			Función para Administrar reglas y grupos de clientes
+ --------------------------------------------------------------------------------
+ --------------------------------------------------------------------------------*/	
+	
+	public function getReglasGrupos($id=null){
+		
+		if($id==null){
+			$id_grupo_cliente	= $this->input->post('id_grupo_cliente');	
+			$reglas	 			= $this->clientes_model->getReglasGrupos($id_grupo_cliente);
+	
+			//Armo tabla con el resultado
+			
+			$table =	'<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th>Regla N°</th>
+									<th>Nombre</th>
+									<th>Tipo</th>
+								</tr>
+							</thead>
+										 
+							<tfoot>
+								<tr>
+									<th>Regla N°</th>
+									<th>Nombre</th>
+									<th>Tipo</th>
+								</tr>
+							</tfoot>
+										 
+							<tbody>';
+	
+			foreach ($reglas as $key) {
+				$table .= "<tr><td>";
+				$table .= $key->id_regla;
+				$table .= "</td><td>";
+				$table .= $key->nombre;
+				$table .= "</td><td>";
+				if($key->aumento_descuento==1)
+					$table .= "Descuento";
+				else
+					$table .= "Aumento";
+				$table .= "</td></tr>";
+			}
+			
+			$table .=		'</tbody>
+						</table>';
+			
+			echo $table;
+		}
+		else 
+			$this->adminClientes($id);
+
+	}
 }
