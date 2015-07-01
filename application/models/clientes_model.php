@@ -53,6 +53,8 @@ class Clientes_model extends My_Model {
 					$this->_tablename 
 				INNER JOIN
 					razon_social USING (id_razon_social)
+				INNER JOIN
+					grupos_clientes USING (id_grupo_cliente)
 				WHERE 
 					$this->_id_table = '$id'";
 					

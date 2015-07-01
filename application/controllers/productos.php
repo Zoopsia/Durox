@@ -22,13 +22,11 @@ class Productos extends My_Controller {
 	public function pestanas($id){
 		
 		$db['empresas']=$this->empresas_model->getRegistro(1);
-		
-		
+
 			$this->load->view("head.php", $db);
 			$this->load->view("nav_top.php");
 			$this->load->view("nav_left.php");	
-			$this->load->view($this->_subject."/pestanas.php");
-					
+			$this->load->view($this->_subject."/pestanas.php");				
 	}
 	
 
@@ -66,16 +64,21 @@ class Productos extends My_Controller {
 			
 			$output = $crud->render();
 			
-			$this->crud_tabla($output);
-			
-			 
+			$this->crud_tabla($output);		 
 	}
-
 
 	function just_a_test($primary_key , $row)
 	{
 	    return site_url($this->_subject.'/pestanas').'/'.$row->id_producto;
 	}
 	
+	public function reglas(){
 		
+		$db['empresas']=$this->empresas_model->getRegistro(1);
+
+			$this->load->view("head.php", $db);
+			$this->load->view("nav_top.php");
+			$this->load->view("nav_left.php");
+			$this->load->view($this->_subject."/reglas.php");				
+	}
 }

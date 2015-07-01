@@ -30,6 +30,8 @@
             <li><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/tab1'?>">Listado de clientes</a></li>
             <li><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/tab1/add'?>">Nuevo</a></li>
             <li class="divider"></li>
+            <li><a href="<?php echo base_url().'index.php/Clientes/adminClientes/'?>">Administración</a></li>
+          	<li class="divider"></li>
             <li><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/tab2'?>">Busqueda Avanzada</a></li>
           </ul>
         </li>
@@ -60,7 +62,9 @@
             <li><a href="<?php echo base_url().'index.php/Productos/productos_abm/tab1'?>">Listado de pedidos</a></li>
             <li><a href="<?php echo base_url().'index.php/Productos/productos_abm/tab1/add'?>">Nuevo</a></li>
             <li class="divider"></li>
-            <li><a href="<?php echo base_url().'index.php/Productos/productos_abm/tab2'?>">Busqueda Avanzada</a></li>
+            <li><a href="<?php echo base_url().'index.php/Productos/reglas/'?>">Reglas de descuento</a></li>
+          	<li class="divider"></li>
+            <li><a href="<?php echo base_url().'index.php/Productos/productos_abm/tab2'?>">Busqueda Avanzada</a></li>   
           </ul>
         </li> 
               

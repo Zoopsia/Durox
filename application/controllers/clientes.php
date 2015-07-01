@@ -55,6 +55,7 @@ class Clientes extends My_Controller {
 			
 			$crud->display_as('nombre','Nombre')
 				 ->display_as('apellido','Apellido')
+				 ->display_as('id_grupo_cliente','Grupo')
 				 ->display_as('id_razon_social','Razón Social');
 			
 			$crud->set_subject('Cliente');
@@ -62,11 +63,14 @@ class Clientes extends My_Controller {
 			$crud->fields(	'nombre',
 							'apellido',
 							'cuit',
+							'id_grupo_cliente',
 							'id_razon_social');
 							
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
 
 			$crud->set_relation('id_razon_social','razon_social','razon_social');
+			
+			$crud->set_relation('id_grupo_cliente','grupos_clientes','nombre');
 			
 			$crud->unset_export();
 			$crud->unset_print();
@@ -84,5 +88,13 @@ class Clientes extends My_Controller {
 	    return site_url($this->_subject.'/pestanas').'/'.$row->id_cliente;
 	}
 	
+	public function adminClientes(){
 		
+		$db['empresas']=$this->empresas_model->getRegistro(1);
+
+			$this->load->view("head.php", $db);
+			$this->load->view("nav_top.php");
+			$this->load->view("nav_left.php");
+			$this->load->view($this->_subject."/administracion.php");
+	}	
 }

@@ -9,12 +9,12 @@
 					    	<li><a href="#tab2" data-toggle="tab">Vendedores</a></li>
 					    	<li role="presentation" class="dropdown">
 							    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-							      Perfiles <span class="caret"></span>
+							      <?php echo $this->lang->line('perfiles') ?> <span class="caret"></span>
 							    </a>
 							    <ul class="dropdown-menu" role="menu">
-							     	<li><a href="#tab3" data-toggle="tab">Telefonos</a></li>
-							     	<li><a href="#tab4" data-toggle="tab">Direcciones</a></li>
-							     	<li><a href="#tab5" data-toggle="tab">E-mails</a></li>
+							     	<li><a href="#tab3" data-toggle="tab"><?php echo $this->lang->line('telefonos') ?></a></li>
+							     	<li><a href="#tab4" data-toggle="tab"><?php echo $this->lang->line('direcciones') ?></a></li>
+							     	<li><a href="#tab5" data-toggle="tab"><?php echo $this->lang->line('correos') ?></a></li>
 							    </ul>
 							</li>
 					    		
@@ -58,7 +58,10 @@
 									                echo  "</tr><tr>";	
 									                echo  "<td>Razón Social:</td>";
 									                echo  '<td class="tabla-datos-importantes">'.$row->razon_social.'</td>';
-									                echo  "</tr>";	
+													echo  "</tr><tr>";	
+									                echo  "<td>Grupo de Cliente:</td>";
+									                echo  '<td class="tabla-datos-importantes">'.$row->grupo_nombre.'</td>';
+									                echo  "</tr>";		
 									                echo  "</tbody>";
 									            }
 											?>
