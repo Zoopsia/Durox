@@ -124,7 +124,6 @@ class Grupos extends My_Controller {
 									<th>'.$this->lang->line('cuit').'</th>
 								</tr>
 							</tfoot>
-										 
 							<tbody>';
 			if($clientes){
 				foreach ($clientes as $key) {
@@ -137,7 +136,7 @@ class Grupos extends My_Controller {
 					$table .= "</td></tr>";
 				}
 			}
-			$table .=		'</tbody>
+			$table .=	'</tbody>
 						</table>';
 			
 			echo $table;
@@ -159,15 +158,12 @@ class Grupos extends My_Controller {
 				'grupo_nombre' 		=> $this->input->post('grupo_nombre')			
 			);
 			
-			
 			$id_grupo = $this->grupos_model->insert($grupo);
-			
 			$save = $this->input->post('btn-save');
-		
 			$arreglo_mensaje = array(			
-					'save' 			=> $save,
-					'tabla'			=> $this->_subject,
-					'id_tabla'		=> $id_grupo	
+				'save' 			=> $save,
+				'tabla'			=> $this->_subject,
+				'id_tabla'		=> $id_grupo	
 			);	
 		
 			if($save==1){
@@ -179,8 +175,6 @@ class Grupos extends My_Controller {
 				$mensaje .= '</a>';
 				$mensaje .=	" fué insertado con exito";
 				$mensaje .= "</div>";
-				
-				
 				echo $mensaje;
 				
 			}
@@ -193,9 +187,7 @@ class Grupos extends My_Controller {
 			$mensaje  = '<div class="alert alert-danger alert-dismissible slideDown" id="registro" role="alert">';
 		  	$mensaje .= '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';	
 		  	$mensaje .= "El registro no fué insertado";
-			$mensaje .= "</div>";
-				
-				
+			$mensaje .= "</div>";				
 			echo $mensaje;
 		}
 	}
@@ -204,15 +196,15 @@ class Grupos extends My_Controller {
 	
 	public function cargaEditar($id_grupo){
 	
-			$db['empresas']		=$this->empresas_model->getRegistro(1);
-			$db['grupos']		=$this->grupos_model->getGrupos();
+		$db['empresas']		=$this->empresas_model->getRegistro(1);
+		$db['grupos']		=$this->grupos_model->getGrupos();
 
-			$db['id_grupo'] 	=$id_grupo;
+		$db['id_grupo'] 	=$id_grupo;
 			
-			$this->load->view("head.php", $db);
-			$this->load->view("nav_top.php");
-			$this->load->view("nav_left.php");	
-			$this->load->view($this->_subject."/administracion.php");
+		$this->load->view("head.php", $db);
+		$this->load->view("nav_top.php");
+		$this->load->view("nav_left.php");	
+		$this->load->view($this->_subject."/administracion.php");
 				
 	}
 		

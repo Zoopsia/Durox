@@ -71,7 +71,7 @@ $('#btn-cancelar').click(function() {
 											</button>
 											<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
 												<li><a href="#tab2" data-toggle="tab"><?php echo $this->lang->line('nuevo').' '.$this->lang->line('grupo'); ?></a></li>
-												<li><a href="#"><?php echo $this->lang->line('agregar').' '.$this->lang->line('cliente'); ?></a></li>
+												<li><a href="#tab3" data-toggle="tab"><?php echo $this->lang->line('agregar').' '.$this->lang->line('cliente'); ?></a></li>
 												<li><a href="#"><?php echo $this->lang->line('agregar').' '.$this->lang->line('regla'); ?></a></li>
 												<li><a href="#"><?php echo $this->lang->line('administrar').' '.$this->lang->line('reglas'); ?></a></li>
 											</ul>
@@ -79,7 +79,7 @@ $('#btn-cancelar').click(function() {
 	    							
 		    						<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupos_clientes'); ?></label>
 										<div class="col-md-3">
-											<select id="grupos" name="id_grupo_cliente" class="form-control chosen-select" data-placeholder="Selecciones un Grupo..." onchange="reglasActivas(),clientesActivos()">
+											<select id="grupos" name="id_grupo_cliente" class="form-control chosen-select" data-placeholder="Seleccione un Grupo..." onchange="reglasActivas(),clientesActivos()">
 		    									<option></option>
 		    									<?php
 		    										foreach ($grupos as $row) {
@@ -173,8 +173,19 @@ $('#btn-cancelar').click(function() {
 	    					</div><!--TAB 2 CARGA DE GRUPOS -->
 	    				
 	    					<div class="tab-pane fade" id="tab3">
-	     						<!--TAB 3 TELEFONOS CLIENTE -->
-	     						PRUEBA
+	     						<!--TAB 3 CARGA DE CLIENTE -->
+	     						<div class="row">
+	     						<label class="col-sm-1 control-label"><?php echo $this->lang->line('clientes'); ?></label>
+									<div class="col-md-4">
+										<select id="clientes" name="id_cliente" class="form-control chosen-select" data-placeholder="Seleccione un Cliente..." onchange="">
+		    										<option></option>
+		    										<option value="United States">United States</option>
+		    										<option value="United States">United States</option>
+		    										<option value="United States">United States</option>
+		    										<option value="United States">United States</option>
+		    							</select>
+									</div>
+								</div>
 	    					</div>
 	    					<div class="tab-pane fade" id="tab4">
 	     						<!--TAB 4 DIRECCIONES CLIENTE -->
