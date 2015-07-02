@@ -154,5 +154,32 @@ class Clientes_model extends My_Model {
 			return FALSE;
 		}
 	}
+	
+	function getClientesGrupos($id){
+		
+		$sql = "SELECT 
+					*
+				FROM 
+					clientes
+				INNER JOIN
+					grupos_clientes USING(id_grupo_cliente)
+				WHERE 
+					id_grupo_cliente = '$id'";
+					
+		$query = $this->db->query($sql);
+		
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+			return $data;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
 } 
 ?>

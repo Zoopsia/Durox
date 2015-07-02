@@ -62,7 +62,7 @@
 									                echo  '<td class="tabla-datos-importantes">'.$row->razon_social.'</td>';
 													echo  "</tr><tr>";	
 									                echo  '<td>'.$this->lang->line('grupos_clientes').':</td>';
-									                echo  '<td class="tabla-datos-importantes"><a href="'.base_url().'index.php/clientes/getReglasGrupos/'.$row->id_grupo_cliente.'">';
+									                echo  '<td class="tabla-datos-importantes"><a href="'.base_url().'index.php/Grupos/getReglasGrupos/'.$row->id_grupo_cliente.'">';
 									                echo  $row->grupo_nombre;
 									                echo  "</a></td>";
 									                echo  "</tr>";		
