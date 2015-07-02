@@ -20,14 +20,18 @@ class Grupos extends My_Controller {
 		$this->load->model($this->_subject.'_model');
 	}
 
-	public function adminClientes($id_grupo_cliente=null){
+	public function adminClientes($id_grupo=null,$tabla=null,$save=null){
 		
 		$db['empresas']		=$this->empresas_model->getRegistro(1);
 		$db['grupos']		=$this->grupos_model->getGrupos();
 		
-		if($id_grupo_cliente!=null)
-			$db['id_grupo'] =$id_grupo_cliente;
-
+		if($id_grupo!=null){
+			$db['id_grupo'] =$id_grupo;
+			$db['tabla'] 	=$tabla;
+		}
+		
+		$db['save']			=$save;
+		
 		$this->load->view("head.php", $db);
 		$this->load->view("nav_top.php");
 		$this->load->view("nav_left.php");
@@ -44,7 +48,7 @@ class Grupos extends My_Controller {
 		
 		if($id==null){
 			$id_grupo_cliente	= $this->input->post('id_grupo_cliente');	
-			$reglas	 			= $this->clientes_model->getReglasGrupos($id_grupo_cliente);
+			$reglas	 			= $this->grupos_model->getReglasGrupos($id_grupo_cliente);
 	
 			//Armo tabla con el resultado
 			
@@ -66,20 +70,20 @@ class Grupos extends My_Controller {
 							</tfoot>
 										 
 							<tbody>';
-	
-			foreach ($reglas as $key) {
-				$table .= "<tr><td>";
-				$table .= $key->id_regla;
-				$table .= "</td><td>";
-				$table .= $key->nombre;
-				$table .= "</td><td>";
-				if($key->aumento_descuento==1)
-					$table .= "Descuento";
-				else
-					$table .= "Aumento";
-				$table .= "</td></tr>";
+			if($reglas){
+				foreach ($reglas as $key) {
+					$table .= "<tr><td>";
+					$table .= $key->id_regla;
+					$table .= "</td><td>";
+					$table .= $key->nombre;
+					$table .= "</td><td>";
+					if($key->aumento_descuento==1)
+						$table .= "Descuento";
+					else
+						$table .= "Aumento";
+					$table .= "</td></tr>";
+				}
 			}
-			
 			$table .=		'</tbody>
 						</table>';
 			
@@ -100,7 +104,7 @@ class Grupos extends My_Controller {
 		
 		if($id==null){
 			$id_grupo_cliente	= $this->input->post('id_grupo_cliente');	
-			$clientes 			= $this->clientes_model->getClientesGrupos($id_grupo_cliente);
+			$clientes 			= $this->grupos_model->getClientesGrupos($id_grupo_cliente);
 	
 			//Armo tabla con el resultado
 			
@@ -122,17 +126,17 @@ class Grupos extends My_Controller {
 							</tfoot>
 										 
 							<tbody>';
-	
-			foreach ($clientes as $key) {
-				$table .= "<tr><td>";
-				$table .= $key->nombre;
-				$table .= "</td><td>";
-				$table .= $key->apellido;
-				$table .= "</td><td>";
-				$table .= $key->cuit;
-				$table .= "</td></tr>";
+			if($clientes){
+				foreach ($clientes as $key) {
+					$table .= "<tr><td>";
+					$table .= $key->nombre;
+					$table .= "</td><td>";
+					$table .= $key->apellido;
+					$table .= "</td><td>";
+					$table .= $key->cuit;
+					$table .= "</td></tr>";
+				}
 			}
-			
 			$table .=		'</tbody>
 						</table>';
 			
@@ -148,14 +152,43 @@ class Grupos extends My_Controller {
  --------------------------------------------------------------------------------
  --------------------------------------------------------------------------------*/	
 
-	public function agregarGrupo(){
+	public function nuevoGrupo(){
 		
-		$db['empresas']		=$this->empresas_model->getRegistro(1);
+		$grupo	= array(
+			'grupo_nombre' 		=> $this->input->post('grupo_nombre')			
+		);
 
-		$this->load->view("head.php", $db);
-		$this->load->view("nav_top.php");
-		$this->load->view("nav_left.php");
-		$this->load->view($this->_subject."/.php");
+		$id_grupo = $this->grupos_model->insert($grupo);
+		
+		$save = $this->input->post('btn-save');
+	
+		$arreglo_mensaje = array(			
+				'save' 			=> $save,
+				'tabla'			=> $this->_subject,
+				'id_tabla'		=> $id_grupo	
+		);	
+	
+		if($save==1){
+			$this->adminClientes($id_grupo,$this->_subject,$save);
+		}
+		else if($save==2){
+			$mensaje = get_mensaje($arreglo_mensaje);
+			$this->adminClientes($id_grupo);
+		}
+	}
+	
+	public function cargaEditar($id_grupo){
+	
+			$db['empresas']		=$this->empresas_model->getRegistro(1);
+			$db['grupos']		=$this->grupos_model->getGrupos();
+
+			$db['id_grupo'] 	=$id_grupo;
+			
+			$this->load->view("head.php", $db);
+			$this->load->view("nav_top.php");
+			$this->load->view("nav_left.php");	
+			$this->load->view($this->_subject."/administracion.php");
+				
 	}
 		
 }

@@ -1,10 +1,10 @@
 <?php 
 class Grupos_model extends My_Model {
 		
-	protected $_tablename	= 'telefonos';
-	protected $_id_table	= 'id_telefono';
-	protected $_order		= 'telefono';
-	protected $_subject		= 'telefono';
+	protected $_tablename	= 'grupos_clientes';
+	protected $_id_table	= 'id_grupo_cliente';
+	protected $_order		= 'grupo_cliente';
+	protected $_subject		= 'grupo';
 	
 	
 	function __construct()

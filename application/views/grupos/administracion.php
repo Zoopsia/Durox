@@ -26,7 +26,6 @@ function clientesActivos(){
 	});
 }	
 </script>
-
 <nav class="navbar" role="navigation">
 	<div class="container">
 	    <div class="row">
@@ -35,7 +34,6 @@ function clientesActivos(){
 		  			<div class="panel-heading">
 		  				<ul class="nav nav-tabs">
 							<li class="active"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('grupos_clientes'); ?></a></li>
-					    	
 						</ul>
 		  			</div>
 		  			<div class="panel-body">		  				
@@ -43,6 +41,20 @@ function clientesActivos(){
 		  				<div class="tab-content">
 	    					<div class="tab-pane fade in active" id="tab1">
 	    					<!--Grupos de Clientes-->
+	    						
+	    						<?php 
+			  						if($save){
+			  							$arreglo_mensaje = array(			
+											'save' 			=> $save,
+											'tabla'			=> 'grupos',
+											'id_tabla'		=> $id_grupo,
+											'id_usuario'	=> null
+										);
+			  							$mensaje = get_mensaje($arreglo_mensaje);
+										echo $mensaje;
+									}
+								?> 	
+	     							    						
 	    						<div class="row">
 	    							
 	    							<div class="col-md-1 dropdown">
@@ -121,15 +133,16 @@ function clientesActivos(){
 				
 	    					</div> <!--TAB 1 GRUPOS CLIENTES -->
 	     					<div class="tab-pane fade" id="tab2">
-	     					<!--TAB 2 CARGA DE GRUPOS-->	
-		     					<form action="<?php echo base_url()."index.php/"?>" class="form-horizontal" method="post">
+	     					<!--TAB 2 CARGA DE GRUPOS-->
+	     						
+		     					<form action="<?php echo base_url()."index.php/grupos/nuevoGrupo"?>" class="form-horizontal" method="post">
 									<div class="form-group">
 										<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupo'); ?></label>
 											
 											<div class="col-sm-3">
 												<div class="input-group">
 													<div class="input-group-addon"><span class="fa fa-users" aria-hidden="true"></span></div>
-													<input type="text" name="grupo" class="numeric form-control" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('nombre'); ?>" required> 	    	
+													<input type="text" name="grupo_nombre" class="numeric form-control" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('nombre'); ?>" required> 	    	
 											   	</div>
 											</div> 
 									</div>
@@ -148,7 +161,7 @@ function clientesActivos(){
 	    				
 	    					<div class="tab-pane fade" id="tab3">
 	     						<!--TAB 3 TELEFONOS CLIENTE -->
-	     						
+	     						PRUEBA
 	    					</div>
 	    					<div class="tab-pane fade" id="tab4">
 	     						<!--TAB 4 DIRECCIONES CLIENTE -->

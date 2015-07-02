@@ -19,7 +19,7 @@
 		  							$mensaje = get_mensaje($arreglo_mensaje);
 									echo $mensaje;	
 								}
-							?> 				
+						?> 				
 		  				<form action="<?php echo base_url()."index.php/telefonos/nuevoTelefono/$id/$tipo"?>" class="form-horizontal" method="post">
 							<div class="form-group">
 								<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('telefono'); ?></label>
