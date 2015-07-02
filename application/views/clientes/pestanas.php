@@ -171,7 +171,7 @@
 															echo "<td>NO</td>";
 														else
 															echo "<td>SI</td>";
-														
+														/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 														echo '<td style="text-align: center;"><a href="'.base_url().'index.php/telefonos/cargaEditar/'.$row->id_telefono.'/'.$key->id_cliente.'/1" class="btn btn-primary btn-xs">';
 														echo $this->lang->line('editar')."</a></td>";
 														echo "</tr>";
@@ -234,6 +234,7 @@
 														echo '<td>'.$row->nombre_departamento.'</td>';
 														echo '<td>'.$row->nombre_provincia.'</td>';
 														echo '<td>'.$row->nombre_pais.'</td>';
+														/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 														echo '<td style="text-align: center;"><a href="'.base_url().'index.php/direcciones/cargaEditar/'.$row->id_direccion.'/'.$key->id_cliente.'/1" class="btn btn-primary btn-xs">';
 														echo $this->lang->line('editar')."</a></td>";
 														echo "</tr>";
@@ -285,6 +286,7 @@
 											      		echo '<tr>';
 														echo '<td>'.$row->mail.'</td>';
 														echo '<td>'.$row->tipo.'</td>';
+														/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 														echo '<td style="text-align: center;"><a href="'.base_url().'index.php/mails/cargaEditar/'.$row->id_mail.'/'.$key->id_cliente.'/1" class="btn btn-primary btn-xs">';
 														echo $this->lang->line('editar')."</a></td>";
 														echo "</tr>";

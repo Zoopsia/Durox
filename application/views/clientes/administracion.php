@@ -53,9 +53,9 @@ function reglasActivas(){
 												<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
 											</button>
 											<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-												<li><a href="#"><?php echo $this->lang->line('agregar_grupos'); ?></a></li>
-												<li><a href="#"><?php echo $this->lang->line('administrar_reglas'); ?></a></li>
-												<li><a href="#"><?php echo $this->lang->line('agregar_reglas'); ?></a></li>
+												<li><a href="#"><?php echo $this->lang->line('agregar').' '.$this->lang->line('grupo'); ?></a></li>
+												<li><a href="#"><?php echo $this->lang->line('administrar').' '.$this->lang->line('reglas'); ?></a></li>
+												<li><a href="#"><?php echo $this->lang->line('agregar').' '.$this->lang->line('regla'); ?></a></li>
 											</ul>
 									</div>
 	    							

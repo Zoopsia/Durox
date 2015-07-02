@@ -5,22 +5,22 @@
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
 		  				<ul class="nav nav-tabs nav-justified">
-							<li class="active"><a href="#tab1" data-toggle="tab">PRESUPUESTO</a></li>
-					    	<li><a href="#tab2" data-toggle="tab">Vendedores</a></li>
+							<li class="active"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('presupuesto'); ?></a></li>
+					    	<li><a href="#tab2" data-toggle="tab"><?php echo $this->lang->line('vendedores'); ?></a></li>
 					    	<li role="presentation" class="dropdown">
 							    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-							      Perfiles <span class="caret"></span>
+							      <?php echo $this->lang->line('perfiles'); ?> <span class="caret"></span>
 							    </a>
 							    <ul class="dropdown-menu" role="menu">
-							     	<li><a href="#tab3" data-toggle="tab">Telefonos</a></li>
-							     	<li><a href="#tab4" data-toggle="tab">Direcciones</a></li>
-							     	<li><a href="#tab5" data-toggle="tab">E-mails</a></li>
+							     	<li><a href="#tab3" data-toggle="tab"><?php echo $this->lang->line('telefonos'); ?></a></li>
+							     	<li><a href="#tab4" data-toggle="tab"><?php echo $this->lang->line('direcciones'); ?></a></li>
+							     	<li><a href="#tab5" data-toggle="tab"><?php echo $this->lang->line('correos'); ?></a></li>
 							    </ul>
 							</li>
 					    		
-					    	<li><a href="#tab6" data-toggle="tab">Pedidos</a></li>
-					    	<li><a href="#tab7" data-toggle="tab">Presupuestos</a></li>
-					    	<li><a href="#tab8" data-toggle="tab">Alarmas</a></li>
+					    	<li><a href="#tab6" data-toggle="tab"><?php echo $this->lang->line('pedidos'); ?></a></li>
+					    	<li><a href="#tab7" data-toggle="tab"><?php echo $this->lang->line('presupuestos'); ?></a></li>
+					    	<li><a href="#tab8" data-toggle="tab"><?php echo $this->lang->line('alarmas'); ?></a></li>
 						</ul>
 		  			</div>
 		  			<div class="panel-body">
@@ -32,10 +32,10 @@
 					                	<table class="table table-striped table-bordered" cellspacing="0" width="100%">
 									        <thead>
 									            <tr>
-									            	<th>Nombre</th>
-									                <th>Cantidad</th>
-									                <th>Precio</th>
-									                <th>Estado</th>
+									            	<th><?php echo $this->lang->line('nombre'); ?></th>
+									                <th><?php echo $this->lang->line('cantidad'); ?></th>
+									                <th><?php echo $this->lang->line('precio'); ?></th>
+									                <th><?php echo $this->lang->line('estado'); ?></th>
 									            </tr>
 									        </thead>
 									 

@@ -4,7 +4,7 @@
 			<div class="col-md-12">
 				<div class="panel panel-default">
 		  			<div class="panel-heading"><!---PESTAÑAS DEL PANEL DE NAVEGACION--->
-		  				Editar Teléfono
+		  				<?php echo $this->lang->line('editar').' '.$this->lang->line('telefono'); ?>
 		  			</div>
 		  			<div class="panel-body"> 
 		  				
@@ -12,7 +12,7 @@
 		  				foreach ($telefonos as $row){ ?>	   			
 			  				<form action="<?php echo base_url()."index.php/telefonos/editarTelefonos/$row->id_telefono/$id_usuario/$tipo"?>" class="form-horizontal" method="post">
 								<div class="form-group">
-									<label class="col-sm-1 col-sm-offset-1 control-label">Teléfono</label>
+									<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('telefono'); ?></label>
 										
 										<div class="col-sm-3">
 											<div class="input-group">
@@ -23,14 +23,14 @@
 								</div>
 									 
 								<div class="form-group">
-								  	<label class="col-sm-1 col-sm-offset-1 control-label">Código Área</label>
+								  	<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('cod_area'); ?></label>
 										<div class="col-sm-3">
 											<input type="text" name="cod_area" class="numeric form-control" pattern="[0-9]*" value="<?php echo $row->cod_area ?>" required>	 
 										</div>
 								</div>
 									  									  
 								<div class="form-group">
-								  	<label class="col-sm-1 col-sm-offset-1 control-label">Tipo</label>
+								  	<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('tipo'); ?></label>
 								  		<div class="col-md-3">
 								    		<select name="id_tipo" class="form-control chosen-select">
 												<?php
@@ -46,7 +46,7 @@
 								</div>
 								
 								<div class="form-group">
-								  	<label class="col-sm-1 col-sm-offset-1 control-label">Fax</label>
+								  	<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('fax'); ?></label>
 								  		<div class="col-sm-1">
 								  			<?php
 												if($row->fax == 1)
@@ -60,8 +60,8 @@
 								<div class="form-group">
 								  	<label class="col-sm-1 control-label"></label>
 							      		<div class="col-md-6">
-									  		<button type="submit" class="btn btn-primary" name="btn-save" value="1">Guardar</button> 	
-								  	  		<input type="button" value="Cancelar" class="btn btn-danger" id="btn-cancelar" onclick="confirmar(<?php echo $id_usuario.",".$tipo; ?>)">
+									  		<button type="submit" class="btn btn-primary" name="btn-save" value="1"><?php echo $this->lang->line('guardar'); ?></button> 	
+								  	  		<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" id="btn-cancelar" onclick="confirmar(<?php echo $id_usuario.",".$tipo; ?>)">
 								  	  	</div>
 							</div>
 							</form>

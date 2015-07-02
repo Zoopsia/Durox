@@ -4,7 +4,7 @@
 			<div class="col-md-12">
 				<div class="panel panel-default">
 		  			<div class="panel-heading"><!---PESTAÑAS DEL PANEL DE NAVEGACION--->
-		  				Editar Correo
+		  				<?php echo $this->lang->line('editar').' '.$this->lang->line('correo'); ?>
 		  			</div>
 		  			<div class="panel-body"> 
 		  				
@@ -12,7 +12,7 @@
 		  				foreach ($mails as $row){ ?>	   			
 			  				<form action="<?php echo base_url()."index.php/mails/editarMails/$row->id_mail/$id_usuario/$tipo"?>" class="form-horizontal" method="post">
 								<div class="form-group">
-									<label class="col-sm-1 col-sm-offset-1 control-label">Teléfono</label>
+									<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('telefono'); ?></label>
 										
 										<div class="col-sm-4">
 											<div class="input-group">
@@ -23,7 +23,7 @@
 								</div>
 									 		  
 								<div class="form-group">
-								  	<label class="col-sm-2 col-sm-offset-1 control-label">Tipo</label>
+								  	<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('tipo'); ?></label>
 								  		<div class="col-md-3">
 								    		<select name="id_tipo" class="form-control chosen-select">
 												<?php
@@ -41,8 +41,8 @@
 								<div class="form-group">
 								  	<label class="col-sm-1 control-label"></label>
 							      		<div class="col-md-6">
-									  		<button type="submit" class="btn btn-primary" name="btn-save" value="1">Guardar</button> 	
-								  	  		<input type="button" value="Cancelar" class="btn btn-danger" id="btn-cancelar" onclick="confirmar(<?php echo $id_usuario.",".$tipo; ?>)">  		
+									  		<button type="submit" class="btn btn-primary" name="btn-save" value="1"><?php echo $this->lang->line('guardar'); ?></button> 	
+								  	  		<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" id="btn-cancelar" onclick="confirmar(<?php echo $id_usuario.",".$tipo; ?>)">  		
 										</div>
 								</div>
 							</form>

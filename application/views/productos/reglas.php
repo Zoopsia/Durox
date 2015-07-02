@@ -5,8 +5,8 @@
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
 		  				<ul class="nav nav-tabs">
-							<li class="active"><a href="#tab1" data-toggle="tab">Grupo de Usuarios</a></li>
-					    	<li><a href="#tab2" data-toggle="tab">Cliente</a></li>
+							<li class="active"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('grupos_clientes'); ?></a></li>
+					    	<li><a href="#tab2" data-toggle="tab"><?php echo $this->lang->line('cliente'); ?></a></li>
 						</ul>
 		  			</div>
 		  			<div class="panel-body">

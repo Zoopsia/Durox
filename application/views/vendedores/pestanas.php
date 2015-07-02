@@ -3,25 +3,26 @@
 	    <div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default">
-		  			<div class="panel-heading"><!---PESTAÑAS DEL PANEL DE NAVEGACION--->
+		  			<div class="panel-heading">
 		  				<ul class="nav nav-tabs nav-justified">
-							<li class="active"><a href="#tab1" data-toggle="tab">VENDEDOR</a></li>
-					    	<li><a href="#tab2" data-toggle="tab">Clientes</a></li>
+							<li class="active"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('vendedor'); ?></a></li>
+					    	<li><a href="#tab2" data-toggle="tab"><?php echo $this->lang->line('clientes'); ?></a></li>
 					    	<li role="presentation" class="dropdown">
 							    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-							      Perfiles <span class="caret"></span>
+							      <?php echo $this->lang->line('perfiles'); ?> <span class="caret"></span>
 							    </a>
 							    <ul class="dropdown-menu" role="menu">
-							     	<li><a href="#tab4" data-toggle="tab">Telefonos</a></li>
-							     	<li><a href="#tab5" data-toggle="tab">Direcciones</a></li>
-							     	<li><a href="#tab6" data-toggle="tab">E-mails</a></li>
+							     	<li><a href="#tab3" data-toggle="tab"><?php echo $this->lang->line('telefonos'); ?></a></li>
+							     	<li><a href="#tab4" data-toggle="tab"><?php echo $this->lang->line('direcciones'); ?></a></li>
+							     	<li><a href="#tab5" data-toggle="tab"><?php echo $this->lang->line('correos'); ?></a></li>
 							    </ul>
 							</li>
 					    		
-					    	<li><a href="#tab3" data-toggle="tab">Busqueda</a></li>
+					    	<li><a href="#tab6" data-toggle="tab"><?php echo $this->lang->line('pedidos'); ?></a></li>
+					    	<li><a href="#tab7" data-toggle="tab"><?php echo $this->lang->line('presupuestos'); ?></a></li>
+					    	<li><a href="#tab8" data-toggle="tab"><?php echo $this->lang->line('alarmas'); ?></a></li>
 						</ul>
 		  			</div>
-		  			
 		  			<div class="panel-body">
 		  				
 		  				
@@ -35,8 +36,11 @@
 						                    	foreach ($vendedores as $row) 
 							      				{
 					                				echo '<img alt="User Pic" src="'.base_url().'img/vendedores/User'.$row->id_vendedor.'.jpg" class="img-circle img-responsive">';
-					                			}
+					                				$url = base_url().'index.php/Vendedores/vendedores_abm/tab1/edit/'.$row->id_vendedor; 
+												}
 					                	?> 
+					                	<input type="button" class="btn-primary" style="margin-top: 10%" value="<?php echo $this->lang->line('editar'); ?>" onclick="document.location = '<?php echo $url; ?>'">
+					                
 					                </div>
 					                
 					                <div class=" col-md-9 col-lg-9 "> 
@@ -69,23 +73,23 @@
 	     						<table id="example" class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>
-							            	<th>ID</th>
-							                <th>Nombre</th>
-							                <th>Apellido</th>
-							                <th>Date</th>
-							                <th>Eliminado</th>
-							                <th>Eliminado</th>
+							            	<th><?php echo $this->lang->line('id'); ?></th>
+							                <th><?php echo $this->lang->line('nombre'); ?></th>
+							                <th><?php echo $this->lang->line('apellido'); ?></th>
+							                <th><?php echo $this->lang->line('date'); ?></th>
+							                <th><?php echo $this->lang->line('eliminado'); ?></th>
+							                <th><?php echo $this->lang->line('acciones'); ?></th>
 							            </tr>
 							        </thead>
 							 
 							        <tfoot>
 							            <tr>
-							            	<th>ID</th>
-							                <th>Nombre</th>
-							                <th>Apellido</th>
-							                <th>Date</th>
-							                <th>Eliminado</th>
-							                <th>Eliminado</th>
+							            	<th><?php echo $this->lang->line('id'); ?></th>
+							                <th><?php echo $this->lang->line('nombre'); ?></th>
+							                <th><?php echo $this->lang->line('apellido'); ?></th>
+							                <th><?php echo $this->lang->line('date'); ?></th>
+							                <th><?php echo $this->lang->line('eliminado'); ?></th>
+							                <th><?php echo $this->lang->line('acciones'); ?></th>
 							            </tr>
 							        </tfoot>
 							 
@@ -100,7 +104,8 @@
 													echo "<td>".$row->apellido."</td>";
 													echo '<td>'.$row->date_add.'</td>';
 													echo "<td>".$row->eliminado."</td>";
-													echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs'>Ver</a></td>";
+													echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs'>";
+													echo $this->lang->line('ver')."</a></td>";
 													echo "</a></tr>";
 												}
 											}
@@ -110,18 +115,15 @@
 							    
 	    					</div><!--TAB 2 CLIENTES VENDEDOR -->
 	    					<div class="tab-pane fade" id="tab3">
-	     						<!--TAB 3 PANEL DE BUSQUEDA -->
-	     						Busqueda
-	    					</div>
-	    					<div class="tab-pane fade" id="tab4">
-	     						<!--TAB 4 TELEFONOS VENDEDOR -->
+	     						<!--TAB 3 TELEFONOS CLIENTE -->
 	     						<?php
 						        	foreach ($vendedores as $row) 
 							    	{
 			     						echo "<div class='datatables-add-button'>";
 											/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 											echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/telefonos/telefonos/'.$row->id_vendedor.'/2">';
-											echo '<span class="ui-button-text">Añadir telefono</span>';
+											echo '<span class="ui-button-text">';
+											echo $this->lang->line('añadir').' '.$this->lang->line('telefono').'</span>';
 											echo "</a>";
 										echo "</div>";
 										echo '<div style="height:10px;"></div>';
@@ -130,21 +132,21 @@
 	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>
-							            	<th>Código Area</th>
-							            	<th>Teléfono</th>
-							                <th>Tipo</th>
-							                <th>Fax</th>
-							                <th>Accion</th>
+							            	<th><?php echo $this->lang->line('cod_area'); ?></th>
+							            	<th><?php echo $this->lang->line('telefonos'); ?></th>
+							                <th><?php echo $this->lang->line('tipo'); ?></th>
+							                <th><?php echo $this->lang->line('fax'); ?></th>
+							                <th><?php echo $this->lang->line('acciones'); ?></th>
 							            </tr>
 							        </thead>
 							 
 							        <tfoot>
 							            <tr>
-							            	<th>Código Area</th>
-							            	<th>Teléfono</th>
-							                <th>Tipo</th>
-							                <th>Fax</th>
-							                <th>Accion</th>
+							            	<th><?php echo $this->lang->line('cod_area'); ?></th>
+							            	<th><?php echo $this->lang->line('telefonos'); ?></th>
+							                <th><?php echo $this->lang->line('tipo'); ?></th>
+							                <th><?php echo $this->lang->line('fax'); ?></th>
+							                <th><?php echo $this->lang->line('acciones'); ?></th>
 							            </tr>
 							        </tfoot>
 							 
@@ -164,7 +166,7 @@
 															echo "<td>SI</td>";
 														/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 														echo '<td style="text-align: center;"><a href="'.base_url().'index.php/telefonos/cargaEditar/'.$row->id_telefono.'/'.$key->id_vendedor.'/2" class="btn btn-primary btn-xs">';
-														echo "Editar</a></td>";
+														echo $this->lang->line('editar')."</a></td>";
 														echo "</tr>";
 													}
 												}
@@ -174,15 +176,16 @@
 							    </table>
 							    
 	    					</div>
-	    					<div class="tab-pane fade" id="tab5">
-	     						<!--TAB 5 DIRECCIONES VENDEDOR -->
-								<?php
+	    					<div class="tab-pane fade" id="tab4">
+	     						<!--TAB 4 DIRECCIONES CLIENTE -->
+	     						<?php
 						        	foreach ($vendedores as $row) 
 							    	{
 			     						echo "<div class='datatables-add-button'>";
 											/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 											echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/direcciones/direcciones/'.$row->id_vendedor.'/2">';
-											echo '<span class="ui-button-text">Añadir Dirección</span>';
+											echo '<span class="ui-button-text">';
+											echo $this->lang->line('añadir').' '.$this->lang->line('direccion').'</span>';
 											echo "</a>";
 										echo "</div>";
 										echo '<div style="height:10px;"></div>';
@@ -191,23 +194,23 @@
 								<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>
-							            	<th>Dirección</th>
-							                <th>Tipo</th>
-							                <th>Departamento</th>
-							                <th>Provincia</th>
-							                <th>País</th>
-							                <th>Accion</th>
+							            	<th><?php echo $this->lang->line('direccion'); ?></th>
+							                <th><?php echo $this->lang->line('tipo'); ?></th>
+							                <th><?php echo $this->lang->line('departamento'); ?></th>
+							                <th><?php echo $this->lang->line('provincia'); ?></th>
+							                <th><?php echo $this->lang->line('pais'); ?></th>
+							                <th><?php echo $this->lang->line('acciones'); ?></th>
 							            </tr>
 							        </thead>
 							 
 							        <tfoot>
 							            <tr>
-							            	<th>Dirección</th>
-							                <th>Tipo</th>
-							                <th>Departamento</th>
-							                <th>Provincia</th>
-							                <th>País</th>
-							                <th>Accion</th>
+							            	<th><?php echo $this->lang->line('direccion'); ?></th>
+							                <th><?php echo $this->lang->line('tipo'); ?></th>
+							                <th><?php echo $this->lang->line('departamento'); ?></th>
+							                <th><?php echo $this->lang->line('provincia'); ?></th>
+							                <th><?php echo $this->lang->line('pais'); ?></th>
+							                <th><?php echo $this->lang->line('acciones'); ?></th>
 							            </tr>
 							        </tfoot>
 							 
@@ -226,7 +229,7 @@
 														echo '<td>'.$row->nombre_pais.'</td>';
 														/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 														echo '<td style="text-align: center;"><a href="'.base_url().'index.php/direcciones/cargaEditar/'.$row->id_direccion.'/'.$key->id_vendedor.'/2" class="btn btn-primary btn-xs">';
-														echo "Editar</a></td>";
+														echo $this->lang->line('editar')."</a></td>";
 														echo "</tr>";
 													}
 												}
@@ -235,15 +238,16 @@
 							        </tbody>
 							    </table>
 	    					</div>
-	    					<div class="tab-pane fade" id="tab6">
-	     						<!--TAB 6 E-MAILS VENDEDOR -->
+	    					<div class="tab-pane fade" id="tab5">
+	     						<!--TAB 5 E-MAILS CLIENTE -->					
 	     						<?php
 						        	foreach ($vendedores as $row) 
 							    	{
 			     						echo "<div class='datatables-add-button'>";
 											/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 											echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/mails/mails/'.$row->id_vendedor.'/2">';
-											echo '<span class="ui-button-text">Añadir E-Mail</span>';
+											echo '<span class="ui-button-text">';
+											echo $this->lang->line('añadir').' '.$this->lang->line('correo').'</span>';
 											echo "</a>";
 										echo "</div>";
 										echo '<div style="height:10px;"></div>';
@@ -252,17 +256,17 @@
 	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>
-							            	<th>Correo</th>
-							                <th>Tipo</th>
-							                <th>Accion</th>
+							            	<th><?php echo $this->lang->line('correo'); ?></th>
+							                <th><?php echo $this->lang->line('tipo'); ?></th>
+							                <th><?php echo $this->lang->line('acciones'); ?></th>
 							            </tr>
 							        </thead>
 							 
 							        <tfoot>
 							            <tr>
-							            	<th>Correo</th>
-							                <th>Tipo</th>
-							                <th>Accion</th>
+							            	<th><?php echo $this->lang->line('correo'); ?></th>
+							                <th><?php echo $this->lang->line('tipo'); ?></th>
+							                <th><?php echo $this->lang->line('acciones'); ?></th>
 							            </tr>
 							        </tfoot>
 							 
@@ -275,8 +279,9 @@
 											      		echo '<tr>';
 														echo '<td>'.$row->mail.'</td>';
 														echo '<td>'.$row->tipo.'</td>';
+														/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 														echo '<td style="text-align: center;"><a href="'.base_url().'index.php/mails/cargaEditar/'.$row->id_mail.'/'.$key->id_vendedor.'/2" class="btn btn-primary btn-xs">';
-														echo "Editar</a></td>";
+														echo $this->lang->line('editar')."</a></td>";
 														echo "</tr>";
 													}
 												}
@@ -285,6 +290,17 @@
 							        </tbody>
 							    </table>
 	    					</div>
+	    					
+	    					<div class="tab-pane fade" id="tab6">
+	     						<!--TAB 6 PANEL DE PEDIDOS -->
+	     						PEDIDOS
+	    					</div>
+	    					
+	    					<div class="tab-pane fade" id="tab7">
+	     						<!--TAB 7 PANEL DE PRESUPUESTOS -->
+	     						PRESUPUESTOS
+	    					</div>
+	    					
 	    				</div><!--contenedor de cada pestaña-->	
 		  			</div><!--panel body-->
 				</div><!--panel-->
