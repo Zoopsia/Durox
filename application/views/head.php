@@ -59,6 +59,7 @@
 --------------------------------------------------------------------->
 
 <link href="<?php echo base_url().'libraries/main/css/main.css'?>" rel="stylesheet"/>
+<link href="<?php echo base_url().'libraries/main/css/animations.css'?>" rel="stylesheet"/>
 <script src="<?php echo base_url().'libraries/main/js/main.js'?>"></script>
 
 

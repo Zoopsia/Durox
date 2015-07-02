@@ -37,7 +37,15 @@ function nuevoGrupo(){
 	 		$('#divregistro').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de reglas
 	 	}
 	});
-}	
+}
+
+$('#btn-guardar').click(function() {
+		$(this).addClass("slideDown");
+	});	
+	
+$('#btn-cancelar').click(function() {
+		$(this).addClass("slideDown");
+	});	
 </script>
 <nav class="navbar" role="navigation">
 	<div class="container">
@@ -54,20 +62,7 @@ function nuevoGrupo(){
 		  				<div class="tab-content">
 	    					<div class="tab-pane fade in active" id="tab1">
 	    					<!--Grupos de Clientes-->
-	    						
-	    						<?php 
-			  						if($save){
-			  							$arreglo_mensaje = array(			
-											'save' 			=> $save,
-											'tabla'			=> 'grupos',
-											'id_tabla'		=> $id_grupo,
-											'id_usuario'	=> null
-										);
-			  							$mensaje = get_mensaje($arreglo_mensaje);
-										echo $mensaje;
-									}
-								?> 	
-	     							    						
+	    							    						
 	    						<div class="row">
 	    							
 	    							<div class="col-md-1 dropdown">
@@ -110,7 +105,7 @@ function nuevoGrupo(){
 								        </a>
 								      </h4>
 								    </div>
-								    <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+								    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
 								      <div class="panel-body">
 								        <div class="row">
 											<div class="col-md-9 col-sm-offset-1">
@@ -170,7 +165,7 @@ function nuevoGrupo(){
 										  	  		-->
 										  	  		<input type="button" value="<?php echo $this->lang->line('guardar'); ?>" class="btn btn-primary" id="btn-guardar" onclick="nuevoGrupo()">
 										  	  		<button type="submit" class="btn btn-primary" name="btn-save" value="2"><?php echo $this->lang->line('guardaryvolver'); ?></button> 	
-										  	  		<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" id="btn-cancelar" onclick="">
+										  	  		<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" id="btn-cancelar" onclick="confirmarGrupo()">
 												</div>
 									</div>
 								</form>	

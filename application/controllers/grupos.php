@@ -171,9 +171,12 @@ class Grupos extends My_Controller {
 			);	
 		
 			if($save==1){
-				$mensaje  = '<div class="alert alert-success alert-dismissible" role="alert">';
-		  		$mensaje .= "El registro ";	
+				$mensaje  = '<div class="alert alert-success alert-dismissible slideDown" id="registro" role="alert">';
+		  		$mensaje .= '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';	
+		  		$mensaje .= "El registro ";
+				$mensaje .= '<a href="#">';
 				$mensaje .= $id_grupo;
+				$mensaje .= '</a>';
 				$mensaje .=	" fué insertado con exito";
 				$mensaje .= "</div>";
 				
@@ -187,7 +190,8 @@ class Grupos extends My_Controller {
 			}
 		}
 		else {
-			$mensaje  = '<div class="alert alert-danger alert-dismissible" role="alert">';
+			$mensaje  = '<div class="alert alert-danger alert-dismissible slideDown" id="registro" role="alert">';
+		  	$mensaje .= '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';	
 		  	$mensaje .= "El registro no fué insertado";
 			$mensaje .= "</div>";
 				

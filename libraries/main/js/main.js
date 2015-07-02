@@ -45,6 +45,11 @@ function confirmar($id,$tipo){
 	}
 }
 
-
+function confirmarGrupo(){
+	var c = confirm("Los datos no han sido guardados.\n¿Está seguro que quiere salir?");
+	if (c==true){
+			window.location.assign("/Durox/index.php/Grupos/adminClientes");
+	}
+}
 
 
