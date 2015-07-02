@@ -24,6 +24,19 @@ function clientesActivos(){
 	 		$('#tablaclientes').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de reglas
 	 	}
 	});
+}
+
+function nuevoGrupo(){
+ 	var grupo_nombre = $('input#grupo_nombre').val(); //Obtenemos el id del grupo seleccionado en la lista
+ 	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/grupos/nuevoGrupo', //Realizaremos la petición al metodo prueba del controlador cliente
+	 	data: {'grupo_nombre' : grupo_nombre,'btn-save': 1 }, //Pasaremos por parámetro POST el id del grupo
+	 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+	 		//Activar y Rellenar la tabla
+	 		$('#divregistro').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de reglas
+	 	}
+	});
 }	
 </script>
 <nav class="navbar" role="navigation">
@@ -134,29 +147,34 @@ function clientesActivos(){
 	    					</div> <!--TAB 1 GRUPOS CLIENTES -->
 	     					<div class="tab-pane fade" id="tab2">
 	     					<!--TAB 2 CARGA DE GRUPOS-->
-	     						
-		     					<form action="<?php echo base_url()."index.php/grupos/nuevoGrupo"?>" class="form-horizontal" method="post">
+	     						<div id="divregistro">
+	     							
+	     							
+	     						</div>
+	     						<form action="<?php echo base_url()."index.php/grupos/nuevoGrupo"?>" class="form-horizontal" method="post">
 									<div class="form-group">
 										<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupo'); ?></label>
 											
 											<div class="col-sm-3">
 												<div class="input-group">
 													<div class="input-group-addon"><span class="fa fa-users" aria-hidden="true"></span></div>
-													<input type="text" name="grupo_nombre" class="numeric form-control" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('nombre'); ?>" required> 	    	
+													<input type="text" id="grupo_nombre" name="grupo_nombre" class="numeric form-control" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('nombre'); ?>" required> 	    	
 											   	</div>
 											</div> 
 									</div>
 
 									<div class="form-group">
 										  	<label class="col-sm-1 control-label"></label>
-									      		<div class="col-md-6">
-											  		<button type="submit" class="btn btn-primary" name="btn-save" value="1"><?php echo $this->lang->line('guardar'); ?></button>	 
-											  		<button type="submit" class="btn btn-primary" name="btn-save" value="2"><?php echo $this->lang->line('guardaryvolver'); ?></button> 	
+									      		<div class="col-md-6">	
+										  	  		<!--<button type="submit" class="btn btn-primary" name="btn-save" value="1" onclick="nuevoGrupo()"><?php echo $this->lang->line('guardar'); ?></button> 
+										  	  		-->
+										  	  		<input type="button" value="<?php echo $this->lang->line('guardar'); ?>" class="btn btn-primary" id="btn-guardar" onclick="nuevoGrupo()">
+										  	  		<button type="submit" class="btn btn-primary" name="btn-save" value="2"><?php echo $this->lang->line('guardaryvolver'); ?></button> 	
 										  	  		<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" id="btn-cancelar" onclick="">
 												</div>
 									</div>
-								</form>		
-								    
+								</form>	
+	     						
 	    					</div><!--TAB 2 CARGA DE GRUPOS -->
 	    				
 	    					<div class="tab-pane fade" id="tab3">

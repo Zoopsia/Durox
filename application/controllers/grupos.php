@@ -153,29 +153,50 @@ class Grupos extends My_Controller {
  --------------------------------------------------------------------------------*/	
 
 	public function nuevoGrupo(){
+			
+		if($this->input->post('grupo_nombre')){
+			$grupo	= array(
+				'grupo_nombre' 		=> $this->input->post('grupo_nombre')			
+			);
+			
+			
+			$id_grupo = $this->grupos_model->insert($grupo);
+			
+			$save = $this->input->post('btn-save');
 		
-		$grupo	= array(
-			'grupo_nombre' 		=> $this->input->post('grupo_nombre')			
-		);
-
-		$id_grupo = $this->grupos_model->insert($grupo);
+			$arreglo_mensaje = array(			
+					'save' 			=> $save,
+					'tabla'			=> $this->_subject,
+					'id_tabla'		=> $id_grupo	
+			);	
 		
-		$save = $this->input->post('btn-save');
-	
-		$arreglo_mensaje = array(			
-				'save' 			=> $save,
-				'tabla'			=> $this->_subject,
-				'id_tabla'		=> $id_grupo	
-		);	
-	
-		if($save==1){
-			$this->adminClientes($id_grupo,$this->_subject,$save);
+			if($save==1){
+				$mensaje  = '<div class="alert alert-success alert-dismissible" role="alert">';
+		  		$mensaje .= "El registro ";	
+				$mensaje .= $id_grupo;
+				$mensaje .=	" fué insertado con exito";
+				$mensaje .= "</div>";
+				
+				
+				echo $mensaje;
+				
+			}
+			else if($save==2){
+				$mensaje = get_mensaje($arreglo_mensaje);
+				$this->adminClientes($id_grupo);
+			}
 		}
-		else if($save==2){
-			$mensaje = get_mensaje($arreglo_mensaje);
-			$this->adminClientes($id_grupo);
+		else {
+			$mensaje  = '<div class="alert alert-danger alert-dismissible" role="alert">';
+		  	$mensaje .= "El registro no fué insertado";
+			$mensaje .= "</div>";
+				
+				
+			echo $mensaje;
 		}
 	}
+	
+
 	
 	public function cargaEditar($id_grupo){
 	
