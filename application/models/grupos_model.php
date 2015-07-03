@@ -18,32 +18,7 @@ class Grupos_model extends My_Model {
 		);
 	}
 	
-	
-	function getGrupos(){
-			
-		$sql = "SELECT 
-					*
-				FROM 
-					grupos_clientes
-				WHERE 
-					1";
-					
-		$query = $this->db->query($sql);
-		
-		if($query->num_rows() > 0)
-		{
-			foreach ($query->result() as $fila)
-			{
-				$data[] = $fila;
-			}
-			return $data;
-		}
-		else
-		{
-			return FALSE;
-		}
-	}
-	
+
 	function getReglasGrupos($id){
 		
 		$sql = "SELECT 

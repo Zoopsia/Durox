@@ -27,7 +27,7 @@ function clientesActivos(){
 }
 
 function nuevoGrupo(){
- 	var grupo_nombre = $('input#grupo_nombre').val(); //Obtenemos el id del grupo seleccionado en la lista
+ 	var grupo_nombre = $('input#grupo_nombre').val(); //Obtenemos el nombre del grupo seleccionado en la lista
  	$.ajax({
 	 	type: 'POST',
 	 	url: '<?php echo base_url(); ?>index.php/grupos/nuevoGrupo', //Realizaremos la petición al metodo prueba del controlador cliente
@@ -38,6 +38,68 @@ function nuevoGrupo(){
 	 	}
 	});
 }
+
+function nuevoCliente(){
+ 	var id_grupo_cliente = $('select#grupos').val(); //Obtenemos el id del grupo seleccionado en la lista
+ 	if(id_grupo_cliente){
+	
+		$.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/grupos/nuevoCliente', //Realizaremos la petición al metodo prueba del controlador cliente
+		 	data: {'id_grupo_cliente' : id_grupo_cliente}, //Pasaremos por parámetro POST el id del grupo
+		 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+		 		//Activar y Rellenar la tabla
+		 		$('#clientes').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de reglas
+		 		$('.prueba').DataTable();
+		 	}
+		});
+	}
+}		
+function nuevoCliente2(){
+ 	var id_grupo_cliente = $('select#grupos').val(); //Obtenemos el id del grupo seleccionado en la lista
+ 	if(id_grupo_cliente){
+			
+		$.ajax({
+			 type: 'POST',
+			 url: '<?php echo base_url(); ?>index.php/grupos/grupoCliente', //Realizaremos la petición al metodo prueba del controlador cliente
+			 data: {'id_grupo_cliente' : id_grupo_cliente}, //Pasaremos por parámetro POST el id del grupo
+			 success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+			 	//Activar y Rellenar la tabla	
+			 	$('#clientegrupo').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de reglas
+			 	$('.prueba').DataTable();
+			 }
+		});
+	}
+}
+
+
+function cargarCliente($id_cliente){
+ 	var id_cliente 			= $id_cliente; //Obtenemos el id del grupo seleccionado en la lista
+	var id_grupo_cliente 	= $('select#grupos').val();
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo base_url(); ?>index.php/grupos/cargarCliente', //Realizaremos la petición al metodo prueba del controlador cliente
+		data: {'id_cliente' : id_cliente, 'id_grupo_cliente' : id_grupo_cliente}, //Pasaremos por parámetro POST el id del grupo
+		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+		 	//Activar y Rellenar la tabla
+		 	nuevoCliente();
+		}
+	});	
+}
+
+function sacarCliente($id_cliente){
+ 	var id_cliente 			= $id_cliente; //Obtenemos el id del grupo seleccionado en la lista
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo base_url(); ?>index.php/grupos/sacarCliente', //Realizaremos la petición al metodo prueba del controlador cliente
+		data: {'id_cliente' : id_cliente}, //Pasaremos por parámetro POST el id del grupo
+		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+		 	//Activar y Rellenar la tabla
+		 	nuevoCliente2();
+		}
+	});	
+}
+
 
 $('#btn-guardar').click(function() {
 		$(this).addClass("slideDown");
@@ -52,7 +114,7 @@ $('#btn-cancelar').click(function() {
 	    <div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default">
-		  			<div class="panel-heading">
+		  			<div class="panel-heading">			
 		  				<ul class="nav nav-tabs">
 							<li class="active"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('grupos_clientes'); ?></a></li>
 						</ul>
@@ -174,19 +236,37 @@ $('#btn-cancelar').click(function() {
 	    				
 	    					<div class="tab-pane fade" id="tab3">
 	     						<!--TAB 3 CARGA DE CLIENTE -->
-	     						<div class="row">
-	     						<label class="col-sm-1 control-label"><?php echo $this->lang->line('clientes'); ?></label>
-									<div class="col-md-4">
-										<select id="clientes" name="id_cliente" class="form-control chosen-select" data-placeholder="Seleccione un Cliente..." onchange="">
-		    										<option></option>
-		    										<option value="United States">United States</option>
-		    										<option value="United States">United States</option>
-		    										<option value="United States">United States</option>
-		    										<option value="United States">United States</option>
-		    							</select>
-									</div>
-								</div>
-	    					</div>
+	     						
+		     						<div class="col-sm-2">
+							            <nav class="nav-tab nav-justified nav-sidebar">
+							                <ul class="nav nav-sidebar">
+							                    <li><a href="#tab6" data-toggle="tab" onclick="nuevoCliente()"><?php echo $this->lang->line('clientes'); ?></a></li>
+							                    <li><a href="#tab7" data-toggle="tab" onclick="nuevoCliente2()"><?php echo $this->lang->line('clientes').' '.$this->lang->line('grupo'); ?></a></li>
+							                </ul>
+							            </nav>
+							        </div>
+	     						
+	     							
+	     						<div class="tab-content">
+		     						<div class="tab-pane fade" id="tab6">
+		     							<div class="col-md-9" >
+											<div id="clientes">
+												<!-- Esta tabla se llena con AJAX -->		
+											</div>
+										</div>
+		     						</div>
+	     							
+	     							<div class="tab-pane fade" id="tab7">
+		     							<div class="col-md-9">
+											<div id="clientegrupo">
+												<!-- Esta tabla se llena con AJAX -->		
+											</div>
+										</div>
+		     						</div>
+	     						</div>
+								
+							</div>
+	    					
 	    					<div class="tab-pane fade" id="tab4">
 	     						<!--TAB 4 DIRECCIONES CLIENTE -->
 	     						
@@ -196,12 +276,12 @@ $('#btn-cancelar').click(function() {
 	     						
 	    					</div>
 	    					
-	    					<div class="tab-pane fade" id="tab6">
+	    					<div class="tab-pane fade" id="tab">
 	     						<!--TAB 6 PANEL DE PEDIDOS -->
 	     						
 	    					</div>
 	    					
-	    					<div class="tab-pane fade" id="tab7">
+	    					<div class="tab-pane fade" id="tab">
 	     						<!--TAB 7 PANEL DE PRESUPUESTOS -->
 	     						
 	    					</div>
