@@ -27,11 +27,30 @@ function clientesActivos(){
 }
 
 function nuevoGrupo(){
- 	var grupo_nombre = $('input#grupo_nombre').val(); //Obtenemos el nombre del grupo seleccionado en la lista
+ 	var grupo_nombre	= $('input#grupo_nombre').val(); //Obtenemos el nombre del grupo seleccionado en la lista
+ 	var regla			= $('input#regla').val();
+ 	var cant_min		= $('input#cant_min').val();
+ 	var precio_min		= $('input#precio_min').val();
+ 	var desde			= $('input#desde').val();
+ 	var hasta			= $('input#hasta').val();
+ 	var tipovalor		= $('select#tipovalor').val();
+ 	var valor			= $('input#valor').val();
+ 	var tipo			= $('select#tipo').val();
+ 	
  	$.ajax({
 	 	type: 'POST',
 	 	url: '<?php echo base_url(); ?>index.php/grupos/nuevoGrupo', //Realizaremos la petición al metodo prueba del controlador cliente
-	 	data: {'grupo_nombre' : grupo_nombre,'btn-save': 1 }, //Pasaremos por parámetro POST el id del grupo
+	 	data: {'grupo_nombre' 	: grupo_nombre,
+	 			'btn-save'		: 1, 
+	 			'regla'			: regla,
+	 			'cant_min'		: cant_min,
+	 			'precio_min'	: precio_min,
+	 			'desde'			: desde,
+	 			'hasta'			: hasta,
+	 			'tipovalor'		: tipovalor,
+	 			'valor'			: valor,
+	 			'tipo'			: tipo,
+	 	}, //Pasaremos por parámetro POST
 	 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
 	 		//Activar y Rellenar la tabla
 	 		$('#divregistro').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de reglas
@@ -101,13 +120,7 @@ function sacarCliente($id_cliente){
 }
 
 
-$('#btn-guardar').click(function() {
-		$(this).addClass("slideDown");
-	});	
 	
-$('#btn-cancelar').click(function() {
-		$(this).addClass("slideDown");
-	});	
 </script>
 <nav class="navbar" role="navigation">
 	<div class="container">
@@ -208,47 +221,145 @@ $('#btn-cancelar').click(function() {
 	     							
 	     							
 	     						</div>
-	     						<form action="<?php echo base_url()."index.php/grupos/nuevoGrupo"?>" class="form-horizontal" method="post">
-									<div class="form-group">
-										<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupo'); ?></label>
-											
-											<div class="col-sm-3">
-												<div class="input-group">
-													<div class="input-group-addon"><span class="fa fa-users" aria-hidden="true"></span></div>
-													<input type="text" id="grupo_nombre" name="grupo_nombre" class="numeric form-control" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('nombre'); ?>" required> 	    	
-											   	</div>
-											</div> 
-									</div>
-
-									<div class="form-group">
-										  	<label class="col-sm-1 control-label"></label>
-									      		<div class="col-md-6">	
-										  	  		<!--<button type="submit" class="btn btn-primary" name="btn-save" value="1" onclick="nuevoGrupo()"><?php echo $this->lang->line('guardar'); ?></button> 
-										  	  		-->
-										  	  		<input type="button" value="<?php echo $this->lang->line('guardar'); ?>" class="btn btn-primary" id="btn-guardar" onclick="nuevoGrupo()">
-										  	  		<button type="submit" class="btn btn-primary" name="btn-save" value="2"><?php echo $this->lang->line('guardaryvolver'); ?></button> 	
-										  	  		<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" id="btn-cancelar" onclick="confirmarGrupo()">
+	     						
+	     						<div class="col-sm-2">
+							        <nav class="nav-tab nav-justified nav-sidebar">
+							        	<ul class="nav nav-sidebar">
+							            	<li><a href="#grupo1" data-toggle="tab"><?php echo $this->lang->line('grupo'); ?></a></li>
+							                <li><a href="#grupo2" data-toggle="tab"><?php echo $this->lang->line('regla'); ?></a></li>
+							            </ul>
+							    	</nav>
+							    </div>
+	     						
+	     						<div class="tab-content">
+		     						<div class="tab-pane fade" id="grupo1">
+		     							<div class="col-md-9" >
+				     						<form action="<?php echo base_url()."index.php/grupos/nuevoGrupo"?>" class="form-horizontal" method="post">
+												
+												<div class="form-group">
+													<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupo'); ?></label>
+														
+														<div class="col-sm-5">
+															<div class="input-group">
+																<div class="input-group-addon"><span class="fa fa-users" aria-hidden="true"></span></div>
+																<input type="text" id="grupo_nombre" name="grupo_nombre" class="numeric form-control" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('nombre'); ?>" required> 	    	
+														   	</div>
+														</div> 
 												</div>
+		
+												<div class="form-group">
+										  			<label class="col-sm-1 col-sm-offset-1 control-label"></label>
+											      		<div class="col-md-6">	
+												  	  		<!--<button type="submit" class="btn btn-primary" name="btn-save" value="1" onclick="nuevoGrupo()"><?php echo $this->lang->line('guardar'); ?></button> 
+												  	  		-->
+												  	  		<input type="button" value="<?php echo $this->lang->line('guardar'); ?>" class="btn btn-primary" id="btn-guardar" onclick="nuevoGrupo()">
+												  	  		<button type="submit" class="btn btn-primary" name="btn-save" value="2"><?php echo $this->lang->line('guardaryvolver'); ?></button> 	
+												  	  		<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" id="btn-cancelar" onclick="confirmarGrupo()">
+														</div>
+												</div>
+											</form>
+										</div>
 									</div>
-								</form>	
+									
+									<div class="tab-pane fade" id="grupo2">
+		     							<div class="col-md-9">
+		     								<form action="<?php echo base_url()."index.php/grupos/nuevoGrupo"?>" class="form-horizontal" method="post">
+											
+		     									<div class="form-group">
+													<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('regla'); ?></label>
+														<div class="col-sm-5">
+															<input type="text" id="regla" name="regla" class="numeric form-control" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('nombre'); ?>" required> 	    	
+														</div> 
+												</div>
+												
+												<div class="form-group">
+													<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('precio').' '.$this->lang->line('minimo'); ?></label>
+														<div class="col-sm-4">
+															<input type="text" id="cant_min" name="cant_min" class="numeric form-control" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('cantidad'); ?>"> 	    	
+														</div> 
+												</div>
+												
+												<div class="form-group">
+													<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('cantidad').' '.$this->lang->line('minima'); ?></label>
+														<div class="col-sm-4">
+															<input type="text" id="precio_min" name="precio_min" class="numeric form-control" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('cantidad'); ?>"> 	    	
+														</div> 
+												</div>
+												
+												<div class="form-group">
+													<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('date').' '.$this->lang->line('inicio'); ?></label>
+														<div class="col-sm-4">
+															<input type="date" id="desde" name="desde" class="numeric form-control" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('date'); ?>"> 	    	
+														</div> 
+												</div>
+												
+												<div class="form-group">
+													<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('date').' '.$this->lang->line('hasta'); ?></label>
+														<div class="col-sm-4">
+															<input type="date" id="hasta" name="hasta" class="numeric form-control" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('date'); ?>"> 	    	
+														</div> 
+												</div>
+												
+												<div class="form-group">
+													<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('cantidad'); ?></label>
+														<div class="col-sm-4">
+															<select name="tipovalor" id="tipovalor" class="form-control">
+																<option value="0" selected><?php echo $this->lang->line('fija').' $'; ?></option>
+																<option value="1"><?php echo $this->lang->line('porcentual').' %'; ?></option>
+															</select>
+														</div> 
+												</div>
+												
+												<div class="form-group">
+													<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('valor'); ?></label>
+														<div class="col-sm-4">
+															<input type="text" id="valor" name="valor" class="numeric form-control" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('valor'); ?>" required> 	    	
+														</div> 
+												</div>
+												
+												<div class="form-group">
+													<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('tipo'); ?></label>
+														<div class="col-sm-4">
+															<select name="tipo" id="tipo" class="form-control">
+																<option value="0" selected><?php echo $this->lang->line('aumento'); ?></option>
+																<option value="1"><?php echo $this->lang->line('descuento'); ?></option>
+															</select>
+														</div> 
+												</div>
+												
+												<div class="form-group">
+										  			<label class="col-sm-1 col-sm-offset-1 control-label"></label>
+											      		<div class="col-md-6">	
+												  	  		<!--<button type="submit" class="btn btn-primary" name="btn-save" value="1" onclick="nuevoGrupo()"><?php echo $this->lang->line('guardar'); ?></button> 
+												  	  		-->
+												  	  		<input type="button" value="<?php echo $this->lang->line('guardar'); ?>" class="btn btn-primary" id="btn-guardar" onclick="nuevoGrupo()">
+												  	  		<button type="submit" class="btn btn-primary" name="btn-save" value="2"><?php echo $this->lang->line('guardaryvolver'); ?></button> 	
+												  	  		<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" id="btn-cancelar" onclick="confirmarGrupo()">
+														</div>
+												</div>
+												
+											</form>
+										</div>
+		     						</div>
+								</div>	
 	     						
 	    					</div><!--TAB 2 CARGA DE GRUPOS -->
 	    				
 	    					<div class="tab-pane fade" id="tab3">
 	     						<!--TAB 3 CARGA DE CLIENTE -->
 	     						
-		     						<div class="col-sm-2">
-							            <nav class="nav-tab nav-justified nav-sidebar">
-							                <ul class="nav nav-sidebar">
-							                    <li><a href="#tab6" data-toggle="tab" onclick="nuevoCliente()"><?php echo $this->lang->line('clientes'); ?></a></li>
-							                    <li><a href="#tab7" data-toggle="tab" onclick="nuevoCliente2()"><?php echo $this->lang->line('clientes').' '.$this->lang->line('grupo'); ?></a></li>
-							                </ul>
-							            </nav>
-							        </div>
+		     					<div class="col-sm-2">
+							        <nav class="nav-tab nav-justified nav-sidebar">
+							        	<ul class="nav nav-sidebar">
+							            	<li><a href="#cliente1" data-toggle="tab" onclick="nuevoCliente()"><?php echo $this->lang->line('clientes'); ?></a></li>
+							                <li><a href="#cliente2" data-toggle="tab" onclick="nuevoCliente2()"><?php echo $this->lang->line('clientes').' '.$this->lang->line('grupo'); ?></a></li>
+							            </ul>
+							    	</nav>
+							    </div>
 	     						
 	     							
 	     						<div class="tab-content">
-		     						<div class="tab-pane fade" id="tab6">
+		     						<div class="tab-pane fade" id="cliente1">
 		     							<div class="col-md-9" >
 											<div id="clientes">
 												<!-- Esta tabla se llena con AJAX -->		
@@ -256,7 +367,7 @@ $('#btn-cancelar').click(function() {
 										</div>
 		     						</div>
 	     							
-	     							<div class="tab-pane fade" id="tab7">
+	     							<div class="tab-pane fade" id="cliente2">
 		     							<div class="col-md-9">
 											<div id="clientegrupo">
 												<!-- Esta tabla se llena con AJAX -->		

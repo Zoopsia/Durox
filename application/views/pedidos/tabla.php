@@ -15,7 +15,7 @@ foreach($css_files as $file): ?>
 		  			<div class="panel-heading">
 		  				<ul class="nav nav-pills">
 							<li class="<?php echo $array_n['listado']?>"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('pedidos'); ?></a></li>
-					    	<li class="pull-right <?php echo $array_n['busqueda']?>"><a href="#tab2" data-toggle="tab"><?php echo $this->lang->line('busqueda_avanzada'); ?>/a></li>
+					    	<li class="pull-right <?php echo $array_n['busqueda']?>"><a href="#tab2" data-toggle="tab"><?php echo $this->lang->line('busqueda_avanzada'); ?></a></li>
 						</ul>
 		  			</div>
 		  			

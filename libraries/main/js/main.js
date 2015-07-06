@@ -59,4 +59,12 @@ function confirmarGrupo(){
 	}
 }
 
+$('#btn-guardar').click(function() {
+	$(this).addClass("slideDown");
+});	
+	
+$('#btn-cancelar').click(function() {
+	$(this).addClass("slideDown");
+});	
+
 

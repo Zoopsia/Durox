@@ -17,6 +17,7 @@ class Grupos extends My_Controller {
 		$this->load->model('empresas_model');
 		$this->load->model('vendedores_model');
 		$this->load->model('clientes_model');
+		$this->load->model('reglas_model');
 		$this->load->model($this->_subject.'_model');
 	}
 
@@ -152,45 +153,75 @@ class Grupos extends My_Controller {
  --------------------------------------------------------------------------------*/	
 
 	public function nuevoGrupo(){
+		
+		/*-----MENSAJE DE REGISTRO NO INSERTADO----*/
+		$mensaje  = '<div class="alert alert-danger alert-dismissible slideDown" id="registro" role="alert">';
+		$mensaje .= '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';	
+		$mensaje .= "El registro no fué insertado";
+		$mensaje .= "</div>";	
 			
 		if($this->input->post('grupo_nombre')){
-			$grupo	= array(
-				'grupo_nombre' 		=> $this->input->post('grupo_nombre')			
-			);
-			
-			$id_grupo = $this->grupos_model->insert($grupo);
-			$save = $this->input->post('btn-save');
-			$arreglo_mensaje = array(			
-				'save' 			=> $save,
-				'tabla'			=> $this->_subject,
-				'id_tabla'		=> $id_grupo	
-			);	
-		
-			if($save==1){
-				$mensaje  = '<div class="alert alert-success alert-dismissible slideDown" id="registro" role="alert">';
-		  		$mensaje .= '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';	
-		  		$mensaje .= "El registro ";
-				$mensaje .= '<a href="#">';
-				$mensaje .= $id_grupo;
-				$mensaje .= '</a>';
-				$mensaje .=	" fué insertado con exito";
-				$mensaje .= "</div>";
-				echo $mensaje;
+			if($this->input->post('regla')){
+				if($this->input->post('valor')){
+						
+					$grupo	= array(
+					'grupo_nombre' 		=> $this->input->post('grupo_nombre')			
+					);
 				
+					$id_grupo = $this->grupos_model->insert($grupo);
+					
+					$regla  = array(
+						'id_grupo_cliente'	=> $id_grupo,
+			 			'nombre'			=> $this->input->post('regla'),
+			 			'cantidad_min'		=> $this->input->post('cant_min'),
+			 			'precio_min'		=> $this->input->post('precio_min'),
+			 			'desde'				=> $this->input->post('desde'),
+			 			'hasta'				=> $this->input->post('hasta'),
+			 			'fijo_porcentual'	=> $this->input->post('tipovalor'),
+			 			'valor'				=> $this->input->post('valor'),
+			 			'aumento_descuento'	=> $this->input->post('tipo')
+					);
+					
+					
+					$id_regla = $this->reglas_model->insert($regla);
+					
+					
+					
+					$save = $this->input->post('btn-save');
+					
+					$arreglo_mensaje = array(			
+						'save' 			=> $save,
+						'tabla'			=> $this->_subject,
+						'id_tabla'		=> $id_grupo	
+					);	
+				
+					if($save==1){
+						$mensaje  = '<div class="alert alert-success alert-dismissible slideDown" id="registro" role="alert">';
+				  		$mensaje .= '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';	
+				  		$mensaje .= "El registro ";
+						$mensaje .= '<a href="#">';
+						$mensaje .= $id_grupo;
+						$mensaje .= '</a>';
+						$mensaje .=	" fué insertado con exito";
+						$mensaje .= "</div>";
+						echo $mensaje;
+						
+					}
+					else if($save==2){
+						$mensaje = get_mensaje($arreglo_mensaje);
+						$this->adminClientes($id_grupo);
+					}
 			}
-			else if($save==2){
-				$mensaje = get_mensaje($arreglo_mensaje);
-				$this->adminClientes($id_grupo);
-			}
+			else				
+				echo $mensaje;	
 		}
-		else {
-			$mensaje  = '<div class="alert alert-danger alert-dismissible slideDown" id="registro" role="alert">';
-		  	$mensaje .= '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';	
-		  	$mensaje .= "El registro no fué insertado";
-			$mensaje .= "</div>";				
+		else		
 			echo $mensaje;
-		}
+			
 	}
+	else 			
+		echo $mensaje;
+}
 	
 /*--------------------------------------------------------------------------------	
  --------------------------------------------------------------------------------
@@ -283,7 +314,7 @@ class Grupos extends My_Controller {
 		
 		$grupos_clientes	= $this->grupos_model->getClientesGrupos($id_grupo_cliente);
 		
-		//-----LLENO TABLA CON CLIENTES FUERA DEL GRUPO------//
+		//-----LLENO TABLA CON CLIENTES DEL GRUPO------//
 
 		$table =	'<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							<thead>
