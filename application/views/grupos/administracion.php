@@ -91,7 +91,6 @@ function nuevoCliente2(){
 	}
 }
 
-
 function cargarCliente($id_cliente){
  	var id_cliente 			= $id_cliente; //Obtenemos el id del grupo seleccionado en la lista
 	var id_grupo_cliente 	= $('select#grupos').val();
@@ -118,10 +117,15 @@ function sacarCliente($id_cliente){
 		}
 	});	
 }
-
-
-	
+function volverShow(){
+	$('#principal').addClass("active");
+	document.getElementById('volver').style.display = 'block';
+}
+function volverHide(){
+	document.getElementById('volver').style.display = 'none';
+}
 </script>
+
 <nav class="navbar" role="navigation">
 	<div class="container">
 	    <div class="row">
@@ -129,7 +133,8 @@ function sacarCliente($id_cliente){
 				<div class="panel panel-default">
 		  			<div class="panel-heading">			
 		  				<ul class="nav nav-tabs">
-							<li class="active"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('grupos_clientes'); ?></a></li>
+							<li id="principal" class="active"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('grupos_clientes'); ?></a></li>
+							<li><a href="#tab1" data-toggle="tab" id="volver" style="display : none" onclick="volverHide()"><?php echo $this->lang->line('volver'); ?></a></li>
 						</ul>
 		  			</div>
 		  			<div class="panel-body">		  				
@@ -145,9 +150,9 @@ function sacarCliente($id_cliente){
 												<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
 											</button>
 											<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-												<li><a href="#tab2" data-toggle="tab"><?php echo $this->lang->line('nuevo').' '.$this->lang->line('grupo'); ?></a></li>
-												<li><a href="#tab3" data-toggle="tab"><?php echo $this->lang->line('agregar').' '.$this->lang->line('cliente'); ?></a></li>
-												<li><a href="#"><?php echo $this->lang->line('agregar').' '.$this->lang->line('regla'); ?></a></li>
+												<li><a href="#tab2" data-toggle="tab" onclick="volverShow()"><?php echo $this->lang->line('nuevo').' '.$this->lang->line('grupo'); ?></a></li>
+												<li><a href="#tab3" data-toggle="tab" onclick="volverShow()"><?php echo $this->lang->line('agregar').' '.$this->lang->line('cliente'); ?></a></li>
+												<li><a href="#tab4" data-toggle="tab" onclick="volverShow()"><?php echo $this->lang->line('editar').' '.$this->lang->line('grupo'); ?></a></li>
 												<li><a href="#"><?php echo $this->lang->line('administrar').' '.$this->lang->line('reglas'); ?></a></li>
 											</ul>
 									</div>
