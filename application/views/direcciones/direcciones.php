@@ -70,7 +70,7 @@ function provincias_activas(){
 											<div class="col-sm-3">	
 												<div class="input-group">		
 													<div class="input-group-addon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></div>
-													<input type="text" name="direccion" class="numeric form-control" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('direccion'); ?>" required> 	    	 	
+													<input type="text" name="direccion" class="form-control" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('direccion'); ?>" required> 	    	 	
 												</div>
 											</div> 
 									</div>

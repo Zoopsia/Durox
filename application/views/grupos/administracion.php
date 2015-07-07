@@ -26,6 +26,19 @@ function clientesActivos(){
 	});
 }
 
+function editarGrupo(){
+ 	var id_grupo_cliente = $('select#grupos').val(); //Obtenemos el id del grupo seleccionado en la lista
+ 	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/grupos/editarGrupo', //Realizaremos la petición al metodo prueba del controlador cliente
+	 	data: 'id_grupo_cliente='+id_grupo_cliente, //Pasaremos por parámetro POST el id del grupo
+	 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+	 		//Activar y Rellenar la tabla
+	 		$('#editargrupo').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de reglas
+	 	}
+	});
+}
+
 function nuevoGrupo(){
  	var grupo_nombre	= $('input#grupo_nombre').val(); //Obtenemos el nombre del grupo seleccionado en la lista
  	var regla			= $('input#regla').val();
@@ -117,14 +130,24 @@ function sacarCliente($id_cliente){
 		}
 	});	
 }
+
+$(document).ready(function(){
+	document.getElementById('volver').style.display = 'none';
+	
+});
+
 function volverShow(){
-	$('#principal').addClass("active");
 	document.getElementById('volver').style.display = 'block';
+	$('#volver').removeClass('active');
 }
 function volverHide(){
 	document.getElementById('volver').style.display = 'none';
+	$('.desactive').removeClass('active');
+	
 }
 </script>
+
+<?php $array_n = pestañaActivaGrupo($this->uri->segment(3));?>
 
 <nav class="navbar" role="navigation">
 	<div class="container">
@@ -133,8 +156,8 @@ function volverHide(){
 				<div class="panel panel-default">
 		  			<div class="panel-heading">			
 		  				<ul class="nav nav-tabs">
-							<li id="principal" class="active"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('grupos_clientes'); ?></a></li>
-							<li><a href="#tab1" data-toggle="tab" id="volver" style="display : none" onclick="volverHide()"><?php echo $this->lang->line('volver'); ?></a></li>
+							<li class="<?php echo $array_n['main']; ?>"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('grupos_clientes'); ?></a></li>
+							<li id="volver" class="pull-right desactive"><a href="#tab1" data-toggle="tab"  onclick="volverHide()"><?php echo $this->lang->line('volver'); ?></a></li>
 						</ul>
 		  			</div>
 		  			<div class="panel-body">		  				
@@ -150,9 +173,9 @@ function volverHide(){
 												<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
 											</button>
 											<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-												<li><a href="#tab2" data-toggle="tab" onclick="volverShow()"><?php echo $this->lang->line('nuevo').' '.$this->lang->line('grupo'); ?></a></li>
-												<li><a href="#tab3" data-toggle="tab" onclick="volverShow()"><?php echo $this->lang->line('agregar').' '.$this->lang->line('cliente'); ?></a></li>
-												<li><a href="#tab4" data-toggle="tab" onclick="volverShow()"><?php echo $this->lang->line('editar').' '.$this->lang->line('grupo'); ?></a></li>
+												<li class="<?php echo $array_n['nuevogrupo']; ?> desactive"><a href="#tab2" data-toggle="tab" onclick="volverShow()"><?php echo $this->lang->line('nuevo').' '.$this->lang->line('grupo'); ?></a></li>
+												<li class="<?php echo $array_n['agregarcliente']; ?> desactive"><a href="#tab3" data-toggle="tab" onclick="volverShow()"><?php echo $this->lang->line('agregar').' '.$this->lang->line('cliente'); ?></a></li>
+												<li class="<?php echo $array_n['editargrupo']; ?> desactive"><a href="#tab4" data-toggle="tab" onclick="volverShow(), editarGrupo()"><?php echo $this->lang->line('editar').' '.$this->lang->line('grupo'); ?></a></li>
 												<li><a href="#"><?php echo $this->lang->line('administrar').' '.$this->lang->line('reglas'); ?></a></li>
 											</ul>
 									</div>
@@ -220,7 +243,7 @@ function volverHide(){
 								</div>
 				
 	    					</div> <!--TAB 1 GRUPOS CLIENTES -->
-	     					<div class="tab-pane fade" id="tab2">
+	     					<div class="tab-pane fade <?php echo $array_n['nuevogrupo']; ?>" id="tab2">
 	     					<!--TAB 2 CARGA DE GRUPOS-->
 	     						<div id="divregistro">
 	     							
@@ -350,7 +373,7 @@ function volverHide(){
 	     						
 	    					</div><!--TAB 2 CARGA DE GRUPOS -->
 	    				
-	    					<div class="tab-pane fade" id="tab3">
+	    					<div class="tab-pane fade <?php echo $array_n['agregarcliente']; ?>" id="tab3">
 	     						<!--TAB 3 CARGA DE CLIENTE -->
 	     						
 		     					<div class="col-sm-2">
@@ -383,24 +406,17 @@ function volverHide(){
 								
 							</div>
 	    					
-	    					<div class="tab-pane fade" id="tab4">
-	     						<!--TAB 4 DIRECCIONES CLIENTE -->
-	     						
-	    					</div>
-	    					<div class="tab-pane fade" id="tab5">
-	     						<!--TAB 5 E-MAILS CLIENTE -->					
-	     						
-	    					</div>
-	    					
-	    					<div class="tab-pane fade" id="tab">
-	     						<!--TAB 6 PANEL DE PEDIDOS -->
-	     						
+	    					<div class="tab-pane fade <?php echo $array_n['editargrupo']; ?>" id="tab4">
+	     						<!--TAB 4 EDITAR GRUPO -->
+	     						<div class="form-group">
+									<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('precio').' '.$this->lang->line('minimo'); ?></label>
+										<div class="col-sm-4" id="editargrupo">
+											<!-- Esta tabla se llena con AJAX -->	 	    	
+										</div> 
+								</div>
+	     						     						
 	    					</div>
 	    					
-	    					<div class="tab-pane fade" id="tab">
-	     						<!--TAB 7 PANEL DE PRESUPUESTOS -->
-	     						
-	    					</div>
 	    				</div><!--contenedor de cada pestaña-->	
 		  			</div><!--panel body-->
 				</div><!--panel-->

@@ -112,6 +112,7 @@
 	<?php if(!$unset_add){?>
 		<div class="datatables-add-button">
 		<a role="button" class="btn btn-success" href="<?php echo $add_url?>">
+			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 			<span class="ui-button-text"><?php echo $this->l('list_add'); ?> <?php echo $subject?></span>
 		</a>
 		</div>

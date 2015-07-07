@@ -64,7 +64,6 @@ class Vendedores extends My_Controller {
 			$crud->unset_print();
 			$crud->unset_read();
 			
-			
 			$output = $crud->render();
 			
 			$this->crud_tabla($output);
@@ -76,5 +75,33 @@ class Vendedores extends My_Controller {
 	    return site_url($this->_subject.'/pestanas').'/'.$row->id_vendedor;
 	}
 	
+	function editarVendedor($id_vendedor)
+	{
+		$destino = 'img/vendedores/';
+		
+		if(isset($_FILES['imagen']))
+		{
+			$origen 	= $_FILES['imagen']['tmp_name'];
+			$url		= $destino.$_FILES['imagen']['name'];
+			$temp 		= $_FILES['imagen']['name'];
+			if(!empty($_GET['archvo']))
+				copy($origen, $url);
+			
+			$vendedor	= array(		
+					'contraseña' 		=> $this->input->post('contraseña'),
+					'imagen'			=> base_url().$url
+			);
+		}				
+		else{
+			$vendedor	= array(
+						'contraseña'		=> $this->input->post('contraseña')
+			);
+		}
+			
+		$id = $this->vendedores_model->update($vendedor, $id_vendedor);	
+		
+		$this->pestanas($id_vendedor);
+		
+	}
 		
 }

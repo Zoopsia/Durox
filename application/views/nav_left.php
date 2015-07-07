@@ -30,7 +30,7 @@
             <li><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/tab1'?>"><?php echo $this->lang->line('listado_de').' '.$this->lang->line('clientes'); ?></a></li>
             <li><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/tab1/add'?>"><?php echo $this->lang->line('nuevo'); ?></a></li>
             <li class="divider"></li>
-            <li><a href="<?php echo base_url().'index.php/Grupos/adminClientes/'?>"><?php echo $this->lang->line('administracion'); ?></a></li>
+            <li><a href="<?php echo base_url().'index.php/Grupos/adminClientes/tab1'?>"><?php echo $this->lang->line('administracion'); ?></a></li>
           	<li class="divider"></li>
             <li><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/tab2'?>"><?php echo $this->lang->line('busqueda_avanzada'); ?></a></li>
           </ul>
