@@ -159,6 +159,7 @@ class Grupos extends My_Controller {
 		$mensaje .= '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';	
 		$mensaje .= "El registro no fué insertado";
 		$mensaje .= "</div>";	
+		
 			
 		if($this->input->post('grupo_nombre')){
 			if($this->input->post('regla')){
@@ -173,21 +174,13 @@ class Grupos extends My_Controller {
 					$regla  = array(
 						'id_grupo_cliente'	=> $id_grupo,
 			 			'nombre'			=> $this->input->post('regla'),
-			 			'cantidad_min'		=> $this->input->post('cant_min'),
-			 			'precio_min'		=> $this->input->post('precio_min'),
-			 			'desde'				=> $this->input->post('desde'),
-			 			'hasta'				=> $this->input->post('hasta'),
-			 			'fijo_porcentual'	=> $this->input->post('tipovalor'),
 			 			'valor'				=> $this->input->post('valor'),
 			 			'aumento_descuento'	=> $this->input->post('tipo')
 					);
 					
+					$save = $this->input->post('btn-save');
 					
 					$id_regla = $this->reglas_model->insert($regla);
-					
-					
-					
-					$save = $this->input->post('btn-save');
 					
 					$arreglo_mensaje = array(			
 						'save' 			=> $save,

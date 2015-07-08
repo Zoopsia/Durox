@@ -10,11 +10,13 @@ class Vendedores extends My_Controller {
 	{
 		parent::__construct(
 				$subjet		= $this->_subject 
+				
 		);
 
 		$this->load->library('grocery_CRUD');
 		
 		$this->load->model('empresas_model');
+		$this->load->model('clientes_model');
 		$this->load->model($this->_subject.'_model');
 	}
 
@@ -27,6 +29,9 @@ class Vendedores extends My_Controller {
 		$db['telefonos']	= $this->vendedores_model->getCruce($id,'telefonos');
 		$db['direcciones']	= $this->vendedores_model->getCruce($id,'direcciones');
 		$db['mails']		= $this->vendedores_model->getCruce($id,'mails');
+		
+		$db['cruce']		= $this->vendedores_model->sinCruce($id);
+		$db['clientes_todo']= $this->clientes_model->getTodo();
 		
 		$this->load->view("head.php", $db);
 		$this->load->view("nav_top.php");
@@ -56,13 +61,15 @@ class Vendedores extends My_Controller {
 			$crud->set_subject('vendedor');
 			
 			$crud->fields(	'nombre',
-							'apellido');
+							'apellido',
+							'contraseña');
 							
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
 			
 			$crud->unset_export();
 			$crud->unset_print();
 			$crud->unset_read();
+			$crud->unset_edit();
 			
 			$output = $crud->render();
 			
@@ -77,31 +84,93 @@ class Vendedores extends My_Controller {
 	
 	function editarVendedor($id_vendedor)
 	{
-		$destino = 'img/vendedores/';
+		$registro	= $this->vendedores_model->getRegistro($id_vendedor);
 		
-		if(isset($_FILES['imagen']))
+		$destino 	= 'img/vendedores/';
+		
+		if(isset($_FILES['imagen']['tmp_name']))
 		{
+			
 			$origen 	= $_FILES['imagen']['tmp_name'];
 			$url		= $destino.$_FILES['imagen']['name'];
-			$temp 		= $_FILES['imagen']['name'];
-			if(!empty($_GET['archvo']))
-				copy($origen, $url);
+			$imagen		= base_url().$url;
+			if(!empty($_FILES['imagen']['tmp_name'])){
+				copy($origen, $url);	
+			}
+			else {
+				foreach ($registro as $key) {
+					$imagen = $key->imagen;
+				}
+			}
 			
 			$vendedor	= array(		
 					'contraseña' 		=> $this->input->post('contraseña'),
-					'imagen'			=> base_url().$url
+					'imagen'			=> $imagen
 			);
-		}				
-		else{
-			$vendedor	= array(
-						'contraseña'		=> $this->input->post('contraseña')
-			);
+			
 		}
 			
 		$id = $this->vendedores_model->update($vendedor, $id_vendedor);	
 		
 		$this->pestanas($id_vendedor);
 		
+	}
+	
+	/*--------------------------------------------------------------------------------	
+ --------------------------------------------------------------------------------
+ 			Función para agregar Clientes a Grupos
+ --------------------------------------------------------------------------------
+ --------------------------------------------------------------------------------*/	
+	
+	public function nuevoCliente(){
+		
+		$id_vendedor	= $this->input->post('id_vendedor');
+		$clientes		= $this->vendedores_model->getCruce($id_vendedor,'clientes');
+		
+		//-----LLENO TABLA CON CLIENTES FUERA DEL GRUPO------//
+
+		$table =	'<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
+							<thead>
+								<tr>
+									<th>'.$this->lang->line('id').'</th>
+									<th>'.$this->lang->line('nombre').'</th>
+									<th>'.$this->lang->line('apellido').'</th>
+									<th>'.$this->lang->line('cuit').'</th>
+									<th></th>
+								</tr>
+							</thead>
+										 
+							<tfoot>
+								<tr>
+									<th>'.$this->lang->line('id').'</th>
+									<th>'.$this->lang->line('nombre').'</th>
+									<th>'.$this->lang->line('apellido').'</th>
+									<th>'.$this->lang->line('cuit').'</th>
+									<th></th>
+								</tr>
+							</tfoot>
+							<tbody>';
+			
+			foreach ($clientes as $row) {
+					$table .= "<tr><td>";
+					$table .= $row->id_cliente;
+					$table .= "</td><td>";
+					$table .= $row->nombre;
+					$table .= "</td><td>";
+					$table .= $row->apellido;
+					$table .= "</td><td>";
+					$table .= $row->cuit;
+					$table .= '</td><td style="text-align: center">';
+					$table .= '<button type="button" class="btn-sm btn-default btn-plus" onclick="">';
+					$table .= '<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>';
+					$table .= '</button>';
+					$table .= "</td></tr>";									
+			}
+			
+			$table .=	'</tbody>
+						</table>';
+						
+			echo $table;		
 	}
 		
 }

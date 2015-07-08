@@ -45,6 +45,30 @@ class Vendedores_model extends My_Model {
 		);
 	}
 	
+	function sinCruce($id){
+		
+		$sql = "SELECT 
+					* 
+				FROM 
+					sin_vendedores_clientes 
+				WHERE 
+					$this->_id_table = '$id'";
+					
+		$query = $this->db->query($sql);
+		
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+			return $data;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
 	
 } 
 ?>

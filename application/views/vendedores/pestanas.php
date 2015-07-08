@@ -14,21 +14,20 @@
 						</ul>
 		  			</div>
 		  			<div class="panel-body">
-		  				
-		  				
 		  				<div class="tab-content">
 	    					<div class="tab-pane fade in active" id="tab1">
 	    						<div class="row"><!--Cargo imagen vendedor-->
 					                <div class="col-md-3 col-lg-3 " align="center"> 
 					                	<?php
+					                		if($vendedores){
 						                    	foreach ($vendedores as $row) 
 							      					echo '<img alt="User Pic" src="'.$row->imagen.'" class="img-circle img-responsive">';
-					                			
+											}
 					                	?> 
 					                	<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#popEditar" style="margin-top: 10%">
 										  <?php echo $this->lang->line('editar'); ?>
 										</button>
-										</div>
+									</div>
 					               	<!-- Modal -->
 										<div class="modal fade" id="popEditar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 											<div class="modal-dialog" role="document">
@@ -38,10 +37,9 @@
 															<h4 class="modal-title" id="myModalLabel"><?php echo $this->lang->line('editar').' '.$this->lang->line('vendedor'); ?></h4>
 													</div>
 													<?php foreach($vendedores as $row){ ?>
+													<form action="<?php echo base_url()."index.php/vendedores/editarVendedor/$row->id_vendedor"?>" class="form-horizontal" method="post" enctype="multipart/form-data">
 														<div class="modal-body">
-											       			<form action="<?php echo base_url()."index.php/vendedores/editarVendedor/$row->id_vendedor"?>" class="form-horizontal" method="post" enctype="multipart/form-data">
-														
-																<div class="form-group">
+											       				<div class="form-group">
 																  	<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('contraseña'); ?></label>
 																		<div class="col-sm-4 col-sm-offset-1">
 																			<input type="text" name="contraseña" class="form-control" pattern="^[A-Za-z0-9 ]+$" value="<?php echo $row->contraseña ?>">	 
@@ -60,33 +58,35 @@
 															<button type="button" class="btn btn-danger" data-dismiss="modal"><?php echo $this->lang->line('cancelar'); ?></button>
 															<button type="submit" class="btn btn-primary"><?php echo $this->lang->line('guardar'); ?></button>
 														</div>
-											      			</form>
-											    	</div>
+											      	</form>
+											    </div>
 											</div>
 										</div>
 					                
 					                <div class=" col-md-9 col-lg-9 "> 
 					                	<table class="table table-striped table-user-information"> 
 						                    <?php
-						                    	foreach ($vendedores as $row) 
-							      				{
-									            	echo "<tbody>";
-									                echo  "<tr>";
-									                echo  '<td>'.$this->lang->line('nombre').':</td>';
-									                echo  '<td class="tabla-datos-importantes">'.$row->nombre.'</td>';
-									                echo  "</tr>";
-													echo  "<tr>";								                     
-									                echo  '<td>'.$this->lang->line('apellido').':</td>';
-									                echo  '<td class="tabla-datos-importantes">'.$row->apellido.'</td>';
-									                echo  "</tr><tr>";	
-									                echo  '<td>'.$this->lang->line('id').':</td>';
-									                echo  '<td class="tabla-datos-importantes">'.$row->id_vendedor.'</td>';
-									                echo  "</tr>";
-													echo  "<tr>";								                     
-									                echo  '<td>'.$this->lang->line('contraseña').':</td>';
-									                echo  '<td class="tabla-datos-importantes">'.$row->contraseña.'</td>';
-									                echo  "</tr><tr>";		
-									                echo  "</tbody>";
+							                    if($vendedores){
+							                    	foreach ($vendedores as $row) 
+								      				{
+										            	echo "<tbody>";
+										                echo  "<tr>";
+										                echo  '<td>'.$this->lang->line('nombre').':</td>';
+										                echo  '<td class="tabla-datos-importantes">'.$row->nombre.'</td>';
+										                echo  "</tr>";
+														echo  "<tr>";								                     
+										                echo  '<td>'.$this->lang->line('apellido').':</td>';
+										                echo  '<td class="tabla-datos-importantes">'.$row->apellido.'</td>';
+										                echo  "</tr><tr>";	
+										                echo  '<td>'.$this->lang->line('id').':</td>';
+										                echo  '<td class="tabla-datos-importantes">'.$row->id_vendedor.'</td>';
+										                echo  "</tr>";
+														echo  "<tr>";								                     
+										                echo  '<td>'.$this->lang->line('contraseña').':</td>';
+										                echo  '<td class="tabla-datos-importantes">'.$row->contraseña.'</td>';
+										                echo  "</tr><tr>";		
+										                echo  "</tbody>";
+										            }
 									            }
 											?>
 					                    </table>
@@ -99,55 +99,176 @@
 	    					</div> <!--TAB 1 INFO VENDEDOR -->
 	     					<div class="tab-pane fade" id="tab2">
 	     						
-	     						<table id="example" class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
-							        <thead>
-							            <tr>
-							            	<th><?php echo $this->lang->line('id'); ?></th>
-							                <th><?php echo $this->lang->line('nombre'); ?></th>
-							                <th><?php echo $this->lang->line('apellido'); ?></th>
-							                <th><?php echo $this->lang->line('date'); ?></th>
-							                <th><?php echo $this->lang->line('eliminado'); ?></th>
-							                <th><?php echo $this->lang->line('acciones'); ?></th>
-							            </tr>
-							        </thead>
-							 
-							        <tfoot>
-							            <tr>
-							            	<th><?php echo $this->lang->line('id'); ?></th>
-							                <th><?php echo $this->lang->line('nombre'); ?></th>
-							                <th><?php echo $this->lang->line('apellido'); ?></th>
-							                <th><?php echo $this->lang->line('date'); ?></th>
-							                <th><?php echo $this->lang->line('eliminado'); ?></th>
-							                <th><?php echo $this->lang->line('acciones'); ?></th>
-							            </tr>
-							        </tfoot>
-							 
-							        <tbody>
-							        	<?php 
-							            	if($clientes){							                
-										      	foreach ($clientes as $row) 
-										      	{
-										      		echo '<tr>';
-													echo '<td>'.$row->id_cliente.'</td>';
-													echo '<td>'.$row->nombre.'</td>';
-													echo "<td>".$row->apellido."</td>";
-													echo '<td>'.$row->date_add.'</td>';
-													echo "<td>".$row->eliminado."</td>";
-													echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs'>";
-													echo $this->lang->line('ver')."</a></td>";
-													echo "</a></tr>";
-												}
-											}
-									 	?>
-							        </tbody>
-							    </table>
-							    
+	     						<div class="col-sm-2">
+							        <nav class="nav-tab nav-justified">
+							        	<ul class="nav nav-sidebar">
+							            	<li><a href="#cliente1" data-toggle="tab"><?php echo $this->lang->line('clientes').' '.$this->lang->line('actuales'); ?></a></li>
+							                <li><a href="#cliente2" data-toggle="tab"><?php echo $this->lang->line('clientes').' '.$this->lang->line('no').' '.$this->lang->line('activos'); ?></a></li>
+							            	<li><a href="#cliente3" data-toggle="tab"><?php echo $this->lang->line('agregar').' '.$this->lang->line('clientes'); ?></a></li>
+							            </ul>
+							    	</nav>
+							    </div>
+	     						
+	     						<!--CLIENTES ACTUALES--->	
+	     						<div class="tab-content">
+		     						<div class="tab-pane fade" id="cliente1">
+		     							<div class="col-md-10">
+											<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
+										        <thead>
+										            <tr>
+										            	<th><?php echo $this->lang->line('id'); ?></th>
+										                <th><?php echo $this->lang->line('nombre'); ?></th>
+										                <th><?php echo $this->lang->line('apellido'); ?></th>
+										                <th style="text-align: center"><?php echo $this->lang->line('acciones'); ?></th>
+										            </tr>
+										        </thead>
+										 
+										        <tfoot>
+										            <tr>
+										            	<th><?php echo $this->lang->line('id'); ?></th>
+										                <th><?php echo $this->lang->line('nombre'); ?></th>
+										                <th><?php echo $this->lang->line('apellido'); ?></th>
+										                <th style="text-align: center"><?php echo $this->lang->line('acciones'); ?></th>
+										            </tr>
+										        </tfoot>
+										 
+										        <tbody>
+										        	<?php 
+										            	if($clientes){							                
+													      	foreach ($clientes as $row) 
+													      	{
+													      		foreach($cruce as $key){
+													      			if($key->id_cliente == $row->id_cliente && $key->eliminado==0){
+															      		echo '<tr>';
+																		echo '<td>'.$row->id_cliente.'</td>';
+																		echo '<td>'.$row->nombre.'</td>';
+																		echo "<td>".$row->apellido."</td>";
+																		echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs' style='margin : 0 5px'>";
+																		echo $this->lang->line('ver')."</a>";
+																		echo "<a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-danger btn-xs' style='margin : 0 5px'>";
+																		echo $this->lang->line('eliminar')."</a></td>";
+																		echo "</tr>";
+																	}
+																}
+															}
+														}
+												 	?>
+										        </tbody>
+										    </table>
+										</div>
+		     						</div>
+	     							
+	     							<!--CLIENTES NO ACTIVOS--->
+	     							<div class="tab-pane fade" id="cliente2">
+		     							<div class="col-md-10">
+											<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
+										        <thead>
+										            <tr>
+										            	<th><?php echo $this->lang->line('id'); ?></th>
+										                <th><?php echo $this->lang->line('nombre'); ?></th>
+										                <th><?php echo $this->lang->line('apellido'); ?></th>
+										                <th><?php echo $this->lang->line('date'); ?></th>
+										                <th style="text-align: center"><?php echo $this->lang->line('acciones'); ?></th>
+										            </tr>
+										        </thead>
+										 
+										        <tfoot>
+										            <tr>
+										            	<th><?php echo $this->lang->line('id'); ?></th>
+										                <th><?php echo $this->lang->line('nombre'); ?></th>
+										                <th><?php echo $this->lang->line('apellido'); ?></th>
+										                <th><?php echo $this->lang->line('date'); ?></th>
+										                <th style="text-align: center"><?php echo $this->lang->line('acciones'); ?></th>
+										            </tr>
+										        </tfoot>
+										 
+										        <tbody>
+										        	<?php 
+										            	if($clientes){							                
+													      	foreach ($clientes as $row) 
+													      	{
+													      		foreach($cruce as $key){
+													      			if($key->id_cliente == $row->id_cliente && $key->eliminado==1){
+															      		echo '<tr>';
+																		echo '<td>'.$row->id_cliente.'</td>';
+																		echo '<td>'.$row->nombre.'</td>';
+																		echo "<td>".$row->apellido."</td>";
+																		echo '<td>'.$row->date_add.'</td>';
+																		echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs'>";
+																		echo $this->lang->line('ver')."</a></td>";
+																		echo "</tr>";
+																	}
+																}
+															}
+														}
+												 	?>
+										        </tbody>
+										    </table>
+											
+										</div>
+		     						</div>
+	     						
+	     							<!--AGREGAR CLIENTES--->
+	     							<div class="tab-pane fade" id="cliente3">
+		     							<div class="col-md-10">
+		     								<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
+											        <thead>
+											            <tr>
+											            	<th><?php echo $this->lang->line('id'); ?></th>
+											                <th><?php echo $this->lang->line('nombre'); ?></th>
+											                <th><?php echo $this->lang->line('apellido'); ?></th>
+											                <th style="text-align: center"><?php echo $this->lang->line('acciones'); ?></th>
+											            </tr>
+											        </thead>
+											 
+											        <tfoot>
+											            <tr>
+											            	<th><?php echo $this->lang->line('id'); ?></th>
+											                <th><?php echo $this->lang->line('nombre'); ?></th>
+											                <th><?php echo $this->lang->line('apellido'); ?></th>
+											                <th style="text-align: center"><?php echo $this->lang->line('acciones'); ?></th>
+											            </tr>
+											        </tfoot>
+											 
+											        <tbody>
+											        	<?php 
+											            	if($clientes_todo){							                
+														      	foreach ($clientes_todo as $row) 
+														      	{
+														      		$bandera = 0;
+														      		foreach($clientes as $key)		
+																	{
+																		if($row->id_cliente == $key->id_cliente)
+														      				$bandera = 1;
+																	}
+																	if($bandera == 0){
+																		
+																		echo '<tr>';
+																		echo '<td>'.$row->id_cliente.'</td>';
+																		echo '<td>'.$row->nombre.'</td>';
+																		echo "<td>".$row->apellido."</td>";
+																		echo '<td style="text-align: center">';
+																		echo '<button type="button" class="btn-sm btn-success btn-plus" onclick="cargarCliente('.$row->id_cliente.')">';
+																		echo '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>';
+																		echo '</button>';
+																		echo "</td></tr>";
+																		
+																	}
+																}
+															}
+													 	?>
+											        </tbody>
+			     								</table>
+		     							</div>
+		     						</div>
+		     						
+							    </div>
 	    					</div><!--TAB 2 CLIENTES VENDEDOR -->
 	    					
+	    					<!--TAB 3 PERFILES VENDEDOR -->
 	    					<div class="tab-pane fade" id="tab3">
-	    						
-	     						<!--TAB 3 TELEFONOS CLIENTE -->
 	     						<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="padding-top: 20px">
+								  <!--TAB 3 TELEFONOS VENDEDOR -->
 								  <div class="panel panel-default">
 								    <div class="panel-heading" role="tab" id="headingOne">
 								      <h4 class="panel-title">
@@ -161,16 +282,18 @@
 								        <div class="row">
 											<div class="col-md-12">
 												<?php
-										        	foreach ($vendedores as $row) 
-											    	{
-							     						echo "<div class='datatables-add-button'>";
-															/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
-															echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/telefonos/telefonos/'.$row->id_vendedor.'/2">';
-															echo '<span class="ui-button-text">';
-															echo $this->lang->line('añadir').' '.$this->lang->line('telefono').'</span>';
-															echo "</a>";
-														echo "</div>";
-														echo '<div style="height:10px;"></div>';
+													if($vendedores){
+											        	foreach ($vendedores as $row) 
+												    	{
+								     						echo "<div class='datatables-add-button'>";
+																/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+																echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/telefonos/telefonos/'.$row->id_vendedor.'/2">';
+																echo '<span class="ui-button-text">';
+																echo $this->lang->line('añadir').' '.$this->lang->line('telefono').'</span>';
+																echo "</a>";
+															echo "</div>";
+															echo '<div style="height:10px;"></div>';
+														}
 													}
 												?>
 					     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
@@ -224,7 +347,7 @@
 								    </div>
 								  </div>
 								  
-								  <!--TAB 3 DIRECCIONES CLIENTE -->
+								  <!--TAB 3 DIRECCIONES VENDEDOR -->
 								  <div class="panel panel-default">
 								    <div class="panel-heading" role="tab" id="headingTwo">
 								      <h4 class="panel-title">
@@ -239,16 +362,18 @@
 											<div class="col-md-12">
 												
 												<?php
-										        	foreach ($vendedores as $row) 
-											    	{
-							     						echo "<div class='datatables-add-button'>";
-															/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
-															echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/direcciones/direcciones/'.$row->id_vendedor.'/2">';
-															echo '<span class="ui-button-text">';
-															echo $this->lang->line('añadir').' '.$this->lang->line('direccion').'</span>';
-															echo "</a>";
-														echo "</div>";
-														echo '<div style="height:10px;"></div>';
+													if($vendedores){
+											        	foreach ($vendedores as $row) 
+												    	{
+								     						echo "<div class='datatables-add-button'>";
+																/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+																echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/direcciones/direcciones/'.$row->id_vendedor.'/2">';
+																echo '<span class="ui-button-text">';
+																echo $this->lang->line('añadir').' '.$this->lang->line('direccion').'</span>';
+																echo "</a>";
+															echo "</div>";
+															echo '<div style="height:10px;"></div>';
+														}
 													}
 												?>
 												<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
@@ -303,7 +428,7 @@
 								      </div>
 								    </div>
 								  </div>
-								  <!--TAB 3 CORREOS CLIENTE -->
+								  <!--TAB 3 CORREOS VENDEDOR -->
 								  <div class="panel panel-default">
 								    <div class="panel-heading" role="tab" id="headingThree">
 								      <h4 class="panel-title">
@@ -318,16 +443,18 @@
 											<div class="col-md-12">
 												
 												<?php
-										        	foreach ($vendedores as $row) 
-											    	{
-							     						echo "<div class='datatables-add-button'>";
-															/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
-															echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/mails/mails/'.$row->id_vendedor.'/2">';
-															echo '<span class="ui-button-text">';
-															echo $this->lang->line('añadir').' '.$this->lang->line('correo').'</span>';
-															echo "</a>";
-														echo "</div>";
-														echo '<div style="height:10px;"></div>';
+													if($vendedores){
+											        	foreach ($vendedores as $row) 
+												    	{
+								     						echo "<div class='datatables-add-button'>";
+																/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+																echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/mails/mails/'.$row->id_vendedor.'/2">';
+																echo '<span class="ui-button-text">';
+																echo $this->lang->line('añadir').' '.$this->lang->line('correo').'</span>';
+																echo "</a>";
+															echo "</div>";
+															echo '<div style="height:10px;"></div>';
+														}
 													}
 												?>
 					     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">

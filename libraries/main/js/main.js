@@ -68,9 +68,3 @@ $('#btn-cancelar').click(function() {
 });	
 
 
-function insertExito($save){
-		if($save==2)	
-			alert("El registro fué guardado con exito");
-		else if($save==4)
-			alert("El registro fué modificado con exito");
-	}

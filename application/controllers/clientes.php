@@ -16,6 +16,8 @@ class Clientes extends My_Controller {
 		
 		$this->load->model('empresas_model');
 		$this->load->model($this->_subject.'_model');
+		$this->load->model('grupos_model');
+		
 	}
 	
 
@@ -28,12 +30,12 @@ class Clientes extends My_Controller {
 		$db['direcciones']	=$this->clientes_model->getCruce($id,'direcciones');
 		$db['mails']		=$this->clientes_model->getCruce($id,'mails');
 		$db['pedidos']		=$this->clientes_model->getPedidos($id);
+		$db['grupos']		=$this->grupos_model->getTodo();
 		
 		$this->load->view("head.php", $db);
 		$this->load->view("nav_top.php");
 		$this->load->view("nav_left.php");	
 		$this->load->view($this->_subject."/pestanas.php");
-			
 					
 	}
 	
@@ -88,5 +90,39 @@ class Clientes extends My_Controller {
 	    return site_url($this->_subject.'/pestanas').'/'.$row->id_cliente;
 	}
 	
+	function editarCliente($id_cliente)
+	{
+		$registro	= $this->clientes_model->getRegistro($id_cliente);
+		
+		$destino 	= 'img/clientes/';
+		
+		if(isset($_FILES['imagen']['tmp_name']))
+		{
+			
+			$origen 	= $_FILES['imagen']['tmp_name'];
+			$url		= $destino.$_FILES['imagen']['name'];
+			$imagen		= base_url().$url;
+			if(!empty($_FILES['imagen']['tmp_name'])){
+				copy($origen, $url);	
+			}
+			else {
+				foreach ($registro as $key) {
+					$imagen = $key->imagen;
+				}
+			}
+			
+			$cliente	= array(		
+					'nombre_fantasia'	=> $this->input->post('alias'),
+					'id_grupo_cliente'	=> $this->input->post('id_grupo_cliente'),
+					'imagen'			=> $imagen
+			);
+			
+		}
+			
+		$id = $this->clientes_model->update($cliente, $id_cliente);	
+		
+		$this->pestanas($id_cliente);
+		
+	}
 
 }
