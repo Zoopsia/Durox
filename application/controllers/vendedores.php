@@ -116,11 +116,45 @@ class Vendedores extends My_Controller {
 		
 	}
 	
-	/*--------------------------------------------------------------------------------	
+/*--------------------------------------------------------------------------------	
  --------------------------------------------------------------------------------
- 			Función para agregar Clientes a Grupos
+ 			Función para agregar Clientes a Vendedor
  --------------------------------------------------------------------------------
  --------------------------------------------------------------------------------*/	
+
+ 	public function cargarCliente($id_cliente,$id_vendedor){
+
+		//----- 2 PORQUE ES TIPO VENDEDOR -----//
+		$this->clientes_model->insertCruce(2,$id_cliente,$id_vendedor);
+		
+		redirect('/vendedores/pestanas/'.$id_vendedor,'refresh');
+
+	}
+	
+/*--------------------------------------------------------------------------------	
+ --------------------------------------------------------------------------------
+ 			Función para agregar Clientes a Vendedor
+ --------------------------------------------------------------------------------
+ --------------------------------------------------------------------------------*/	
+
+ 		public function sacarCliente($id_cliente,$id_vendedor){
+
+		//----- 2 PORQUE ES TIPO VENDEDOR -----//
+		
+		$cruce		= $this->vendedores_model->sinCruce($id_vendedor);
+		
+		foreach($cruce as $row){
+			if($id_cliente == $row->id_cliente)
+				$id_sin = $row->id_sin_vendedor_cliente;
+		}
+
+		$sin = array(
+			'eliminado'		=> 1
+		);
+		
+		$id_cliente	= $this->vendedores_model->updateSin($sin,$id_sin);
+		redirect('/vendedores/pestanas/'.$id_vendedor,'refresh');
+	}
 	
 	public function nuevoCliente(){
 		

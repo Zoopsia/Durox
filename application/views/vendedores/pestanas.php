@@ -133,21 +133,23 @@
 										        </tfoot>
 										 
 										        <tbody>
-										        	<?php 
-										            	if($clientes){							                
-													      	foreach ($clientes as $row) 
-													      	{
-													      		foreach($cruce as $key){
-													      			if($key->id_cliente == $row->id_cliente && $key->eliminado==0){
-															      		echo '<tr>';
-																		echo '<td>'.$row->id_cliente.'</td>';
-																		echo '<td>'.$row->nombre.'</td>';
-																		echo "<td>".$row->apellido."</td>";
-																		echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs' style='margin : 0 5px'>";
-																		echo $this->lang->line('ver')."</a>";
-																		echo "<a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-danger btn-xs' style='margin : 0 5px'>";
-																		echo $this->lang->line('eliminar')."</a></td>";
-																		echo "</tr>";
+										        	<?php
+											        	foreach ($vendedores as $value) { 
+											            	if($clientes){						                
+														      	foreach ($clientes as $row) 
+														      	{
+														      		foreach($cruce as $key){
+														      			if($key->id_cliente == $row->id_cliente && $key->eliminado==0){
+																      		echo '<tr>';
+																			echo '<td>'.$row->id_cliente.'</td>';
+																			echo '<td>'.$row->nombre.'</td>';
+																			echo "<td>".$row->apellido."</td>";
+																			echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs' style='margin : 0 5px'>";
+																			echo $this->lang->line('ver')."</a>";
+																			echo "<a href='".base_url()."index.php/Vendedores/sacarCliente/".$row->id_cliente."/".$value->id_vendedor."' class='btn btn-danger btn-xs glyphicon glyphicon-minus' role='button'>";
+																			echo "</a></td>";;
+																			echo "</tr>";
+																		}
 																	}
 																}
 															}
@@ -231,30 +233,48 @@
 											        </tfoot>
 											 
 											        <tbody>
-											        	<?php 
-											            	if($clientes_todo){							                
-														      	foreach ($clientes_todo as $row) 
-														      	{
-														      		$bandera = 0;
-														      		foreach($clientes as $key)		
+											        	<?php
+											        		foreach($vendedores as $value)
+											        		{	
+											        			if($clientes_todo)
+											        			{
+											        				if($clientes)
+											        				{			                
+																      	foreach ($clientes_todo as $row) 
+																      	{
+																      		$bandera = 0;
+																      		foreach($clientes as $key)		
+																			{
+																				if($row->id_cliente == $key->id_cliente)
+																      				$bandera = 1;
+																			}
+																			if($bandera == 0){
+																				
+																				echo '<tr>';
+																				echo '<td>'.$row->id_cliente.'</td>';
+																				echo '<td>'.$row->nombre.'</td>';
+																				echo "<td>".$row->apellido."</td>";
+																				echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/cargarCliente/".$row->id_cliente."/".$value->id_vendedor."' class='btn btn-success btn-xs glyphicon glyphicon-plus' role='button'>";
+																				echo "</a></td>";
+																				echo "</tr>";
+																				
+																			}
+																		}
+																	}
+																	else
 																	{
-																		if($row->id_cliente == $key->id_cliente)
-														      				$bandera = 1;
+																		foreach ($clientes_todo as $row) 
+																	    {
+																			echo '<tr>';
+																			echo '<td>'.$row->id_cliente.'</td>';
+																			echo '<td>'.$row->nombre.'</td>';
+																			echo "<td>".$row->apellido."</td>";
+																			echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/cargarCliente/".$row->id_cliente."/".$value->id_vendedor."' class='btn btn-success btn-xs glyphicon glyphicon-plus' role='button'>";
+																			echo "</a></td>";
+																			echo "</tr>";
+																		}
 																	}
-																	if($bandera == 0){
-																		
-																		echo '<tr>';
-																		echo '<td>'.$row->id_cliente.'</td>';
-																		echo '<td>'.$row->nombre.'</td>';
-																		echo "<td>".$row->apellido."</td>";
-																		echo '<td style="text-align: center">';
-																		echo '<button type="button" class="btn-sm btn-success btn-plus" onclick="cargarCliente('.$row->id_cliente.')">';
-																		echo '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>';
-																		echo '</button>';
-																		echo "</td></tr>";
-																		
-																	}
-																}
+																}	
 															}
 													 	?>
 											        </tbody>

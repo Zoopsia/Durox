@@ -70,5 +70,13 @@ class Vendedores_model extends My_Model {
 		}
 	}
 	
+	function updateSin($arreglo_campos, $id){
+			
+		$this->db->where('id_sin_vendedor_cliente', $id);
+		$this->db->update('sin_vendedores_clientes', $arreglo_campos);
+		
+		return $this->db->insert_id();
+	}
+	
 } 
 ?>
