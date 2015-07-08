@@ -144,8 +144,8 @@
 																			echo '<td>'.$row->id_cliente.'</td>';
 																			echo '<td>'.$row->nombre.'</td>';
 																			echo "<td>".$row->apellido."</td>";
-																			echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs' style='margin : 0 5px'>";
-																			echo $this->lang->line('ver')."</a>";
+																			echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs glyphicon glyphicon-search' style='margin : 0 5px'>";
+																			echo "</a>";
 																			echo "<a href='".base_url()."index.php/Vendedores/sacarCliente/".$row->id_cliente."/".$value->id_vendedor."' class='btn btn-danger btn-xs glyphicon glyphicon-minus' role='button'>";
 																			echo "</a></td>";;
 																			echo "</tr>";
@@ -196,8 +196,8 @@
 																		echo '<td>'.$row->nombre.'</td>';
 																		echo "<td>".$row->apellido."</td>";
 																		echo '<td>'.$row->date_add.'</td>';
-																		echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs'>";
-																		echo $this->lang->line('ver')."</a></td>";
+																		echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs glyphicon glyphicon-search'>";
+																		echo "</a></td>";
 																		echo "</tr>";
 																	}
 																}
@@ -308,7 +308,7 @@
 								     						echo "<div class='datatables-add-button'>";
 																/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 																echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/telefonos/telefonos/'.$row->id_vendedor.'/2">';
-																echo '<span class="ui-button-text">';
+																echo '<span class="ui-button-text ">';
 																echo $this->lang->line('añadir').' '.$this->lang->line('telefono').'</span>';
 																echo "</a>";
 															echo "</div>";
@@ -352,8 +352,9 @@
 																		else
 																			echo "<td>SI</td>";
 																		/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
-																		echo '<td style="text-align: center;"><a href="'.base_url().'index.php/telefonos/cargaEditar/'.$row->id_telefono.'/'.$key->id_vendedor.'/2" class="btn btn-primary btn-xs">';
-																		echo $this->lang->line('editar')."</a></td>";
+																		echo '<td style="text-align: center;"><a href="'.base_url().'index.php/telefonos/cargaEditar/'.$row->id_telefono.'/'.$key->id_vendedor.'/2"';
+																		echo 'class="btn btn-primary btn-xs glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('editar').'">';
+																		echo "</a></td>";
 																		echo "</tr>";
 																	}
 																}
