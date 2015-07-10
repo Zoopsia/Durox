@@ -1,3 +1,7 @@
+<script>
+
+</script>
+
 <nav class="navbar" role="navigation">
 	<div class="container">
 	    <div class="row">
@@ -531,7 +535,63 @@
 	    					
 	    					<div class="tab-pane fade" id="tab5">
 	     						<!--TAB 5 PANEL DE PRESUPUESTOS -->
-	     						PRESUPUESTOS
+	     						
+	     						
+	     						<div class="row">
+	     							<div class="col-md-11 col-md-offset-1">
+	     								<form class="form-inline">
+											<div class="form-group col-md-offset-1">
+												<label><?php echo $this->lang->line('producto'); ?></label>
+												<input type="text" id="productos" name="producto" class="numeric form-control" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('producto'); ?>" required>
+											</div>
+											<div class="form-group col-md-offset-1">
+												<label><?php echo $this->lang->line('cantidad'); ?></label>
+												<input type="text" id="cantidad" name="cantidad" class="numeric form-control" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('cantidad'); ?>" required>
+											</div>
+											<div class="form-group col-md-offset-1">
+												<button type="button" class="btn btn-success btn-xs glyphicon glyphicon-plus" onclick=""></button>
+											</div>
+										</form>
+									</div>
+								</div>
+	     						<div class="row">	
+									<div class="col-md-10 col-md-offset-1">
+					     				<table class="table table-striped table-hover" cellspacing="0" width="100%">
+											<thead>
+												<tr>
+											     	<th><?php echo $this->lang->line('codigo'); ?></th>
+											       	<th><?php echo $this->lang->line('producto'); ?></th>
+											        <th><?php echo $this->lang->line('cantidad'); ?></th>
+											        <th><?php echo $this->lang->line('precio'); ?></th>
+											        <th><?php echo $this->lang->line('subtotal'); ?></th>
+											        <th></th>
+											    </tr>
+											</thead>
+											 
+											<tfoot>
+											    <tr>
+											      	<th></th>
+											       	<th></th>
+											      	<th></th>
+											        <th><ins><?php echo $this->lang->line('total'); ?></ins></th>
+											        <th>$$$$$</th>
+											        <th></th>
+												</tr>
+											</tfoot>
+											
+											<tbody> 
+												<tr>
+											    	<th>910</th>
+											    	<th>Producto 1</th>
+											   		<th>10</th>
+											    	<th>$ 10</th>
+											    	<th>$100.00</th>
+											    	<th style="text-align: center"><a href='#' class='btn btn-danger btn-xs glyphicon glyphicon-minus' role='button' onclick="alert()"></a></th>
+											    </tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
 	    					</div>
 	    					
 	    					<div class="tab-pane fade" id="tab6">

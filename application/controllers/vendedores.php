@@ -17,6 +17,7 @@ class Vendedores extends My_Controller {
 		
 		$this->load->model('empresas_model');
 		$this->load->model('clientes_model');
+		$this->load->model('productos_model');
 		$this->load->model($this->_subject.'_model');
 	}
 
@@ -32,7 +33,7 @@ class Vendedores extends My_Controller {
 		
 		$db['cruce']		= $this->vendedores_model->sinCruce($id);
 		$db['clientes_todo']= $this->clientes_model->getTodo();
-		
+
 		$this->load->view("head.php", $db);
 		$this->load->view("nav_top.php");
 		$this->load->view("nav_left.php");	
@@ -206,5 +207,5 @@ class Vendedores extends My_Controller {
 						
 			echo $table;		
 	}
-		
+
 }
