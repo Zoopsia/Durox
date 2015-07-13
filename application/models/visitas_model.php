@@ -81,6 +81,26 @@ class Visitas_model extends My_Model {
 			return FALSE;
 		}
 	}
+
+	function getEpocas(){
+		
+		$sql = "SELECT 
+					* 
+				FROM 
+					epocas_visitas 
+				WHERE 1";
+				
+		$query = $this->db->query($sql);
+						
+		if($query->num_rows() > 0){
+			foreach ($query->result() as $fila){
+				$data[] = $fila;
+			}
+			return $data;
+		}else{
+			return FALSE;
+		}	
+	}
 		
 } 
 ?>

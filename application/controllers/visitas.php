@@ -15,6 +15,9 @@ class Visitas extends My_Controller {
 		$this->load->library('grocery_CRUD');
 		
 		$this->load->model('empresas_model');
+		$this->load->model('clientes_model');
+		$this->load->model('vendedores_model');
+		
 		$this->load->model($this->_subject.'_model');
 	}
 	
@@ -32,6 +35,20 @@ class Visitas extends My_Controller {
 					
 	}
 	
+	public function crud_tabla2($output){
+		
+		$db['empresas']		= $this->empresas_model->getRegistro(1);
+		$db['clientes']		= $this->clientes_model->getTodo();
+		$db['vendedores']	= $this->vendedores_model->getTodo();
+		$db['epocas']		= $this->visitas_model->getEpocas();
+		
+
+		$this->load->view("head.php", $db);
+		$this->load->view("nav_top.php", $output);
+		$this->load->view("nav_left.php");	
+		$this->load->view($this->_subject."/tabla.php");
+					
+	}
 
 	public function visitas_abm(){
 			
@@ -73,10 +90,11 @@ class Visitas extends My_Controller {
 			$crud->unset_export();
 			$crud->unset_print();
 			$crud->unset_read();
+			$crud->unset_operations();
 			
 			$output = $crud->render();
 			
-			$this->crud_tabla($output);
+			$this->crud_tabla2($output);
 	}
 
 
@@ -126,24 +144,43 @@ class Visitas extends My_Controller {
 										 
 							<tbody>';
 			
-			foreach ($query as $fila)
-			{
-			    $table .= "<tr><td>";	
-			    $table .= $fila->id_visita;
-				$table .= "</td><td>";
-				$table .= $fila->Cnombre.' '.$fila->Capellido;
-				$table .= "</td><td>";
-				$table .= $fila->Vnombre.' '.$fila->Vapellido;
-				$table .= "</td><td>";
-				$table .= $fila->fecha_visita;
-				$table .= "</td></tr>";
-			}	
-			
+			if($query){	
+				foreach ($query as $fila)
+				{
+				    $table .= "<tr><td>";	
+				    $table .= $fila->id_visita;
+					$table .= "</td><td>";
+					$table .= $fila->Cnombre.' '.$fila->Capellido;
+					$table .= "</td><td>";
+					$table .= $fila->Vnombre.' '.$fila->Vapellido;
+					$table .= "</td><td>";
+					$table .= $fila->fecha_visita;
+					$table .= "</td></tr>";
+				}	
+			}
+
 			$table .=		'</tbody>
 						</table>';
 			
 			echo $table;
 			}
+	}
+
+	public function nuevaVisita(){
+		
+		$visita	= array(
+		
+			'id_cliente' 		=> $this->input->post('id_cliente'), 
+			'id_vendedor' 		=> $this->input->post('id_vendedor'), 
+			'id_epoca_visita'	=> $this->input->post('id_epoca_visita'),
+			'date_add'			=> $this->input->post('date_add'),
+			'date_upd'			=> $this->input->post('date_add')		
+		);
+
+		$id_visita = $this->visitas_model->insert($visita);
+		
+		redirect('/Visitas/crud_tabla2/tab3/'.$id_visita,'refresh');
+		
 	}
 	
 		
