@@ -87,32 +87,25 @@ class Visitas extends My_Controller {
 	
 	function busqueda(){
 		
-		$array = array(
-			'id_visita'				=> $this->input->post('id_visita'),
-			'date_upd'				=> $this->input->post('date_upd'),
-			'cliente_nombre'		=> $this->input->post('cliente_nombre'),
-			'cliente_apellido'		=> $this->input->post('cliente_apellido'),
-			'vendedor_nombre'		=> $this->input->post('vendedor_nombre'),
-			'vendedor_apellido'		=> $this->input->post('vendedor_apellido')
-		);
+		if($this->input->post('id_visita') 		|| 
+		$this->input->post('date_upd')			||
+		$this->input->post('cliente_nombre')	||
+		$this->input->post('cliente_apellido')	||
+		$this->input->post('vendedor_nombre')	||
+		$this->input->post('vendedor_apellido')){
 		
-		$query = $this->visitas_model->busqueda($array);
-		
-		/*
-		foreach ($query as $fila)
-		{
-		    $table .= "<tr><td>";	
-		    $table .= $fila->id_visita;
-			$table .= "</td><td>";
-			$table .= $fila->Cnombre.' '.$fila->Capellido;
-			$table .= "</td><td>";
-			$table .= $fila->Vnombre.' '.$fila->Vapellido;
-			$table .= "</td><td>";
-			$table .= $fila->fecha_visita;
-			$table .= "</td></tr>";
-		}
-		*/
-		$table =	'<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
+			$array = array(
+				'id_visita'				=> $this->input->post('id_visita'),
+				'date_upd'				=> $this->input->post('date_upd'),
+				'cliente_nombre'		=> $this->input->post('cliente_nombre'),
+				'cliente_apellido'		=> $this->input->post('cliente_apellido'),
+				'vendedor_nombre'		=> $this->input->post('vendedor_nombre'),
+				'vendedor_apellido'		=> $this->input->post('vendedor_apellido')
+			);
+			
+			$query = $this->visitas_model->busqueda($array);
+			
+			$table =	'<table class="table table-striped table-bordered" cellspacing="0" width="100%">
 							<thead>
 								<tr>
 									<th>'.$this->lang->line('visita').'</th>
@@ -150,6 +143,7 @@ class Visitas extends My_Controller {
 						</table>';
 			
 			echo $table;
+			}
 	}
 	
 		
