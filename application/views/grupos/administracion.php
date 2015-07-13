@@ -176,7 +176,10 @@ function volverHide(){
 		    									<option></option>
 		    									<?php
 		    										foreach ($grupos as $row) {
-		    											if($id_grupo==$row->id_grupo_cliente){
+		    											if($row->id_grupo_cliente==1){
+		    												echo '<option value="'.$row->id_grupo_cliente.'">'.$row->grupo_nombre.'</option>';
+		    											}
+														else if($id_grupo==$row->id_grupo_cliente){
 															echo '<option value="'.$row->id_grupo_cliente.'" selected>'.$row->grupo_nombre.'</option>';
 															//----LLAMO FUNCION DE LLENAR LAS REGLAS---//
 															?><script>reglasActivas(), clientesActivos();</script><?php
@@ -292,9 +295,7 @@ function volverHide(){
 												
 												<div class="form-group">
 										  			<label class="col-sm-1 col-sm-offset-1 control-label"></label>
-											      		<div class="col-md-6">	
-												  	  		<!--<button type="submit" class="btn btn-primary" name="btn-save" value="1" onclick="nuevoGrupo()"><?php echo $this->lang->line('guardar'); ?></button> 
-												  	  		-->
+											      		<div class="col-md-6">
 												  	  		<input type="button" value="<?php echo $this->lang->line('guardar'); ?>" class="btn btn-primary" id="btn-guardar" onclick="nuevoGrupo()">
 												  	  		<button type="submit" class="btn btn-primary" name="btn-save" value="2"><?php echo $this->lang->line('guardaryvolver'); ?></button> 	
 												  	  		<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" id="btn-cancelar" onclick="confirmarGrupo()">
@@ -341,13 +342,29 @@ function volverHide(){
 	    					
 	    					<div class="tab-pane fade <?php echo $array_n['editargrupo']; ?>" id="tab4">
 	     						<!--TAB 4 EDITAR GRUPO -->
-	     						<div class="form-group">
-									<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('precio').' '.$this->lang->line('minimo'); ?></label>
-										<div class="col-sm-4" id="editargrupo">
-											<!-- Esta tabla se llena con AJAX -->	 	    	
-										</div> 
-								</div>
-	     						     						
+	     						<form action="<?php echo base_url()."index.php/grupos/editarGrupo"?>" class="form-horizontal" method="post">
+								
+		     						<div class="col-md-9" >
+			     						<div class="form-group">
+											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupo') ?></label>
+												<div class="col-sm-5">
+													<div class="input-group" id="editargrupo">
+													<!-- Esta tabla se llena con AJAX -->	
+														   	
+													</div>
+												</div>
+										</div>
+		     						 
+		     						
+			     						<div class="form-group">
+											<label class="col-sm-1 col-sm-offset-1 control-label"></label>
+												<div class="col-md-6">	
+													<button type="submit" class="btn btn-primary" name="btn-save" value="2"><?php echo $this->lang->line('guardar'); ?></button> 	
+													<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" id="btn-cancelar" onclick="confirmarGrupo()">
+												</div>
+										</div>
+									</div>
+		     					</form>   						
 	    					</div>
 	    					
 	    				</div><!--contenedor de cada pestaña-->	

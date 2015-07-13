@@ -225,10 +225,10 @@ class Grupos extends My_Controller {
 	
 	public function cargaEditar($id_grupo){
 	
-		$db['empresas']		=$this->empresas_model->getRegistro(1);
-		$db['grupos']		=$this->grupos_model->getTodo();
+		$db['empresas']		= $this->empresas_model->getRegistro(1);
+		$db['grupos']		= $this->grupos_model->getTodo();
 
-		$db['id_grupo'] 	=$id_grupo;
+		$db['id_grupo'] 	= $id_grupo;
 			
 		$this->load->view("head.php", $db);
 		$this->load->view("nav_top.php");
@@ -361,6 +361,7 @@ class Grupos extends My_Controller {
 		$id = $this->clientes_model->update($cliente, $id_cliente);	
 
 	}
+
 	public function sacarCliente(){
 	
 		$id_cliente	=	$this->input->post('id_cliente');
@@ -370,5 +371,48 @@ class Grupos extends My_Controller {
 		);
 			
 		$id = $this->clientes_model->update($cliente, $id_cliente);	
-	}	
+	}
+	
+	public function editarGrupo(){
+		
+		
+		$id_grupo_cliente	=	$this->input->post('id_grupo_cliente');
+		
+		if($id_grupo_cliente){
+			if($id_grupo_cliente!=1){
+				$grupo_cliente		=	$this->grupos_model->getRegistro($id_grupo_cliente);
+				
+				foreach ($grupo_cliente as $row){
+					$mensaje  = '<div class="input-group-addon"><span class="fa fa-users" aria-hidden="true"></span></div>';
+					$mensaje .= '<input type="text" name="grupo_nombre" class="form-control" pattern="^[A-Za-z0-9 ]+$" value="'.$row->grupo_nombre.'" placeholder="'.$this->lang->line('nombre').'" required>';
+					$mensaje .= '<input type="hidden" name="id_grupo" class="form-control" value="'.$row->id_grupo_cliente.'" required>';
+				}
+				
+				echo $mensaje;
+			}	
+		}
+
+		$grupo	= array(		
+				'grupo_nombre' 		=> $this->input->post('grupo_nombre')		
+		);
+		
+		$save = $this->input->post('btn-save');
+			
+		if($save){
+						
+			$arreglo_mensaje = array(			
+				'save' 			=> $save,
+				'tabla'			=> $this->_subject,
+				'id_tabla'		=> $this->input->post('id_grupo')	
+			);	
+					
+						
+			if($save==2){
+				$id = $this->grupos_model->update($grupo, $this->input->post('id_grupo'));	
+				$mensaje2 = get_mensaje($arreglo_mensaje);
+				$this->adminClientes($this->input->post('id_grupo'));
+			}
+		}
+				
+	}
 }
