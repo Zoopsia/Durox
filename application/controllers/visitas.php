@@ -17,6 +17,9 @@ class Visitas extends My_Controller {
 		$this->load->model('empresas_model');
 		$this->load->model('clientes_model');
 		$this->load->model('vendedores_model');
+		$this->load->model('productos_model');
+		$this->load->model('presupuestos_model');
+		$this->load->model('pedidos_model');
 		
 		$this->load->model($this->_subject.'_model');
 	}
@@ -35,19 +38,29 @@ class Visitas extends My_Controller {
 					
 	}
 	
-	public function crud_tabla2($output){
+	public function carga($id_visita=null){
 		
 		$db['empresas']		= $this->empresas_model->getRegistro(1);
 		$db['clientes']		= $this->clientes_model->getTodo();
 		$db['vendedores']	= $this->vendedores_model->getTodo();
 		$db['epocas']		= $this->visitas_model->getEpocas();
+		$db['productos']	= $this->productos_model->getTodo();
 		
+		if($id_visita){
+			$db['visita']		= $id_visita;
+			$db['presupuesto']	= $this->presupuestos_model->getPresupuesto($id_visita);
+			$db['pedido']		= $this->pedidos_model->getPedido($id_visita);
+		}
 
 		$this->load->view("head.php", $db);
-		$this->load->view("nav_top.php", $output);
+		$this->load->view("nav_top.php");
 		$this->load->view("nav_left.php");	
-		$this->load->view($this->_subject."/tabla.php");
-					
+		if($id_visita){
+			$this->load->view($this->_subject."/pestanas.php");
+		}
+		else{		
+			$this->load->view($this->_subject."/carga.php");
+		}			
 	}
 
 	public function visitas_abm(){
@@ -94,7 +107,7 @@ class Visitas extends My_Controller {
 			
 			$output = $crud->render();
 			
-			$this->crud_tabla2($output);
+			$this->crud_tabla($output);
 	}
 
 
@@ -174,12 +187,14 @@ class Visitas extends My_Controller {
 			'id_vendedor' 		=> $this->input->post('id_vendedor'), 
 			'id_epoca_visita'	=> $this->input->post('id_epoca_visita'),
 			'date_add'			=> $this->input->post('date_add'),
-			'date_upd'			=> $this->input->post('date_add')		
+			'date_upd'			=> $this->input->post('date_add'),
+			'valoracion'		=> $this->input->post('star1'),
+			'descripcion'		=> $this->input->post('comentarios')		
 		);
 
 		$id_visita = $this->visitas_model->insert($visita);
 		
-		redirect('/Visitas/crud_tabla2/tab3/'.$id_visita,'refresh');
+		redirect('Visitas/carga/'.$id_visita,'refresh');
 		
 	}
 	

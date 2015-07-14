@@ -41,6 +41,8 @@ $(document).ready(function(){
 	
 });
 
+
+
 function confirmar($id,$tipo){
 	var c = confirm("Los datos no han sido guardados.\n¿Está seguro que quiere salir?");
 	if (c==true){
@@ -56,6 +58,13 @@ function confirmarGrupo(){
 	var c = confirm("Los datos no han sido guardados.\n¿Está seguro que quiere salir?");
 	if (c==true){
 			window.location.assign("/Durox/index.php/Grupos/adminClientes");
+	}
+}
+
+function confirmarVisita(){
+	var c = confirm("Los datos no han sido guardados.\n¿Está seguro que quiere salir?");
+	if (c==true){
+			window.location.assign("/Durox/index.php/Visitas/visitas_abm/tab1");
 	}
 }
 

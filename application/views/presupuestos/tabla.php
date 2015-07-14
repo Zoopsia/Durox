@@ -22,6 +22,15 @@ foreach($css_files as $file): ?>
 		  			<div class="panel-body">
 		  				<div class="tab-content">
 		  					<!--TABLA PRINCIPAL CON PEDIDOS-->
+		  					<div class="row">
+		    					<div class="col-md-1">
+		    						<a role="button" class="btn btn-success" href="<?php echo base_url().'index.php/Presupuestos/carga/'; ?>">
+										<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+										<span class="ui-button-text"><?php echo $this->lang->line('agregar').' '.$this->lang->line('presupuesto'); ?></span>
+									</a>
+		    					</div>
+	    					</div>
+		  					
 		  					<div class="tab-pane <?php echo $array_n['listado']?>" id="tab1">
 	    						<?php echo $output; ?>
 	    					</div>

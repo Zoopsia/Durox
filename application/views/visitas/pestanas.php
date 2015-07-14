@@ -1,3 +1,22 @@
+<script>
+$(function() {
+    var availableTags = [
+      <?php
+      	if($productos){	
+      		foreach ($productos as $row) {
+				echo '"'.$row->nombre.'",';
+		  	}
+		}
+      ?>
+      ""
+    ];
+    $( "#producto" ).autocomplete({
+      source: availableTags
+    });
+  });
+</script>
+
+
 <nav class="navbar" role="navigation">
 	<div class="container">
 	    <div class="row">
@@ -5,85 +24,98 @@
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
 		  				<ul class="nav nav-tabs nav-justified">
-							<li class="active"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('pedido'); ?></a></li>
-					    	<li><a href="#tab2" data-toggle="tab"><?php echo $this->lang->line('vendedores'); ?></a></li>
-					    	<li role="presentation" class="dropdown">
-							    <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-							      <?php echo $this->lang->line('perfiles'); ?> <span class="caret"></span>
-							    </a>
-							    <ul class="dropdown-menu" role="menu">
-							     	<li><a href="#tab3" data-toggle="tab"><?php echo $this->lang->line('telefonos'); ?></a></li>
-							     	<li><a href="#tab4" data-toggle="tab"><?php echo $this->lang->line('direcciones'); ?></a></li>
-							     	<li><a href="#tab5" data-toggle="tab"><?php echo $this->lang->line('correos'); ?></a></li>
-							    </ul>
-							</li>
-					    		
-					    	<li><a href="#tab6" data-toggle="tab"><?php echo $this->lang->line('pedidos'); ?></a></li>
-					    	<li><a href="#tab7" data-toggle="tab"><?php echo $this->lang->line('presupuestos'); ?></a></li>
-					    	<li><a href="#tab8" data-toggle="tab"><?php echo $this->lang->line('alarmas'); ?></a></li>
+							<li class="active"><a href="#presupuestos" data-toggle="tab"><?php echo $this->lang->line('presupuestos'); ?></a></li>
+					    	<li><a href="#pedidos" data-toggle="tab"><?php echo $this->lang->line('pedidos'); ?></a></li>
 						</ul>
 		  			</div>
-		  			<div class="panel-body">
-		  				<div class="tab-content">
-	    					<div class="tab-pane active" id="tab1">
-	    					<!--INFO GRAL DEL PEDIDO-->	
-	    						<div class="row">
-					                <div class=" col-md-12 col-lg-12 "><!--carga info pedido-->
-					                	<table class="table table-striped table-bordered" cellspacing="0" width="100%">
-									        <thead>
-									            <tr>
-									            	<th><?php echo $this->lang->line('nombre'); ?></th>
-									                <th><?php echo $this->lang->line('cantidad'); ?></th>
-									                <th><?php echo $this->lang->line('precio'); ?></th>
-									                <th><?php echo $this->lang->line('estado'); ?></th>
-									            </tr>
-									        </thead>
-									 
-									        <tbody>
-									        	<?php 
-									            	if($pedidos){							                
-												      	foreach ($pedidos as $row) 
-												      	{
-												      		echo '<tr>';
-															echo '<td>'.$row->nombre.'</td>';
-															echo '<td>'.$row->cantidad.'</td>';
-															echo "<td>".$row->precio."</td>";
-															echo '<td>'.$row->estado.'</td>';
-															echo "</tr>";
-														}
-													}
-											 	?>
-									        </tbody>
-							    		</table>
-					                </div>
-					            </div>
-					            			
-	    					</div> 
-	     					<div class="tab-pane" id="tab2">
-	     						<!--TAB 2-->
-    
+		  			
+					<div class="panel-body">
+						<?php
+							if($visita){?>
+								<div class="row">
+									<div class="col-md-10 col-md-offset-1">
+										<div class="alert alert-success alert-dismissible" role="alert">
+					  						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					  						La visita <a href="#"><?php echo $visita; ?></a> fué insertada con exito
+										</div>	
+									</div>
+								</div>
+						<?php } ?>
+						
+						<div class="tab-content">
+	    					<div class="tab-pane fade in active" id="presupuestos">
+	    						<?php
+	    							if($presupuesto){
+	    						?>		
+										<div class="row">
+									        <div class="col-md-offset-3 col-sm-6 col-md-6">
+									            <div class="alert-message alert-message-success">
+									                <h4>PRESUPUESTO RELACIONADO CON LA VISITA</h4>
+									                <p>
+									                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. For performance
+									                    reasons, the Tooltip and Popover data-apis are opt-in, meaning 
+													<a href="#"><?php echo $this->lang->line('ver').' '.$this->lang->line('presupuesto'); ?></a>
+													</p>
+									            </div>
+									        </div>
+										</div>
+								<?php	
+	    							}
+									else {
+								?>
+										<div class="row">
+									        <div class="col-md-offset-3 col-sm-6 col-md-6">
+									            <div class="alert-message alert-message-danger">
+									                <h4>NO HAY PRESUPUESTO RELACIONADO CON LA VISITA</h4>
+									                <p>
+									                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. For performance
+									                    reasons, the Tooltip and Popover data-apis are opt-in, meaning 
+													<a href="<?php echo base_url().'index.php/Presupuestos/carga/'.$visita; ?>"><?php echo $this->lang->line('agregar').' '.$this->lang->line('presupuesto'); ?></a>
+													</p>
+									            </div>
+									        </div>
+										</div>
+								<?php
+									}	
+								?>
 	    					</div>
-	    					<div class="tab-pane" id="tab3">
-	     						<!--TAB 3-->
-							    
+	    					<div class="tab-pane fade" id="pedidos">
+	    						<?php
+	    							if($pedido){
+	    						?>		
+										<div class="row">
+									        <div class="col-md-offset-3 col-sm-6 col-md-6">
+									            <div class="alert-message alert-message-success">
+									                <h4>PEDIDO RELACIONADO CON LA VISITA</h4>
+									                <p>
+									                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. For performance
+									                    reasons, the Tooltip and Popover data-apis are opt-in, meaning 
+													<a href="#"><?php echo $this->lang->line('ver').' '.$this->lang->line('pedido'); ?></a>
+													</p>
+									            </div>
+									        </div>
+										</div>
+								<?php	
+	    							}
+									else {
+								?>
+										<div class="row">
+									        <div class="col-md-offset-3 col-sm-6 col-md-6">
+									            <div class="alert-message alert-message-danger">
+									                <h4>NO HAY PEDIDO RELACIONADO CON LA VISITA</h4>
+									                <p>
+									                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. For performance
+									                    reasons, the Tooltip and Popover data-apis are opt-in, meaning 
+													<a href="<?php echo base_url().'index.php/Pedidos/carga/'; ?>"><?php echo $this->lang->line('agregar').' '.$this->lang->line('pedido'); ?></a>
+													</p>
+									            </div>
+									        </div>
+										</div>
+								<?php
+									}	
+								?>
 	    					</div>
-	    					<div class="tab-pane" id="tab4">
-	     						<!--TAB 4-->
-	     						
-	    					</div>
-	    					<div class="tab-pane" id="tab5">
-	     						<!--TAB 5-->
-	     						
-	    					</div>	
-	    					<div class="tab-pane" id="tab6">
-	     						<!--TAB 6-->
-	     						
-	    					</div>
-	    					<div class="tab-pane" id="tab7">
-	     						<!--TAB 7 -->
-	     						
-	    					</div>
-	    				</div><!--contenedor de cada pestaña-->	
+	    				</div><!--contenedor de cada pestaña-->
 		  			</div><!--panel body-->
 				</div><!--panel-->
 			</div><!--contenedor-->

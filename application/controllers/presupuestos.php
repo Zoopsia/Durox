@@ -15,6 +15,11 @@ class Presupuestos extends My_Controller {
 		$this->load->library('grocery_CRUD');
 		
 		$this->load->model('empresas_model');
+		$this->load->model('clientes_model');
+		$this->load->model('vendedores_model');
+		$this->load->model('productos_model');
+		$this->load->model('visitas_model');
+			
 		$this->load->model($this->_subject.'_model');
 	}
 	
@@ -78,6 +83,7 @@ class Presupuestos extends My_Controller {
 			$crud->unset_export();
 			$crud->unset_print();
 			$crud->unset_read();
+			$crud->unset_operations();
 			
 			$output = $crud->render();
 			
@@ -90,5 +96,25 @@ class Presupuestos extends My_Controller {
 	    return site_url($this->_subject.'/pestanas').'/'.$row->id_presupuesto;
 	}
 	
+	public function carga($id_visita=null){
 		
+		$db['empresas']		= $this->empresas_model->getRegistro(1);
+		$db['clientes']		= $this->clientes_model->getTodo();
+		$db['vendedores']	= $this->vendedores_model->getTodo();
+		$db['productos']	= $this->productos_model->getTodo();
+		$db['visitas']		= $this->visitas_model->getTodo();
+		$db['estados']		= $this->presupuestos_model->getTodo('estados_presupuestos');
+		
+		if($id_visita){
+			$db['visita']	= $this->visitas_model->getRegistro($id_visita);;
+		}
+		else
+			$db['visita']	= '';
+			
+		$this->load->view("head.php", $db);
+		$this->load->view("nav_top.php");
+		$this->load->view("nav_left.php");	
+		$this->load->view($this->_subject."/carga.php");
+				
+	}	
 }

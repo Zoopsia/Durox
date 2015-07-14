@@ -23,8 +23,17 @@ function busqueda(){
 	});
 }
 
-
 </script>
+
+<?php 
+foreach($css_files as $file): ?>
+	<link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
+<?php endforeach; ?>
+<?php foreach($js_files as $file): ?>
+	<script src="<?php echo $file; ?>"></script>
+<?php endforeach; ?>
+
+
 
 
 <?php $array_n = pestañaActiva($this->uri->segment(3));?>	
@@ -37,7 +46,6 @@ function busqueda(){
 		  				<ul class="nav nav-pills">
 							<li class="<?php echo $array_n['listado']?>"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('visitas'); ?></a></li>
 					    	<li class="pull-right <?php echo $array_n['busqueda']?>"><a href="#tab2" data-toggle="tab"><?php echo $this->lang->line('busqueda_avanzada'); ?></a></li>
-							<li class="<?php echo $array_n['carga']?>"><a href="#tab3" data-toggle="tab" style="display: none"></a></li>	
 						</ul>
 		  			</div>
 		  			
@@ -47,9 +55,9 @@ function busqueda(){
 		  					<div class="tab-pane <?php echo $array_n['listado']?>" id="tab1">
 	    						<div class="row">
 		    						<div class="col-md-1">
-		    							<a role="button" class="btn btn-success" href="#myModal" data-toggle="modal">
+		    							<a role="button" class="btn btn-success" href="<?php echo base_url().'index.php/Visitas/carga/'; ?>">
 											<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-											<span class="ui-button-text">Añadir Visitas</span>
+											<span class="ui-button-text"><?php echo $this->lang->line('agregar').' '.$this->lang->line('visita'); ?></span>
 										</a>
 		    						</div>
 	    						</div>
@@ -57,79 +65,6 @@ function busqueda(){
 	    						<div>
 	    							<?php echo $output; ?>
 	    						</div>
-	    						
-	    						<!-- Modal -->
-								<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-								  <div class="modal-dialog" role="document">
-								    <div class="modal-content">
-								      <form action="<?php echo base_url()."index.php/Visitas/nuevaVisita/"?>" class="form-horizontal" method="post">
-								      
-									      <div class="modal-header">
-									        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-									        <h4 class="modal-title" id="myModalLabel"><?php echo $this->lang->line('nueva').' '.$this->lang->line('visita'); ?></h4>
-									      </div>
-									      <div class="modal-body">
-									      	 
-									      	  <div class="form-group">
-												<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('vendedor'); ?></label>
-													<div class="col-sm-6 col-sm-offset-1">
-														<select name="id_vendedor" class="form-control chosen-select">	
-														<?php
-															foreach($vendedores as $row){
-																echo '<option value="'.$row->id_vendedor.'">'.$row->nombre.', '.$row->apellido.'</option>';
-															}
-														?>
-														</select>												      	 
-									      	 		</div>
-									      	  </div>
-									      	 
-									      	  <div class="form-group">
-												<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('cliente'); ?></label>
-													<div class="col-sm-6 col-sm-offset-1">
-														<select name="id_cliente" class="form-control chosen-select">	
-														<?php
-															foreach($clientes as $row){
-																echo '<option value="'.$row->id_cliente.'">'.$row->nombre.', '.$row->apellido.'</option>';
-															}
-														?>
-														</select>												      	 
-									      	 		</div>
-									      	  </div>
-									      	  
-									      	  <div class="form-group">
-												<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('epoca').' '.$this->lang->line('visita'); ?></label>
-													<div class="col-sm-6 col-sm-offset-1">
-														<select name="id_epoca_visita" class="form-control chosen-select">	
-														<?php
-															foreach($epocas as $row){
-																echo '<option value="'.$row->id_epoca_visita.'">'.$row->epoca.'</option>';
-															}
-														?>
-														</select>												      	 
-									      	 		</div>
-									      	  </div>  
-									      	 
-									      	  <div class="form-group">
-												<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('fecha'); ?></label>
-													<div class="col-sm-6 col-sm-offset-1">
-														<input type="date" name="date_add" class="form-control" value="">	 
-													</div>
-										  	  </div>
-										  	  
-										  	  
-									      	  
-									      </div>
-									      <div class="modal-footer">
-									        <button type="button" class="btn btn-danger" data-dismiss="modal"><?php echo $this->lang->line('cancelar'); ?></button>
-									        <button type="submit" class="btn btn-primary"><?php echo $this->lang->line('guardar'); ?></button>
-									      </div>
-								      </form>
-								    </div>
-								  </div>
-								</div>
-	    						
-	    						
-	    						
 	    					</div>
 	    					<!--BUSQUEDA AVANZADA DE PEDIDOS-->
 	    					<div class="tab-pane <?php echo $array_n['busqueda']?>" id="tab2">
@@ -226,20 +161,8 @@ function busqueda(){
 	    							
 	    						</form>
 	    					</div>
-	    					<div class="tab-pane <?php echo $array_n['carga']?>" id="tab3">
-
-	    						<form action="" class="form-horizontal" method="post">
-	    							<div style="padding: 0 50px">
-		    							<div class="form-group odd">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('fecha'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
-													<input type="date" name="date_add" class="form-control" value="">	 
-												</div>
-										</div>
-									</div>
-	    						</form>
-	    					</div><!--contenedor de cada pestaña-->	
-	    				</div>
+	    					
+	    				</div><!--contenedor de cada pestaña-->
 		  			</div><!--panel body-->
 				</div><!--panel-->
 			</div><!--contenedor-->

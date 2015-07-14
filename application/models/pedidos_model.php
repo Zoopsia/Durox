@@ -57,6 +57,30 @@ class Pedidos_model extends My_Model {
 		}
 		
 	}
+	
+	function getPedido($id){
+		$sql = "SELECT 
+					* 
+				FROM 
+					$this->_tablename 
+				WHERE 
+					id_visita = '$id'";
+					
+		$query = $this->db->query($sql);
+		
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+			return $data;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
 		
 } 
 ?>

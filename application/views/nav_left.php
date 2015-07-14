@@ -48,7 +48,7 @@
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><?php echo $this->lang->line('presupuestos'); ?> <span class="caret"></span><span style="font-size:16px;" class="pull-right hidden-xs showopacity glyphicon glyphicon-shopping-cart"></span></a>
           <ul class="dropdown-menu forAnimate" role="menu">
             <li><a href="<?php echo base_url().'index.php/Presupuestos/presupuestos_abm/tab1'?>"><?php echo $this->lang->line('listado_de').' '.$this->lang->line('presupuestos'); ?></a></li>
-            <li><a href="<?php echo base_url().'index.php/Presupuestos/presupuestos_abm/tab1/add'?>"><?php echo $this->lang->line('nuevo'); ?></a></li>
+            <li><a href="<?php echo base_url().'index.php/Presupuestos/carga/'?>"><?php echo $this->lang->line('nuevo'); ?></a></li>
             <li class="divider"></li>
             <li><a href="<?php echo base_url().'index.php/Presupuestos/presupuestos_abm/tab2'?>"><?php echo $this->lang->line('busqueda_avanzada'); ?></a></li>
           </ul>
