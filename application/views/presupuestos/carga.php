@@ -1,3 +1,83 @@
+<script>
+
+$( document ).ready(function() {
+	<?php
+	if(!$this->uri->segment(3)){
+		echo '$("#ModalBuscar").modal("show");';
+	}
+	?>
+});
+
+function buscarVisita(){
+	
+	window.open(
+		"",
+		"",
+		"width=550, height=400, left=350, menubar=no, resizable=no, scrollbars=no, status=no, titlebar=no, top=100"
+	);
+}
+function busqueda(){
+	
+ 	var id_visita = $('select#id_visita').val(); //Obtenemos el id del pais seleccionado en la lista
+ 	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/Presupuestos/getVendedor', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	data: 'id_visita='+id_visita, //Pasaremos por parámetro POST el id del pai
+	 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+	 		//Activar y Rellenar el select de provincias
+	 		$('#id_vendedor').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
+	 		$("#id_vendedor").trigger("chosen:updated");
+	 	}
+	});
+	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/Presupuestos/getCliente', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	data: 'id_visita='+id_visita, //Pasaremos por parámetro POST el id del pais
+	 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+	 		//Activar y Rellenar el select de provincias
+	 		$('#id_cliente').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
+	 		$("#id_cliente").trigger("chosen:updated");
+	 	}
+	});
+	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/Presupuestos/getFecha', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	data: 'id_visita='+id_visita, //Pasaremos por parámetro POST el id del pais
+	 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+	 		//Activar y Rellenar el select de provincias
+	 		$('#date_add').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
+	 	}
+	});
+}
+
+</script>
+
+<!-- Modal -->
+<div class="modal fade" id="ModalBuscar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+	  	<div class="modal-content">
+	  		<div class="modal-header">
+	      		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	      		<h4 class="modal-title" id="myModalLabel">Ayuda</h4>
+	   		</div>
+			<div class="modal-body" id="tablaVisitas">
+				<p>. Si no conoce el número de visita puede buscarlo presionando el botón "BUSCAR".</p>
+				<p>. Puede crear una nueva visita presionando el botón "CREAR".</p>
+				<p>. Presione "CANCELAR" si conoce el número de la visita.</p>					        		
+			</div>
+			<div class="modal-footer">
+				<a role="button" class="btn btn-primary" href="<?php echo base_url().'index.php/Visitas/carga/'; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('crear').' '.$this->lang->line('visita');?>">
+					<?php echo $this->lang->line('crear'); ?>
+				</a>
+				
+				<button type="button" class="btn btn-info" onclick="buscarVisita();"><?php echo $this->lang->line('buscar'); ?></button>
+				<button type="button" class="btn btn-danger" data-dismiss="modal"><?php echo $this->lang->line('cancelar'); ?></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 <nav class="navbar" role="navigation">
 	<div class="container">
 	    <div class="row">
@@ -22,30 +102,14 @@
 	    									if($visita==''){
 								?>		
 								<div class="col-sm-2 col-sm-offset-3">
-									<button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalBuscar" style="margin-top: 10% ; width: 100px">
+									<a role="button" class="btn btn-info" href="#" onclick="buscarVisita()" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('buscar').' '.$this->lang->line('visita');?>" style="margin-top: 15% ; width: 100px">
 										<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 										<?php echo $this->lang->line('buscar'); ?>
-									</button>
+									</a>
+									
 								</div>
 								
-								 <!-- Modal -->
-								<div class="modal fade" id="ModalBuscar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-								 	<div class="modal-dialog" role="document">
-								    	<div class="modal-content">
-								      		<div class="modal-header">
-								        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-								        		<h4 class="modal-title" id="myModalLabel">Modal title</h4>
-								      		</div>
-								      		<div class="modal-body">
-								        	...
-								      		</div>
-								      		<div class="modal-footer">
-								      			<button type="button" class="btn btn-primary">Save changes</button>
-								        		<button type="button" class="btn btn-danger" data-dismiss="modal"><?php echo $this->lang->line('cancelar'); ?></button>
-								      		</div>
-								    	</div>
-								  	</div>
-								</div>
+								
 								<?php
 											}
 								?>	
@@ -142,8 +206,8 @@
 										 <div class="form-group odd">
 											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('visita'); ?></label>
 												<div class="col-sm-4 col-sm-offset-1">
-													<select name="id_visita" class="form-control chosen-select" data-placeholder="Seleccione una <?php echo $this->lang->line('visita'); ?>" required>	
-														<option></option>
+													<select id="id_visita" name="id_visita" class="form-control chosen-select" onchange=" busqueda()" required>	
+														<option value='' disabled selected style='display:none;'>Seleccione una opcion...</option>
 														<?php
 															foreach($visitas as $row){
 																echo '<option value="'.$row->id_visita.'">'.$row->id_visita.'</option>';
@@ -161,7 +225,7 @@
 	    								<div class="form-group even">
 											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('vendedor'); ?></label>
 												<div class="col-sm-4 col-sm-offset-1">
-													<select name="id_vendedor" class="form-control chosen-select" data-placeholder="Seleccione un <?php echo $this->lang->line('vendedor'); ?>" required>	
+													<select id="id_vendedor" name="id_vendedor" class="form-control chosen-select" data-placeholder="Seleccione un <?php echo $this->lang->line('vendedor'); ?>" required>	
 														<option></option>
 														<?php
 															foreach($vendedores as $row){
@@ -180,7 +244,7 @@
 	    								<div class="form-group odd">
 											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('cliente'); ?></label>
 												<div class="col-sm-4 col-sm-offset-1">
-													<select name="id_cliente" class="form-control chosen-select" data-placeholder="Seleccione un <?php echo $this->lang->line('cliente'); ?>" required>	
+													<select id="id_cliente" name="id_cliente" class="form-control chosen-select" data-placeholder="Seleccione un <?php echo $this->lang->line('cliente'); ?>" required>	
 														<option></option>
 														<?php
 															foreach($clientes as $row){
@@ -198,7 +262,7 @@
 									        								
 		    							<div class="form-group even">
 											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('fecha'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
+												<div class="col-sm-4 col-sm-offset-1" id="date_add">
 													<input type="date" name="date_add" class="form-control" value="" required>	 
 												</div>
 										</div>

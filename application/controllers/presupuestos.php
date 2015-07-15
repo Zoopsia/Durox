@@ -135,5 +135,54 @@ class Presupuestos extends My_Controller {
 		//redirect('Visitas/carga/'.$id_visita,'refresh');
 		
 	}
+	
+	public function getVendedor(){
+		
+		$id_visita			= $this->input->post('id_visita');
+		
+		$visita				= $this->visitas_model->getRegistro($id_visita);
+
+		foreach ($visita as $row) {
+			$vendedor 		= $this->vendedores_model->getRegistro($row->id_vendedor);
+		}
+		
+		
+		foreach ($vendedor as $key) {
+			$mensaje  = '<option value="'.$key->id_vendedor.'" selected>'.$key->nombre.', '.$key->apellido;
+			$mensaje .= '</option>';
+			
+		}
+		echo $mensaje;
+	}
+	
+	public function getCliente(){
+		
+		$id_visita			= $this->input->post('id_visita');
+		
+		$visita				= $this->visitas_model->getRegistro($id_visita);
+		
+		foreach ($visita as $row) {
+			$cliente 		= $this->clientes_model->getRegistro($row->id_cliente);
+		}
+		
+		foreach ($cliente as $key) {
+			$mensaje  = '<option value="'.$key->id_cliente.'" selected>'.$key->nombre.', '.$key->apellido;
+			$mensaje .= '</option>';
+			
+		}
+		echo $mensaje;
+	}
+	
+	public function getFecha(){
+		
+		$id_visita			= $this->input->post('id_visita');
+		
+		$visita				= $this->visitas_model->getRegistro($id_visita);
+		
+		foreach ($visita as $row) {
+			echo '<input type="text" name="date_add" class="form-control" value="'.$row->date_add.'" required>';
+		}
+		
+	}
 		
 }
