@@ -15,21 +15,27 @@
 	    					
 								<h3><div style="padding: 0 0 20px 60px">
 									<a href="#">
-										<?php echo $this->lang->line('nueva').' '.$this->lang->line('visita'); ?>
+										<?php echo $this->lang->line('editar').' '.$this->lang->line('visita'); ?>
 									</a>
 								</div></h3>	
+								<?php
+	    							foreach($visita as $value){
+	    						?>
 								
-	    						<form action="<?php echo base_url()."index.php/Visitas/nuevaVisita/"?>" class="form-horizontal" method="post">
+	    						<form action="<?php echo base_url()."index.php/Visitas/editarVisita/".$value->id_visita; ?>" class="form-horizontal" method="post">
 	    							<div style="padding: 0 50px">
-	    								
 	    								<div class="form-group odd">
 											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('vendedor'); ?></label>
 												<div class="col-sm-4 col-sm-offset-1">
-													<select name="id_vendedor" class="form-control chosen-select" data-placeholder="Seleccione un <?php echo $this->lang->line('vendedor'); ?>" required>	
-														<option></option>
+													<select name="id_vendedor" class="form-control chosen-select">	
 														<?php
 															foreach($vendedores as $row){
-																echo '<option value="'.$row->id_vendedor.'">'.$row->nombre.', '.$row->apellido.'</option>';
+																if($row->id_vendedor == $value->id_vendedor){
+																	echo '<option value="'.$row->id_vendedor.'" selected>'.$row->nombre.', '.$row->apellido.'</option>';
+																}
+																else {
+																	echo '<option value="'.$row->id_vendedor.'">'.$row->nombre.', '.$row->apellido.'</option>';
+																}
 															}
 														?>
 													</select>												      	 
@@ -44,11 +50,15 @@
 	    								<div class="form-group even">
 											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('cliente'); ?></label>
 												<div class="col-sm-4 col-sm-offset-1">
-													<select name="id_cliente" class="form-control chosen-select" data-placeholder="Seleccione un <?php echo $this->lang->line('cliente'); ?>" required>	
-														<option></option>
+													<select name="id_cliente" class="form-control chosen-select">	
 														<?php
 															foreach($clientes as $row){
-																echo '<option value="'.$row->id_cliente.'">'.$row->nombre.', '.$row->apellido.'</option>';
+																if($row->id_cliente == $value->id_cliente){
+																	echo '<option value="'.$row->id_cliente.'" selected>'.$row->nombre.', '.$row->apellido.'</option>';
+																}
+																else {
+																	echo '<option value="'.$row->id_cliente.'">'.$row->nombre.', '.$row->apellido.'</option>';
+																}
 															}
 														?>
 													</select>												      	 
@@ -63,11 +73,15 @@
 									    <div class="form-group odd">
 											<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('epoca').' '.$this->lang->line('visita'); ?></label>
 												<div class="col-sm-4">
-													<select name="id_epoca_visita" class="form-control chosen-select" data-placeholder="Seleccione una <?php echo $this->lang->line('epoca'); ?>">	
-														<option></option>
+													<select name="id_epoca_visita" class="form-control chosen-select">	
 														<?php
 															foreach($epocas as $row){
-																echo '<option value="'.$row->id_epoca_visita.'">'.$row->epoca.'</option>';
+																if($row->id_epoca_visita == $value->id_epoca_visita){
+																	echo '<option value="'.$row->id_epoca_visita.'" selected>'.$row->epoca.'</option>';
+																}
+																else{
+																	echo '<option value="'.$row->id_epoca_visita.'">'.$row->epoca.'</option>';
+																}	
 															}
 														?>
 													</select>												      	 
@@ -77,25 +91,30 @@
 		    							<div class="form-group even">
 											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('fecha'); ?></label>
 												<div class="col-sm-4 col-sm-offset-1">
-													<input type="date" name="date_add" class="form-control" value="" required>	 
+													<input type="date" name="date_upd" class="form-control" value="<?php echo $value->date_upd;?>">	 
 												</div>
 										</div>
 										
 										<div class="form-group odd">
 											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('comentarios'); ?></label>
 												<div class="col-sm-4 col-sm-offset-1">
-													<textarea name="comentarios" style="width: 100%; height: 100px;" ></textarea>	 
+													<textarea name="comentarios" style="width: 100%; height: 100px;" ><?php echo $value->descripcion;?></textarea>	 
 												</div>
 										</div>
 										
 										<div class="form-group even" style="padding-bottom: 1%">
 											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('valoracion'); ?></label>
 												<div class="col-sm-4 col-sm-offset-1" style="margin-top: 1%">
-													<input name="star1" type="radio" value="1" class="star"/>
-													<input name="star1" type="radio" value="2" class="star"/>
-													<input name="star1" type="radio" value="3" class="star" checked/>
-													<input name="star1" type="radio" value="4" class="star"/>
-													<input name="star1" type="radio" value="5" class="star"/>
+													<?php
+													for ($i=1; $i <= 5; $i++) {
+														if($value->valoracion == $i){ 
+															echo '<input name="star1" type="radio" value="'.$i.'" class="star" checked/>';
+														}
+														else {
+															echo '<input name="star1" type="radio" value="'.$i.'" class="star"/>';
+														}
+													}
+													?>
 												</div>
 										</div>
 										
@@ -109,6 +128,9 @@
 									   	</div>
 									</div>
 	    						</form>
+	    						<?php
+	    						}
+								?>	    						
 	    				</div><!--contenedor de cada pestaña-->
 		  			</div><!--panel body-->
 				</div><!--panel-->

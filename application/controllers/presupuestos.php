@@ -116,5 +116,24 @@ class Presupuestos extends My_Controller {
 		$this->load->view("nav_left.php");	
 		$this->load->view($this->_subject."/carga.php");
 				
-	}	
+	}
+	
+	public function nuevoPresupuesto(){
+		
+		$presupuesto	= array(
+			'id_visita'				=> $this->input->post('id_visita'),
+			'id_cliente' 			=> $this->input->post('id_cliente'), 
+			'id_vendedor' 			=> $this->input->post('id_vendedor'),
+			'date_add'				=> $this->input->post('date_add'),
+			'date_upd'				=> $this->input->post('date_add'),
+			'id_estado_presupuesto'	=> $this->input->post('id_estado_presupuesto')	
+		);
+
+		$id_presupuesto = $this->presupuestos_model->insert($presupuesto);
+		
+		echo $id_presupuesto;
+		//redirect('Visitas/carga/'.$id_visita,'refresh');
+		
+	}
+		
 }

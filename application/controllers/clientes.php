@@ -79,6 +79,7 @@ class Clientes extends My_Controller {
 			$crud->unset_read();
 			
 			
+			
 			$output = $crud->render();
 			
 			$this->crud_tabla($output);

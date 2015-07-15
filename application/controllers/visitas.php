@@ -24,33 +24,23 @@ class Visitas extends My_Controller {
 		$this->load->model($this->_subject.'_model');
 	}
 	
-
-	public function pestanas($id){
-		
-		$db['empresas']		= $this->empresas_model->getRegistro(1);
-		$db['visitas']		= $this->visitas_model->getRegistro($id);
-
-		
-			$this->load->view("head.php", $db);
-			$this->load->view("nav_top.php");
-			$this->load->view("nav_left.php");	
-			$this->load->view($this->_subject."/pestanas.php");
-					
-	}
-	
-	public function carga($id_visita=null){
+	public function carga($id_visita=null, $tipo=1){
 		
 		$db['empresas']		= $this->empresas_model->getRegistro(1);
 		$db['clientes']		= $this->clientes_model->getTodo();
 		$db['vendedores']	= $this->vendedores_model->getTodo();
+		$db['razon_social']	= $this->clientes_model->getTodo('razon_social');
+		$db['estados']		= $this->presupuestos_model->getTodo('estados_presupuestos');
 		$db['epocas']		= $this->visitas_model->getEpocas();
-		$db['productos']	= $this->productos_model->getTodo();
+		$db['tipo']			= $tipo;
+		$db['visitas']		= $this->visitas_model->getRegistro($id_visita);
 		
 		if($id_visita){
 			$db['visita']		= $id_visita;
 			$db['presupuesto']	= $this->presupuestos_model->getPresupuesto($id_visita);
 			$db['pedido']		= $this->pedidos_model->getPedido($id_visita);
 		}
+		
 
 		$this->load->view("head.php", $db);
 		$this->load->view("nav_top.php");
@@ -60,6 +50,27 @@ class Visitas extends My_Controller {
 		}
 		else{		
 			$this->load->view($this->_subject."/carga.php");
+		}			
+	}
+	
+	public function editar($id_visita){
+		
+		$db['empresas']		= $this->empresas_model->getRegistro(1);
+		$db['clientes']		= $this->clientes_model->getTodo();
+		$db['vendedores']	= $this->vendedores_model->getTodo();
+		$db['epocas']		= $this->visitas_model->getEpocas();
+	
+		if($id_visita){
+			$db['visita']		= $this->visitas_model->getRegistro($id_visita);
+			$db['presupuesto']	= $this->presupuestos_model->getPresupuesto($id_visita);
+			$db['pedido']		= $this->pedidos_model->getPedido($id_visita);
+		}
+
+		$this->load->view("head.php", $db);
+		$this->load->view("nav_top.php");
+		$this->load->view("nav_left.php");	
+		if($id_visita){
+			$this->load->view($this->_subject."/editar.php");
 		}			
 	}
 
@@ -113,7 +124,8 @@ class Visitas extends My_Controller {
 
 	function just_a_test($primary_key , $row)
 	{
-	    return site_url($this->_subject.'/pestanas').'/'.$row->id_visita;
+		$tipo = 0;	
+	    return site_url($this->_subject.'/carga').'/'.$row->id_visita.'/'.$tipo;
 	}
 	
 	function busqueda(){
@@ -193,6 +205,24 @@ class Visitas extends My_Controller {
 		);
 
 		$id_visita = $this->visitas_model->insert($visita);
+		
+		redirect('Visitas/carga/'.$id_visita,'refresh');
+		
+	}
+	
+	public function editarVisita($id_visita){
+		
+		$visita	= array(
+		
+			'id_cliente' 		=> $this->input->post('id_cliente'), 
+			'id_vendedor' 		=> $this->input->post('id_vendedor'), 
+			'id_epoca_visita'	=> $this->input->post('id_epoca_visita'),
+			'date_upd'			=> $this->input->post('date_upd'),
+			'valoracion'		=> $this->input->post('star1'),
+			'descripcion'		=> $this->input->post('comentarios')		
+		);
+
+		$id = $this->visitas_model->update($visita,$id_visita);
 		
 		redirect('Visitas/carga/'.$id_visita,'refresh');
 		

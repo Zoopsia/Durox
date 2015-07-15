@@ -1,8 +1,7 @@
 $(document).ready(function(){
      
     $('.prueba').DataTable({
-    	
-    	
+
     	"language": {
 			"sProcessing":     "Procesando...",
 			"sLengthMenu":     "Mostrar _MENU_ registros",

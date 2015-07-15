@@ -9,13 +9,48 @@
 		  			
 		  			<div class="panel-body">
 		  				<div class="tab-content">
-		  						<h3><div style="padding: 0 0 20px 60px">
-									<a href="#">
-										<?php echo $this->lang->line('nuevo').' '.$this->lang->line('presupuesto'); ?>
-									</a>
-								</div></h3>	
+		  					<div class="row">
+		  						<div class="col-sm-6">
+			  						<h3><div style="padding: 0 0 20px 60px">
+										<a href="#">
+											<?php echo $this->lang->line('nuevo').' '.$this->lang->line('presupuesto'); ?>
+										</a>
+									</div></h3>
+								</div>
 								
-	    						<form action="" class="form-horizontal" method="post">
+								<?php
+	    									if($visita==''){
+								?>		
+								<div class="col-sm-2 col-sm-offset-3">
+									<button type="button" class="btn btn-info" data-toggle="modal" data-target="#ModalBuscar" style="margin-top: 10% ; width: 100px">
+										<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+										<?php echo $this->lang->line('buscar'); ?>
+									</button>
+								</div>
+								
+								 <!-- Modal -->
+								<div class="modal fade" id="ModalBuscar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+								 	<div class="modal-dialog" role="document">
+								    	<div class="modal-content">
+								      		<div class="modal-header">
+								        		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								        		<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+								      		</div>
+								      		<div class="modal-body">
+								        	...
+								      		</div>
+								      		<div class="modal-footer">
+								      			<button type="button" class="btn btn-primary">Save changes</button>
+								        		<button type="button" class="btn btn-danger" data-dismiss="modal"><?php echo $this->lang->line('cancelar'); ?></button>
+								      		</div>
+								    	</div>
+								  	</div>
+								</div>
+								<?php
+											}
+								?>	
+							</div>	
+	    						<form action="<?php echo base_url().'index.php/Presupuestos/nuevoPresupuesto/'; ?>" class="form-horizontal" method="post">
 	    							<div style="padding: 0 50px">
 	    								<?php
 	    									if($visita!=''){
@@ -29,11 +64,6 @@
 														<option value="<?php echo $row->id_visita; ?>" selected><?php echo $row->id_visita; ?></option>
 													</select>												      	 
 									      		</div>
-									      		<div class="col-sm-1 col-sm-offset-3">
-										      		<a role="button" class="btn btn-primary btn-sm" href="<?php echo base_url().'index.php/Visitas/carga/'; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('agregar').' '.$this->lang->line('vendedor');?>" style="margin-top: 15%">
-														<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-													</a>
-									      		</div>
 									    </div>
 									    
 	    								<div class="form-group even">
@@ -43,7 +73,7 @@
 														foreach ($vendedores as $key) {
 															if($key->id_vendedor == $row->id_vendedor){
 													?>	
-													<select name="id_cliente" class="form-control chosen-select" required>	
+													<select name="id_vendedor" class="form-control chosen-select" required>	
 														<option value="<?php echo $key->id_vendedor; ?>" selected><?php echo $key->nombre.', '.$key->apellido; ?></option>
 													</select>	
 													
@@ -51,11 +81,6 @@
 															}/*--FOREACH---*/
 														}/*--IF---*/
 												    ?> 												      	 
-									      		</div>
-									      		<div class="col-sm-1 col-sm-offset-3">
-										      		<a role="button" class="btn btn-primary btn-sm" href="<?php echo base_url().'index.php/Vendedores/vendedores_abm/tab1/add'; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('agregar').' '.$this->lang->line('vendedor');?>" style="margin-top: 15%">
-														<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-													</a>
 									      		</div>
 									    </div>
 	    								
@@ -75,17 +100,12 @@
 														}/*--IF---*/
 												    ?> 	 
 									     		</div>
-									     		<div class="col-sm-1 col-sm-offset-3">
-										      		<a role="button" class="btn btn-primary btn-sm" href="<?php echo base_url().'index.php/Clientes/clientes_abm/tab1/add'; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('agregar').' '.$this->lang->line('cliente');?>" style="margin-top: 15%">
-														<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-													</a>
-									      		</div>
 									    </div>
 									        								
 		    							<div class="form-group even">
 											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('fecha'); ?></label>
 												<div class="col-sm-4 col-sm-offset-1">
-													<input type="text" name="date_add" class="form-control" value="<?php echo $row->date_upd;?>" required>	 
+													<input type="text" name="date_add" class="form-control" value="<?php echo $row->date_upd;?>" required readonly>	 
 												</div>
 										</div>
 										
@@ -132,7 +152,7 @@
 													</select>												      	 
 									      		</div>
 									      		<div class="col-sm-1 col-sm-offset-3">
-										      		<a role="button" class="btn btn-primary btn-sm" href="<?php echo base_url().'index.php/Visitas/carga/'; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('agregar').' '.$this->lang->line('vendedor');?>" style="margin-top: 15%">
+										      		<a role="button" class="btn btn-primary btn-sm" href="<?php echo base_url().'index.php/Visitas/carga/'; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('agregar').' '.$this->lang->line('visita');?>" style="margin-top: 15%">
 														<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 													</a>
 									      		</div>

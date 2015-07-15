@@ -77,8 +77,8 @@
 																<?php } ?>
 														</div>
 														<div class="modal-footer">
-															<button type="button" class="btn btn-danger" data-dismiss="modal"><?php echo $this->lang->line('cancelar'); ?></button>
 															<button type="submit" class="btn btn-primary"><?php echo $this->lang->line('guardar'); ?></button>
+															<button type="button" class="btn btn-danger" data-dismiss="modal"><?php echo $this->lang->line('cancelar'); ?></button>
 														</div>
 											      	</form>
 											    </div>
