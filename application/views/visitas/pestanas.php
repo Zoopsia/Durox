@@ -130,6 +130,11 @@
 																echo "</div>";
 															}
 														}
+														if($row->id_epoca_visita==0){
+															echo '<div class="odd">';	
+															echo $this->lang->line('epoca').': Sin '.$this->lang->line('epoca');
+															echo "</div>";
+														}
 														echo '<div class="even">';
 														echo $this->lang->line('valoracion').': '.valoracion($row->valoracion);
 														echo "</div>";

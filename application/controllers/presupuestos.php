@@ -56,7 +56,7 @@ class Presupuestos extends My_Controller {
 							'id_estado_presupuesto',
 							'date_add');
 			
-			$crud->display_as('id_presupuesto','N° Pedido')
+			$crud->display_as('id_presupuesto','N° Presupuesto')
 				 ->display_as('id_cliente','Cliente')
 				 ->display_as('id_vendedor','Vendedor')
 				 ->display_as('id_estado_presupuesto','Estado')
@@ -120,20 +120,67 @@ class Presupuestos extends My_Controller {
 	
 	public function nuevoPresupuesto(){
 		
-		$presupuesto	= array(
-			'id_visita'				=> $this->input->post('id_visita'),
-			'id_cliente' 			=> $this->input->post('id_cliente'), 
-			'id_vendedor' 			=> $this->input->post('id_vendedor'),
-			'date_add'				=> $this->input->post('date_add'),
-			'date_upd'				=> $this->input->post('date_add'),
-			'id_estado_presupuesto'	=> $this->input->post('id_estado_presupuesto')	
-		);
+		//----- SI LA VISITA YA EXISTIA----//
+		
+		if($this->input->post('id_visita')){
+		
+			$presupuesto	= array(
+				'id_visita'				=> $this->input->post('id_visita'),
+				'id_cliente' 			=> $this->input->post('id_cliente'), 
+				'id_vendedor' 			=> $this->input->post('id_vendedor'),
+				'date_add'				=> $this->input->post('date_add'),
+				'date_upd'				=> $this->input->post('date_add'),	
+			);
+	
+			$id_presupuesto 	= $this->presupuestos_model->insert($presupuesto);
+			
+			$arreglo_cruce	= array(
+				'id_visita'				=> $this->input->post('id_visita'),
+				'id_presupuesto'		=> $id_presupuesto, 
+			);
+			
+			$this->presupuestos_model->insertCruceVisita($arreglo_cruce);
+		}
+		else {//------ SI LA VISITA NO SE ELIGIÓ O NO EXISTIA----//
+			
+			$visita	= array(
+			'id_cliente' 		=> $this->input->post('id_cliente'), 
+			'id_vendedor' 		=> $this->input->post('id_vendedor'),
+			'date_add'			=> $this->input->post('date_add'),
+			'date_upd'			=> $this->input->post('date_add'),		
+			);
 
-		$id_presupuesto = $this->presupuestos_model->insert($presupuesto);
+			$id_visita = $this->visitas_model->insert($visita);
+			
+			$presupuesto	= array(
+				'id_visita'				=> $id_visita,
+				'id_cliente' 			=> $this->input->post('id_cliente'), 
+				'id_vendedor' 			=> $this->input->post('id_vendedor'),
+				'date_add'				=> $this->input->post('date_add'),
+				'date_upd'				=> $this->input->post('date_add'),	
+			);
+	
+			$id_presupuesto 	= $this->presupuestos_model->insert($presupuesto);
+			
+			$arreglo_cruce	= array(
+				'id_visita'				=> $id_visita,
+				'id_presupuesto'		=> $id_presupuesto, 
+			);
+			
+			$this->presupuestos_model->insertCruceVisita($arreglo_cruce);
+		}
 		
-		echo $id_presupuesto;
-		//redirect('Visitas/carga/'.$id_visita,'refresh');
-		
+		//----- LO LLEVO A LA CARGA DE PRODUCTOS DEL PRESUPUESTO -----//
+		if($id_presupuesto){
+			$db['empresas']		= $this->empresas_model->getRegistro(1);
+			$db['presupuesto']	= $id_presupuesto;
+			$db['productos']	= $this->productos_model->getTodo();
+			
+			$this->load->view("head.php", $db);
+			$this->load->view("nav_top.php");
+			$this->load->view("nav_left.php");	
+			$this->load->view($this->_subject."/carga_productos.php");
+		}
 	}
 	
 	public function getVendedor(){
@@ -184,5 +231,117 @@ class Presupuestos extends My_Controller {
 		}
 		
 	}
+	
+	public function cargaProducto(){
 		
+		$presupuesto		= $this->input->post('presupuesto');
+		
+		if($this->input->post('producto')){
+			if($this->input->post('cantidad')){
+
+				$producto			= $this->input->post('producto');
+				$cantidad			= $this->input->post('cantidad');
+
+				$productos			= $this->productos_model->getTodo();
+				
+				foreach ($productos as $row) {
+					if($row->id_producto == $producto){
+						$precio 	= $row->precio;
+					}
+				}
+				
+				$cantidad = $this->input->post('cantidad');
+				
+				$arreglo	= array(
+					'id_presupuesto'				=> $this->input->post('presupuesto'),
+					'id_producto' 					=> $this->input->post('producto'), 
+					'cantidad' 						=> $cantidad,
+					'id_estado_producto_presupuesto'=> 1,
+					'precio'						=> $precio*$cantidad,	
+				);
+				
+				
+				$linea				= $this->presupuestos_model->insertLinea($arreglo);
+			}
+		}
+	
+		$this->armarTabla($presupuesto);	
+	}
+
+	public function sacarProducto(){
+			
+		$id_linea			= $this->input->post('id_linea');
+		$presupuesto		= $this->input->post('presupuesto');
+		
+		$this->presupuestos_model->sacarProducto($id_linea);
+		
+		
+		$this->armarTabla($presupuesto);
+		
+	} 
+	
+	public function armarTabla($presupuesto){
+		
+		$productos			= $this->productos_model->getTodo();
+		$tabla				= $this->presupuestos_model->getTodo('linea_productos_presupuestos');
+		
+		
+		$mensaje = '<table class="table table-striped" cellspacing="0" width="100%">
+					<thead>
+						<tr>
+							
+							<th class="th1">'.$this->lang->line("producto").'</th>
+							<th class="th1">'.$this->lang->line("cantidad").'</th>
+							<th class="th1">'.$this->lang->line("precio").'</th>
+							<th class="th1">'.$this->lang->line("subtotal").'</th>
+							<th></th>
+						</tr>
+					</thead>';
+					
+		$mensaje .= '<tbody>';		
+		
+		foreach ($tabla as $row) {
+			if($row->id_presupuesto == $presupuesto){
+				
+				foreach ($productos as $key) {
+					
+					if($row->id_producto == $key->id_producto){
+
+						$mensaje	.= '<tr>';					
+						$mensaje	.= '<th>'.$key->nombre.'</th>';
+						$mensaje	.= '<th>'.$row->cantidad.'</th>';
+						$mensaje	.= '<th>'.'$'.$key->precio.'</th>';
+						$mensaje	.= '<th>'.'$'.$row->precio.'</th>';
+						$mensaje	.= '<th><a href="#" class="btn btn-danger btn-xs glyphicon glyphicon-minus" onclick="sacarProducto('.$row->id_linea_producto_presupuesto.','.$presupuesto.')" role="button"></th>';
+						$mensaje	.= '</tr>';
+					}
+				}
+			}
+		}
+		
+		
+		$mensaje .= '</tbody>';
+		
+		$total = 0;
+		foreach ($tabla as $row) {
+			if($row->id_presupuesto == $presupuesto){
+				$total = $row->precio + $total;
+			}
+		}
+		
+		$mensaje .= '<tfoot>
+						<tr>
+							<th></th>
+							<th></th>
+							<th class="th1">'.$this->lang->line("total").'</th>
+							<th>'.'$'.$total.'</th>
+							<th></th>
+						</tr>
+					</tfoot>';
+		
+		
+		$mensaje .= '</table>';
+					
+		echo $mensaje;
+	}	
 }

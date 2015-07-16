@@ -81,6 +81,29 @@ class Presupuestos_model extends My_Model {
 			return FALSE;
 		}
 	}
+	
+	function insertLinea($arreglo){
 		
+		//----INSERTO CAMPOS EN TABLA ----//
+		
+		$this->db->insert('linea_productos_presupuestos', $arreglo);
+		 
+		return $this->db->insert_id();
+		
+	}
+	
+	function insertCruceVisita($arreglo_cruce){
+		
+		//----INSERTO CAMPOS EN TABLA CRUCE ----//
+		
+		$this->db->insert('sin_visitas_presupuestos', $arreglo_cruce);
+	}
+	
+	function sacarProducto($id){
+		
+		$this->db->where('id_linea_producto_presupuesto', $id);
+		$this->db->delete('linea_productos_presupuestos'); 
+		
+	}	
 } 
 ?>

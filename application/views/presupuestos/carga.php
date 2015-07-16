@@ -1,21 +1,9 @@
 <script>
 
-$( document ).ready(function() {
-	<?php
-	if(!$this->uri->segment(3)){
-		echo '$("#ModalBuscar").modal("show");';
-	}
-	?>
-});
-
-function buscarVisita(){
-	
-	window.open(
-		"",
-		"",
-		"width=550, height=400, left=350, menubar=no, resizable=no, scrollbars=no, status=no, titlebar=no, top=100"
-	);
+function modal(){
+	$("#ModalBuscar").modal("show");
 }
+
 function busqueda(){
 	
  	var id_visita = $('select#id_visita').val(); //Obtenemos el id del pais seleccionado en la lista
@@ -69,8 +57,9 @@ function busqueda(){
 				<a role="button" class="btn btn-primary" href="<?php echo base_url().'index.php/Visitas/carga/'; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('crear').' '.$this->lang->line('visita');?>">
 					<?php echo $this->lang->line('crear'); ?>
 				</a>
-				
-				<button type="button" class="btn btn-info" onclick="buscarVisita();"><?php echo $this->lang->line('buscar'); ?></button>
+				<a role="button" class="btn btn-info" href="<?php echo base_url().'index.php/Visitas/buscar'?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('buscar').' '.$this->lang->line('visita');?>">
+					<?php echo $this->lang->line('buscar'); ?>
+				</a>
 				<button type="button" class="btn btn-danger" data-dismiss="modal"><?php echo $this->lang->line('cancelar'); ?></button>
 			</div>
 		</div>
@@ -95,21 +84,21 @@ function busqueda(){
 										<a href="#">
 											<?php echo $this->lang->line('nuevo').' '.$this->lang->line('presupuesto'); ?>
 										</a>
+										<a role="button" class="btn btn-info btn-sm" href="#" onclick="modal()" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('ayuda');?>" style="border-radius: 200px">
+											<span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span>
+										</a>
 									</div></h3>
 								</div>
-								
 								<?php
 	    									if($visita==''){
 								?>		
 								<div class="col-sm-2 col-sm-offset-3">
-									<a role="button" class="btn btn-info" href="#" onclick="buscarVisita()" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('buscar').' '.$this->lang->line('visita');?>" style="margin-top: 15% ; width: 100px">
+									<a role="button" class="btn btn-info" href="<?php echo base_url().'index.php/Visitas/buscar'?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('buscar').' '.$this->lang->line('visita');?>" style="margin-top: 15% ; width: 100px">
 										<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 										<?php echo $this->lang->line('buscar'); ?>
 									</a>
 									
 								</div>
-								
-								
 								<?php
 											}
 								?>	
@@ -173,20 +162,6 @@ function busqueda(){
 												</div>
 										</div>
 										
-										<div class="form-group odd">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('estado'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
-													<select name="id_estado_presupuesto" class="form-control chosen-select" data-placeholder="Seleccione un <?php echo $this->lang->line('estado'); ?>" required>	
-														<option></option>
-														<?php
-															foreach($estados as $row){
-																echo '<option value="'.$row->id_estado_presupuesto.'">'.$row->estado.'</option>';
-															}
-														?>
-													</select>												      	 
-									      		</div>
-									    </div>
-									    
 										<hr />
 										
 										<div class="form-group even">
@@ -206,7 +181,7 @@ function busqueda(){
 										 <div class="form-group odd">
 											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('visita'); ?></label>
 												<div class="col-sm-4 col-sm-offset-1">
-													<select id="id_visita" name="id_visita" class="form-control chosen-select" onchange=" busqueda()" required>	
+													<select id="id_visita" name="id_visita" class="form-control chosen-select" onchange=" busqueda()">	
 														<option value='' disabled selected style='display:none;'>Seleccione una opcion...</option>
 														<?php
 															foreach($visitas as $row){
@@ -266,21 +241,7 @@ function busqueda(){
 													<input type="date" name="date_add" class="form-control" value="" required>	 
 												</div>
 										</div>
-										
-										<div class="form-group odd">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('estado'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
-													<select name="id_estado_presupuesto" class="form-control chosen-select" data-placeholder="Seleccione un <?php echo $this->lang->line('estado'); ?>" required>	
-														<option></option>
-														<?php
-															foreach($estados as $row){
-																echo '<option value="'.$row->id_estado_presupuesto.'">'.$row->estado.'</option>';
-															}
-														?>
-													</select>												      	 
-									      		</div>
-									    </div>
-									    
+																		    
 										<hr />
 										
 										<div class="form-group even">

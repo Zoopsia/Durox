@@ -228,5 +228,58 @@ class Visitas extends My_Controller {
 		
 	}
 	
+	public function buscar(){
+		
+		$crud = new grocery_CRUD();
+
+		$crud->set_theme('datatables');
+			
+		$crud->set_language("spanish");
+			
+		$crud->set_table('visitas');
+			
+		$crud->columns('id_visita',
+						'id_cliente',
+						'id_vendedor',
+						'date_upd');
+			
+		$crud->display_as('id_visita','N° Visita')
+			 ->display_as('id_cliente','Cliente')
+			 ->display_as('id_vendedor','Vendedor')
+			 ->display_as('date_upd','Fecha Visita');
+		
+		$crud->set_subject('Visitas');
+		
+		$crud->fields(	'id_visita',
+						'id_cliente',
+						'id_vendedor');
+							
+		$crud->order_by('date_upd','desc');
+						
+		$crud->set_relation('id_cliente','clientes','{apellido} {nombre}');
+		$crud->set_relation('id_vendedor','vendedores','{apellido} {nombre}');
+			
+		$crud->add_action('Elegir', '', '','edit_button',array($this,'volverBusqueda'));
+			
+		$crud->unset_export();
+		$crud->unset_print();
+		$crud->unset_read();
+		$crud->unset_operations();
+			
+		$output = $crud->render();
+		
+		$db['empresas']=$this->empresas_model->getRegistro(1);
+
+		$this->load->view("head.php", $db);
+		$this->load->view("nav_top.php", $output);
+		$this->load->view("nav_left.php");
+		
+		$this->load->view($this->_subject."/buscar.php");
+	}
+	
+	function volverBusqueda($primary_key , $row)
+	{
+	    return site_url('Presupuestos/carga').'/'.$row->id_visita;
+	}
 		
 }

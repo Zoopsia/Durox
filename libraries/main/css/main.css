@@ -310,3 +310,8 @@ input#cantidad{
 {
     color: #444;
 }
+
+.th1{
+  text-decoration: underline;
+  font-size: large;
+}
