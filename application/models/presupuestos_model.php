@@ -105,5 +105,12 @@ class Presupuestos_model extends My_Model {
 		$this->db->delete('linea_productos_presupuestos'); 
 		
 	}	
+	
+	public function buscarProducto($producto) {
+        $this->db->select('nombre');
+        $this->db->select('id_producto');
+        $this->db->like('nombre', $producto);
+        return $this->db->get('productos', 10);
+    }
 } 
 ?>

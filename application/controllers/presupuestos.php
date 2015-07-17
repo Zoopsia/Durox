@@ -300,6 +300,29 @@ class Presupuestos extends My_Controller {
 					
 		$mensaje .= '<tbody>';		
 		
+		$mensaje .= '<tr>
+							<th>
+							<input type="text" id="producto" name="producto" class="numeric form-control" autocomplete="off" pattern="^[A-Za-z0-9 ]+$" onkeyup="ajaxSearch();" placeholder="'.$this->lang->line('producto').'" required>
+								<div id="suggestions">
+									<div id="autoSuggestionsList">  
+									</div>
+							    </div>
+								<input type="text" id="id_producto" name="id_producto" autocomplete="off" pattern="[0-9]*" required hidden>
+							</th>
+							<th><input type="text" id="cantidad" name="cantidad1" class="numeric form-control" autocomplete="off" pattern="[0-9]*" placeholder="'.$this->lang->line('cantidad').'" required></th>
+							<th></th>
+							<th></th>
+							<th>
+								<a role="button" class="btn btn-success btn-sm" onclick="cargaProducto('.$presupuesto.')" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('agregar').' '.$this->lang->line('producto').'">
+									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+								</a>
+							</th>
+					</tr>';
+		
+		
+		
+		
+		
 		foreach ($tabla as $row) {
 			if($row->id_presupuesto == $presupuesto){
 				
@@ -342,6 +365,29 @@ class Presupuestos extends My_Controller {
 		
 		$mensaje .= '</table>';
 					
+		$mensaje .= '<input type="number" name="total" pattern="[0-9 ]*" placeholder="'.$total.'" value="'.$total.'" required hidden>';			
 		echo $mensaje;
-	}	
+	}
+
+	function totalPresupuesto($presupuesto){
+			
+		if($this->input->post('total')){
+			$total		= $this->input->post('total');
+			$arreglo	= array(
+				'total'					=> $total,
+				'id_estado_presupuesto'	=> 1, 	
+			);
+	
+			$id_presupuesto 	= $this->presupuestos_model->update($arreglo,$presupuesto);
+		}
+	}
+	
+	public function buscarProducto() {
+        $producto = $this->input->post('producto');
+        $query = $this->presupuestos_model->buscarProducto($producto);
+
+        foreach ($query->result() as $row){
+        	echo '<li><a href="#" onclick="funcion1('.$row->id_producto.')">'.$row->nombre.'<input type="text" id="id_valor'.$row->id_producto.'" value="'.$row->nombre.'" hidden></a></li>';
+        }
+    }	
 }

@@ -1,8 +1,8 @@
 <script>
 function cargaProducto($presupuesto){
 	
- 	var producto 	= $('select#producto').val(); 
- 	var cantidad 	= $('input#cantidad1').val();
+ 	var producto 	= $('input#id_producto').val(); 
+ 	var cantidad 	= $('input#cantidad').val();
  	var presupuesto	= $presupuesto;
  	$.ajax({
 	 	type: 'POST',
@@ -36,6 +36,37 @@ function sacarProducto($id_linea, $presupuesto){
 	 	}
 	});
 }
+
+function ajaxSearch() {
+	var producto = $('#producto').val();
+    if (producto.length === 0) {
+       	$('#suggestions').hide();
+    } 
+    else {
+       	$.ajax({
+        	type: "POST",
+            url: '<?php echo base_url(); ?>index.php/Presupuestos/buscarProducto',
+            data: {'producto': producto,},
+            success: function(data) {
+	            // return success
+	            if (data.length > 0) {
+	            	$('#suggestions').show();
+	                $('#autoSuggestionsList').addClass('auto_list');
+	                $('#autoSuggestionsList').html(data);
+	            }
+            }
+		});
+	}
+}
+
+function funcion1($id_producto){
+	
+	var nombre 		= $('#id_valor'+$id_producto).val();
+	var id_producto	= $id_producto;
+	$('#producto').val(nombre);
+	$('#id_producto').val(id_producto);
+	$('#suggestions').hide();
+}
 </script>
 
 <nav class="navbar" role="navigation">
@@ -63,42 +94,72 @@ function sacarProducto($id_linea, $presupuesto){
 									
 								</div>
 							</div>	
-	    						<form action="<?php echo base_url().'index.php/Presupuestos/nuevoPresupuesto/'; ?>" id="formProducto" class="form-inline" method="post">
+	    						<form action="<?php echo base_url().'index.php/Presupuestos/totalPresupuesto/'.$presupuesto; ?>" id="formProducto" class="form-inline" method="post">
 	    							<div class="row">
-		    							<div class="col-sm-10 col-sm-offset-2" style="padding: 0 50px">
+		    							<div id="table" class="col-sm-10 col-sm-offset-1" style="padding: 0 50px">
 											 <!-- NUEVA CARGA DE PRESUPUESTO -->
-											 <div class="form-group">
-											 	<div class="col-sm-6 col-sm-offset-1">
-													 <select id="producto" name="producto" class="form-control" required>	
-														<option value='' disabled selected style='display:none;'>Seleccione una opcion...</option>
-														<?php
-															foreach($productos as $row){
-																echo '<option value="'.$row->id_producto.'">'.$row->nombre.'</option>';
-															}
-														?>
-													</select>
-											     </div>
-										     </div>
-										     <div class="form-group">
-										     	<div class="col-sm-4 col-sm-offset-1">
-										     		<input type="text" id="cantidad1" name="cantidad1" class="numeric form-control" autocomplete="off" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('cantidad'); ?>" required>
-										     	</div>
-										     </div>
-										     <div class="form-group">
-										     	<div class="col-sm-4 col-sm-offset-1">
-										     		<a role="button" class="btn btn-success btn-sm" onclick="cargaProducto(<?php echo $presupuesto ?>)" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('agregar').' '.$this->lang->line('producto');?>">
-											 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-													</a>
-												</div>
+											 
+											 <!--
+											 <div>
+											     <input name="producto1" id="producto1" type="text" onkeyup="ajaxSearch();">
+											        <div id="suggestions">
+											            <div id="autoSuggestionsList">  
+											            </div>
+											        </div>
 											 </div>
+											-->										 
+											 
+											 <table class="table table-striped" cellspacing="0" width="100%">
+												<thead>
+													<tr>
+														
+														<th class="th1"><?php echo $this->lang->line("producto"); ?></th>
+														<th class="th1"><?php echo $this->lang->line("cantidad"); ?></th>
+														<th class="th1"><?php echo $this->lang->line("precio"); ?></th>
+														<th class="th1"><?php echo $this->lang->line("subtotal"); ?></th>
+														<th></th>
+													</tr>
+												</thead>
+											 	<tbody>
+													<tr>
+														<th>
+															<input type="text" id="producto" name="producto" class="numeric form-control" autocomplete="off" pattern="^[A-Za-z0-9 ]+$" onkeyup="ajaxSearch();" placeholder="<?php echo $this->lang->line('producto'); ?>" required>
+															<div id="suggestions">
+													            <div id="autoSuggestionsList">  
+													            </div>
+													        </div>
+													        <input type="text" id="id_producto" name="id_producto" autocomplete="off" pattern="[0-9]*" required hidden>
+														</th>
+														<th><input type="text" id="cantidad" name="cantidad1" class="numeric form-control" autocomplete="off" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('cantidad'); ?>" required></th>
+														<th></th>
+														<th></th>
+														<th>
+															<a role="button" class="btn btn-success btn-sm" onclick="cargaProducto(<?php echo $presupuesto ?>)" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('agregar').' '.$this->lang->line('producto');?>">
+													 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+															</a>
+														</th>
+													</tr>
+											 	</tbody>
+											 	<tfoot>
+													<tr>
+														<th></th>
+														<th></th>
+														<th class="th1"><?php echo $this->lang->line("total"); ?></th>
+														<th></th>
+														<th></th>
+													</tr>
+												</tfoot>
+											 </table>
 										</div>
 									</div>
 									<br /><br />
+									<!--
 									<div class="row">
 										<div id="table" class="col-sm-10 col-sm-offset-1">
 											
 										</div>
 									</div>
+									-->
 									<div class="row">
 										<div>
 											<div class="col-sm-4 col-sm-offset-4">

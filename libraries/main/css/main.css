@@ -212,7 +212,6 @@ body,html{
 }
 
 input#producto{
-	font-size: 20px;
 	background-color: transparent;
 	border-bottom-style: groove;
 	border-color: white;
@@ -221,7 +220,6 @@ input#producto{
 }
 
 input#cantidad{
-	font-size: 20px;
 	background-color: transparent;
 	border-bottom-style: groove;
 	border-color: white;
@@ -314,4 +312,17 @@ input#cantidad{
 .th1{
   text-decoration: underline;
   font-size: large;
+}
+
+#autoSuggestionsList > li {
+	background: none repeat scroll 0 0 #202020;
+	border-bottom: 1px solid #E3E3E3;
+	list-style: none outside none;
+	padding: 3px 15px 3px 15px;
+	text-align: left;
+}
+.auto_list {
+	width: 200px;
+    border: 1px solid #E3E3E3;
+    position: absolute;
 }
