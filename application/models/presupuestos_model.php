@@ -24,7 +24,8 @@ class Presupuestos_model extends My_Model {
 	function getDetallePresupuesto($id)
 	{
 		$sql = "SELECT 
-					productos.nombre AS nombre, 
+					productos.nombre AS nombre,
+					productos.id_producto AS producto, 
 					linea_productos_$this->_tablename.cantidad AS cantidad, 
 					linea_productos_$this->_tablename.precio AS precio,
 					estados_productos_$this->_tablename.estado AS estado

@@ -1,4 +1,12 @@
 <script>
+$( document ).ready(function() {
+    document.getElementById("producto").focus();
+});
+
+function nuevaLinea(){
+	$("#nuevalinea").click();
+}
+
 function cargaProducto($presupuesto){
 	
  	var producto 	= $('input#id_producto').val(); 
@@ -17,6 +25,7 @@ function cargaProducto($presupuesto){
 	 		$('#btn-guardar').show();
 	 		$('#btn-cancelar').show();
 	 		document.getElementById("formProducto").reset();
+	 		$("#producto").focus();
 	 	}
 	});
 }
@@ -66,6 +75,7 @@ function funcion1($id_producto){
 	$('#producto').val(nombre);
 	$('#id_producto').val(id_producto);
 	$('#suggestions').hide();
+	document.getElementById("cantidad").focus();
 }
 </script>
 
@@ -94,21 +104,11 @@ function funcion1($id_producto){
 									
 								</div>
 							</div>	
-	    						<form action="<?php echo base_url().'index.php/Presupuestos/totalPresupuesto/'.$presupuesto; ?>" id="formProducto" class="form-inline" method="post">
+	    						<form action="" id="formProducto" class="form-inline" method="post">
 	    							<div class="row">
 		    							<div id="table" class="col-sm-10 col-sm-offset-1" style="padding: 0 50px">
 											 <!-- NUEVA CARGA DE PRESUPUESTO -->
-											 
-											 <!--
-											 <div>
-											     <input name="producto1" id="producto1" type="text" onkeyup="ajaxSearch();">
-											        <div id="suggestions">
-											            <div id="autoSuggestionsList">  
-											            </div>
-											        </div>
-											 </div>
-											-->										 
-											 
+											
 											 <table class="table table-striped" cellspacing="0" width="100%">
 												<thead>
 													<tr>
@@ -130,11 +130,11 @@ function funcion1($id_producto){
 													        </div>
 													        <input type="text" id="id_producto" name="id_producto" autocomplete="off" pattern="[0-9]*" required hidden>
 														</th>
-														<th><input type="text" id="cantidad" name="cantidad1" class="numeric form-control" autocomplete="off" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('cantidad'); ?>" required></th>
+														<th><input type="text" id="cantidad" name="cantidad1" class="numeric form-control" onkeypress="if (event.keyCode==13){nuevaLinea(); return false;}" autocomplete="off" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('cantidad'); ?>" required></th>
 														<th></th>
 														<th></th>
 														<th>
-															<a role="button" class="btn btn-success btn-sm" onclick="cargaProducto(<?php echo $presupuesto ?>)" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('agregar').' '.$this->lang->line('producto');?>">
+															<a role="button" id="nuevalinea" class="btn btn-success btn-sm" onclick="cargaProducto(<?php echo $presupuesto ?>)" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('agregar').' '.$this->lang->line('producto');?>">
 													 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 															</a>
 														</th>
@@ -163,14 +163,14 @@ function funcion1($id_producto){
 									<div class="row">
 										<div>
 											<div class="col-sm-4 col-sm-offset-4">
-												<button class="btn btn-primary" id="btn-guardar" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('guardar');?>" style="display: none">
+												<button type="submit" form="formGuardar" class="btn btn-primary" id="btn-guardar" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('guardar');?>" style="display: none">
 													<?php echo $this->lang->line('guardar'); ?>
 												</button>
 												<input type="button" id="btn-cancelar" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" onclick="" style="display: none">
 											</div>
 										</div>
 									</div>
-	    						</form>
+	    						
 	    				</div><!--contenedor de cada pestaña-->
 		  			</div><!--panel body-->
 				</div><!--panel-->

@@ -320,6 +320,16 @@ input#cantidad{
 	list-style: none outside none;
 	padding: 3px 15px 3px 15px;
 	text-align: left;
+	
+}
+
+#autoSuggestionsList > li a{
+	display: block;
+	text-decoration: none;
+}
+
+#autoSuggestionsList > li:hover{
+	background-color: #A1A1A1;
 }
 .auto_list {
 	width: 200px;

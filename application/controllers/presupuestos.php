@@ -24,11 +24,18 @@ class Presupuestos extends My_Controller {
 	}
 	
 
-	public function pestanas($id){
+	public function pestanas($id, $tipo=1){
 		
-		$db['empresas']=$this->empresas_model->getRegistro(1);
-		$db['presupuestos']=$this->presupuestos_model->getDetallePresupuesto($id);
-
+		$db['empresas']			= $this->empresas_model->getRegistro(1);
+		$db['clientes']			= $this->clientes_model->getTodo();
+		$db['razon_social']		= $this->clientes_model->getTodo('razon_social');
+		$db['vendedores']		= $this->vendedores_model->getTodo();
+		$db['presupuesto']		= $this->presupuestos_model->getRegistro($id);
+		$db['presupuestos']		= $this->presupuestos_model->getDetallePresupuesto($id);
+		$db['estados']			= $this->presupuestos_model->getTodo('estados_presupuestos');
+		$db['productos']		= $this->productos_model->getTodo();
+		$db['id_presupuesto']	= $id;
+		$db['tipo']				= $tipo;
 		
 			$this->load->view("head.php", $db);
 			$this->load->view("nav_top.php");
@@ -124,6 +131,17 @@ class Presupuestos extends My_Controller {
 		
 		if($this->input->post('id_visita')){
 		
+			$cambioEstado	=	$this->presupuestos_model->getTodo();
+			
+			foreach($cambioEstado as $row){
+				if($row->id_visita == $this->input->post('id_visita')){
+					$arreglo	= array(
+						'id_estado_presupuesto'	=> 3, 	
+					);
+					
+					$id_presupuesto 	= $this->presupuestos_model->update($arreglo,$row->id_presupuesto);
+				}
+			}	
 			$presupuesto	= array(
 				'id_visita'				=> $this->input->post('id_visita'),
 				'id_cliente' 			=> $this->input->post('id_cliente'), 
@@ -309,11 +327,11 @@ class Presupuestos extends My_Controller {
 							    </div>
 								<input type="text" id="id_producto" name="id_producto" autocomplete="off" pattern="[0-9]*" required hidden>
 							</th>
-							<th><input type="text" id="cantidad" name="cantidad1" class="numeric form-control" autocomplete="off" pattern="[0-9]*" placeholder="'.$this->lang->line('cantidad').'" required></th>
+							<th><input type="text" id="cantidad" name="cantidad1" class="numeric form-control" onkeypress="if (event.keyCode==13){nuevaLinea(); return false;}" autocomplete="off" pattern="[0-9]*" placeholder="'.$this->lang->line('cantidad').'" required></th>
 							<th></th>
 							<th></th>
 							<th>
-								<a role="button" class="btn btn-success btn-sm" onclick="cargaProducto('.$presupuesto.')" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('agregar').' '.$this->lang->line('producto').'">
+								<a role="button" id="nuevalinea" class="btn btn-success btn-sm" onclick="cargaProducto('.$presupuesto.')" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('agregar').' '.$this->lang->line('producto').'">
 									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 								</a>
 							</th>
@@ -364,8 +382,10 @@ class Presupuestos extends My_Controller {
 		
 		
 		$mensaje .= '</table>';
-					
-		$mensaje .= '<input type="number" name="total" pattern="[0-9 ]*" placeholder="'.$total.'" value="'.$total.'" required hidden>';			
+		
+		$mensaje .= '<form action="'.base_url().'index.php/Presupuestos/totalPresupuesto/'.$presupuesto.'" id="formGuardar" class="form-inline" method="post">';			
+		$mensaje .= '<input type="number" id="total" name="total" pattern="[0-9 ]*" placeholder="'.$total.'" value="'.$total.'" required hidden>';			
+		$mensaje .= '</form>';
 		echo $mensaje;
 	}
 
@@ -380,6 +400,10 @@ class Presupuestos extends My_Controller {
 	
 			$id_presupuesto 	= $this->presupuestos_model->update($arreglo,$presupuesto);
 		}
+		
+		$tipo = 0;
+		
+		redirect('Presupuestos/pestanas/'.$presupuesto.'/'.$tipo,'refresh');
 	}
 	
 	public function buscarProducto() {
