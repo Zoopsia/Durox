@@ -194,6 +194,15 @@
 										?>
 										</tbody>
 								    </table>
+								    <?php 
+								    foreach($presupuesto as $row){
+								    	if($row->id_estado_presupuesto == 1){
+										    echo 	'<div class="col-md-2 col-md-offset-5">
+														<a role="button" class="btn btn-info" href="#">'.$this->lang->line('generar').' '.$this->lang->line('pedido').'</a>
+													</div>';
+										}
+									}
+									?>
 							    </div>
 	    					</div>
 	    					<div class="tab-pane" id="tab3">

@@ -12,7 +12,6 @@ class Vendedores extends My_Controller {
 				$subjet		= $this->_subject 
 				
 		);
-
 		$this->load->library('grocery_CRUD');
 		
 		$this->load->model('empresas_model');
@@ -22,7 +21,7 @@ class Vendedores extends My_Controller {
 	}
 
 		
-	public function pestanas($id){
+	public function pestanas($id, $aux=0){
 		
 		$db['empresas']		= $this->empresas_model->getRegistro(1);
 		$db['vendedores']	= $this->vendedores_model->getRegistro($id);
@@ -33,7 +32,8 @@ class Vendedores extends My_Controller {
 		
 		$db['cruce']		= $this->vendedores_model->sinCruce($id);
 		$db['clientes_todo']= $this->clientes_model->getTodo();
-
+		$db['aux']		= $aux;
+		
 		$this->load->view("head.php", $db);
 		$this->load->view("nav_top.php");
 		$this->load->view("nav_left.php");	
@@ -127,8 +127,9 @@ class Vendedores extends My_Controller {
 
 		//----- 2 PORQUE ES TIPO VENDEDOR -----//
 		$this->clientes_model->insertCruce(2,$id_cliente,$id_vendedor);
+		$aux = 1;
 		
-		redirect('/vendedores/pestanas/'.$id_vendedor,'refresh');
+		redirect('/vendedores/pestanas/'.$id_vendedor.'/'.$aux,'location');
 
 	}
 	
@@ -143,6 +144,7 @@ class Vendedores extends My_Controller {
 		//----- 2 PORQUE ES TIPO VENDEDOR -----//
 		
 		$cruce		= $this->vendedores_model->sinCruce($id_vendedor);
+		$aux = 1;
 		
 		foreach($cruce as $row){
 			if($id_cliente == $row->id_cliente)
@@ -154,7 +156,7 @@ class Vendedores extends My_Controller {
 		);
 		
 		$id_cliente	= $this->vendedores_model->updateSin($sin,$id_sin);
-		redirect('/vendedores/pestanas/'.$id_vendedor,'refresh');
+		redirect('/vendedores/pestanas/'.$id_vendedor.'/'.$aux,'location');
 	}
 	
 	public function nuevoCliente(){

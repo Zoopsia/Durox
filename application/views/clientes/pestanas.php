@@ -131,7 +131,6 @@
 							            	<th><?php echo $this->lang->line('id'); ?></th>
 							                <th><?php echo $this->lang->line('nombre'); ?></th>
 							                <th><?php echo $this->lang->line('apellido'); ?></th>
-							                <th><?php echo $this->lang->line('date'); ?></th>
 							                <th><?php echo $this->lang->line('eliminado'); ?></th>
 							                <th><?php echo $this->lang->line('acciones'); ?></th>
 							            </tr>
@@ -142,7 +141,6 @@
 							            	<th><?php echo $this->lang->line('id'); ?></th>
 							                <th><?php echo $this->lang->line('nombre'); ?></th>
 							                <th><?php echo $this->lang->line('apellido'); ?></th>
-							                <th><?php echo $this->lang->line('date'); ?></th>
 							                <th><?php echo $this->lang->line('eliminado'); ?></th>
 							                <th><?php echo $this->lang->line('acciones'); ?></th>
 							            </tr>
@@ -157,8 +155,10 @@
 													echo '<td>'.$row->id_vendedor.'</td>';
 													echo '<td>'.$row->nombre.'</td>';
 													echo "<td>".$row->apellido."</td>";
-													echo '<td>'.$row->date_add.'</td>';
-													echo "<td>".$row->eliminado."</td>";
+													if($row->activo == 0)
+														echo "<td>NO</td>";
+													else 
+														echo "<td>SI</td>";
 													echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/pestanas/".$row->id_vendedor."' class='btn btn-info btn-xs'>";
 													echo $this->lang->line('ver')."</a></td>";
 													echo "</a></tr>";
@@ -398,59 +398,89 @@
 								    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
 								      <div class="panel-body">
 								        <div class="row">
-											<div class="col-md-12">
-												<?php
-													if($clientes){
-											        	foreach ($clientes as $row) 
-												    	{
-								     						echo "<div class='datatables-add-button'>";
-																/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
-																echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/mails/mails/'.$row->id_cliente.'/1">';
-																echo '<span class="ui-button-text">';
-																echo $this->lang->line('añadir').' '.$this->lang->line('correo').'</span>';
-																echo "</a>";
-															echo "</div>";
-															echo '<div style="height:10px;"></div>';
+								        	<?php
+								        	if($mails){
+								        	?>
+												<div class="col-md-12">
+													<?php
+														if($clientes){
+												        	foreach ($clientes as $row) 
+													    	{
+									     						echo "<div class='datatables-add-button'>";
+																	/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+																	echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/mails/mails/'.$row->id_cliente.'/1">';
+																	echo '<span class="ui-button-text">';
+																	echo $this->lang->line('añadir').' '.$this->lang->line('correo').'</span>';
+																	echo "</a>";
+																echo "</div>";
+																echo '<div style="height:10px;"></div>';
+															}
 														}
-													}
-												?>
-					     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
-											        <thead>
-											            <tr>
-											            	<th><?php echo $this->lang->line('correo'); ?></th>
-											                <th><?php echo $this->lang->line('tipo'); ?></th>
-											                <th><?php echo $this->lang->line('acciones'); ?></th>
-											            </tr>
-											        </thead>
-											 
-											        <tfoot>
-											            <tr>
-											            	<th><?php echo $this->lang->line('correo'); ?></th>
-											                <th><?php echo $this->lang->line('tipo'); ?></th>
-											                <th><?php echo $this->lang->line('acciones'); ?></th>
-											            </tr>
-											        </tfoot>
-											 
-											        <tbody>
-											        	<?php 
-											            	if($mails){							                
-														      	foreach ($mails as $row) 
-														      	{
-														      		foreach ($clientes as $key) {
-															      		echo '<tr>';
-																		echo '<td>'.$row->mail.'</td>';
-																		echo '<td>'.$row->tipo.'</td>';
-																		/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
-																		echo '<td style="text-align: center;"><a href="'.base_url().'index.php/mails/cargaEditar/'.$row->id_mail.'/'.$key->id_cliente.'/1" class="btn btn-primary btn-xs">';
-																		echo $this->lang->line('editar')."</a></td>";
-																		echo "</tr>";
+													?>
+						     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
+												        <thead>
+												            <tr>
+												            	<th><?php echo $this->lang->line('correo'); ?></th>
+												                <th><?php echo $this->lang->line('tipo'); ?></th>
+												                <th><?php echo $this->lang->line('acciones'); ?></th>
+												            </tr>
+												        </thead>
+												 
+												        <tfoot>
+												            <tr>
+												            	<th><?php echo $this->lang->line('correo'); ?></th>
+												                <th><?php echo $this->lang->line('tipo'); ?></th>
+												                <th><?php echo $this->lang->line('acciones'); ?></th>
+												            </tr>
+												        </tfoot>
+												 
+												        <tbody>
+												        	<?php 
+												            	if($mails){							                
+															      	foreach ($mails as $row) 
+															      	{
+															      		foreach ($clientes as $key) {
+																      		echo '<tr>';
+																			echo '<td>'.$row->mail.'</td>';
+																			echo '<td>'.$row->tipo.'</td>';
+																			/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+																			echo '<td style="text-align: center;"><a href="'.base_url().'index.php/mails/cargaEditar/'.$row->id_mail.'/'.$key->id_cliente.'/1" class="btn btn-primary btn-xs">';
+																			echo $this->lang->line('editar')."</a></td>";
+																			echo "</tr>";
+																		}
 																	}
 																}
-															}
-													 	?>
-											        </tbody>
-											    </table>
-											</div>
+														 	?>
+												        </tbody>
+												    </table>
+												</div>
+											<?php
+											}
+											else{
+											
+											?>
+											<?php
+						     					if($clientes){
+												 	foreach ($clientes as $row) 
+												  	{
+											?>	
+														<div class="row">
+													        <div class="col-md-offset-3 col-sm-6 col-md-6">
+													            <div class="alert-message alert-message-danger">
+													                <h4>NO HAY CORREO RELACIONADO CON EL CLIENTE</h4>
+													                <p>
+													                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. For performance
+													                    reasons, the Tooltip and Popover data-apis are opt-in, meaning 
+																	<a href="<?php echo base_url().'index.php/mails/mails/'.$row->id_cliente.'/1'; ?>"><?php echo $this->lang->line('agregar').' '.$this->lang->line('correo'); ?></a>
+																	</p>
+													            </div>
+													        </div>
+														</div>
+											<?php	
+													}/*---FOREACH---*/
+												}/*---IF CLIENTES---*/
+											}/*---ELSE---*/
+											?>
 										</div>
 								      </div>
 								    </div>

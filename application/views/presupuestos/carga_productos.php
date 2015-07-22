@@ -1,4 +1,17 @@
 <script>
+
+var evento 	= 0;
+
+function funcion2(){
+	evento = 1;
+}
+
+window.onbeforeunload = function(){
+	if(evento == 0){
+		return 'Los elementos no han sido guardados.';	
+	}
+}
+
 $( document ).ready(function() {
     document.getElementById("producto").focus();
 });
@@ -77,6 +90,8 @@ function funcion1($id_producto){
 	$('#suggestions').hide();
 	document.getElementById("cantidad").focus();
 }
+
+
 </script>
 
 <nav class="navbar" role="navigation">
@@ -163,7 +178,7 @@ function funcion1($id_producto){
 									<div class="row">
 										<div>
 											<div class="col-sm-4 col-sm-offset-4">
-												<button type="submit" form="formGuardar" class="btn btn-primary" id="btn-guardar" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('guardar');?>" style="display: none">
+												<button type="submit" form="formGuardar" onclick="funcion2();" class="btn btn-primary" id="btn-guardar" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('guardar');?>" style="display: none">
 													<?php echo $this->lang->line('guardar'); ?>
 												</button>
 												<input type="button" id="btn-cancelar" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" onclick="" style="display: none">

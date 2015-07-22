@@ -50,7 +50,8 @@ class Productos extends My_Controller {
 			
 			$crud->set_subject('Productos');
 			
-			$crud->fields('nombre');
+			$crud->fields('nombre',
+						  'precio');
 							
 			$crud->unset_fields('id_producto');		
 							
