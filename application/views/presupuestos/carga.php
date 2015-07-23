@@ -167,7 +167,7 @@ function busqueda(){
 										<div class="form-group even">
 											<div class="col-sm-4 col-sm-offset-3">
 												<button type="submit" class="btn btn-primary"><?php echo $this->lang->line('guardar'); ?></button>
-												<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" onclick="confirmarVisita()">
+												<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" onclick="confirmarPresupuesto()">
 											</div>
 									   	</div>
 									   	
@@ -247,7 +247,7 @@ function busqueda(){
 										<div class="form-group even">
 											<div class="col-sm-4 col-sm-offset-3">
 												<button type="submit" class="btn btn-primary"><?php echo $this->lang->line('guardar'); ?></button>
-												<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" onclick="confirmarVisita()">
+												<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" onclick="confirmarPresupuesto()">
 											</div>
 									   	</div>
 									   	

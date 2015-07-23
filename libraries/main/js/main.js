@@ -76,6 +76,13 @@ function confirmarGrupo(){
 function confirmarVisita(){
 	var c = confirm("Los datos no han sido guardados.\n¿Está seguro que quiere salir?");
 	if (c==true){
+			window.location.assign("/Durox/index.php/Visitas/visitas_abm/tab1");
+	}
+}
+
+function confirmarPresupuesto(){
+	var c = confirm("Los datos no han sido guardados.\n¿Está seguro que quiere salir?");
+	if (c==true){
 			window.location.assign("/Durox/index.php/Presupuestos/presupuestos_abm/tab1");
 	}
 }

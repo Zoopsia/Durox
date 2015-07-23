@@ -5,9 +5,20 @@ function funcion2(){
 }
 window.onbeforeunload = function(){
 	if(evento == 0){
-		return 'Los elementos no han sido guardados.';	
+		return 'Los datos van a ser eliminados...'
 	}
 }
+window.onunload = function () {
+	var presupuesto = $('#presupuesto').val();
+	$.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/Presupuestos/deletePresupuesto', //Realizaremos la petición al metodo prueba del controlador direcciones
+		 	data: {'presupuesto': presupuesto},
+		 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+		 		
+		 	}
+	});
+};
 
 $( document ).ready(function() {
     document.getElementById("producto").focus();
@@ -33,7 +44,6 @@ function cargaProducto($presupuesto){
 	 		//Activar y Rellenar el select de provincias
 	 		$('#table').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
 	 		$('#btn-guardar').show();
-	 		$('#btn-cancelar').show();
 	 		document.getElementById("formProducto").reset();
 	 		$("#producto").focus();
 	 	}
@@ -211,7 +221,8 @@ function funcion1($id_producto){
 												<button type="submit" form="formGuardar" onclick="funcion2();" class="btn btn-primary" id="btn-guardar" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('guardar');?>" style="display: none">
 													<?php echo $this->lang->line('guardar'); ?>
 												</button>
-												<input type="button" id="btn-cancelar" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" onclick="funcion2(); deletePresupuesto(<?php echo $presupuesto ?>)" style="display: none">
+												<input type="button" id="btn-cancelar" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" onclick="funcion2(); deletePresupuesto(<?php echo $presupuesto ?>)">
+												<input type="number" id="presupuesto" name="presupuesto" pattern="[0-9 ]*" placeholder="<?php echo $presupuesto ?>" value="<?php echo $presupuesto ?>" required hidden>
 											</div>
 										</div>
 									</div>

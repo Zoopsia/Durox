@@ -138,19 +138,7 @@ class Presupuestos extends My_Controller {
 		//----- SI LA VISITA YA EXISTIA----//
 		
 		if($this->input->post('id_visita')){
-		
-			$cambioEstado	=	$this->presupuestos_model->getTodo();
-			if($cambioEstado){
-				foreach($cambioEstado as $row){
-					if($row->id_visita == $this->input->post('id_visita')){
-						$arreglo	= array(
-							'id_estado_presupuesto'	=> 3, 	
-						);
 						
-						$id_presupuesto 	= $this->presupuestos_model->update($arreglo,$row->id_presupuesto);
-					}
-				}
-			}	
 			$presupuesto	= array(
 				'id_visita'				=> $this->input->post('id_visita'),
 				'id_cliente' 			=> $this->input->post('id_cliente'), 
@@ -167,6 +155,8 @@ class Presupuestos extends My_Controller {
 			);
 			
 			$this->presupuestos_model->insertCruceVisita($arreglo_cruce);
+			
+			$id_visita		= $this->input->post('id_visita');
 		}
 		else {//------ SI LA VISITA NO SE ELIGIÓ O NO EXISTIA----//
 			
@@ -202,6 +192,7 @@ class Presupuestos extends My_Controller {
 			$db['empresas']		= $this->empresas_model->getRegistro(1);
 			$db['presupuesto']	= $id_presupuesto;
 			$db['productos']	= $this->productos_model->getTodo();
+			$db['visita']		= $id_visita;
 			
 			$this->load->view("head.php", $db);
 			$this->load->view("nav_top.php");
@@ -262,6 +253,7 @@ class Presupuestos extends My_Controller {
 	public function cargaProducto(){
 		
 		$presupuesto		= $this->input->post('presupuesto');
+		
 		
 		if($this->input->post('producto')){
 			if($this->input->post('cantidad')){
@@ -503,6 +495,26 @@ class Presupuestos extends My_Controller {
 		
 		$tabla				= $this->presupuestos_model->getLineas($presupuesto);
 		
+		$cambioEstado		= $this->presupuestos_model->getTodo();
+		
+		if($cambioEstado){
+			foreach($cambioEstado as $row){
+				if($row->id_presupuesto == $presupuesto){
+					$visita = $row->id_visita; 
+				}
+			}
+		}
+		
+		if($cambioEstado){
+			foreach($cambioEstado as $row){
+				if($visita == $row->id_visita){
+					$arreglo	= array(
+						'id_estado_presupuesto'	=> 3, 	
+					);
+					$id_presupuesto 	= $this->presupuestos_model->update($arreglo,$row->id_presupuesto);	
+				}
+			}
+		}
 			
 		if($this->input->post('total')){
 			$total		= $this->input->post('total');
