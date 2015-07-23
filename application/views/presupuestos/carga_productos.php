@@ -1,11 +1,8 @@
 <script>
-
 var evento 	= 0;
-
 function funcion2(){
 	evento = 1;
 }
-
 window.onbeforeunload = function(){
 	if(evento == 0){
 		return 'Los elementos no han sido guardados.';	
@@ -81,6 +78,39 @@ function ajaxSearch() {
 	}
 }
 
+function ingresarProducto($id_linea, $presupuesto){
+	var presupuesto = $presupuesto;
+ 	var id_linea	= $id_linea;
+ 	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/Presupuestos/ingresarProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	data: {'id_linea'	: id_linea,
+	 		   'presupuesto': presupuesto,
+	 		   },
+	 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+	 		//Activar y Rellenar el select de provincias
+	 		$('#table').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
+	 	}
+	});
+}
+
+function deletePresupuesto($presupuesto){
+	var c = confirm("Los datos no han sido guardados.\n¿Está seguro que quiere salir?");
+	if (c==true){
+		var presupuesto = $presupuesto;
+	 	$.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/Presupuestos/deletePresupuesto', //Realizaremos la petición al metodo prueba del controlador direcciones
+		 	data: {'presupuesto': presupuesto},
+		 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+		 		
+		 	}
+		});
+		window.location.assign("/Durox/index.php/Presupuestos/presupuestos_abm/tab1");
+		
+	}
+}
+
 function funcion1($id_producto){
 	
 	var nombre 		= $('#id_valor'+$id_producto).val();
@@ -90,8 +120,6 @@ function funcion1($id_producto){
 	$('#suggestions').hide();
 	document.getElementById("cantidad").focus();
 }
-
-
 </script>
 
 <nav class="navbar" role="navigation">
@@ -124,14 +152,14 @@ function funcion1($id_producto){
 		    							<div id="table" class="col-sm-10 col-sm-offset-1" style="padding: 0 50px">
 											 <!-- NUEVA CARGA DE PRESUPUESTO -->
 											
-											 <table class="table table-striped" cellspacing="0" width="100%">
+											 <table class="table table-hover" cellspacing="0" width="100%">
 												<thead>
 													<tr>
-														
 														<th class="th1"><?php echo $this->lang->line("producto"); ?></th>
 														<th class="th1"><?php echo $this->lang->line("cantidad"); ?></th>
 														<th class="th1"><?php echo $this->lang->line("precio"); ?></th>
 														<th class="th1"><?php echo $this->lang->line("subtotal"); ?></th>
+														<th></th>
 														<th></th>
 													</tr>
 												</thead>
@@ -153,6 +181,7 @@ function funcion1($id_producto){
 													 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 															</a>
 														</th>
+														<th></th>
 													</tr>
 											 	</tbody>
 											 	<tfoot>
@@ -160,6 +189,7 @@ function funcion1($id_producto){
 														<th></th>
 														<th></th>
 														<th class="th1"><?php echo $this->lang->line("total"); ?></th>
+														<th></th>
 														<th></th>
 														<th></th>
 													</tr>
@@ -181,11 +211,11 @@ function funcion1($id_producto){
 												<button type="submit" form="formGuardar" onclick="funcion2();" class="btn btn-primary" id="btn-guardar" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('guardar');?>" style="display: none">
 													<?php echo $this->lang->line('guardar'); ?>
 												</button>
-												<input type="button" id="btn-cancelar" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" onclick="" style="display: none">
+												<input type="button" id="btn-cancelar" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" onclick="funcion2(); deletePresupuesto(<?php echo $presupuesto ?>)" style="display: none">
 											</div>
 										</div>
 									</div>
-	    						
+	    						</form>
 	    				</div><!--contenedor de cada pestaña-->
 		  			</div><!--panel body-->
 				</div><!--panel-->

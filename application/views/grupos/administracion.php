@@ -277,9 +277,9 @@ function volverHide(){
 												</div>
 												
 												<div class="form-group">
-													<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('valor'); ?></label>
+													<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('valor').' %'; ?></label>
 														<div class="col-sm-4">
-															<input type="text" id="valor" name="valor" class="numeric form-control" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('valor'); ?>" required> 	    	
+															<input type="text" id="valor" name="valor" class="numeric form-control" pattern="[0-9]*" placeholder="%" required> 	    	
 														</div> 
 												</div>
 												

@@ -7,6 +7,8 @@ foreach($css_files as $file): ?>
 <?php endforeach; ?>
 
 <?php $array_n = pestañaActiva($this->uri->segment(3));?>
+
+
 <nav class="navbar" role="navigation">
 	<div class="container">
 	    <div class="row">

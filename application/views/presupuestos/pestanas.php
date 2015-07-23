@@ -151,13 +151,39 @@
 	    					</div> 
 	     					<div class="tab-pane" id="tab2">
 	     						<div class="col-md-10 col-md-offset-1">
-	    							<table class="table table-striped" cellspacing="0" width="100%">
+	     							<?php
+	     								foreach($presupuesto as $row){
+	     									if($row->id_estado_presupuesto==3){
+	     										echo '<table class="table" cellspacing="0" width="100%">';
+	     									}
+											else {
+												echo '<table class="table table-striped" cellspacing="0" width="100%">';
+											}
+	     								}
+										
+										$subtotal = 0;
+										foreach ($presupuestos as $row) {
+											$subtotal = $row->precio + $subtotal;
+										}
+										
+										foreach($presupuesto as $row){
+											if($subtotal>=$row->total){
+												$descuento	= $subtotal-$row->total;
+												$tipo		= 'Descuento';
+											}
+											else{
+												$descuento	= $row->total-$subtotal;
+												$tipo		= 'Aumento';
+											}
+								        }
+	     							?>
 								        <thead class="tabla-datos-importantes">
 								            <tr>
 								            	<th><?php echo $this->lang->line('producto'); ?></th>
 								                <th><?php echo $this->lang->line('cantidad'); ?></th>
 								                <th><?php echo $this->lang->line('precio'); ?></th>
 								                <th><?php echo $this->lang->line('subtotal'); ?></th>
+								                <th><?php echo $this->lang->line('estado'); ?></th>
 								            </tr>
 								        </thead>
 								 
@@ -165,21 +191,40 @@
 								            <tr>
 								            	<th></th>
 								                <th></th>
-								                <th><?php echo $this->lang->line('total'); ?></th>
+								                <th style="text-decoration: underline"><?php echo $this->lang->line('subtotal'); ?></th>
+								                <th><?php echo '$ '.$subtotal; ?></th>
+								                <th></th>
+								            </tr>
+								            <tr>
+								            	<th></th>
+								                <th></th>
+								                <th style="text-decoration: underline"><?php echo $tipo; ?></th><!-- HACER DESCUESTOS -->
+								                <th><?php echo '$ '.$descuento; ?></th>
+								                <th></th>
+								            </tr>
+								            <tr>
+								            	<th></th>
+								                <th></th>
+								                <th style="text-decoration: underline"><?php echo $this->lang->line('total'); ?></th>
 								                <?php
 								                foreach($presupuesto as $row){
 								                	echo '<th>$ '.$row->total.'</th>';
 								                }
 								                ?>
+								                <th></th>
 								            </tr>
 								        </tfoot>
 								 
 								 		<tbody>
 								        <?php	
 								        foreach ($presupuestos as $row) {
-										
-					     					echo '<tr>';	
-					     					
+											
+											if($row->estado == 'Rechazado'){
+												echo '<tr style="background-color: rgba(182, 13, 13, 1);">';
+											}
+											else{
+					     						echo '<tr>';	
+											}
 											echo '<td>'.$row->nombre.'</td>';
 											echo '<td>'.$row->cantidad.'</td>';
 											foreach($productos as $key){
@@ -188,7 +233,7 @@
 												}
 											}
 											echo '<td>$ '.$row->precio.'</td>';
-															
+											echo '<th>'.$row->estado.'</th>';				
 											echo '</tr>';
 										}			
 										?>

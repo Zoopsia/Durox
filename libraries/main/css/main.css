@@ -336,3 +336,20 @@ input#cantidad{
     border: 1px solid #E3E3E3;
     position: absolute;
 }
+
+.scrollup{
+    width:40px;
+    height:40px;
+    opacity:0.3;
+    position:fixed;
+    bottom:50px;
+    right:5px;
+    display:none;
+    text-indent:-9999px;
+    background: url('../../../img/icon_top.png') no-repeat;
+}
+
+.rechazado{
+	background-color: gray;
+	color: #000000;
+}

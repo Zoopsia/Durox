@@ -100,12 +100,6 @@ class Presupuestos_model extends My_Model {
 		$this->db->insert('sin_visitas_presupuestos', $arreglo_cruce);
 	}
 	
-	function sacarProducto($id){
-		
-		$this->db->where('id_linea_producto_presupuesto', $id);
-		$this->db->delete('linea_productos_presupuestos'); 
-		
-	}	
 	
 	public function buscarProducto($producto) {
         $this->db->select('nombre');
@@ -113,5 +107,31 @@ class Presupuestos_model extends My_Model {
         $this->db->like('nombre', $producto);
         return $this->db->get('productos', 10);
     }
+    
+	public function deletePresupuesto($presupuesto){
+    	$this->db->where($this->_id_table, $presupuesto);
+		$this->db->delete('presupuestos');
+		
+		$this->db->where($this->_id_table, $presupuesto);
+		$this->db->delete('sin_visitas_presupuestos');
+		
+		$this->db->where($this->_id_table, $presupuesto);
+		$this->db->delete('linea_productos_presupuestos');
+    }  
+	
+	public function getLineas($presupuesto){
+		$this->db->select('*');
+		$this->db->from('linea_productos_presupuestos');
+		$this->db->where('id_presupuesto', $presupuesto);
+		
+		return $this->db->get();
+	}
+	
+	public function updateLinea($arreglo_campos, $id){
+		$this->db->where('id_linea_producto_presupuesto', $id);
+		$this->db->update('linea_productos_presupuestos', $arreglo_campos);
+		
+		return $this->db->insert_id();
+	}
 } 
 ?>

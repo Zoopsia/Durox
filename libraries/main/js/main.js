@@ -1,5 +1,18 @@
 $(document).ready(function(){
-     
+	
+	$(window).scroll(function(){
+            if ($(this).scrollTop() > 10) {
+                $('.scrollup').fadeIn();
+            } else {
+                $('.scrollup').fadeOut();
+            }
+        });
+  
+	$('.scrollup').click(function(){
+            $("html, body").animate({ scrollTop: 0 }, 600);
+            return false;
+    });
+	
     $('.prueba').DataTable({
 
     	"language": {
@@ -37,7 +50,7 @@ $(document).ready(function(){
 		tags: true,
 	});
 	
-	
+
 });
 
 
@@ -63,7 +76,7 @@ function confirmarGrupo(){
 function confirmarVisita(){
 	var c = confirm("Los datos no han sido guardados.\n¿Está seguro que quiere salir?");
 	if (c==true){
-			window.location.assign("/Durox/index.php/Visitas/visitas_abm/tab1");
+			window.location.assign("/Durox/index.php/Presupuestos/presupuestos_abm/tab1");
 	}
 }
 
