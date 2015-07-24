@@ -1,3 +1,44 @@
+<script>
+	
+function modal(){
+	$("#ModalBuscar").modal("show");
+}
+
+function tablaPresupuesto(){
+	var id_presupuesto = $('#btn-ver').val();
+	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/Presupuestos/vistaPresupuesto', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	data: 'id_presupuesto='+id_presupuesto, //Pasaremos por parámetro POST el id del pai
+	 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+	 		//Activar y Rellenar el select de provincias
+	 		$('#tablaPresupuesto').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
+	 	}
+	});
+}	
+</script>
+<!-- Modal -->
+<div class="modal fade" id="ModalBuscar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document">
+	  	<div class="modal-content">
+	  		<div class="modal-header">
+	      		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	      		<h4 class="modal-title" id="myModalLabel"><?php echo $this->lang->line('presupuesto'); ?></h4>
+	   		</div>
+			<div class="modal-body" id="tablaVisitas">
+				<div id="tablaPresupuesto">
+					
+				</div>			        		
+			</div>
+			<div class="modal-footer">					                
+				
+				<button type="button" class="btn btn-danger" data-dismiss="modal"><?php echo $this->lang->line('cancelar'); ?></button>
+			</div>
+		</div>
+	</div>
+</div>
+
+
 <nav class="navbar" role="navigation">
 	<div class="container">
 	    <div class="row">
@@ -121,7 +162,8 @@
 														echo $this->lang->line('id').': '.$row->id_visita;
 														echo "</div>";
 														echo '<div class="even">';
-														echo $this->lang->line('fecha').': '.$row->date_upd;
+														$date	= date_create($row->date_upd);
+														echo $this->lang->line('fecha').': '.date_format($date, 'd/m/Y');
 														echo "</div>";
 														foreach($epocas as $key){
 															if($key->id_epoca_visita == $row->id_epoca_visita){
@@ -169,6 +211,8 @@
 											            <tr>
 											            	<th><?php echo $this->lang->line('presupuesto'); ?></th>
 											            	<th><?php echo $this->lang->line('estado'); ?></th>
+											            	<th><?php echo $this->lang->line('total'); ?></th>
+											            	<th></th>
 											            </tr>
 											        </thead>
 											 
@@ -176,6 +220,8 @@
 											            <tr>
 											            	<th><?php echo $this->lang->line('presupuesto'); ?></th>
 											            	<th><?php echo $this->lang->line('estado'); ?></th>
+											            	<th><?php echo $this->lang->line('total'); ?></th>
+											            	<th></th>
 											            </tr>
 											        </tfoot>
 											 
@@ -190,7 +236,8 @@
 																	if($key->id_estado_presupuesto == $row->id_estado_presupuesto)	
 																		echo '<td>'.$key->estado.'</td>';
 																}
-																//echo '<td>'.$row->id_estado_presupuesto.'</td>';
+																echo '<td>$ '.$row->total.'</td>';
+																echo '<td style="text-align: center"><button type="button" class="btn btn-primary btn-xs" onclick="modal(); tablaPresupuesto()" name="btn-ver" id="btn-ver" value="'.$row->id_presupuesto.'">'.$this->lang->line('ver').'</button></td>';
 																echo "</tr>";
 															}
 													 	?>

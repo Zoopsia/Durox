@@ -64,7 +64,7 @@ class Vendedores extends My_Controller {
 			$crud->fields(	'nombre',
 							'apellido',
 							'contraseña');
-							
+					
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
 			
 			$crud->unset_export();
@@ -76,7 +76,6 @@ class Vendedores extends My_Controller {
 			
 			$this->crud_tabla($output);
 	}
-
 
 	function just_a_test($primary_key , $row)
 	{

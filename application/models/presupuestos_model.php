@@ -28,6 +28,8 @@ class Presupuestos_model extends My_Model {
 					productos.id_producto AS producto, 
 					linea_productos_$this->_tablename.cantidad AS cantidad, 
 					linea_productos_$this->_tablename.precio AS precio,
+					linea_productos_$this->_tablename.id_linea_producto_presupuesto AS id_linea_producto_presupuesto,
+					linea_productos_$this->_tablename.id_estado_producto_presupuesto AS estado_linea,
 					estados_productos_$this->_tablename.estado AS estado
 				FROM 
 					$this->_tablename 

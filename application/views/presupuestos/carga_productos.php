@@ -9,19 +9,26 @@ window.onbeforeunload = function(){
 	}
 }
 window.onunload = function () {
-	var presupuesto = $('#presupuesto').val();
-	$.ajax({
-		 	type: 'POST',
-		 	url: '<?php echo base_url(); ?>index.php/Presupuestos/deletePresupuesto', //Realizaremos la petición al metodo prueba del controlador direcciones
-		 	data: {'presupuesto': presupuesto},
-		 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-		 		
-		 	}
-	});
+	if(evento == 0){
+		var presupuesto = $('#presupuesto').val();
+		$.ajax({
+			 	type: 'POST',
+			 	url: '<?php echo base_url(); ?>index.php/Presupuestos/deletePresupuesto', //Realizaremos la petición al metodo prueba del controlador direcciones
+			 	data: {'presupuesto': presupuesto},
+			 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+			 		
+			 	}
+		});
+	}
 };
 
 $( document ).ready(function() {
     document.getElementById("producto").focus();
+    <?php
+    	if($tipo==1){
+    		echo "$('#btn-guardar').show();";
+    	}
+    ?>
 });
 
 function nuevaLinea(){
@@ -159,7 +166,7 @@ function funcion1($id_producto){
 							</div>	
 	    						<form action="" id="formProducto" class="form-inline" method="post">
 	    							<div class="row">
-		    							<div id="table" class="col-sm-10 col-sm-offset-1" style="padding: 0 50px">
+		    							<div id="table" class="col-sm-11 col-sm-offset-1" style="padding: 0 50px">
 											 <!-- NUEVA CARGA DE PRESUPUESTO -->
 											
 											 <table class="table table-hover" cellspacing="0" width="100%">
@@ -170,7 +177,7 @@ function funcion1($id_producto){
 														<th class="th1"><?php echo $this->lang->line("precio"); ?></th>
 														<th class="th1"><?php echo $this->lang->line("subtotal"); ?></th>
 														<th></th>
-														<th></th>
+														<th style="width: 118px"></th>
 													</tr>
 												</thead>
 											 	<tbody>
@@ -193,40 +200,109 @@ function funcion1($id_producto){
 														</th>
 														<th></th>
 													</tr>
-											 	</tbody>
-											 	<tfoot>
-													<tr>
-														<th></th>
-														<th></th>
-														<th class="th1"><?php echo $this->lang->line("total"); ?></th>
-														<th></th>
-														<th></th>
-														<th></th>
-													</tr>
-												</tfoot>
+													
+													<?php
+													if($tipo==1){
+														$subtotal = 0;
+														foreach ($detalle as $row) {
+															if($row->estado_linea != 3){
+																foreach ($productos as $key) {
+																	if($row->producto == $key->id_producto){
+																		echo '<tr>				
+																				<th>'.$row->nombre.'</th>
+																				<th>'.$row->cantidad.'</th>
+																				<th>'.'$'.$key->precio.'</th>
+																				<th>'.'$'.$row->precio.'</th>
+																				<th><a href="#" class="btn btn-danger btn-xs glyphicon glyphicon-minus" onclick="sacarProducto('.$row->id_linea_producto_presupuesto.','.$presupuesto.')" role="button" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('anular').' '.$this->lang->line('producto').'"></th>
+																				<th></th>
+																			</tr>';
+																	}
+																}
+																$subtotal = $subtotal + $row->precio;
+															}
+														}
+														
+												echo '</tbody>';
+														
+														foreach ($presupuestos as $row) {
+															if($subtotal>=$row->total){
+																$descuento			= $subtotal-$row->total;
+																$tipo_descuento		= 'Descuento';
+																$total				= $row->total;
+															}
+															else{
+																$descuento			= $row->total-$subtotal;
+																$tipo_descuento		= 'Aumento';
+																$total				= $row->total;
+															}
+														}
+
+														echo '<tfoot>
+																<tr>
+																	<th></th>
+																	<th></th>
+																	<th class="th1">'.$this->lang->line("subtotal").'</th>
+																	<th>'.'$'.$subtotal.'</th>
+																	<th></th>
+																	<th></th>
+																</tr>
+																<tr>
+																	<th></th>
+																	<th></th>
+																	<th class="th1">'.$tipo_descuento.'</th>
+																	<th>'.'$'.$descuento.'</th>
+																	<th></th>
+																	<th></th>
+																</tr>
+																<tr>
+																	<th></th>
+																	<th></th>
+																	<th class="th1">'.$this->lang->line("total").'</th>
+																	<th>'.'$'.$total.'</th>
+																	<th></th>
+																	<th></th>
+																</tr>
+															</tfoot>';
+															
+													}else{
+														echo 	'</tbody>';
+														echo 	'<tfoot>
+																	<tr>
+																		<th></th>
+																		<th></th>
+																		<th class="th1">'.$this->lang->line("total").'</th>
+																		<th></th>
+																		<th></th>
+																		<th></th>
+																	</tr>
+																</tfoot>';
+													}
+													?>
 											 </table>
 										</div>
 									</div>
 									<br /><br />
-									<!--
-									<div class="row">
-										<div id="table" class="col-sm-10 col-sm-offset-1">
-											
-										</div>
-									</div>
-									-->
+									</form>
+									<?php
+	    						if($tipo ==1 ){
+	    							echo '<form action="'.base_url().'index.php/Presupuestos/totalPresupuesto/'.$presupuesto.'" id="formGuardar" class="form-inline" method="post">			
+										  <input type="hidden" id="total" name="total" pattern="[0-9 ]*" placeholder="'.$total.'" value="'.$total.'" required>';
+	    						}
+								?>
 									<div class="row">
 										<div>
-											<div class="col-sm-4 col-sm-offset-4">
-												<button type="submit" form="formGuardar" onclick="funcion2();" class="btn btn-primary" id="btn-guardar" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('guardar');?>" style="display: none">
+											<div class="col-sm-4 col-sm-offset-5">
+												<button type="submit" form="formGuardar" onclick="funcion2();" class="btn btn-primary" id="btn-guardar" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('guardar') ;?>" style="display: none">
 													<?php echo $this->lang->line('guardar'); ?>
 												</button>
 												<input type="button" id="btn-cancelar" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" onclick="funcion2(); deletePresupuesto(<?php echo $presupuesto ?>)">
-												<input type="number" id="presupuesto" name="presupuesto" pattern="[0-9 ]*" placeholder="<?php echo $presupuesto ?>" value="<?php echo $presupuesto ?>" required hidden>
+												<input type="number" id="presupuesto" name="presupuesto" pattern="[0-9 ]*" placeholder="<?php echo $presupuesto ?>" value="<?php echo $presupuesto ?>" required hidden> 
 											</div>
 										</div>
 									</div>
 	    						</form>
+	    						
+	    						
 	    				</div><!--contenedor de cada pestaña-->
 		  			</div><!--panel body-->
 				</div><!--panel-->

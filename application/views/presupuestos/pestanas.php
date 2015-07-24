@@ -115,21 +115,24 @@
 												<div class="row">
 													<div class="col-md-12 text-center">
 														<?php
-														
 														echo '<div class="odd">';
-														echo $this->lang->line('id').' '.$this->lang->line('visita').': '.'<a href="'.base_url().'index.php/Visitas/carga/'.$row->id_visita.'/0">'.$row->id_visita.'</a>';
+														echo $this->lang->line('id').' '.$this->lang->line('presupuesto').': '.'<a href="#">'.$row->id_presupuesto.'</a>';
 														echo "</div>";
 														echo '<div class="even">';
-														echo $this->lang->line('fecha').': '.$row->date_upd;
+														echo $this->lang->line('id').' '.$this->lang->line('visita').': '.'<a href="'.base_url().'index.php/Visitas/carga/'.$row->id_visita.'/0">'.$row->id_visita.'</a>';
+														echo "</div>";
+														echo '<div class="odd">';
+														$date	= date_create($row->date_upd);
+														echo $this->lang->line('fecha').': '.date_format($date, 'd/m/Y');
 														echo "</div>";
 														foreach($estados as $key){
 															if($key->id_estado_presupuesto == $row->id_estado_presupuesto){
-																echo '<div class="odd">';	
+																echo '<div class="even">';	
 																echo $this->lang->line('estado').': '.$key->estado;
 																echo "</div>";
 															}
 														}
-														echo '<div class="even">';
+														echo '<div class="odd">';
 														echo $this->lang->line('total').' '.$this->lang->line('presupuesto').': $ '.$row->total;
 														echo "</div>";
 														echo "<br>";
@@ -163,7 +166,8 @@
 										
 										$subtotal = 0;
 										foreach ($presupuestos as $row) {
-											$subtotal = $row->precio + $subtotal;
+											if($row->estado_linea != 3)
+												$subtotal = $row->precio + $subtotal;
 										}
 										
 										foreach($presupuesto as $row){
@@ -241,13 +245,21 @@
 								    </table>
 								    <?php 
 								    foreach($presupuesto as $row){
+								    ?>
+								    <div class="row">
+								    	<div class="col-md-2 col-md-offset-4">
+											<a role="button" class="btn btn-info" href="<?php echo base_url().'/index.php/Presupuestos/generarNuevoPresupuesto/'.$row->id_presupuesto ?>"><?php echo $this->lang->line('generar').' '.$this->lang->line('presupuesto') ?></a>
+										</div>
+								    <?php
 								    	if($row->id_estado_presupuesto == 1){
-										    echo 	'<div class="col-md-2 col-md-offset-5">
-														<a role="button" class="btn btn-info" href="#">'.$this->lang->line('generar').' '.$this->lang->line('pedido').'</a>
-													</div>';
+										    echo 	'
+										    			<div class="col-md-2">
+															<a role="button" class="btn btn-info" href="#">'.$this->lang->line('generar').' '.$this->lang->line('pedido').'</a>
+														</div>';
 										}
 									}
 									?>
+									</div>
 							    </div>
 	    					</div>
 	    					<div class="tab-pane" id="tab3">

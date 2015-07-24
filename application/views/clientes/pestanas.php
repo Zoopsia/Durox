@@ -1,6 +1,6 @@
 <script>
 $(document).ready(function(){	
-	document.body.style.background = "url('../../../img/otro_fondo.jpg') no-repeat";
+	document.body.style.background = "url(<?php echo base_url().'/img/otro_fondo.jpg' ?>) no-repeat";
 });		
 </script>
 <nav class="navbar" role="navigation">
