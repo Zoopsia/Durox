@@ -1,14 +1,19 @@
 <script>
 	
-function modal(){
+function modal($id_presupuesto){
+	var id_presupuesto  = $id_presupuesto;
+	var url				= '<?php echo base_url(); ?>index.php/Presupuestos/pestanas/'+id_presupuesto;
 	$("#ModalBuscar").modal("show");
+	
+	var input = document.getElementById('id_div_contenedor');
+	input.innerHTML = 	'<a role="button" class="btn btn-info" href="'+url+'">Ver</a><button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>';					
 }
 
-function tablaPresupuesto(){
-	var id_presupuesto = $('#btn-ver').val();
+function tablaPresupuesto($id_presupuesto){
+	var id_presupuesto = $id_presupuesto;
 	$.ajax({
 	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/Presupuestos/vistaPresupuesto', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	url: '<?php echo base_url(); ?>index.php/Visitas/vistaPresupuesto', //Realizaremos la petición al metodo prueba del controlador direcciones
 	 	data: 'id_presupuesto='+id_presupuesto, //Pasaremos por parámetro POST el id del pai
 	 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
 	 		//Activar y Rellenar el select de provincias
@@ -30,7 +35,7 @@ function tablaPresupuesto(){
 					
 				</div>			        		
 			</div>
-			<div class="modal-footer">					                
+			<div class="modal-footer" id="id_div_contenedor">	
 				
 				<button type="button" class="btn btn-danger" data-dismiss="modal"><?php echo $this->lang->line('cancelar'); ?></button>
 			</div>
@@ -237,7 +242,7 @@ function tablaPresupuesto(){
 																		echo '<td>'.$key->estado.'</td>';
 																}
 																echo '<td>$ '.$row->total.'</td>';
-																echo '<td style="text-align: center"><button type="button" class="btn btn-primary btn-xs" onclick="modal(); tablaPresupuesto()" name="btn-ver" id="btn-ver" value="'.$row->id_presupuesto.'">'.$this->lang->line('ver').'</button></td>';
+																echo '<td style="text-align: center"><button type="button" class="btn btn-primary btn-xs" onclick="modal('.$row->id_presupuesto.'); tablaPresupuesto('.$row->id_presupuesto.')" id="btn-ver" name="btn-ver" value="">'.$this->lang->line('ver').'</button></td>';
 																echo "</tr>";
 															}
 													 	?>
