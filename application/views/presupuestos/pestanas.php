@@ -1,3 +1,10 @@
+<script>
+$(document).ready(function(){	
+	document.body.style.background = "url(<?php echo base_url().'/img/fondorepetir.jpg' ?>)";
+});		
+	
+</script>
+
 <nav class="navbar" role="navigation">
 	<div class="container">
 	    <div class="row">
@@ -25,7 +32,7 @@
 							}
 						?>
 		  				<div class="tab-content">
-	    					<div class="tab-pane active" id="tab1">
+	    					<div class="tab-pane fade in active" id="tab1">
 	    					<!--INFO GRAL DEL PRESUPUESTO-->	
 	    						<?php
 									if($presupuesto){
@@ -152,7 +159,7 @@
 								</div>
 					            			
 	    					</div> 
-	     					<div class="tab-pane" id="tab2">
+	     					<div class="tab-pane fade" id="tab2">
 	     						<div class="col-md-10 col-md-offset-1">
 	     							<?php
 	     								foreach($presupuesto as $row){
