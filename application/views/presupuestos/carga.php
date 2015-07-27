@@ -5,7 +5,7 @@ function modal(){
 }
 
 function busqueda(){
-	
+
  	var id_visita = $('select#id_visita').val(); //Obtenemos el id del pais seleccionado en la lista
  	$.ajax({
 	 	type: 'POST',
@@ -15,6 +15,8 @@ function busqueda(){
 	 		//Activar y Rellenar el select de provincias
 	 		$('#id_vendedor').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
 	 		$("#id_vendedor").trigger("chosen:updated");
+			if($('#id_vendedor').val() == null)
+	 			document.getElementById('button-submit').setAttribute('type', 'button');
 	 	}
 	});
 	$.ajax({
@@ -25,6 +27,8 @@ function busqueda(){
 	 		//Activar y Rellenar el select de provincias
 	 		$('#id_cliente').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
 	 		$("#id_cliente").trigger("chosen:updated");
+	 		if($('#id_cliente').val() == null)
+	 			document.getElementById('button-submit').setAttribute('type', 'button');
 	 	}
 	});
 	$.ajax({
@@ -36,6 +40,8 @@ function busqueda(){
 	 		$('#date_add').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
 	 	}
 	});
+	
+	
 }
 
 function busqueda2(){
@@ -57,9 +63,10 @@ function resetear(){
 	document.location.reload();
 }
 
-$('#formPresupuesto').submit(function( event ) {
-	alert( "Handler for .submit() called." );  
-	event.preventDefault();
+
+$('#formPresupuesto').submit(function(event){
+    event.preventDefault();
+	alert("Submit prevented");
 });
 </script>
 
@@ -265,7 +272,7 @@ $('#formPresupuesto').submit(function( event ) {
 										
 										<div class="form-group even">
 											<div class="col-sm-4 col-sm-offset-3">
-												<button type="submit" class="btn btn-primary"><?php echo $this->lang->line('guardar'); ?></button>
+												<button type="submit" class="btn btn-primary" id="button-submit"><?php echo $this->lang->line('guardar'); ?></button>
 												<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" onclick="confirmarPresupuesto()">
 											</div>
 									   	</div>

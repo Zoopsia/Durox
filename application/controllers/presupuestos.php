@@ -224,7 +224,7 @@ class Presupuestos extends My_Controller {
 				$mensaje .= '</option>';
 			}
 			else{
-				$mensaje  = '<option value="'.$key->id_cliente.'" disabled>'.$this->lang->line('vendedor').' '.$this->lang->line('eliminado');
+				$mensaje  = '<option value="0" disabled>'.$this->lang->line('vendedor').' '.$this->lang->line('eliminado');
 				$mensaje .= '</option>';
 			}
 			
@@ -248,7 +248,7 @@ class Presupuestos extends My_Controller {
 				$mensaje .= '</option>';
 			}
 			else{
-				$mensaje  = '<option value="'.$key->id_cliente.'" disabled>'.$this->lang->line('cliente').' '.$this->lang->line('eliminado');
+				$mensaje  = '<option value="" disabled>'.$this->lang->line('cliente').' '.$this->lang->line('eliminado');
 				$mensaje .= '</option>';
 			}
 		}
