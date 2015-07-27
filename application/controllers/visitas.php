@@ -363,4 +363,22 @@ class Visitas extends My_Controller {
 		$mensaje .= '</table>';			
 		echo $mensaje;
 	}
+
+	public function getClientes(){
+		$id_vendedor	= $this->input->post('id_vendedor');
+		
+		$cruce			= $this->vendedores_model->sinCruce($id_vendedor);
+		
+		$mensaje = '';
+		foreach ($cruce as $row) {
+			if($row->eliminado!=1){
+				$cliente 		= $this->clientes_model->getRegistro($row->id_cliente);	
+				foreach ($cliente as $key) {
+					$mensaje  .= '<option value="'.$key->id_cliente.'">'.$key->apellido.', '.$key->nombre;
+					$mensaje  .= '</option>';
+				}
+			}
+		}		
+		echo $mensaje;
+	}
 }

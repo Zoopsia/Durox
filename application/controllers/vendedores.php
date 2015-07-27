@@ -29,6 +29,7 @@ class Vendedores extends My_Controller {
 		$db['telefonos']	= $this->vendedores_model->getCruce($id,'telefonos');
 		$db['direcciones']	= $this->vendedores_model->getCruce($id,'direcciones');
 		$db['mails']		= $this->vendedores_model->getCruce($id,'mails');
+		$db['presupuestos']	= $this->vendedores_model->getPresupuestos($id);
 		
 		$db['cruce']		= $this->vendedores_model->sinCruce($id);
 		$db['clientes_todo']= $this->clientes_model->getTodo();
@@ -131,10 +132,35 @@ class Vendedores extends My_Controller {
 		redirect('/vendedores/pestanas/'.$id_vendedor.'/'.$aux,'location');
 
 	}
-	
+
 /*--------------------------------------------------------------------------------	
  --------------------------------------------------------------------------------
- 			Función para agregar Clientes a Vendedor
+ 			Función para Agregar Clientes a Vendedor
+ --------------------------------------------------------------------------------
+ --------------------------------------------------------------------------------*/	
+
+ 		public function volverCargarCliente($id_cliente,$id_vendedor){
+
+		//----- 2 PORQUE ES TIPO VENDEDOR -----//
+		
+		$cruce		= $this->vendedores_model->sinCruce($id_vendedor);
+		$aux = 1;
+		
+		foreach($cruce as $row){
+			if($id_cliente == $row->id_cliente)
+				$id_sin = $row->id_sin_vendedor_cliente;
+		}
+
+		$sin = array(
+			'eliminado'		=> 0
+		);
+		
+		$id_cliente	= $this->vendedores_model->updateSin($sin,$id_sin);
+		redirect('/vendedores/pestanas/'.$id_vendedor.'/'.$aux,'location');
+	}	
+/*--------------------------------------------------------------------------------	
+ --------------------------------------------------------------------------------
+ 			Función para Sacar Clientes a Vendedor
  --------------------------------------------------------------------------------
  --------------------------------------------------------------------------------*/	
 
@@ -158,55 +184,4 @@ class Vendedores extends My_Controller {
 		redirect('/vendedores/pestanas/'.$id_vendedor.'/'.$aux,'location');
 	}
 	
-	public function nuevoCliente(){
-		
-		$id_vendedor	= $this->input->post('id_vendedor');
-		$clientes		= $this->vendedores_model->getCruce($id_vendedor,'clientes');
-		
-		//-----LLENO TABLA CON CLIENTES FUERA DEL GRUPO------//
-
-		$table =	'<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
-							<thead>
-								<tr>
-									<th>'.$this->lang->line('id').'</th>
-									<th>'.$this->lang->line('nombre').'</th>
-									<th>'.$this->lang->line('apellido').'</th>
-									<th>'.$this->lang->line('cuit').'</th>
-									<th></th>
-								</tr>
-							</thead>
-										 
-							<tfoot>
-								<tr>
-									<th>'.$this->lang->line('id').'</th>
-									<th>'.$this->lang->line('nombre').'</th>
-									<th>'.$this->lang->line('apellido').'</th>
-									<th>'.$this->lang->line('cuit').'</th>
-									<th></th>
-								</tr>
-							</tfoot>
-							<tbody>';
-			
-			foreach ($clientes as $row) {
-					$table .= "<tr><td>";
-					$table .= $row->id_cliente;
-					$table .= "</td><td>";
-					$table .= $row->nombre;
-					$table .= "</td><td>";
-					$table .= $row->apellido;
-					$table .= "</td><td>";
-					$table .= $row->cuit;
-					$table .= '</td><td style="text-align: center">';
-					$table .= '<button type="button" class="btn-sm btn-default btn-plus" onclick="">';
-					$table .= '<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>';
-					$table .= '</button>';
-					$table .= "</td></tr>";									
-			}
-			
-			$table .=	'</tbody>
-						</table>';
-						
-			echo $table;		
-	}
-
 }

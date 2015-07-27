@@ -109,7 +109,7 @@ $(document).ready(function(){
 										                echo  '<td class="tabla-datos-importantes">'.$row->nombre_fantasia.'</td>';
 										                echo  "</tr><tr>";		
 										                echo  '<td>'.$this->lang->line('cuit').':</td>';
-										                echo  '<td class="tabla-datos-importantes">'.$row->cuit.'</td>';
+										                echo  '<td class="tabla-datos-importantes">'.cuit($row->cuit).'</td>';
 										                echo  "</tr><tr>";	
 										                echo  '<td>'.$this->lang->line('razon_social').':</td>';
 										                echo  '<td class="tabla-datos-importantes">'.$row->razon_social.'</td>';
@@ -536,7 +536,47 @@ $(document).ready(function(){
 	    					
 	    					<div class="tab-pane fade" id="tab5">
 	     						<!--TAB 5 PANEL DE PRESUPUESTOS -->
-	     						PRESUPUESTOS
+	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
+							        <thead>
+							            <tr>
+							            	<th><?php echo $this->lang->line('presupuesto'); ?></th>
+							            	<th><?php echo $this->lang->line('estado'); ?></th>
+							            	<th><?php echo $this->lang->line('visita'); ?></th>
+							                <th><?php echo $this->lang->line('vendedor'); ?></th>
+							                <th><?php echo $this->lang->line('date'); ?></th>
+							            </tr>
+							        </thead>
+							 
+							        <tfoot>
+							            <tr>
+							            	<th><?php echo $this->lang->line('presupuesto'); ?></th>
+							            	<th><?php echo $this->lang->line('estado'); ?></th>
+							            	<th><?php echo $this->lang->line('visita'); ?></th>
+							                <th><?php echo $this->lang->line('vendedor'); ?></th>
+							                <th><?php echo $this->lang->line('date'); ?></th>
+							            </tr>
+							        </tfoot>
+							 
+							        <tbody>        
+			     						<?php 
+									       	if($presupuestos){							                
+										      	foreach ($presupuestos as $row) 
+										     	{
+										    		echo '<tr>';
+													echo "<td><a href='".base_url()."index.php/Presupuestos/pestanas/".$row->id_presupuesto."' class='displayblock'>".$row->id_presupuesto.'</a></td>';
+													echo '<td>'.$row->estado.'</td>';
+													echo "<td><a href='".base_url()."index.php/Visitas/carga/".$row->id_visita."/0' class='displayblock'>".$row->id_visita.'</a></td>';
+													echo "<td><a href='".base_url()."index.php/Vendedores/pestanas/".$row->id_vendedor."' class='displayblock'>".$row->apellido.', '.$row->nombre.'</a></td>';
+													echo '<td>'.$row->date_add;
+													echo "</td>";
+													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
+													//echo "</a></tr>";
+													echo "</tr>";
+												}
+											}
+										?>
+									</tbody>
+								</table> 
 	    					</div>
 	    					
 	    					<div class="tab-pane fade" id="tab6">

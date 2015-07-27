@@ -23,14 +23,15 @@ class Clientes extends My_Controller {
 
 	public function pestanas($id){
 		
-		$db['empresas']		=$this->empresas_model->getRegistro(1);
-		$db['clientes']		=$this->clientes_model->getCliente($id);
-		$db['vendedores']	=$this->clientes_model->getCruce($id,'vendedores');	
-		$db['telefonos']	=$this->clientes_model->getCruce($id,'telefonos');
-		$db['direcciones']	=$this->clientes_model->getCruce($id,'direcciones');
-		$db['mails']		=$this->clientes_model->getCruce($id,'mails');
-		$db['pedidos']		=$this->clientes_model->getPedidos($id);
-		$db['grupos']		=$this->grupos_model->getTodo();
+		$db['empresas']		= $this->empresas_model->getRegistro(1);
+		$db['clientes']		= $this->clientes_model->getCliente($id);
+		$db['vendedores']	= $this->clientes_model->getCruce($id,'vendedores');	
+		$db['telefonos']	= $this->clientes_model->getCruce($id,'telefonos');
+		$db['direcciones']	= $this->clientes_model->getCruce($id,'direcciones');
+		$db['mails']		= $this->clientes_model->getCruce($id,'mails');
+		$db['pedidos']		= $this->clientes_model->getPedidos($id);
+		$db['presupuestos']	= $this->clientes_model->getPresupuestos($id);
+		$db['grupos']		= $this->grupos_model->getTodo();
 		
 		$this->load->view("head.php", $db);
 		$this->load->view("nav_top.php");

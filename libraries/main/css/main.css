@@ -341,3 +341,7 @@ input#cantidad{
 	background-color: gray;
 	color: #000000;
 }
+
+.displayblock {
+	display: block;
+}

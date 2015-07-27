@@ -78,5 +78,34 @@ class Vendedores_model extends My_Model {
 		return $this->db->insert_id();
 	}
 	
+	function getPresupuestos($id){
+			
+		$sql = "SELECT 
+					* 
+				FROM 
+					presupuestos
+				INNER JOIN 
+					clientes USING (id_cliente)
+				INNER JOIN 
+					estados_presupuestos USING (id_estado_presupuesto)
+				WHERE 
+					$this->_id_table = '$id'";
+					
+		$query = $this->db->query($sql);
+		
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+			return $data;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	
 } 
 ?>

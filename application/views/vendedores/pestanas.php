@@ -216,7 +216,9 @@ $(document).ready(function(){
 																		echo '<td>'.$row->nombre.'</td>';
 																		echo "<td>".$row->apellido."</td>";
 																		echo '<td>'.$row->date_add.'</td>';
-																		echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs glyphicon glyphicon-search'>";
+																		echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs glyphicon glyphicon-search' style='margin : 0 5px'>";
+																		echo "</a>";
+																		echo '<a href="'.base_url().'index.php/Vendedores/volverCargarCliente/'.$row->id_cliente.'/'.$value->id_vendedor.'" class="btn btn-success btn-xs glyphicon glyphicon-plus" role="button">';
 																		echo "</a></td>";
 																		echo "</tr>";
 																	}
@@ -639,63 +641,47 @@ $(document).ready(function(){
 	    					
 	    					<div class="tab-pane fade" id="tab5">
 	     						<!--TAB 5 PANEL DE PRESUPUESTOS -->
-	     						
-	     						
-	     						<div class="row">
-	     							<div class="col-md-11 col-md-offset-1">
-	     								<form class="form-inline">
-											<div class="form-group col-md-offset-1">
-												<label><?php echo $this->lang->line('producto'); ?></label>
-												<input type="text" id="productos" name="producto" class="numeric form-control" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('producto'); ?>" required>
-											</div>
-											<div class="form-group col-md-offset-1">
-												<label><?php echo $this->lang->line('cantidad'); ?></label>
-												<input type="text" id="cantidad" name="cantidad" class="numeric form-control" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('cantidad'); ?>" required>
-											</div>
-											<div class="form-group col-md-offset-1">
-												<button type="button" class="btn btn-success btn-xs glyphicon glyphicon-plus" onclick=""></button>
-											</div>
-										</form>
-									</div>
-								</div>
-	     						<div class="row">	
-									<div class="col-md-10 col-md-offset-1">
-					     				<table class="table table-striped table-hover" cellspacing="0" width="100%">
-											<thead>
-												<tr>
-											     	<th><?php echo $this->lang->line('codigo'); ?></th>
-											       	<th><?php echo $this->lang->line('producto'); ?></th>
-											        <th><?php echo $this->lang->line('cantidad'); ?></th>
-											        <th><?php echo $this->lang->line('precio'); ?></th>
-											        <th><?php echo $this->lang->line('subtotal'); ?></th>
-											        <th></th>
-											    </tr>
-											</thead>
-											 
-											<tfoot>
-											    <tr>
-											      	<th></th>
-											       	<th></th>
-											      	<th></th>
-											        <th><ins><?php echo $this->lang->line('total'); ?></ins></th>
-											        <th>$$$$$</th>
-											        <th></th>
-												</tr>
-											</tfoot>
-											
-											<tbody> 
-												<tr>
-											    	<th>910</th>
-											    	<th>Producto 1</th>
-											   		<th>10</th>
-											    	<th>$ 10</th>
-											    	<th>$100.00</th>
-											    	<th style="text-align: center"><a href='#' class='btn btn-danger btn-xs glyphicon glyphicon-minus' role='button' onclick="alert()"></a></th>
-											    </tr>
-											</tbody>
-										</table>
-									</div>
-								</div>
+	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
+							        <thead>
+							            <tr>
+							            	<th><?php echo $this->lang->line('presupuesto'); ?></th>
+							            	<th><?php echo $this->lang->line('estado'); ?></th>
+							            	<th><?php echo $this->lang->line('visita'); ?></th>
+							                <th><?php echo $this->lang->line('cliente'); ?></th>
+							                <th><?php echo $this->lang->line('date'); ?></th>
+							            </tr>
+							        </thead>
+							 
+							        <tfoot>
+							            <tr>
+							            	<th><?php echo $this->lang->line('presupuesto'); ?></th>
+							            	<th><?php echo $this->lang->line('estado'); ?></th>
+							            	<th><?php echo $this->lang->line('visita'); ?></th>
+							                <th><?php echo $this->lang->line('cliente'); ?></th>
+							                <th><?php echo $this->lang->line('date'); ?></th>
+							            </tr>
+							        </tfoot>
+							 
+							        <tbody>        
+			     						<?php 
+									       	if($presupuestos){							                
+										      	foreach ($presupuestos as $row) 
+										     	{
+										    		echo '<tr>';
+													echo "<td><a href='".base_url()."index.php/Presupuestos/pestanas/".$row->id_presupuesto."' class='displayblock'>".$row->id_presupuesto.'</a></td>';
+													echo '<td>'.$row->estado.'</td>';
+													echo "<td><a href='".base_url()."index.php/Visitas/carga/".$row->id_visita."/0' class='displayblock'>".$row->id_visita.'</a></td>';
+													echo "<td><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='displayblock'>".$row->apellido.', '.$row->nombre.'</a></td>';
+													echo '<td>'.$row->date_add;
+													echo "</td>";
+													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
+													//echo "</a></tr>";
+													echo "</tr>";
+												}
+											}
+										?>
+									</tbody>
+								</table> 
 	    					</div>
 	    					
 	    					<div class="tab-pane fade" id="tab6">

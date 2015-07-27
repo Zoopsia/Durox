@@ -59,6 +59,7 @@ class Grupos extends My_Controller {
 									<th>'.$this->lang->line('regla').'</th>
 									<th>'.$this->lang->line('nombre').'</th>
 									<th>'.$this->lang->line('tipo').'</th>
+									<th>'.$this->lang->line('valor').'</th>
 								</tr>
 							</thead>
 										 
@@ -67,6 +68,7 @@ class Grupos extends My_Controller {
 									<th>'.$this->lang->line('regla').'</th>
 									<th>'.$this->lang->line('nombre').'</th>
 									<th>'.$this->lang->line('tipo').'</th>
+									<th>'.$this->lang->line('valor').'</th>
 								</tr>
 							</tfoot>
 										 
@@ -82,6 +84,9 @@ class Grupos extends My_Controller {
 						$table .= "Descuento";
 					else
 						$table .= "Aumento";
+					
+					$table .= "</td><td>";
+					$table .= $key->valor.' %';
 					$table .= "</td></tr>";
 				}
 			}
@@ -133,7 +138,7 @@ class Grupos extends My_Controller {
 					$table .= "</td><td>";
 					$table .= $key->apellido;
 					$table .= "</td><td>";
-					$table .= $key->cuit;
+					$table .= cuit($key->cuit);
 					$table .= "</td></tr>";
 				}
 			}
@@ -287,9 +292,9 @@ class Grupos extends My_Controller {
 						$table .= "</td><td>";
 						$table .= $row->apellido;
 						$table .= "</td><td>";
-						$table .= $row->cuit;
+						$table .= cuit($row->cuit);
 						$table .= '</td><td style="text-align: center">';
-						$table .= '<button type="button" class="btn-sm btn-default btn-plus" onclick="cargarCliente('.$row->id_cliente.')">';
+						$table .= '<button type="button" class="btn-sm btn-success btn-plus" onclick="cargarCliente('.$row->id_cliente.')">';
 						$table .= '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>';
 						$table .= '</button>';
 						$table .= "</td></tr>";
@@ -336,9 +341,9 @@ class Grupos extends My_Controller {
 					$table .= "</td><td>";
 					$table .= $row->apellido;
 					$table .= "</td><td>";
-					$table .= $row->cuit;
+					$table .= cuit($row->cuit);
 					$table .= '</td><td style="text-align: center">';
-					$table .= '<button type="button" class="btn-sm btn-default btn-minus" onclick="sacarCliente('.$row->id_cliente.')">';
+					$table .= '<button type="button" class="btn-sm btn-danger btn-minus" onclick="sacarCliente('.$row->id_cliente.')">';
 					$table .= '<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>';
 					$table .= '</button>';
 					$table .= "</td></tr>";
