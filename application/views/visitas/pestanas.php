@@ -190,14 +190,27 @@ function tablaPresupuesto($id_presupuesto){
 														echo $this->lang->line('valoracion').': '.valoracion($row->valoracion);
 														echo "</div>";
 														echo "<br>";
+														if($row->eliminado !=1){
 														?>
 														<div class="col-md-1 col-md-offset-5">
 															<a role="button" class="btn btn-info" href="<?php echo base_url().'index.php/Visitas/editar/'.$row->id_visita; ?>"><?php echo $this->lang->line('editar'); ?></a>
 														</div>
+														<?php
+														}
+														?>
 													</div>
-													<div class="col-md-4">
-														<?php echo $row->descripcion; ?>
-													</div>
+													<?php
+													if($row->eliminado !=1){
+														echo '<div class="col-md-4">';
+														echo $row->descripcion; 
+														echo '</div>';
+													}
+													else {
+														echo '<div class="col-md-4" style="color: red; text-align: center">';
+														echo $this->lang->line('visita').' '.$this->lang->line('eliminada'); 
+														echo '</div>';
+													}
+													?>
 												</div>
 												<?php
 													

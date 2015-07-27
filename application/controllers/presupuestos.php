@@ -30,17 +30,13 @@ class Presupuestos extends My_Controller {
 		
 		$db['empresas']			= $this->empresas_model->getRegistro(1);
 		$presupuesto			= $this->presupuestos_model->getRegistro($id);
+		$db['clientes']		= $this->clientes_model->getTodo();
+		$db['vendedores']	= $this->vendedores_model->getTodo();
 		
-		foreach($presupuesto as $row){
-			
-			$db['clientes']			= $this->clientes_model->getRegistro($row->id_cliente);
-			$db['vendedores']		= $this->vendedores_model->getRegistro($row->id_vendedor);
-		}
-
 		$db['razon_social']		= $this->clientes_model->getTodo('razon_social');		
 		$db['presupuestos']		= $this->presupuestos_model->getDetallePresupuesto($id);
 		$db['estados']			= $this->presupuestos_model->getTodo('estados_presupuestos');
-		$db['productos']		= $this->productos_model->getTodo();
+		$db['productos']		= $this->presupuestos_model->getProductosTodo();
 		$db['id_presupuesto']	= $id;
 		$db['tipo']				= $tipo;
 		$db['presupuesto']		= $presupuesto;
@@ -61,7 +57,7 @@ class Presupuestos extends My_Controller {
 			
 			$crud->set_language("spanish");
 			
-			//$crud->where('pedidos', 0);
+			$crud->where('presupuestos.eliminado', 0);
 			
 			$crud->set_table('presupuestos');
 			
@@ -75,7 +71,7 @@ class Presupuestos extends My_Controller {
 				 ->display_as('id_cliente','Cliente')
 				 ->display_as('id_vendedor','Vendedor')
 				 ->display_as('id_estado_presupuesto','Estado')
-				 ->display_as('date_add','Fecha Ingreso');
+				 ->display_as('date_add','Fecha');
 			
 			$crud->set_subject('Presupuestos');
 			
@@ -93,16 +89,25 @@ class Presupuestos extends My_Controller {
 			$crud->set_relation('id_estado_presupuesto','estados_presupuestos','estado');
 			
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
-			
+			$crud->callback_delete(array($this,'delete_user'));
 			
 			$crud->unset_export();
 			$crud->unset_print();
 			$crud->unset_read();
-			$crud->unset_operations();
+			$crud->unset_edit();
+			$crud->unset_add();
 			
 			$output = $crud->render();
 			
 			$this->crud_tabla($output);
+	}
+
+	public function delete_user($primary_key)
+	{
+		$arreglo = array(
+			'eliminado'		=> 1
+		);
+		return $this->presupuestos_model->update($arreglo,$primary_key);
 	}
 
 
@@ -116,7 +121,7 @@ class Presupuestos extends My_Controller {
 		$db['empresas']		= $this->empresas_model->getRegistro(1);
 		$db['clientes']		= $this->clientes_model->getTodo();
 		$db['vendedores']	= $this->vendedores_model->getTodo();
-		$db['productos']	= $this->productos_model->getTodo();
+		$db['productos']	= $this->presupuestos_model->getProductosTodo();
 		$db['visitas']		= $this->visitas_model->getTodo();
 		$db['estados']		= $this->presupuestos_model->getTodo('estados_presupuestos');
 		
@@ -191,7 +196,7 @@ class Presupuestos extends My_Controller {
 		if($id_presupuesto){
 			$db['empresas']		= $this->empresas_model->getRegistro(1);
 			$db['presupuesto']	= $id_presupuesto;
-			$db['productos']	= $this->productos_model->getTodo();
+			$db['productos']	= $this->presupuestos_model->getProductosTodo();
 			$db['visita']		= $id_visita;
 			$db['tipo']			= 0;
 			
@@ -214,8 +219,14 @@ class Presupuestos extends My_Controller {
 		
 		
 		foreach ($vendedor as $key) {
-			$mensaje  = '<option value="'.$key->id_vendedor.'" selected>'.$key->nombre.', '.$key->apellido;
-			$mensaje .= '</option>';
+			if($key->eliminado != 1){
+				$mensaje  = '<option value="'.$key->id_vendedor.'" selected>'.$key->nombre.', '.$key->apellido;
+				$mensaje .= '</option>';
+			}
+			else{
+				$mensaje  = '<option value="'.$key->id_cliente.'" disabled>'.$this->lang->line('vendedor').' '.$this->lang->line('eliminado');
+				$mensaje .= '</option>';
+			}
 			
 		}
 		echo $mensaje;
@@ -232,9 +243,14 @@ class Presupuestos extends My_Controller {
 		}
 		
 		foreach ($cliente as $key) {
-			$mensaje  = '<option value="'.$key->id_cliente.'" selected>'.$key->nombre.', '.$key->apellido;
-			$mensaje .= '</option>';
-			
+			if($key->eliminado != 1){
+				$mensaje  = '<option value="'.$key->id_cliente.'" selected>'.$key->nombre.', '.$key->apellido;
+				$mensaje .= '</option>';
+			}
+			else{
+				$mensaje  = '<option value="'.$key->id_cliente.'" disabled>'.$this->lang->line('cliente').' '.$this->lang->line('eliminado');
+				$mensaje .= '</option>';
+			}
 		}
 		echo $mensaje;
 	}
@@ -262,7 +278,7 @@ class Presupuestos extends My_Controller {
 				$producto			= $this->input->post('producto');
 				$cantidad			= $this->input->post('cantidad');
 
-				$productos			= $this->productos_model->getTodo();
+				$productos			= $this->presupuestos_model->getProductosTodo();
 				
 				foreach ($productos as $row) {
 					if($row->id_producto == $producto){
@@ -329,7 +345,7 @@ class Presupuestos extends My_Controller {
 		
 		$grupos				= $this->grupos_model->getTodo();
 		$reglas				= $this->reglas_model->getTodo();
-		$productos			= $this->productos_model->getTodo();
+		$productos			= $this->presupuestos_model->getProductosTodo();
 		$tabla				= $this->presupuestos_model->getLineas($presupuesto);
 		$estado_linea		= $this->presupuestos_model->getTodo('estados_productos_presupuestos');
 		
@@ -609,7 +625,7 @@ class Presupuestos extends My_Controller {
 			$db['empresas']			= $this->empresas_model->getRegistro(1);
 			$db['presupuesto']		= $id;
 			$db['presupuestos']		= $this->presupuestos_model->getRegistro($id);
-			$db['productos']		= $this->productos_model->getTodo();
+			$db['productos']		= $this->presupuestos_model->getProductosTodo();
 			$db['tipo']				= 1;
 			
 			foreach($db['presupuestos'] as $row){
@@ -633,8 +649,10 @@ class Presupuestos extends My_Controller {
 			if($row->eliminado!=1){
 				$cliente 		= $this->clientes_model->getRegistro($row->id_cliente);	
 				foreach ($cliente as $key) {
-					$mensaje  .= '<option value="'.$key->id_cliente.'">'.$key->apellido.', '.$key->nombre;
-					$mensaje  .= '</option>';
+					if($key->eliminado !=1){
+						$mensaje  .= '<option value="'.$key->id_cliente.'">'.$key->apellido.', '.$key->nombre;
+						$mensaje  .= '</option>';
+					}
 				}
 			}
 		}		

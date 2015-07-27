@@ -1,14 +1,40 @@
 <?php 
 	if($aux==1){
-		$array_n = array(
-				'tab1'			=> '',
-				'tab2' 			=> 'active',
-		);
+		if($aux2==1){
+			$array_n = array(
+				'tab1'				=> '',
+				'tab2' 				=> 'active',
+				'cliente1'			=> 'active in',
+				'cliente2' 			=> '',
+				'cliente3' 			=> '',
+			);
+		}
+		else if($aux2==2){
+			$array_n = array(
+				'tab1'				=> '',
+				'tab2' 				=> 'active',
+				'cliente1'			=> '',
+				'cliente2' 			=> 'active in',
+				'cliente3' 			=> '',
+			);
+		}
+		else if($aux2==3){
+			$array_n = array(
+				'tab1'				=> '',
+				'tab2' 				=> 'active',
+				'cliente1'			=> '',
+				'cliente2' 			=> '',
+				'cliente3' 			=> 'active in',
+			);
+		}
 	}
 	else {
 		$array_n = array(
 				'tab1'			=> 'active',
 				'tab2' 			=> '',
+				'cliente1'		=> '',
+				'cliente2' 		=> '',
+				'cliente3' 		=> '',
 		);
 	}
 ?>
@@ -122,16 +148,16 @@ $(document).ready(function(){
 	     						<div class="col-sm-2">
 							        <nav class="nav-tab nav-justified">
 							        	<ul class="nav nav-sidebar">
-							            	<li><a href="#cliente1" data-toggle="tab"><?php echo $this->lang->line('clientes').' '.$this->lang->line('actuales'); ?></a></li>
-							                <li><a href="#cliente2" data-toggle="tab"><?php echo $this->lang->line('clientes').' '.$this->lang->line('no').' '.$this->lang->line('activos'); ?></a></li>
-							            	<li><a href="#cliente3" data-toggle="tab"><?php echo $this->lang->line('agregar').' '.$this->lang->line('clientes'); ?></a></li>
+							            	<li class="<?php echo $array_n['cliente1']; ?>"><a href="#cliente1" data-toggle="tab"><?php echo $this->lang->line('clientes').' '.$this->lang->line('actuales'); ?></a></li>
+							                <li class="<?php echo $array_n['cliente2']; ?>"><a href="#cliente2" data-toggle="tab"><?php echo $this->lang->line('clientes').' '.$this->lang->line('no').' '.$this->lang->line('activos'); ?></a></li>
+							            	<li class="<?php echo $array_n['cliente3']; ?>"><a href="#cliente3" data-toggle="tab"><?php echo $this->lang->line('agregar').' '.$this->lang->line('clientes'); ?></a></li>
 							            </ul>
 							    	</nav>
 							    </div>
 	     						
 	     						<!--CLIENTES ACTUALES--->	
 	     						<div class="tab-content">
-		     						<div class="tab-pane fade" id="cliente1">
+		     						<div class="tab-pane fade <?php echo $array_n['cliente1']; ?>" id="cliente1">
 		     							<div class="col-md-10">
 											<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 										        <thead>
@@ -181,7 +207,7 @@ $(document).ready(function(){
 		     						</div>
 	     							
 	     							<!--CLIENTES NO ACTIVOS--->
-	     							<div class="tab-pane fade" id="cliente2">
+	     							<div class="tab-pane fade <?php echo $array_n['cliente2']; ?>" id="cliente2">
 		     							<div class="col-md-10">
 											<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 										        <thead>
@@ -233,7 +259,7 @@ $(document).ready(function(){
 		     						</div>
 	     						
 	     							<!--AGREGAR CLIENTES--->
-	     							<div class="tab-pane fade" id="cliente3">
+	     							<div class="tab-pane fade <?php echo $array_n['cliente3']; ?>" id="cliente3">
 		     							<div class="col-md-10">
 		     								<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 											        <thead>

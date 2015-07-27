@@ -24,7 +24,7 @@ class Direcciones_model extends My_Model {
 					* 
 				FROM 
 					paises 
-				WHERE 1";
+				WHERE eliminado = 0";
 				
 		$query = $this->db->query($sql);
 						
@@ -47,7 +47,9 @@ class Direcciones_model extends My_Model {
 				INNER JOIN 
 					provincias USING (id_pais)
 				WHERE 
-					id_pais = $id_pais";
+					id_pais = $id_pais
+				AND
+					provincias.eliminado = 0";
 				
 		$query = $this->db->query($sql);
 						
@@ -70,7 +72,9 @@ class Direcciones_model extends My_Model {
 				INNER JOIN 
 					departamentos USING(id_provincia)
 				WHERE 
-					id_provincia = $id_provincia";
+					id_provincia = $id_provincia
+				AND
+					departamentos.eliminado = 0";
 				
 		$query = $this->db->query($sql);
 						

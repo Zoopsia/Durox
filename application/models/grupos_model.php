@@ -53,7 +53,9 @@ class Grupos_model extends My_Model {
 				INNER JOIN
 					grupos_clientes USING(id_grupo_cliente)
 				WHERE 
-					id_grupo_cliente = '$id'";
+					id_grupo_cliente = '$id'
+				AND
+					clientes.eliminado = 0";
 					
 		$query = $this->db->query($sql);
 		

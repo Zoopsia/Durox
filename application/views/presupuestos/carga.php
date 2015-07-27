@@ -52,6 +52,15 @@ function busqueda2(){
 	 	}
 	});
 }
+
+function resetear(){
+	document.location.reload();
+}
+
+$('#formPresupuesto').submit(function( event ) {
+	alert( "Handler for .submit() called." );  
+	event.preventDefault();
+});
 </script>
 
 <!-- Modal -->
@@ -88,6 +97,7 @@ function busqueda2(){
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
 		  				<?php echo $this->lang->line('nuevo').' '.$this->lang->line('presupuesto'); ?>
+		  				<li id="volver" class="pull-right desactive"><a href="#" data-toggle="tab"  onclick="resetear()">Resetear Formulario</a></li>
 		  			</div>
 		  			
 		  			<div class="panel-body">
@@ -117,7 +127,7 @@ function busqueda2(){
 											}
 								?>	
 							</div>	
-	    						<form action="<?php echo base_url().'index.php/Presupuestos/nuevoPresupuesto/'; ?>" class="form-horizontal" method="post">
+	    						<form action="<?php echo base_url().'index.php/Presupuestos/nuevoPresupuesto/'; ?>" id="formPresupuesto" class="form-horizontal" method="post">
 	    							<div style="padding: 0 50px">
 	    								<?php
 	    									if($visita!=''){

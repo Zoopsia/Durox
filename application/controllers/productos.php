@@ -38,7 +38,7 @@ class Productos extends My_Controller {
 			
 			$crud->set_language("spanish");
 			
-			//$crud->where('pedidos', 0);
+			$crud->where('productos.eliminado', 0);
 			
 			$crud->set_table('productos');
 			

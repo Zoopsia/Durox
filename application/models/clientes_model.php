@@ -87,7 +87,9 @@ class Clientes_model extends My_Model {
 				INNER JOIN
 					vendedores USING (id_vendedor)
 				WHERE 
-					$this->_id_table = '$id'";
+					$this->_id_table = '$id'
+				AND
+					pedidos.eliminado = 0";
 					
 		$query = $this->db->query($sql);
 		
@@ -116,7 +118,9 @@ class Clientes_model extends My_Model {
 				INNER JOIN 
 					estados_presupuestos USING (id_estado_presupuesto)
 				WHERE 
-					$this->_id_table = '$id'";
+					$this->_id_table = '$id'
+				AND
+					presupuestos.eliminado = 0";
 					
 		$query = $this->db->query($sql);
 		

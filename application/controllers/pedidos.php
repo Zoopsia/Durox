@@ -41,7 +41,7 @@ class Pedidos extends My_Controller {
 			
 			$crud->set_language("spanish");
 			
-			//$crud->where('pedidos', 0);
+			$crud->where('pedidos.eliminado', 0);
 			
 			$crud->set_table('pedidos');
 			
@@ -73,16 +73,26 @@ class Pedidos extends My_Controller {
 			$crud->set_relation('id_estado_pedido','estados_pedidos','estado');
 			
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
+			$crud->callback_delete(array($this,'delete_user'));
+			
 			
 			$crud->unset_export();
 			$crud->unset_print();
 			$crud->unset_read();
+			$crud->unset_edit();
 			
 			$output = $crud->render();
 			
 			$this->crud_tabla($output);
 	}
 
+	public function delete_user($primary_key)
+	{
+		$arreglo = array(
+			'eliminado'		=> 1
+		);
+		return $this->pedidos_model->update($arreglo,$primary_key);
+	}
 
 	function just_a_test($primary_key , $row)
 	{

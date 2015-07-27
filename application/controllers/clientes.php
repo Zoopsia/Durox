@@ -49,7 +49,7 @@ class Clientes extends My_Controller {
 			
 			$crud->set_language("spanish");
 			
-			//$crud->where('clientes', 0);
+			$crud->where('clientes.eliminado', 0);
 			
 			$crud->set_table('clientes');
 			
@@ -70,7 +70,8 @@ class Clientes extends My_Controller {
 							'id_razon_social');
 							
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
-
+			$crud->callback_delete(array($this,'delete_user'));
+			
 			$crud->set_relation('id_razon_social','razon_social','razon_social');
 			
 			$crud->set_relation('id_grupo_cliente','grupos_clientes','grupo_nombre');
@@ -78,7 +79,7 @@ class Clientes extends My_Controller {
 			$crud->unset_export();
 			$crud->unset_print();
 			$crud->unset_read();
-			
+			$crud->unset_edit();
 			
 			
 			$output = $crud->render();
@@ -86,7 +87,14 @@ class Clientes extends My_Controller {
 			$this->crud_tabla($output);
 	}
 
-
+	public function delete_user($primary_key)
+	{
+		$arreglo = array(
+			'eliminado'		=> 1
+		);
+		return $this->clientes_model->update($arreglo,$primary_key);
+	}
+	
 	function just_a_test($primary_key , $row)
 	{
 	    return site_url($this->_subject.'/pestanas').'/'.$row->id_cliente;

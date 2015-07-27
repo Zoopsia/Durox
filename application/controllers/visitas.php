@@ -82,7 +82,7 @@ class Visitas extends My_Controller {
 			
 			$crud->set_language("spanish");
 			
-			//$crud->where('pedidos', 0);
+			$crud->where('visitas.eliminado', 0);
 			
 			$crud->set_table('visitas');
 			
@@ -110,15 +110,25 @@ class Visitas extends My_Controller {
 			$crud->set_relation('id_vendedor','vendedores','{apellido} {nombre}');
 			
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
+			$crud->callback_delete(array($this,'delete_user'));
 			
 			$crud->unset_export();
 			$crud->unset_print();
 			$crud->unset_read();
-			$crud->unset_operations();
+			$crud->unset_edit();
+			$crud->unset_add();
 			
 			$output = $crud->render();
 			
 			$this->crud_tabla($output);
+	}
+
+	public function delete_user($primary_key)
+	{
+		$arreglo = array(
+			'eliminado'		=> 1
+		);
+		return $this->visitas_model->update($arreglo,$primary_key);
 	}
 
 
@@ -287,7 +297,7 @@ class Visitas extends My_Controller {
 		
 		$presupuesto	= $this->presupuestos_model->getRegistro($id_presupuesto);
 		$detalle		= $this->presupuestos_model->getDetallePresupuesto($id_presupuesto);
-		$productos		= $this->productos_model->getTodo();
+		$productos		= $this->presupuestos_model->getProductosTodo();
 		
 		foreach($presupuesto as $row){
 			$total = $row->total;

@@ -27,13 +27,15 @@ class Visitas_model extends My_Model {
 							visitas.date_upd AS fecha_visita,
 							clientes.nombre AS Cnombre,
 							clientes.apellido AS Capellido,
+							clientes.eliminado AS  Celiminado,
 							vendedores.nombre AS Vnombre,
-							vendedores.apellido AS Vapellido
+							vendedores.apellido AS Vapellido,
+							vendedores.eliminado AS Veliminado
 		');
 		$this->db->from('visitas');
 		$this->db->join('clientes', 'visitas.id_cliente = clientes.id_cliente', 'inner');
 		$this->db->join('vendedores', 'visitas.id_vendedor = vendedores.id_vendedor', 'inner');
-		
+
 		
 		if($array['id_visita']!='')
 			$this->db->or_like('visitas.id_visita', $array['id_visita']);
@@ -88,7 +90,8 @@ class Visitas_model extends My_Model {
 					* 
 				FROM 
 					epocas_visitas 
-				WHERE 1";
+				WHERE 
+					eliminado = 0";
 				
 		$query = $this->db->query($sql);
 						

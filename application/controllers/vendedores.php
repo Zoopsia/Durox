@@ -21,7 +21,7 @@ class Vendedores extends My_Controller {
 	}
 
 		
-	public function pestanas($id, $aux=0){
+	public function pestanas($id, $aux=0, $aux2=null){
 		
 		$db['empresas']		= $this->empresas_model->getRegistro(1);
 		$db['vendedores']	= $this->vendedores_model->getRegistro($id);
@@ -33,7 +33,10 @@ class Vendedores extends My_Controller {
 		
 		$db['cruce']		= $this->vendedores_model->sinCruce($id);
 		$db['clientes_todo']= $this->clientes_model->getTodo();
-		$db['aux']		= $aux;
+		$db['aux']			= $aux;
+		if($aux2){
+			$db['aux2']		= $aux2;
+		}
 		
 		$this->load->view("head.php", $db);
 		$this->load->view("nav_top.php");
@@ -50,7 +53,7 @@ class Vendedores extends My_Controller {
 			
 			$crud->set_language("spanish");
 			
-			//$crud->where('vendedores', 0);
+			$crud->where('vendedores.eliminado', 0);
 			
 			$crud->set_table('vendedores');
 			
@@ -67,15 +70,25 @@ class Vendedores extends My_Controller {
 							'contraseña');
 					
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
+			$crud->callback_delete(array($this,'delete_user'));
 			
 			$crud->unset_export();
 			$crud->unset_print();
 			$crud->unset_read();
 			$crud->unset_edit();
 			
+			
 			$output = $crud->render();
 			
 			$this->crud_tabla($output);
+	}
+	
+	public function delete_user($primary_key)
+	{
+		$arreglo = array(
+			'eliminado'		=> 1
+		);
+		return $this->vendedores_model->update($arreglo,$primary_key);
 	}
 
 	function just_a_test($primary_key , $row)
@@ -128,8 +141,9 @@ class Vendedores extends My_Controller {
 		//----- 2 PORQUE ES TIPO VENDEDOR -----//
 		$this->clientes_model->insertCruce(2,$id_cliente,$id_vendedor);
 		$aux = 1;
+		$aux2 = 3;
 		
-		redirect('/vendedores/pestanas/'.$id_vendedor.'/'.$aux,'location');
+		redirect('/vendedores/pestanas/'.$id_vendedor.'/'.$aux.'/'.$aux2,'location');
 
 	}
 
@@ -144,7 +158,8 @@ class Vendedores extends My_Controller {
 		//----- 2 PORQUE ES TIPO VENDEDOR -----//
 		
 		$cruce		= $this->vendedores_model->sinCruce($id_vendedor);
-		$aux = 1;
+		$aux  = 1;
+		$aux2 = 2;
 		
 		foreach($cruce as $row){
 			if($id_cliente == $row->id_cliente)
@@ -156,7 +171,7 @@ class Vendedores extends My_Controller {
 		);
 		
 		$id_cliente	= $this->vendedores_model->updateSin($sin,$id_sin);
-		redirect('/vendedores/pestanas/'.$id_vendedor.'/'.$aux,'location');
+		redirect('/vendedores/pestanas/'.$id_vendedor.'/'.$aux.'/'.$aux2,'location');
 	}	
 /*--------------------------------------------------------------------------------	
  --------------------------------------------------------------------------------
@@ -169,7 +184,8 @@ class Vendedores extends My_Controller {
 		//----- 2 PORQUE ES TIPO VENDEDOR -----//
 		
 		$cruce		= $this->vendedores_model->sinCruce($id_vendedor);
-		$aux = 1;
+		$aux  = 1;
+		$aux2 = 1;
 		
 		foreach($cruce as $row){
 			if($id_cliente == $row->id_cliente)
@@ -181,7 +197,7 @@ class Vendedores extends My_Controller {
 		);
 		
 		$id_cliente	= $this->vendedores_model->updateSin($sin,$id_sin);
-		redirect('/vendedores/pestanas/'.$id_vendedor.'/'.$aux,'location');
+		redirect('/vendedores/pestanas/'.$id_vendedor.'/'.$aux.'/'.$aux2,'location');
 	}
 	
 }
