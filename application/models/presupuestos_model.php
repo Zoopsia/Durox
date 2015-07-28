@@ -26,8 +26,10 @@ class Presupuestos_model extends My_Model {
 		$sql = "SELECT 
 					productos.nombre AS nombre,
 					productos.id_producto AS producto, 
+					productos.precio AS preciobase,
 					linea_productos_$this->_tablename.cantidad AS cantidad, 
 					linea_productos_$this->_tablename.precio AS precio,
+					linea_productos_$this->_tablename.subtotal AS subtotal,
 					linea_productos_$this->_tablename.id_linea_producto_presupuesto AS id_linea_producto_presupuesto,
 					linea_productos_$this->_tablename.id_estado_producto_presupuesto AS estado_linea,
 					estados_productos_$this->_tablename.estado AS estado
@@ -123,14 +125,6 @@ class Presupuestos_model extends My_Model {
 		$this->db->where($this->_id_table, $presupuesto);
 		$this->db->delete('linea_productos_presupuestos');
     }  
-	
-	public function getLineas($presupuesto){
-		$this->db->select('*');
-		$this->db->from('linea_productos_presupuestos');
-		$this->db->where('id_presupuesto', $presupuesto);
-		
-		return $this->db->get();
-	}
 	
 	public function updateLinea($arreglo_campos, $id){
 		$this->db->where('id_linea_producto_presupuesto', $id);

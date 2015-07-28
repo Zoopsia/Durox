@@ -50,13 +50,17 @@ class Clientes_model extends My_Model {
 		$sql = "SELECT 
 					clientes.*,
 					razon_social.razon_social,
-					grupos_clientes.grupo_nombre 
+					grupos_clientes.grupo_nombre,
+					reglas.valor,
+					reglas.aumento_descuento
 				FROM 
 					$this->_tablename 
 				INNER JOIN
 					razon_social USING (id_razon_social)
 				INNER JOIN
 					grupos_clientes USING (id_grupo_cliente)
+				INNER JOIN
+					reglas USING (id_grupo_cliente)
 				WHERE 
 					$this->_id_table = '$id'";
 

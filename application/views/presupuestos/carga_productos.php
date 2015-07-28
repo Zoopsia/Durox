@@ -137,6 +137,7 @@ function funcion1($id_producto){
 	$('#suggestions').hide();
 	document.getElementById("cantidad").focus();
 }
+
 </script>
 
 <nav class="navbar" role="navigation">
@@ -174,10 +175,11 @@ function funcion1($id_producto){
 													<tr>
 														<th class="th1"><?php echo $this->lang->line("producto"); ?></th>
 														<th class="th1"><?php echo $this->lang->line("cantidad"); ?></th>
+														<th class="th1"><?php echo $this->lang->line("precio").' '.$this->lang->line("base"); ?></th>
 														<th class="th1"><?php echo $this->lang->line("precio"); ?></th>
 														<th class="th1"><?php echo $this->lang->line("subtotal"); ?></th>
 														<th></th>
-														<th style="width: 118px"></th>
+														<th style="width: 107px"></th>
 													</tr>
 												</thead>
 											 	<tbody>
@@ -193,6 +195,7 @@ function funcion1($id_producto){
 														<th><input type="text" id="cantidad" name="cantidad1" class="numeric form-control" onkeypress="if (event.keyCode==13){nuevaLinea(); return false;}" autocomplete="off" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('cantidad'); ?>" required></th>
 														<th></th>
 														<th></th>
+														<th></th>
 														<th>
 															<a role="button" id="nuevalinea" class="btn btn-success btn-sm" onclick="cargaProducto(<?php echo $presupuesto ?>)" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('agregar').' '.$this->lang->line('producto');?>">
 													 			<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -203,58 +206,26 @@ function funcion1($id_producto){
 													
 													<?php
 													if($tipo==1){
-														$subtotal = 0;
+														$total = 0;
 														foreach ($detalle as $row) {
 															if($row->estado_linea != 3){
-																foreach ($productos as $key) {
-																	if($row->producto == $key->id_producto){
-																		echo '<tr>				
-																				<th>'.$row->nombre.'</th>
-																				<th>'.$row->cantidad.'</th>
-																				<th>'.'$'.$key->precio.'</th>
-																				<th>'.'$'.$row->precio.'</th>
-																				<th><a href="#" class="btn btn-danger btn-xs glyphicon glyphicon-minus" onclick="sacarProducto('.$row->id_linea_producto_presupuesto.','.$presupuesto.')" role="button" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('anular').' '.$this->lang->line('producto').'"></th>
-																				<th></th>
-																			</tr>';
-																	}
-																}
-																$subtotal = $subtotal + $row->precio;
+																echo '<tr>				
+																		<th>'.$row->nombre.'</th>
+																		<th>'.$row->cantidad.'</th>
+																		<th>'.'$'.$row->preciobase.'</th>
+																		<th>'.'$'.$row->precio.'</th>
+																		<th>'.'$'.$row->subtotal.'</th>
+																		<th><a href="#" class="btn btn-danger btn-xs glyphicon glyphicon-minus" onclick="sacarProducto('.$row->id_linea_producto_presupuesto.','.$presupuesto.')" role="button" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('anular').' '.$this->lang->line('producto').'"></th>
+																		<th></th>
+																	 </tr>';
+																$total = $total + $row->subtotal;
 															}
 														}
 														
-												echo '</tbody>';
-														
-														foreach ($presupuestos as $row) {
-															if($subtotal>=$row->total){
-																$descuento			= $subtotal-$row->total;
-																$tipo_descuento		= 'Descuento';
-																$total				= $row->total;
-															}
-															else{
-																$descuento			= $row->total-$subtotal;
-																$tipo_descuento		= 'Aumento';
-																$total				= $row->total;
-															}
-														}
-
+														echo '</tbody>';
 														echo '<tfoot>
 																<tr>
 																	<th></th>
-																	<th></th>
-																	<th class="th1">'.$this->lang->line("subtotal").'</th>
-																	<th>'.'$'.$subtotal.'</th>
-																	<th></th>
-																	<th></th>
-																</tr>
-																<tr>
-																	<th></th>
-																	<th></th>
-																	<th class="th1">'.$tipo_descuento.'</th>
-																	<th>'.'$'.$descuento.'</th>
-																	<th></th>
-																	<th></th>
-																</tr>
-																<tr>
 																	<th></th>
 																	<th></th>
 																	<th class="th1">'.$this->lang->line("total").'</th>
@@ -268,6 +239,7 @@ function funcion1($id_producto){
 														echo 	'</tbody>';
 														echo 	'<tfoot>
 																	<tr>
+																		<th></th>
 																		<th></th>
 																		<th></th>
 																		<th class="th1">'.$this->lang->line("total").'</th>

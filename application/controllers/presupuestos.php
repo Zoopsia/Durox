@@ -270,7 +270,11 @@ class Presupuestos extends My_Controller {
 	public function cargaProducto(){
 		
 		$presupuesto		= $this->input->post('presupuesto');
+		$pres				= $this->presupuestos_model->getRegistro($presupuesto);
 		
+		foreach($pres as $row){
+			$cliente			= $this->clientes_model->getCliente($row->id_cliente);
+		}
 		
 		if($this->input->post('producto')){
 			if($this->input->post('cantidad')){
@@ -286,17 +290,26 @@ class Presupuestos extends My_Controller {
 					}
 				}
 				
-				$cantidad = $this->input->post('cantidad');
+				foreach($cliente as $row){
+					
+					$descuento = ($precio * $row->valor)/100;
+					if($row->aumento_descuento == 1){
+						$preciofinal = $precio - $descuento;
+					}
+					else {
+						$preciofinal = $precio + $descuento;
+					}
+				}
 				
 				$arreglo	= array(
 					'id_presupuesto'				=> $this->input->post('presupuesto'),
 					'id_producto' 					=> $this->input->post('producto'), 
 					'cantidad' 						=> $cantidad,
 					'id_estado_producto_presupuesto'=> 1,
-					'precio'						=> $precio*$cantidad,	
+					'precio'						=> round($preciofinal, 2),
+					'subtotal'						=> round($preciofinal, 2)*$cantidad,	
 				);
-				
-				
+
 				$linea				= $this->presupuestos_model->insertLinea($arreglo);
 			}
 		}
@@ -340,49 +353,18 @@ class Presupuestos extends My_Controller {
 		$pres			= $this->presupuestos_model->getRegistro($presupuesto);
 		
 		foreach($pres as $row){
-			$cliente			= $this->clientes_model->getRegistro($row->id_cliente);
+			$cliente			= $this->clientes_model->getCliente($row->id_cliente);
 		}
-		
-		$grupos				= $this->grupos_model->getTodo();
-		$reglas				= $this->reglas_model->getTodo();
-		$productos			= $this->presupuestos_model->getProductosTodo();
-		$tabla				= $this->presupuestos_model->getLineas($presupuesto);
-		$estado_linea		= $this->presupuestos_model->getTodo('estados_productos_presupuestos');
-		
-		
-		
-		foreach($cliente as $cliente){
-			foreach($grupos as $grupos){
-				if($cliente->id_grupo_cliente == $grupos->id_grupo_cliente){
-					foreach($reglas as $reglas){
-						if($reglas->id_grupo_cliente == $grupos->id_grupo_cliente){
-							
-							if($reglas->aumento_descuento==0){
-								$arreglo_reglas = array(
-									'valor'		=> $reglas->valor,
-									'tipo'		=> $reglas->aumento_descuento,
-									'nombre'	=> 'Aumento',
-								);
-							}
-							else {
-								$arreglo_reglas = array(
-									'valor'		=> $reglas->valor,
-									'tipo'		=> $reglas->aumento_descuento,
-									'nombre'	=> 'Descuento',
-								);
-							}
-						}
-					}
-				}
-			}
-		}
-		
+
+		$detalle			= $this->presupuestos_model->getDetallePresupuesto($presupuesto);
+			
 		$mensaje = '<table class="table table-hover" cellspacing="0" width="100%">
 					<thead>
 						<tr>
 							
 							<th class="th1">'.$this->lang->line("producto").'</th>
 							<th class="th1">'.$this->lang->line("cantidad").'</th>
+							<th class="th1">'.$this->lang->line("precio").' '.$this->lang->line("base").'</th>
 							<th class="th1">'.$this->lang->line("precio").'</th>
 							<th class="th1">'.$this->lang->line("subtotal").'</th>
 							<th></th>
@@ -404,6 +386,7 @@ class Presupuestos extends My_Controller {
 							<th><input type="text" id="cantidad" name="cantidad1" class="numeric form-control" onkeypress="if (event.keyCode==13){nuevaLinea(); return false;}" autocomplete="off" pattern="[0-9]*" placeholder="'.$this->lang->line('cantidad').'" required></th>
 							<th></th>
 							<th></th>
+							<th></th>
 							<th>
 								<a role="button" id="nuevalinea" class="btn btn-success btn-sm" onclick="cargaProducto('.$presupuesto.')" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('agregar').' '.$this->lang->line('producto').'">
 									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
@@ -412,84 +395,43 @@ class Presupuestos extends My_Controller {
 							<th></th>
 					</tr>';
 		
-		
-		
-		
-		
-		foreach ($tabla->result() as $row) {
-			if($row->id_presupuesto == $presupuesto){
-				
-				foreach ($productos as $key) {
-					
-					if($row->id_producto == $key->id_producto){
-						
-						if($row->id_estado_producto_presupuesto == 1){
-							$mensaje	.= '<tr>';					
-							$mensaje	.= '<th>'.$key->nombre.'</th>';
-							$mensaje	.= '<th>'.$row->cantidad.'</th>';
-							$mensaje	.= '<th>'.'$'.$key->precio.'</th>';
-							$mensaje	.= '<th>'.'$'.$row->precio.'</th>';
-							$mensaje	.= '<th><a href="#" class="btn btn-danger btn-xs glyphicon glyphicon-minus" onclick="sacarProducto('.$row->id_linea_producto_presupuesto.','.$presupuesto.')" role="button" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('anular').' '.$this->lang->line('producto').'"></th>';
-							$mensaje	.= '<th style="width: 118px"></th>';
-							$mensaje	.= '</tr>';
-						}
-						else{
-							$mensaje	.= '<tr class="rechazado">';					
-							$mensaje	.= '<th>'.$key->nombre.'</th>';
-							$mensaje	.= '<th>'.$row->cantidad.'</th>';
-							$mensaje	.= '<th>'.'$'.$key->precio.'</th>';
-							$mensaje	.= '<th>'.'$'.$row->precio.'</th>';
-							$mensaje	.= '<th><a href="#" class="btn btn-success btn-xs glyphicon glyphicon-plus" onclick="ingresarProducto('.$row->id_linea_producto_presupuesto.','.$presupuesto.')" role="button" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('insertar').' '.$this->lang->line('producto').'"></th>';
-							foreach ($estado_linea as $fila) {
-								if($row->id_estado_producto_presupuesto == $fila->id_estado_producto_presupuesto)
-									$mensaje	.= '<th>'.$fila->estado.'</th>';
-							}
-							$mensaje	.= '</tr>';
-						}
-					}
-				}
+		foreach ($detalle as $row) {
+			if($row->estado_linea == 1){
+				$mensaje	.= '<tr>';					
+				$mensaje	.= '<th>'.$row->nombre.'</th>';
+				$mensaje	.= '<th>'.$row->cantidad.'</th>';
+				$mensaje	.= '<th>'.'$'.$row->preciobase.'</th>';
+				$mensaje	.= '<th>'.'$'.$row->precio.'</th>';
+				$mensaje	.= '<th>'.'$'.$row->subtotal.'</th>';
+				$mensaje	.= '<th><a href="#" class="btn btn-danger btn-xs glyphicon glyphicon-minus" onclick="sacarProducto('.$row->id_linea_producto_presupuesto.','.$presupuesto.')" role="button" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('anular').' '.$this->lang->line('producto').'"></th>';
+				$mensaje	.= '<th style="width: 107px"></th>';
+				$mensaje	.= '</tr>';
+			}
+			else{
+				$mensaje	.= '<tr class="rechazado">';					
+				$mensaje	.= '<th>'.$row->nombre.'</th>';
+				$mensaje	.= '<th>'.$row->cantidad.'</th>';
+				$mensaje	.= '<th>'.'$'.$row->preciobase.'</th>';
+				$mensaje	.= '<th>'.'$'.$row->precio.'</th>';
+				$mensaje	.= '<th>'.'$'.$row->subtotal.'</th>';
+				$mensaje	.= '<th><a href="#" class="btn btn-success btn-xs glyphicon glyphicon-plus" onclick="ingresarProducto('.$row->id_linea_producto_presupuesto.','.$presupuesto.')" role="button" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('insertar').' '.$this->lang->line('producto').'"></th>';
+				$mensaje	.= '<th>'.$row->estado.'</th>';
+				$mensaje	.= '</tr>';
 			}
 		}
-		
 		
 		$mensaje .= '</tbody>';
 		
-		$subtotal = 0;
-		foreach ($tabla->result() as $row) {
-			if($row->id_estado_producto_presupuesto!=3){
-				if($row->id_presupuesto == $presupuesto){
-					$subtotal = $row->precio + $subtotal;
-				}
+		$total = 0;
+		foreach ($detalle as $row) {
+			if($row->estado_linea!=3){
+				$total = $row->subtotal + $total;
 			}
-		}
-		
-		$descuento = ($subtotal * $arreglo_reglas['valor'])/100;
-		
-		if($arreglo_reglas['tipo']==1){
-			$total = $subtotal - $descuento;
-		}
-		else {
-			$total = $subtotal + $descuento;
 		}
 		
 		$mensaje .= '<tfoot>
 						<tr>
 							<th></th>
-							<th></th>
-							<th class="th1">'.$this->lang->line("subtotal").'</th>
-							<th>'.'$'.$subtotal.'</th>
-							<th></th>
-							<th></th>
-						</tr>
-						<tr>
-							<th></th>
-							<th></th>
-							<th class="th1">'.$arreglo_reglas['nombre'].'</th>
-							<th>'.'$'.$descuento.'</th>
-							<th></th>
-							<th></th>
-						</tr>
-						<tr>
 							<th></th>
 							<th></th>
 							<th class="th1">'.$this->lang->line("total").'</th>
@@ -510,8 +452,8 @@ class Presupuestos extends My_Controller {
 
 	function totalPresupuesto($presupuesto){
 		
-		$tabla				= $this->presupuestos_model->getLineas($presupuesto);
-		
+		$tabla				= $this->presupuestos_model->getDetallePresupuesto($presupuesto);
+
 		$cambioEstado		= $this->presupuestos_model->getTodo();
 		
 		if($cambioEstado){
@@ -536,8 +478,8 @@ class Presupuestos extends My_Controller {
 		if($this->input->post('total')){
 			$total		= $this->input->post('total');
 			$bandera = 0;
-			foreach ($tabla->result() as $row) {
-				if($row->id_estado_producto_presupuesto==3){
+			foreach ($tabla as $row) {
+				if($row->estado_linea==3){
 					$bandera = 1;
 				}
 			}
@@ -586,6 +528,7 @@ class Presupuestos extends My_Controller {
 		
 		$presupuesto	= $this->presupuestos_model->getRegistro($id_presupuesto);
 		$detalle		= $this->presupuestos_model->getDetallePresupuesto($id_presupuesto);
+		
 		foreach($presupuesto as $row){
 			$arreglo	= array(
 				'id_visita'				=>	$row->id_visita,
@@ -613,6 +556,7 @@ class Presupuestos extends My_Controller {
 					'id_presupuesto'					=> $id,
 					'id_producto'						=> $row->producto,
 					'precio'							=> $row->precio,
+					'subtotal'							=> $row->subtotal,
 					'cantidad'							=> $row->cantidad,
 					'id_estado_producto_presupuesto'	=> $row->estado_linea,
 				);
