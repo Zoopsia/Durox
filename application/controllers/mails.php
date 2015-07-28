@@ -151,5 +151,84 @@ class Mails extends My_Controller {
 			redirect($url,'refresh');	
 		}
 	}
+	
+	public function eliminarCorreo(){
+
+		$mail	= array(	
+			'eliminado' 			=> 1,	
+		);
+			
+		$id_mail    	= $this->mails_model->update($mail, $this->input->post('correo'));	
+		
+		$tipo			= $this->input->post('tipo');
+		
+		if($tipo == 1){
+			$mails 			= $this->clientes_model->getCruce($this->input->post('usuario'),'mails');
+			$usuario	 	= $this->clientes_model->getRegistro($this->input->post('usuario'));
+		}
+		else if($tipo == 2){
+			$mails 			= $this->vendedores_model->getCruce($this->input->post('usuario'),'mails');
+			$usuario	 	= $this->vendedores_model->getRegistro($this->input->post('usuario'));
+		}
+		$mensaje = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th>'.$this->lang->line('correo').'</th>
+				<th>'.$this->lang->line('tipo').'</th>
+				<th>'.$this->lang->line('acciones').'</th>
+			</tr>
+		</thead>
+												 
+		<tfoot>
+			<tr>
+				<th>'.$this->lang->line('correo').'</th>
+				<th>'.$this->lang->line('tipo').'</th>
+				<th>'.$this->lang->line('acciones').'</th>
+			</tr>
+		</tfoot>
+												 
+		<tbody>';
+												        	
+		if ($mails) {
+			foreach ($mails as $row) {
+				foreach ($usuario as $key) {
+					$mensaje .= '<tr>';
+					$mensaje .= '<td>' . $row -> mail . '</td>';
+					$mensaje .= '<td>' . $row -> tipo . '</td>';
+					if($tipo == 1){
+						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+						$mensaje .= '<td style="text-align: center;">';
+						$mensaje .= '<a href="'.base_url().'index.php/mails/cargaEditar/'.$row->id_mail.'/'.$key->id_cliente.'/1"';
+						$mensaje .= 'class="btn btn-primary btn-xs glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('editar').'" style="margin : 0 5px">';
+						$mensaje .= '</a>';
+						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+						$mensaje .= '<a href="#" onclick="eliminarCorreo('.$row->id_mail.','.$key->id_cliente.',1)"';
+						$mensaje .= 'class="btn btn-danger btn-xs glyphicon glyphicon-minus" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('eliminar').'">';
+						$mensaje .= '</a>';
+						$mensaje .= '</td>';
+						$mensaje .= "</tr>";
+					}
+					else if($tipo == 2){
+						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+						$mensaje .= '<td style="text-align: center;">';
+						$mensaje .= '<a href="'.base_url().'index.php/mails/cargaEditar/'.$row->id_mail.'/'.$key->id_vendedor.'/2"';
+						$mensaje .= 'class="btn btn-primary btn-xs glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('editar').'" style="margin : 0 5px">';
+						$mensaje .= '</a>';
+						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+						$mensaje .= '<a href="#" onclick="eliminarCorreo('.$row->id_mail.','.$key->id_vendedor.',2)"';
+						$mensaje .= 'class="btn btn-danger btn-xs glyphicon glyphicon-minus" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('eliminar').'">';
+						$mensaje .= '</a>';
+						$mensaje .= '</td>';
+						$mensaje .= "</tr>";	
+					}
+				}
+			}
+		}
+		
+		$mensaje .=	'</tbody>
+		</table>';
+		
+		echo $mensaje;
+	}
 		
 }

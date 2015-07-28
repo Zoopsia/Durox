@@ -40,8 +40,6 @@ function busqueda(){
 	 		$('#date_add').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
 	 	}
 	});
-	
-	
 }
 
 function busqueda2(){

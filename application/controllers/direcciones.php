@@ -171,4 +171,92 @@ class Direcciones extends My_Controller {
 		}
 					
 	}
+
+	public function eliminarDireccion(){
+
+		$direccion	= array(	
+			'eliminado' 			=> 1,	
+		);
+			
+		$id_direccion   = $this->direcciones_model->update($direccion, $this->input->post('direccion'));	
+		
+		$tipo			= $this->input->post('tipo');
+		
+		if($tipo == 1){
+			$direcciones 	= $this->clientes_model->getCruce($this->input->post('usuario'),'direcciones');
+			$usuario	 	= $this->clientes_model->getRegistro($this->input->post('usuario'));
+		}
+		else if($tipo == 2){
+			$direcciones 	= $this->vendedores_model->getCruce($this->input->post('usuario'),'direcciones');
+			$usuario	 	= $this->vendedores_model->getRegistro($this->input->post('usuario'));
+		}
+		$mensaje = '<table class="table table-striped table-bordered" cellspacing="0" width="100%">
+		<thead>
+			<tr>
+				<th>'.$this -> lang -> line('direccion').'</th>
+				<th>'.$this -> lang -> line('tipo').'</th>
+				<th>'.$this -> lang -> line('departamento').'</th>
+				<th>'.$this -> lang -> line('provincia').'</th>
+				<th>'.$this -> lang -> line('pais').'</th>
+				<th>'.$this -> lang -> line('acciones').'</th>
+			</tr>
+		</thead>
+												 
+		<tfoot>
+			<tr>
+				<th>'.$this -> lang -> line('direccion').'</th>
+				<th>'.$this -> lang -> line('tipo').'</th>
+				<th>'.$this -> lang -> line('departamento').'</th>
+				<th>'.$this -> lang -> line('provincia').'</th>
+				<th>'.$this -> lang -> line('pais').'</th>
+				<th>'.$this -> lang -> line('acciones').'</th>
+			</tr>
+		</tfoot>
+												 
+		<tbody>';
+												        	
+		if ($direcciones) {
+			foreach ($direcciones as $row) {
+				foreach ($usuario as $key) {
+					$mensaje .= '<tr>';
+					$mensaje .= '<td>' . $row -> direccion . '</td>';
+					$mensaje .= '<td>' . $row -> tipo . '</td>';
+					$mensaje .= '<td>' . $row -> nombre_departamento . '</td>';
+					$mensaje .= '<td>' . $row -> nombre_provincia . '</td>';
+					$mensaje .= '<td>' . $row -> nombre_pais . '</td>';
+					if($tipo == 1){
+						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+						$mensaje .= '<td style="text-align: center;">';
+						$mensaje .= '<a href="' . base_url() . 'index.php/direcciones/cargaEditar/' . $row -> id_direccion . '/' . $key -> id_cliente . '/1"';
+						$mensaje .= 'class="btn btn-primary btn-xs glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="' . $this -> lang -> line('editar') . '" style="margin : 0 5px">';
+						$mensaje .= '</a>';
+						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+						$mensaje .= '<a href="#" onclick="eliminarDireccion('.$row->id_direccion.','.$key->id_cliente.',1)"';
+						$mensaje .= 'class="btn btn-danger btn-xs glyphicon glyphicon-minus" data-toggle="tooltip" data-placement="bottom" title="' . $this -> lang -> line('eliminar') . '">';
+						$mensaje .= '</a>';
+						$mensaje .= '</td>';
+						$mensaje .= "</tr>";
+					}
+					else if($tipo == 2){
+						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+						$mensaje .= '<td style="text-align: center;">';
+						$mensaje .= '<a href="' . base_url() . 'index.php/direcciones/cargaEditar/' . $row -> id_direccion . '/' . $key -> id_vendedor . '/2"';
+						$mensaje .= 'class="btn btn-primary btn-xs glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="' . $this -> lang -> line('editar') . '" style="margin : 0 5px">';
+						$mensaje .= '</a>';
+						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+						$mensaje .= '<a href="#" onclick="eliminarDireccion('.$row->id_direccion.','.$key->id_vendedor.',2)"';
+						$mensaje .= 'class="btn btn-danger btn-xs glyphicon glyphicon-minus" data-toggle="tooltip" data-placement="bottom" title="' . $this -> lang -> line('eliminar') . '">';
+						$mensaje .= '</a>';
+						$mensaje .= '</td>';
+						$mensaje .= "</tr>";	
+					}
+				}
+			}
+		}
+		
+		$mensaje .=	'</tbody>
+		</table>';
+		
+		echo $mensaje;
+	}
 }

@@ -375,6 +375,7 @@ class Visitas extends My_Controller {
 	}
 
 	public function getClientes(){
+		
 		$id_vendedor	= $this->input->post('id_vendedor');
 		
 		$cruce			= $this->vendedores_model->sinCruce($id_vendedor);
@@ -384,8 +385,10 @@ class Visitas extends My_Controller {
 			if($row->eliminado!=1){
 				$cliente 		= $this->clientes_model->getRegistro($row->id_cliente);	
 				foreach ($cliente as $key) {
-					$mensaje  .= '<option value="'.$key->id_cliente.'">'.$key->apellido.', '.$key->nombre;
-					$mensaje  .= '</option>';
+					if($key->eliminado != 1){
+						$mensaje  .= '<option value="'.$key->id_cliente.'">'.$key->apellido.', '.$key->nombre;
+						$mensaje  .= '</option>';
+					}
 				}
 			}
 		}		

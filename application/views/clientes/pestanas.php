@@ -1,7 +1,70 @@
 <script>
 $(document).ready(function(){	
 	document.body.style.background = "url(<?php echo base_url().'/img/otro_fondo.jpg' ?>) no-repeat";
-});		
+});
+
+function eliminarDireccion($id_direccion, $id_cliente, $tipo){
+	var direccion	= $id_direccion;
+	var usuario 	= $id_cliente;
+	var tipo		= $tipo;
+    var r = confirm("¿Esta seguro que quiere eliminar este registro?");
+    if (r == true) {
+        $.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/direcciones/eliminarDireccion', 
+		 	data: { 'direccion' 	: direccion,
+	 				'usuario'		: usuario,
+	 				'tipo'			: tipo, 
+		 	}, 
+		 	success: function(resp) { 
+		 		$('.tablaDirecciones').attr('disabled',false).html(resp);
+		 		
+		 	}
+		});
+    }
+}		
+
+function eliminarTelefono($id_telefono, $id_cliente, $tipo){
+	var telefono	= $id_telefono;
+	var usuario 	= $id_cliente;
+	var tipo		= $tipo;
+    var r = confirm("¿Esta seguro que quiere eliminar este registro?");
+    if (r == true) {
+        $.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/telefonos/eliminarTelefono', 
+		 	data: { 'telefono' 		: telefono,
+	 				'usuario'		: usuario,
+	 				'tipo'			: tipo, 
+		 	}, 
+		 	success: function(resp) { 
+		 		$('.tablaTelefonos').attr('disabled',false).html(resp);
+		 		
+		 	}
+		});
+    }
+}
+
+function eliminarCorreo($id_mail, $id_cliente, $tipo){
+	var correo		= $id_mail;
+	var usuario 	= $id_cliente;
+	var tipo		= $tipo;
+    var r = confirm("¿Esta seguro que quiere eliminar este registro?");
+    if (r == true) {
+        $.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/mails/eliminarCorreo', 
+		 	data: { 'correo' 		: correo,
+	 				'usuario'		: usuario,
+	 				'tipo'			: tipo, 
+		 	}, 
+		 	success: function(resp) { 
+		 		$('.tablaCorreos').attr('disabled',false).html(resp);
+		 		
+		 	}
+		});
+    }
+}				
 </script>
 <nav class="navbar" role="navigation">
 	<div class="container">
@@ -11,11 +74,21 @@ $(document).ready(function(){
 		  			<div class="panel-heading">
 		  				<ul class="nav nav-tabs nav-justified">
 							<li class="active"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('cliente'); ?></a></li>
+							<?php
+								if($clientes){
+									foreach ($clientes as $row){
+										if($row->eliminado != 1){
+							?>
 					    	<li><a href="#tab2" data-toggle="tab"><?php echo $this->lang->line('vendedores'); ?></a></li>
 					    	<li><a href="#tab3" data-toggle="tab"><?php echo $this->lang->line('perfiles'); ?></a></li>
 					    	<li><a href="#tab4" data-toggle="tab"><?php echo $this->lang->line('pedidos'); ?></a></li>
 					    	<li><a href="#tab5" data-toggle="tab"><?php echo $this->lang->line('presupuestos'); ?></a></li>
 					    	<li><a href="#tab6" data-toggle="tab"><?php echo $this->lang->line('alarmas'); ?></a></li>
+							<?php
+										}
+									}
+								}
+							?>
 						</ul>
 		  			</div>
 		  			<div class="panel-body">		  				
@@ -30,12 +103,15 @@ $(document).ready(function(){
 											{
 												foreach ($clientes as $row){ 
 							      					echo '<img alt="User Pic" src="'.$row->imagen.'" class="img-circle img-responsive">';
+													if($row->eliminado != 1){
+														echo '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#popEditar" style="margin-top: 10%">';
+												  			echo $this->lang->line('editar');
+														echo '</button>';
+													}
 												}
 											}	
 					                	?>
-					                	<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#popEditar" style="margin-top: 10%">
-										  <?php echo $this->lang->line('editar'); ?>
-										</button>
+					                	
 									</div>
 					                <!-- Modal -->
 										<div class="modal fade" id="popEditar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -96,30 +172,45 @@ $(document).ready(function(){
 							                    if($clientes){
 							                    	foreach ($clientes as $row) 
 								      				{
-										            	echo "<tbody>";
-										                echo  "<tr>";
-										                echo  '<td>'.$this->lang->line('nombre').':</td>';
-										                echo  '<td class="tabla-datos-importantes">'.$row->nombre.'</td>';
-										                echo  "</tr>";
-														echo  "<tr>";								                     
-										                echo  '<td>'.$this->lang->line('apellido').':</td>';
-										                echo  '<td class="tabla-datos-importantes">'.$row->apellido.'</td>';
-										                echo  "</tr><tr>";
-														echo  '<td>'.$this->lang->line('alias').':</td>';
-										                echo  '<td class="tabla-datos-importantes">'.$row->nombre_fantasia.'</td>';
-										                echo  "</tr><tr>";		
-										                echo  '<td>'.$this->lang->line('cuit').':</td>';
-										                echo  '<td class="tabla-datos-importantes">'.cuit($row->cuit).'</td>';
-										                echo  "</tr><tr>";	
-										                echo  '<td>'.$this->lang->line('razon_social').':</td>';
-										                echo  '<td class="tabla-datos-importantes">'.$row->razon_social.'</td>';
-														echo  "</tr><tr>";	
-										                echo  '<td>'.$this->lang->line('grupos_clientes').':</td>';
-										                echo  '<td class="tabla-datos-importantes"><a href="'.base_url().'index.php/Grupos/getReglasGrupos/'.$row->id_grupo_cliente.'">';
-										                echo  $row->grupo_nombre;
-										                echo  "</a></td>";
-										                echo  "</tr>";		
-										                echo  "</tbody>";
+								      					if($row->eliminado != 1){
+											            	echo "<tbody>";
+											                echo  "<tr>";
+											                echo  '<td>'.$this->lang->line('nombre').':</td>';
+											                echo  '<td class="tabla-datos-importantes">'.$row->nombre.'</td>';
+											                echo  "</tr>";
+															echo  "<tr>";								                     
+											                echo  '<td>'.$this->lang->line('apellido').':</td>';
+											                echo  '<td class="tabla-datos-importantes">'.$row->apellido.'</td>';
+											                echo  "</tr><tr>";
+															echo  '<td>'.$this->lang->line('alias').':</td>';
+											                echo  '<td class="tabla-datos-importantes">'.$row->nombre_fantasia.'</td>';
+											                echo  "</tr><tr>";		
+											                echo  '<td>'.$this->lang->line('cuit').':</td>';
+											                echo  '<td class="tabla-datos-importantes">'.cuit($row->cuit).'</td>';
+											                echo  "</tr><tr>";	
+											                echo  '<td>'.$this->lang->line('razon_social').':</td>';
+											                echo  '<td class="tabla-datos-importantes">'.$row->razon_social.'</td>';
+															echo  "</tr><tr>";	
+											                echo  '<td>'.$this->lang->line('grupos_clientes').':</td>';
+											                echo  '<td class="tabla-datos-importantes"><a href="'.base_url().'index.php/Grupos/getReglasGrupos/'.$row->id_grupo_cliente.'">';
+											                echo  $row->grupo_nombre;
+											                echo  "</a></td>";
+											                echo  "</tr>";		
+											                echo  "</tbody>";
+											        	}
+														else{
+															echo '<div class="row">
+														        	<div class="col-md-offset-3 col-sm-6 col-md-6">
+														            	<div class="alert-message alert-message-danger">
+														                	<h4>'.$this->lang->line('cliente').' '.$this->lang->line('eliminado').'</h4>
+														                	<p>
+															                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. For performance
+															                    reasons, the Tooltip and Popover data-apis are opt-in, meaning 
+																			</p>
+														            	</div>
+														        	</div>
+																</div>';
+														}
 										            }
 										        }
 											?>
@@ -198,59 +289,71 @@ $(document).ready(function(){
 												        	foreach ($clientes as $row) 
 													    	{
 									     						echo "<div class='datatables-add-button'>";
-																	/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
-																	echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/telefonos/telefonos/'.$row->id_cliente.'/1">';
-																	echo '<span class="ui-button-text">';
-																	echo $this->lang->line('añadir').' '.$this->lang->line('telefono').'</span>';
-																	echo "</a>";
+																/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+																echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/telefonos/telefonos/'.$row->id_cliente.'/1">';
+																echo '<span class="ui-button-text">';
+																echo $this->lang->line('añadir').' '.$this->lang->line('telefono').'</span>';
+																echo "</a>";
 																echo "</div>";
 																echo '<div style="height:10px;"></div>';
 															}
 														}
 													?>
-						     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
-												        <thead>
-												            <tr>
-												            	<th><?php echo $this->lang->line('cod_area'); ?></th>
-												            	<th><?php echo $this->lang->line('telefonos'); ?></th>
-												                <th><?php echo $this->lang->line('tipo'); ?></th>
-												                <th><?php echo $this->lang->line('fax'); ?></th>
-												                <th><?php echo $this->lang->line('acciones'); ?></th>
-												            </tr>
-												        </thead>
-												 
-												        <tfoot>
-												            <tr>
-												            	<th><?php echo $this->lang->line('cod_area'); ?></th>
-												            	<th><?php echo $this->lang->line('telefonos'); ?></th>
-												                <th><?php echo $this->lang->line('tipo'); ?></th>
-												                <th><?php echo $this->lang->line('fax'); ?></th>
-												                <th><?php echo $this->lang->line('acciones'); ?></th>
-												            </tr>
-												        </tfoot>
-												 
-												        <tbody>
-												        	<?php 					                
-															      	foreach ($telefonos as $row) 
-															      	{
-															      		foreach ($clientes as $key) {
-																      		echo '<tr>';
-																			echo '<td>'.$row->cod_area.'</td>';
-																			echo '<td>'.$row->telefono.'</td>';
-																			echo '<td>'.$row->tipo.'</td>';
-																			if($row->fax == 0)
-																				echo "<td>NO</td>";
-																			else
-																				echo "<td>SI</td>";
-																			/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
-																			echo '<td style="text-align: center;"><a href="'.base_url().'index.php/telefonos/cargaEditar/'.$row->id_telefono.'/'.$key->id_cliente.'/1" class="btn btn-primary btn-xs">';
-																			echo $this->lang->line('editar')."</a></td>";
-																			echo "</tr>";
+													<div class="tablaTelefonos">
+							     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
+													        <thead>
+													            <tr>
+													            	<th><?php echo $this->lang->line('cod_area'); ?></th>
+													            	<th><?php echo $this->lang->line('telefonos'); ?></th>
+													                <th><?php echo $this->lang->line('tipo'); ?></th>
+													                <th><?php echo $this->lang->line('fax'); ?></th>
+													                <th><?php echo $this->lang->line('acciones'); ?></th>
+													            </tr>
+													        </thead>
+													 
+													        <tfoot>
+													            <tr>
+													            	<th><?php echo $this->lang->line('cod_area'); ?></th>
+													            	<th><?php echo $this->lang->line('telefonos'); ?></th>
+													                <th><?php echo $this->lang->line('tipo'); ?></th>
+													                <th><?php echo $this->lang->line('fax'); ?></th>
+													                <th><?php echo $this->lang->line('acciones'); ?></th>
+													            </tr>
+													        </tfoot>
+													 
+													        <tbody>
+													        	<?php 
+													        		if($telefonos){					                
+																      	foreach ($telefonos as $row) 
+																      	{
+																      		foreach ($clientes as $key) {
+																	      		echo '<tr>';
+																				echo '<td>'.$row->cod_area.'</td>';
+																				echo '<td>'.$row->telefono.'</td>';
+																				echo '<td>'.$row->tipo.'</td>';
+																				if($row->fax == 0)
+																					echo "<td>NO</td>";
+																				else
+																					echo "<td>SI</td>";
+																				/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+																				echo '<td style="text-align: center;">';
+																				echo '<a href="'.base_url().'index.php/telefonos/cargaEditar/'.$row->id_telefono.'/'.$key->id_cliente.'/1"';
+																				echo 'class="btn btn-primary btn-xs glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('editar').'" style="margin : 0 5px">';
+																				echo '</a>';
+																				/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+																				echo '<a href="#" onclick="eliminarTelefono('.$row->id_telefono.','.$key->id_cliente.',1)"';
+																				echo 'class="btn btn-danger btn-xs glyphicon glyphicon-minus" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('eliminar').'">';
+																				echo '</a>';
+																				echo '</td>';
+																				echo "</tr>";
+																				
+																			}
 																		}
 																	}
-														 	?>
-												        </tbody>
-												    </table>
+															 	?>
+													        </tbody>
+													    </table>
+													</div>
 												</div>
 											<?php
 											}
@@ -299,66 +402,77 @@ $(document).ready(function(){
 								      		<?php
 								        	if($direcciones){
 								        	?>
-												<div class="col-md-12">
+												<div class="col-md-12 ">
 													<?php
 														if($clientes){
 												        	foreach ($clientes as $row) 
 													    	{
 									     						echo "<div class='datatables-add-button'>";
-																	/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
-																	echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/direcciones/direcciones/'.$row->id_cliente.'/1">';
-																	echo '<span class="ui-button-text">';
-																	echo $this->lang->line('añadir').' '.$this->lang->line('direccion').'</span>';
-																	echo "</a>";
+																/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+																echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/direcciones/direcciones/'.$row->id_cliente.'/1">';
+																echo '<span class="ui-button-text">';
+																echo $this->lang->line('añadir').' '.$this->lang->line('direccion').'</span>';
+																echo "</a>";
 																echo "</div>";
 																echo '<div style="height:10px;"></div>';
 															}
 														}
 													?>
-													<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
-												        <thead>
-												            <tr>
-												            	<th><?php echo $this->lang->line('direccion'); ?></th>
-												                <th><?php echo $this->lang->line('tipo'); ?></th>
-												                <th><?php echo $this->lang->line('departamento'); ?></th>
-												                <th><?php echo $this->lang->line('provincia'); ?></th>
-												                <th><?php echo $this->lang->line('pais'); ?></th>
-												                <th><?php echo $this->lang->line('acciones'); ?></th>
-												            </tr>
-												        </thead>
-												 
-												        <tfoot>
-												            <tr>
-												            	<th><?php echo $this->lang->line('direccion'); ?></th>
-												                <th><?php echo $this->lang->line('tipo'); ?></th>
-												                <th><?php echo $this->lang->line('departamento'); ?></th>
-												                <th><?php echo $this->lang->line('provincia'); ?></th>
-												                <th><?php echo $this->lang->line('pais'); ?></th>
-												                <th><?php echo $this->lang->line('acciones'); ?></th>
-												            </tr>
-												        </tfoot>
-												 
-												        <tbody>
-												        	<?php						                
-																foreach ($direcciones as $row) 
-															    {
-															     	foreach ($clientes as $key) 
-												    				{		
-																    	echo '<tr>';
-																		echo '<td>'.$row->direccion.'</td>';
-																		echo '<td>'.$row->tipo.'</td>';
-																		echo '<td>'.$row->nombre_departamento.'</td>';
-																		echo '<td>'.$row->nombre_provincia.'</td>';
-																		echo '<td>'.$row->nombre_pais.'</td>';
-																		/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
-																		echo '<td style="text-align: center;"><a href="'.base_url().'index.php/direcciones/cargaEditar/'.$row->id_direccion.'/'.$key->id_cliente.'/1" class="btn btn-primary btn-xs">';
-																		echo $this->lang->line('editar')."</a></td>";
-																		echo "</tr>";
+													<div class="tablaDirecciones">
+														<table class="table table-striped table-bordered" cellspacing="0" width="100%">
+													        <thead>
+													            <tr>
+													            	<th><?php echo $this->lang->line('direccion'); ?></th>
+													                <th><?php echo $this->lang->line('tipo'); ?></th>
+													                <th><?php echo $this->lang->line('departamento'); ?></th>
+													                <th><?php echo $this->lang->line('provincia'); ?></th>
+													                <th><?php echo $this->lang->line('pais'); ?></th>
+													                <th><?php echo $this->lang->line('acciones'); ?></th>
+													            </tr>
+													        </thead>
+													 
+													        <tfoot>
+													            <tr>
+													            	<th><?php echo $this->lang->line('direccion'); ?></th>
+													                <th><?php echo $this->lang->line('tipo'); ?></th>
+													                <th><?php echo $this->lang->line('departamento'); ?></th>
+													                <th><?php echo $this->lang->line('provincia'); ?></th>
+													                <th><?php echo $this->lang->line('pais'); ?></th>
+													                <th><?php echo $this->lang->line('acciones'); ?></th>
+													            </tr>
+													        </tfoot>
+													 
+													        <tbody>
+													        	<?php
+													        		if($direcciones){						                
+																		foreach ($direcciones as $row) 
+																	    {
+																	     	foreach ($clientes as $key) 
+														    				{		
+																		    	echo '<tr>';
+																				echo '<td>'.$row->direccion.'</td>';
+																				echo '<td>'.$row->tipo.'</td>';
+																				echo '<td>'.$row->nombre_departamento.'</td>';
+																				echo '<td>'.$row->nombre_provincia.'</td>';
+																				echo '<td>'.$row->nombre_pais.'</td>';
+																				/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+																				echo '<td style="text-align: center;">';
+																				echo '<a href="'.base_url().'index.php/direcciones/cargaEditar/'.$row->id_direccion.'/'.$key->id_cliente.'/1"';
+																				echo 'class="btn btn-primary btn-xs glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('editar').'" style="margin : 0 5px">';
+																				echo '</a>';
+																				/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+																				echo '<a href="#" onclick="eliminarDireccion('.$row->id_direccion.','.$key->id_cliente.',1)"';
+																				echo 'class="btn btn-danger btn-xs glyphicon glyphicon-minus" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('eliminar').'">';
+																				echo '</a>';
+																				echo '</td>';
+																				echo "</tr>";
+																			}
+																		}
 																	}
-																}
-														 	?>
-												        </tbody>
-												    </table>
+															 	?>
+													        </tbody>
+													    </table>
+													</div>
 												</div>
 											<?php
 											}
@@ -412,52 +526,61 @@ $(document).ready(function(){
 												        	foreach ($clientes as $row) 
 													    	{
 									     						echo "<div class='datatables-add-button'>";
-																	/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
-																	echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/mails/mails/'.$row->id_cliente.'/1">';
-																	echo '<span class="ui-button-text">';
-																	echo $this->lang->line('añadir').' '.$this->lang->line('correo').'</span>';
-																	echo "</a>";
+																/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+																echo '<a role="button" class="btn btn-success" href="'.base_url().'index.php/mails/mails/'.$row->id_cliente.'/1">';
+																echo '<span class="ui-button-text">';
+																echo $this->lang->line('añadir').' '.$this->lang->line('correo').'</span>';
+																echo "</a>";
 																echo "</div>";
 																echo '<div style="height:10px;"></div>';
 															}
 														}
 													?>
-						     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
-												        <thead>
-												            <tr>
-												            	<th><?php echo $this->lang->line('correo'); ?></th>
-												                <th><?php echo $this->lang->line('tipo'); ?></th>
-												                <th><?php echo $this->lang->line('acciones'); ?></th>
-												            </tr>
-												        </thead>
-												 
-												        <tfoot>
-												            <tr>
-												            	<th><?php echo $this->lang->line('correo'); ?></th>
-												                <th><?php echo $this->lang->line('tipo'); ?></th>
-												                <th><?php echo $this->lang->line('acciones'); ?></th>
-												            </tr>
-												        </tfoot>
-												 
-												        <tbody>
-												        	<?php 
-												            	if($mails){							                
-															      	foreach ($mails as $row) 
-															      	{
-															      		foreach ($clientes as $key) {
-																      		echo '<tr>';
-																			echo '<td>'.$row->mail.'</td>';
-																			echo '<td>'.$row->tipo.'</td>';
-																			/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
-																			echo '<td style="text-align: center;"><a href="'.base_url().'index.php/mails/cargaEditar/'.$row->id_mail.'/'.$key->id_cliente.'/1" class="btn btn-primary btn-xs">';
-																			echo $this->lang->line('editar')."</a></td>";
-																			echo "</tr>";
+													<div class="tablaCorreos">
+							     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
+													        <thead>
+													            <tr>
+													            	<th><?php echo $this->lang->line('correo'); ?></th>
+													                <th><?php echo $this->lang->line('tipo'); ?></th>
+													                <th><?php echo $this->lang->line('acciones'); ?></th>
+													            </tr>
+													        </thead>
+													 
+													        <tfoot>
+													            <tr>
+													            	<th><?php echo $this->lang->line('correo'); ?></th>
+													                <th><?php echo $this->lang->line('tipo'); ?></th>
+													                <th><?php echo $this->lang->line('acciones'); ?></th>
+													            </tr>
+													        </tfoot>
+													 
+													        <tbody>
+													        	<?php 
+													            	if($mails){							                
+																      	foreach ($mails as $row) 
+																      	{
+																      		foreach ($clientes as $key) {
+																	      		echo '<tr>';
+																				echo '<td>'.$row->mail.'</td>';
+																				echo '<td>'.$row->tipo.'</td>';
+																				/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+																				echo '<td style="text-align: center;">';
+																				echo '<a href="'.base_url().'index.php/mails/cargaEditar/'.$row->id_mail.'/'.$key->id_cliente.'/1"';
+																				echo 'class="btn btn-primary btn-xs glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('editar').'" style="margin : 0 5px">';
+																				echo '</a>';
+																				/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
+																				echo '<a href="#" onclick="eliminarCorreo('.$row->id_mail.','.$key->id_cliente.',1)"';
+																				echo 'class="btn btn-danger btn-xs glyphicon glyphicon-minus" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('eliminar').'">';
+																				echo '</a>';
+																				echo '</td>';
+																				echo "</tr>";
+																			}
 																		}
 																	}
-																}
-														 	?>
-												        </tbody>
-												    </table>
+															 	?>
+													        </tbody>
+													    </table>
+													</div>
 												</div>
 											<?php
 											}

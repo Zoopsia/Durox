@@ -88,10 +88,11 @@ class Clientes extends My_Controller {
 	}
 
 	public function delete_user($primary_key)
-	{
+	{	
 		$arreglo = array(
 			'eliminado'		=> 1
 		);
+			
 		return $this->clientes_model->update($arreglo,$primary_key);
 	}
 	

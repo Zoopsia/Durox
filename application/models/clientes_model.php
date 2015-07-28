@@ -48,7 +48,9 @@ class Clientes_model extends My_Model {
 	function getCliente($id){
 			
 		$sql = "SELECT 
-					* 
+					clientes.*,
+					razon_social.razon_social,
+					grupos_clientes.grupo_nombre 
 				FROM 
 					$this->_tablename 
 				INNER JOIN
@@ -57,7 +59,7 @@ class Clientes_model extends My_Model {
 					grupos_clientes USING (id_grupo_cliente)
 				WHERE 
 					$this->_id_table = '$id'";
-					
+
 		$query = $this->db->query($sql);
 		
 		if($query->num_rows() > 0)
