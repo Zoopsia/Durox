@@ -4,6 +4,14 @@ function modal(){
 	$("#ModalBuscar").modal("show");
 }
 
+function prueba(){
+	var id_vendedor = $('#id_vendedor').val();
+	var id_cliente 	= $('#id_cliente').val();
+	
+	if(id_vendedor != null && id_cliente != null) 
+		document.getElementById('button-submit').setAttribute('type', 'submit');
+}
+
 function busqueda(){
 
  	var id_visita = $('select#id_visita').val(); //Obtenemos el id del pais seleccionado en la lista
@@ -270,7 +278,7 @@ $('#formPresupuesto').submit(function(event){
 										
 										<div class="form-group even">
 											<div class="col-sm-4 col-sm-offset-3">
-												<button type="submit" class="btn btn-primary" id="button-submit"><?php echo $this->lang->line('guardar'); ?></button>
+												<button type="submit" class="btn btn-primary" id="button-submit" onclick="prueba()"><?php echo $this->lang->line('guardar'); ?></button>
 												<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" onclick="confirmarPresupuesto()">
 											</div>
 									   	</div>

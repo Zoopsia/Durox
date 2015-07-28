@@ -27,37 +27,7 @@
 		  				<div class="tab-content">
 	    					<div class="tab-pane active" id="tab1">
 	    					<!--INFO GRAL DEL PEDIDO-->	
-	    						<div class="row">
-					                <div class=" col-md-12 col-lg-12 "><!--carga info pedido-->
-					                	<table class="table table-striped table-bordered" cellspacing="0" width="100%">
-									        <thead>
-									            <tr>
-									            	<th><?php echo $this->lang->line('nombre'); ?></th>
-									                <th><?php echo $this->lang->line('cantidad'); ?></th>
-									                <th><?php echo $this->lang->line('precio'); ?></th>
-									                <th><?php echo $this->lang->line('estado'); ?></th>
-									            </tr>
-									        </thead>
-									 
-									        <tbody>
-									        	<?php 
-									            	if($pedidos){							                
-												      	foreach ($pedidos as $row) 
-												      	{
-												      		echo '<tr>';
-															echo '<td>'.$row->nombre.'</td>';
-															echo '<td>'.$row->cantidad.'</td>';
-															echo "<td>".$row->precio."</td>";
-															echo '<td>'.$row->estado.'</td>';
-															echo "</tr>";
-														}
-													}
-											 	?>
-									        </tbody>
-							    		</table>
-					                </div>
-					            </div>
-					            			
+	    											            			
 	    					</div> 
 	     					<div class="tab-pane" id="tab2">
 	     						<!--TAB 2-->

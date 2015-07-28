@@ -23,10 +23,10 @@ class Productos extends My_Controller {
 		
 		$db['empresas']=$this->empresas_model->getRegistro(1);
 
-			$this->load->view("head.php", $db);
-			$this->load->view("nav_top.php");
-			$this->load->view("nav_left.php");	
-			$this->load->view($this->_subject."/pestanas.php");				
+		$this->load->view("head.php", $db);
+		$this->load->view("nav_top.php");
+		$this->load->view("nav_left.php");	
+		$this->load->view($this->_subject."/pestanas.php");				
 	}
 	
 
@@ -58,14 +58,24 @@ class Productos extends My_Controller {
 			$crud->order_by('id_producto','asc');
 			
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
+			$crud->callback_delete(array($this,'delete_user'));
 			
 			$crud->unset_export();
 			$crud->unset_print();
 			$crud->unset_read();
+			$crud->unset_edit();
 			
 			$output = $crud->render();
 			
 			$this->crud_tabla($output);		 
+	}
+
+	public function delete_user($primary_key)
+	{
+		$arreglo = array(
+			'eliminado'		=> 1
+		);
+		return $this->productos_model->update($arreglo,$primary_key);
 	}
 
 	function just_a_test($primary_key , $row)

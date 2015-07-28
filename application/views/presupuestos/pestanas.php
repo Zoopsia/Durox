@@ -5,6 +5,10 @@ $(document).ready(function(){
 	
 </script>
 
+<?php
+$aux  = 0;
+$aux2 = 0;
+?>
 <nav class="navbar" role="navigation">
 	<div class="container">
 	    <div class="row">
@@ -63,6 +67,7 @@ $(document).ready(function(){
 																		echo "<br>";
 																		echo $this->lang->line('id').': '.$key->id_vendedor;
 																		echo "<br>";
+																		$aux2 = 1;
 																	}
 																}
 															?>
@@ -103,6 +108,7 @@ $(document).ready(function(){
 																		}
 																		echo $this->lang->line('id').': '.$key->id_cliente;
 																		echo "<br>";
+																		$aux = 1;
 																	}
 																}
 															?>
@@ -250,19 +256,20 @@ $(document).ready(function(){
 										?>
 										</tbody>
 								    </table>
-								    <?php 
-								    foreach($presupuesto as $row){
-								    ?>
-								    <div class="row">
-								    	<div class="col-md-2 col-md-offset-4">
-											<a role="button" class="btn btn-info" href="<?php echo base_url().'/index.php/Presupuestos/generarNuevoPresupuesto/'.$row->id_presupuesto ?>"><?php echo $this->lang->line('generar').' '.$this->lang->line('presupuesto') ?></a>
-										</div>
 								    <?php
-								    	if($row->id_estado_presupuesto == 1){
-										    echo 	'
-										    			<div class="col-md-2">
-															<a role="button" class="btn btn-info" href="#">'.$this->lang->line('generar').' '.$this->lang->line('pedido').'</a>
-														</div>';
+								    if($aux == 1 && $aux2 == 1){ 
+									    foreach($presupuesto as $row){
+									    ?>
+									    <div class="row">
+									    	<div class="col-md-2 col-md-offset-4">
+												<a role="button" class="btn btn-info" href="<?php echo base_url().'/index.php/Presupuestos/generarNuevoPresupuesto/'.$row->id_presupuesto ?>"><?php echo $this->lang->line('generar').' '.$this->lang->line('presupuesto') ?></a>
+											</div>
+									    <?php
+									    	if($row->id_estado_presupuesto == 1){
+											    echo '<div class="col-md-2">
+														<a role="button" class="btn btn-info" href="#">'.$this->lang->line('generar').' '.$this->lang->line('pedido').'</a>
+													  </div>';
+											}
 										}
 									}
 									?>
