@@ -26,14 +26,13 @@ class Presupuestos extends My_Controller {
 	}
 	
 
-	public function pestanas($id, $tipo=1){
-		
-		$db['empresas']			= $this->empresas_model->getRegistro(1);
+	public function pestanas($id, $tipo=1)
+	{
 		$presupuesto			= $this->presupuestos_model->getRegistro($id);
 		$db['clientes']		= $this->clientes_model->getTodo();
 		$db['vendedores']	= $this->vendedores_model->getTodo();
 		
-		$db['razon_social']		= $this->clientes_model->getTodo('razon_social');		
+		$db['iva']				= $this->clientes_model->getTodo('iva');		
 		$db['presupuestos']		= $this->presupuestos_model->getDetallePresupuesto($id);
 		$db['estados']			= $this->presupuestos_model->getTodo('estados_presupuestos');
 		$db['productos']		= $this->presupuestos_model->getProductosTodo();
@@ -41,11 +40,7 @@ class Presupuestos extends My_Controller {
 		$db['tipo']				= $tipo;
 		$db['presupuesto']		= $presupuesto;
 		
-			$this->load->view("head.php", $db);
-			$this->load->view("nav_top.php");
-			$this->load->view("nav_left.php");	
-			$this->load->view($this->_subject."/pestanas.php");
-					
+		$this->pestanas_vista($db);	
 	}
 	
 
@@ -196,6 +191,7 @@ class Presupuestos extends My_Controller {
 		if($id_presupuesto){
 			$db['empresas']		= $this->empresas_model->getRegistro(1);
 			$db['presupuesto']	= $id_presupuesto;
+			$db['informacion']	= $this->presupuestos_model->getPresupuestoInfo($id_presupuesto);
 			$db['productos']	= $this->presupuestos_model->getProductosTodo();
 			$db['visita']		= $id_visita;
 			$db['tipo']			= 0;
@@ -358,7 +354,7 @@ class Presupuestos extends My_Controller {
 
 		$detalle			= $this->presupuestos_model->getDetallePresupuesto($presupuesto);
 			
-		$mensaje = '<table class="table table-hover" cellspacing="0" width="100%">
+		$mensaje = '<table class="table" cellspacing="0" width="100%">
 					<thead>
 						<tr>
 							
@@ -571,6 +567,7 @@ class Presupuestos extends My_Controller {
 			$db['presupuestos']		= $this->presupuestos_model->getRegistro($id);
 			$db['productos']		= $this->presupuestos_model->getProductosTodo();
 			$db['tipo']				= 1;
+			$db['informacion']	= $this->presupuestos_model->getPresupuestoInfo($id);
 			
 			foreach($db['presupuestos'] as $row){
 				$db['visita']			= $row->id_visita;

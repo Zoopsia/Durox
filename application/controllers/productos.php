@@ -19,14 +19,12 @@ class Productos extends My_Controller {
 	}
 	
 
-	public function pestanas($id){
+	public function pestanas($id)
+	{
 		
 		$db['empresas']=$this->empresas_model->getRegistro(1);
 
-		$this->load->view("head.php", $db);
-		$this->load->view("nav_top.php");
-		$this->load->view("nav_left.php");	
-		$this->load->view($this->_subject."/pestanas.php");				
+		$this->pestanas_vista($db);			
 	}
 	
 

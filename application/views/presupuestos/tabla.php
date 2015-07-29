@@ -8,9 +8,10 @@ foreach($css_files as $file): ?>
 
 <?php $array_n = pestañaActiva($this->uri->segment(3));?>
 
-
+<!--
 <nav class="navbar" role="navigation">
 	<div class="container">
+	-->
 	    <div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default">
@@ -24,6 +25,7 @@ foreach($css_files as $file): ?>
 		  			<div class="panel-body">
 		  				<div class="tab-content">
 		  					<!--TABLA PRINCIPAL CON PEDIDOS-->
+		  					<!--
 		  					<div class="row">
 		    					<div class="col-md-1">
 		    						<a role="button" class="btn btn-success" href="<?php echo base_url().'index.php/Presupuestos/carga/'; ?>">
@@ -32,6 +34,7 @@ foreach($css_files as $file): ?>
 									</a>
 		    					</div>
 	    					</div>
+		  					-->
 		  					
 		  					<div class="tab-pane <?php echo $array_n['listado']?>" id="tab1">
 	    						<?php echo $output; ?>
@@ -46,5 +49,7 @@ foreach($css_files as $file): ?>
 				</div><!--panel-->
 			</div><!--contenedor-->
 		</div>    
+		<!--
 	</div>
 </nav>
+-->

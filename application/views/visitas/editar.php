@@ -91,7 +91,7 @@
 		    							<div class="form-group even">
 											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('fecha'); ?></label>
 												<div class="col-sm-4 col-sm-offset-1">
-													<input type="date" name="date_upd" class="form-control" value="<?php echo $value->date_upd;?>">	 
+													<input type="text" name="date_upd" class="form-control" value="<?php echo $value->date_upd;?>">	 
 												</div>
 										</div>
 										

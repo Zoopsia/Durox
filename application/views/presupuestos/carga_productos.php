@@ -170,7 +170,7 @@ function funcion1($id_producto){
 		    							<div id="table" class="col-sm-11 col-sm-offset-1" style="padding: 0 50px">
 											 <!-- NUEVA CARGA DE PRESUPUESTO -->
 											
-											 <table class="table table-hover" cellspacing="0" width="100%">
+											 <table class="table" cellspacing="0" width="100%">
 												<thead>
 													<tr>
 														<th class="th1"><?php echo $this->lang->line("producto"); ?></th>

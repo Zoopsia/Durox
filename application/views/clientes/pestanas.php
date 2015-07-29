@@ -66,8 +66,11 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
     }
 }				
 </script>
+<!--
 <nav class="navbar" role="navigation">
+
 	<div class="container">
+		-->
 	    <div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default">
@@ -712,5 +715,8 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 				</div><!--panel-->
 			</div><!--contenedor-->
 		</div>    
+	<!--
 	</div>
+	
 </nav>
+-->

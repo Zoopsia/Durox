@@ -109,6 +109,7 @@
 <?php }
 ?></div>
 <div class="dataTablesContainer">
+	<!-- Boton de agregar nuevo
 	<?php if(!$unset_add){?>
 		<div class="datatables-add-button">
 		<a role="button" class="btn btn-success" href="<?php echo $add_url?>">
@@ -117,6 +118,7 @@
 		</a>
 		</div>
 	<?php }?>
+	-->
 	
 	<div style='height:10px;'></div>
 

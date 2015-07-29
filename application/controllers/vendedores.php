@@ -23,7 +23,6 @@ class Vendedores extends My_Controller {
 		
 	public function pestanas($id, $aux=0, $aux2=null){
 		
-		$db['empresas']		= $this->empresas_model->getRegistro(1);
 		$db['vendedores']	= $this->vendedores_model->getRegistro($id);
 		$db['clientes']		= $this->vendedores_model->getCruce($id,'clientes');
 		$db['telefonos']	= $this->vendedores_model->getCruce($id,'telefonos');
@@ -38,10 +37,7 @@ class Vendedores extends My_Controller {
 			$db['aux2']		= $aux2;
 		}
 		
-		$this->load->view("head.php", $db);
-		$this->load->view("nav_top.php");
-		$this->load->view("nav_left.php");	
-		$this->load->view($this->_subject."/pestanas.php");					
+		$this->pestanas_vista($db);			
 	}
 	
 

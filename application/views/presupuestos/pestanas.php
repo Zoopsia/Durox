@@ -12,13 +12,10 @@ $aux2 = 0;
 <nav class="navbar" role="navigation">
 	<div class="container">
 	    <div class="row">
-			<div class="col-md-12">
+			<div class="col-md-6">
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
-		  				<ul class="nav nav-tabs nav-justified">
-							<li class="active"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('presupuesto'); ?></a></li>
-							<li><a href="#tab2" data-toggle="tab"><?php echo $this->lang->line('detalle'); ?></a></li>
-						</ul>
+		  				<h2><?php echo $this->lang->line('presupuesto'); ?></h2>						
 		  			</div>
 		  			<div class="panel-body">
 		  				<?php
@@ -35,8 +32,7 @@ $aux2 = 0;
 						<?php 	} 
 							}
 						?>
-		  				<div class="tab-content">
-	    					<div class="tab-pane fade in active" id="tab1">
+		  				
 	    					<!--INFO GRAL DEL PRESUPUESTO-->	
 	    						<?php
 									if($presupuesto){
@@ -164,9 +160,18 @@ $aux2 = 0;
 									</div>
 								</div>
 					            			
-	    					</div> 
-	     					<div class="tab-pane fade" id="tab2">
-	     						<div class="col-md-10 col-md-offset-1">
+	    					 
+	    				<!--contenedor de cada pestaña-->	
+		  			</div><!--panel body-->
+				</div><!--panel-->
+			</div><!--contenedor-->
+			<div class="col-md-6">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+				  		<?php echo $this->lang->line('detalle'); ?>
+			  		</div>
+			  		<div class="panel-body">
+						<div class="col-md-10">
 	     							<?php
 	     								foreach($presupuesto as $row){
 	     									if($row->id_estado_presupuesto==3){
@@ -246,31 +251,9 @@ $aux2 = 0;
 									?>
 									</div>
 							    </div>
-	    					</div>
-	    					<div class="tab-pane" id="tab3">
-	     						<!--TAB 3-->
-							    
-	    					</div>
-	    					<div class="tab-pane" id="tab4">
-	     						<!--TAB 4-->
-	     						
-	    					</div>
-	    					<div class="tab-pane" id="tab5">
-	     						<!--TAB 5-->
-	     						
-	    					</div>	
-	    					<div class="tab-pane" id="tab6">
-	     						<!--TAB 6-->
-	     						
-	    					</div>
-	    					<div class="tab-pane" id="tab7">
-	     						<!--TAB 7 -->
-	     						
-	    					</div>
-	    				</div><!--contenedor de cada pestaña-->	
-		  			</div><!--panel body-->
-				</div><!--panel-->
-			</div><!--contenedor-->
-		</div>    
+					</div>
+				</div>
+			</div>
+		</div>  
 	</div>
 </nav>

@@ -9,18 +9,28 @@ class Home extends CI_Controller {
 		$this->load->library('grocery_CRUD');
 		
 		$this->load->model('empresas_model');
+		$this->load->model('clientes_model');
+		$this->load->model('productos_model');
+		$this->load->model('pedidos_model');
+		$this->load->model('visitas_model');
 	}
 
-	public function home(){
+	public function home()
+	{
+		$db['empresas'] = $this->empresas_model->getRegistro(1);
+		$db['title']	= 'Inicio';
+		$db['subtitle'] = $this->lang->line('inicio');
 		
-		/*---- PONGO "1" POR LA EMPRESA, SI ES OTRA EMPRESA CAMBIARLO----*/
+		$db['clientes_cantidad'] = $this->clientes_model->getCantidad();
+		$db['productos_cantidad'] = $this->productos_model->getCantidad();
+		$db['pedidos_cantidad'] = $this->pedidos_model->getCantidad();
+		$db['visitas_cantidad'] = $this->visitas_model->getCantidad();
 		
-		$db['empresas']=$this->empresas_model->getRegistro(1);
-
-			$this->load->view("head.php", $db);
-			$this->load->view("nav_top.php");
-			$this->load->view("nav_left.php");	
-			$this->load->view("home/inicio.php");		
+		$this->load->view("plantilla/head.php", $db);
+		$this->load->view("plantilla/nav_top.php");
+		$this->load->view("plantilla/nav_left.php");	
+		$this->load->view("home/inicio.php");
+		$this->load->view("plantilla/footer.php");		
 	}
 
 		

@@ -21,9 +21,8 @@ class Clientes extends My_Controller {
 	}
 	
 
-	public function pestanas($id){
-		
-		$db['empresas']		= $this->empresas_model->getRegistro(1);
+	public function pestanas($id)
+	{
 		$db['clientes']		= $this->clientes_model->getCliente($id);
 		$db['vendedores']	= $this->clientes_model->getCruce($id,'vendedores');	
 		$db['telefonos']	= $this->clientes_model->getCruce($id,'telefonos');
@@ -33,11 +32,7 @@ class Clientes extends My_Controller {
 		$db['presupuestos']	= $this->clientes_model->getPresupuestos($id);
 		$db['grupos']		= $this->grupos_model->getTodo();
 		
-		$this->load->view("head.php", $db);
-		$this->load->view("nav_top.php");
-		$this->load->view("nav_left.php");	
-		$this->load->view($this->_subject."/pestanas.php");
-					
+		$this->pestanas_vista($db);				
 	}
 	
 
@@ -58,21 +53,23 @@ class Clientes extends My_Controller {
 			
 			$crud->display_as('nombre','Nombre')
 				 ->display_as('apellido','Apellido')
+				 ->display_as('razon_social','Razon Social')
 				 ->display_as('id_grupo_cliente','Grupo')
-				 ->display_as('id_razon_social','Razón Social');
+				 ->display_as('id_iva','Situacion IVA');
 			
 			$crud->set_subject('Cliente');
 			
 			$crud->fields(	'nombre',
 							'apellido',
+							'razon_social',
 							'cuit',
 							'id_grupo_cliente',
-							'id_razon_social');
+							'id_iva');
 							
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
 			$crud->callback_delete(array($this,'delete_user'));
 			
-			$crud->set_relation('id_razon_social','razon_social','razon_social');
+			$crud->set_relation('id_iva','iva','iva');
 			
 			$crud->set_relation('id_grupo_cliente','grupos_clientes','grupo_nombre');
 			
@@ -80,7 +77,6 @@ class Clientes extends My_Controller {
 			$crud->unset_print();
 			$crud->unset_read();
 			$crud->unset_edit();
-			
 			
 			$output = $crud->render();
 			
@@ -124,6 +120,7 @@ class Clientes extends My_Controller {
 			
 			$cliente	= array(		
 					'nombre_fantasia'	=> $this->input->post('alias'),
+					'web'				=> $this->input->post('web'),
 					'id_grupo_cliente'	=> $this->input->post('id_grupo_cliente'),
 					'imagen'			=> $imagen
 			);

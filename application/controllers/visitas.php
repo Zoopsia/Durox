@@ -297,27 +297,9 @@ class Visitas extends My_Controller {
 		
 		$presupuesto	= $this->presupuestos_model->getRegistro($id_presupuesto);
 		$detalle		= $this->presupuestos_model->getDetallePresupuesto($id_presupuesto);
-		$productos		= $this->presupuestos_model->getProductosTodo();
 		
 		foreach($presupuesto as $row){
 			$total = $row->total;
-		}
-		
-		$subtotal = 0;
-		foreach ($detalle as $row) {
-			if($row->estado_linea != 3)
-				$subtotal = $row->precio + $subtotal;
-		}
-										
-		foreach($presupuesto as $row){
-			if($subtotal>=$row->total){
-				$descuento	= $subtotal-$row->total;
-				$tipo		= 'Descuento';
-			}
-			else{
-				$descuento	= $row->total-$subtotal;
-				$tipo		= 'Aumento';
-			}
 		}
 		
 		$mensaje = '<table class="table table-striped" cellspacing="0" width="100%">
@@ -335,39 +317,21 @@ class Visitas extends My_Controller {
 						<tr>
 							<th class="th1"></th>
 							<th class="th1"></th>
-							<th class="th1"></th>
-							<th class="th1">'.$this->lang->line("subtotal").'</th>
-							<th class="th1">$ '.$subtotal.'</th>
-						</tr>
-						<tr>
-							<th class="th1"></th>
-							<th class="th1"></th>
-							<th class="th1"></th>
-							<th class="th1">'.$tipo.'</th>
-							<th class="th1">$ '.$descuento.'</th>
-						</tr>
-						<tr>
-							<th class="th1"></th>
-							<th class="th1"></th>
-							<th class="th1"></th>
 							<th class="th1">'.$this->lang->line("total").'</th>
 							<th class="th1">$ '.$total.'</th>
+							<th class="th1"></th>
 						</tr>
 					</tfoot>';
 		
 		$mensaje .= '<tbody>';
 		foreach($detalle as $row){
-			foreach($productos as $key){
-				if($row->producto == $key->id_producto){
-					$mensaje .= '<tr>
-									<th>'.$row->nombre.'</th>
-									<th>'.$row->cantidad.'</th>
-									<th>$ '.$key->precio.'</th>
-									<th>$ '.$row->precio.'</th>
-									<th>'.$row->estado.'</th>
-								</tr>';
-				}
-			}
+			$mensaje .= '<tr>
+							<th>'.$row->nombre.'</th>
+							<th>'.$row->cantidad.'</th>
+							<th>$ '.$row->precio.'</th>
+							<th>$ '.$row->subtotal.'</th>
+							<th>'.$row->estado.'</th>
+						</tr>';
 		}
 		$mensaje .= '</tbody>';
 		$mensaje .= '</table>';			
