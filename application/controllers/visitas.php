@@ -24,53 +24,49 @@ class Visitas extends My_Controller {
 		$this->load->model($this->_subject.'_model');
 	}
 	
-	public function carga($id_visita=null, $tipo=1){
-		
-		$db['empresas']		= $this->empresas_model->getRegistro(1);
+	public function carga($id_visita=null, $tipo=1)
+	{
 		$db['clientes']		= $this->clientes_model->getTodo();
 		$db['vendedores']	= $this->vendedores_model->getTodo();
-		$db['razon_social']	= $this->clientes_model->getTodo('razon_social');
+		$db['iva']			= $this->clientes_model->getTodo('iva');
 		$db['estados']		= $this->presupuestos_model->getTodo('estados_presupuestos');
 		$db['epocas']		= $this->visitas_model->getEpocas();
 		$db['tipo']			= $tipo;
 		$db['visitas']		= $this->visitas_model->getRegistro($id_visita);
 		
-		if($id_visita){
+		if($id_visita)
+		{
 			$db['visita']		= $id_visita;
 			$db['presupuesto']	= $this->presupuestos_model->getPresupuesto($id_visita);
 			$db['pedido']		= $this->pedidos_model->getPedido($id_visita);
 		}
 		
-
-		$this->load->view("head.php", $db);
-		$this->load->view("nav_top.php");
-		$this->load->view("nav_left.php");	
-		if($id_visita){
-			$this->load->view($this->_subject."/pestanas.php");
+		if($id_visita)
+		{
+			$this->cargar_vista($db, 'pestanas');
 		}
-		else{		
-			$this->load->view($this->_subject."/carga.php");
+		else
+		{
+			$this->cargar_vista($db, 'carga');		
 		}			
 	}
 	
-	public function editar($id_visita){
-		
-		$db['empresas']		= $this->empresas_model->getRegistro(1);
+	public function editar($id_visita)
+	{
 		$db['clientes']		= $this->clientes_model->getTodo();
 		$db['vendedores']	= $this->vendedores_model->getTodo();
 		$db['epocas']		= $this->visitas_model->getEpocas();
 	
-		if($id_visita){
+		if($id_visita)
+		{
 			$db['visita']		= $this->visitas_model->getRegistro($id_visita);
 			$db['presupuesto']	= $this->presupuestos_model->getPresupuesto($id_visita);
 			$db['pedido']		= $this->pedidos_model->getPedido($id_visita);
 		}
 
-		$this->load->view("head.php", $db);
-		$this->load->view("nav_top.php");
-		$this->load->view("nav_left.php");	
-		if($id_visita){
-			$this->load->view($this->_subject."/editar.php");
+		if($id_visita)
+		{
+			$this->cargar_vista($db, 'editar');
 		}			
 	}
 
@@ -110,27 +106,18 @@ class Visitas extends My_Controller {
 			$crud->set_relation('id_vendedor','vendedores','{apellido} {nombre}');
 			
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
-			$crud->callback_delete(array($this,'delete_user'));
-			
+	
 			$crud->unset_export();
 			$crud->unset_print();
 			$crud->unset_read();
 			$crud->unset_edit();
 			$crud->unset_add();
+			$crud->unset_delete();
 			
 			$output = $crud->render();
 			
 			$this->crud_tabla($output);
 	}
-
-	public function delete_user($primary_key)
-	{
-		$arreglo = array(
-			'eliminado'		=> 1
-		);
-		return $this->visitas_model->update($arreglo,$primary_key);
-	}
-
 
 	function just_a_test($primary_key , $row)
 	{
@@ -238,7 +225,8 @@ class Visitas extends My_Controller {
 		
 	}
 	
-	public function buscar(){
+	public function buscar()
+	{
 		
 		$crud = new grocery_CRUD();
 
@@ -278,13 +266,15 @@ class Visitas extends My_Controller {
 			
 		$output = $crud->render();
 		
-		$db['empresas']=$this->empresas_model->getRegistro(1);
-
-		$this->load->view("head.php", $db);
-		$this->load->view("nav_top.php", $output);
-		$this->load->view("nav_left.php");
+		$db['empresas'] = $this->empresas_model->getRegistro(1);
+		$db['title']	= $this->_subject;
+		$db['subtitle'] = $this->lang->line($this->_subject.'_visita.php');
 		
+		$this->load->view("plantilla/head.php", $db);
+		$this->load->view("plantilla/nav_top.php", $output);
+		$this->load->view("plantilla/nav_left.php");	
 		$this->load->view($this->_subject."/buscar.php");
+		$this->load->view("plantilla/footer.php");	
 	}
 	
 	function volverBusqueda($primary_key , $row)

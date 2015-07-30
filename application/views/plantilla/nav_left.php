@@ -30,7 +30,7 @@
                     <!-- sidebar menu: : style can be found in sidebar.less -->
                     <ul class="sidebar-menu">
 						<li class="<?php echo $array_activo['home']?>">
-                       		<a href="<?php echo base_url().'index.php/Home/home'?>">
+                       		<a href="<?php echo base_url().'index.php/Home/'?>">
                        			<span class="glyphicon glyphicon-home"></span>
                        			<?php echo $this->lang->line('home'); ?>
                        		</a>
@@ -144,6 +144,7 @@
                             </a> 
                             <ul class="treeview-menu" style="display: none;">
 				            	<li><a href="<?php echo base_url().'index.php/Grupos/adminClientes/tab1'?>"><?php echo $this->lang->line('grupos'); ?></a></li>
+				          		<li><a href="<?php echo base_url().'index.php/Tipos/tipos_abm/'?>"><?php echo $this->lang->line('tipos'); ?></a></li>
 				          	</ul>
 				        </li>
                     </ul>

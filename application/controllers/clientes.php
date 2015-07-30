@@ -32,7 +32,7 @@ class Clientes extends My_Controller {
 		$db['presupuestos']	= $this->clientes_model->getPresupuestos($id);
 		$db['grupos']		= $this->grupos_model->getTodo();
 		
-		$this->pestanas_vista($db);				
+		$this->cargar_vista($db, 'pestanas');				
 	}
 	
 

@@ -24,7 +24,7 @@ class Productos extends My_Controller {
 		
 		$db['empresas']=$this->empresas_model->getRegistro(1);
 
-		$this->pestanas_vista($db);			
+		$this->cargar_vista($db, 'pestanas');			
 	}
 	
 
@@ -81,13 +81,11 @@ class Productos extends My_Controller {
 	    return site_url($this->_subject.'/pestanas').'/'.$row->id_producto;
 	}
 	
-	public function reglas(){
+	public function reglas()
+	{
 		
-		$db['empresas']=$this->empresas_model->getRegistro(1);
-
-			$this->load->view("head.php", $db);
-			$this->load->view("nav_top.php");
-			$this->load->view("nav_left.php");
-			$this->load->view($this->_subject."/reglas.php");				
+		$db['empresas'] = $this->empresas_model->getRegistro(1);
+		$this->cargar_vista($db, 'reglas');	
+						
 	}
 }

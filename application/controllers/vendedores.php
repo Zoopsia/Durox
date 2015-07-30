@@ -37,7 +37,7 @@ class Vendedores extends My_Controller {
 			$db['aux2']		= $aux2;
 		}
 		
-		$this->pestanas_vista($db);			
+		$this->cargar_vista($db, 'pestanas');			
 	}
 	
 

@@ -2721,7 +2721,8 @@ Component: timeline
 ----------------------------------- */
 .icheckbox_minimal,
 .iradio_minimal {
-  display: inline-block;
+  display: none;
+  /*display: inline-block;*/
   *display: inline;
   vertical-align: middle;
   margin: 0;

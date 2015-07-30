@@ -9,14 +9,11 @@ $(document).ready(function(){
 $aux  = 0;
 $aux2 = 0;
 ?>
-<nav class="navbar" role="navigation">
-	<div class="container">
-	    <div class="row">
-			<div class="col-md-6">
+			<div class="col-md-12">
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
-		  				<h2><?php echo $this->lang->line('presupuesto'); ?></h2>						
-		  			</div>
+		  				<i class="fa fa-book"></i> <?php echo $this->lang->line('presupuesto'); ?>
+                   	</div>
 		  			<div class="panel-body">
 		  				<?php
 							if($id_presupuesto){
@@ -38,67 +35,44 @@ $aux2 = 0;
 									if($presupuesto){
 										foreach ($presupuesto as $row) {
 								?>	
-								<div class="row">
-									<div class="col-md-5 col-md-offset-1">
-										<div class="alert alert-message-default alert-dismissible" role="alert">
-						  					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  						<div class="panel-heading">
-													<h3 class="panel-title" style="text-align: center"><?php echo $this->lang->line('vendedor'); ?></h3>
-												</div>
-												<div class="panel-body">
-													<hr style="margin: 0 0 20 0" />
-													<div class="row">
-														<div class="col-md-6">
-															<?php
-																foreach ($vendedores as $key) {
-																	if($row->id_vendedor == $key->id_vendedor){
-																		echo '<img alt="User Pic" src="'.$key->imagen.'" class="img-circle img-responsive">';
-															?>
-														</div>
-														<div class="col-md-6">
-															<?php
-																		echo '<a href="'.base_url().'index.php/vendedores/pestanas/'.$key->id_vendedor.'">';
-																		echo $key->nombre.', '.$key->apellido;
-																		echo '</a>';
-																		echo "<br>";
-																		echo $this->lang->line('id').': '.$key->id_vendedor;
-																		echo "<br>";
-																		$aux2 = 1;
-																	}
-																}
-															?>
-														</div>
-													</div>
-												</div>
-										</div>	
-									</div>
-									<div class="col-md-5">
-										<div class="alert alert-message-default alert-dismissible" role="alert">
-						  					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  						<div class="panel-heading">
-													<h3 class="panel-title" style="text-align: center"><?php echo $this->lang->line('cliente'); ?></h3>
-												</div>
-												<div class="panel-body">
-													<hr style="margin: 0 0 20 0" />
-													<div class="row">
-														<div class="col-md-6">
-															<?php
-																foreach ($clientes as $key) {
-																	if($row->id_cliente == $key->id_cliente){
-																		echo '<img alt="User Pic" src="'.$key->imagen.'" class="img-circle img-responsive">';
-															?>
-														</div>
-														<div class="col-md-6">
-															<?php
+								 <div class="row invoice-info">
+                        			<div class="col-sm-4 invoice-col">
+                        				<b><?php echo $this->lang->line('vendedor');?></b>
+                           			<address>
+		                                <?php
+											foreach ($vendedores as $key) 
+											{
+												if($row->id_vendedor == $key->id_vendedor)
+												{
+													echo '<a href="'.base_url().'index.php/vendedores/pestanas/'.$key->id_vendedor.'">';
+													echo $key->nombre.', '.$key->apellido;
+													echo '</a>';
+													echo "<br>";
+													echo $this->lang->line('id').': '.$key->id_vendedor;
+													echo "<br>";
+													$aux2 = 1;
+												}
+											}
+										?>
+									</address>
+			                        </div><!-- /.col -->
+			                        <div class="col-sm-4 invoice-col">
+		                            	<b><?php echo $this->lang->line('cliente');?></b>
+		                            <address>
+		                                <?php
+																foreach ($clientes as $key) 
+																{
+																	if($row->id_cliente == $key->id_cliente)
+																	{
 																		echo '<a href="'.base_url().'index.php/clientes/pestanas/'.$key->id_cliente.'">';
 																		echo $key->nombre.', '.$key->apellido;
 																		echo '</a>';
 																		echo "<br>";
 																		echo $this->lang->line('cuit').': '.$key->cuit;
 																		echo "<br>";
-																		foreach ($razon_social as $value) {
-																			if($value->id_razon_social == $key->id_razon_social){	
-																				echo $value->razon_social;
+																		foreach ($iva as $value) {
+																			if($value->id_iva == $key->id_iva){	
+																				echo $value->iva;
 																				echo "<br>";
 																			}
 																		}
@@ -108,22 +82,11 @@ $aux2 = 0;
 																	}
 																}
 															?>
-														</div>
-													</div>
-												</div>
-										</div>
-									</div>
-								</div>
-								<div class="row">
-									<div class="col-md-10 col-md-offset-1">
-										<div class="panel panel-primary">
-											<div class="panel-heading">
-												<h3 class="panel-title" style="text-align: center"><?php echo $this->lang->line('presupuesto'); ?></h3>
-											</div>
-											<div class="panel-body">
-												<div class="row">
-													<div class="col-md-12 text-center">
-														<?php
+		                            </address>
+                        </div><!-- /.col -->
+                        <div class="col-sm-4 invoice-col">
+                        	<b><?php echo $this->lang->line('presupuesto');?></b>
+                            <?php
 														echo '<div class="odd">';
 														echo $this->lang->line('id').' '.$this->lang->line('presupuesto').': '.'<a href="#">'.$row->id_presupuesto.'</a>';
 														echo "</div>";
@@ -146,35 +109,20 @@ $aux2 = 0;
 														echo "</div>";
 														echo "<br>";
 														
-														?>
-													</div>
-													
-												</div>
-												<?php
-													
 														}
 													}
 												?>
-											</div>
-										</div>
-									</div>
-								</div>
-					            			
-	    					 
-	    				<!--contenedor de cada pestaña-->	
-		  			</div><!--panel body-->
-				</div><!--panel-->
-			</div><!--contenedor-->
-			<div class="col-md-6">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-				  		<?php echo $this->lang->line('detalle'); ?>
-			  		</div>
-			  		<div class="panel-body">
-						<div class="col-md-10">
-	     							<?php
+						</div>
+						</div>
+						
+						
+						<div class="row">
+                        <div class="col-xs-12 table-responsive">
+                        	<?php echo $this->lang->line('detalle'); ?>
+                                <?php
 	     								foreach($presupuesto as $row){
-	     									if($row->id_estado_presupuesto==3){
+	     									if($row->id_estado_presupuesto==3)
+	     									{
 	     										echo '<table class="table" cellspacing="0" width="100%">';
 	     									}
 											else {
@@ -200,23 +148,13 @@ $aux2 = 0;
 								            </tr>
 								        </thead>
 								 
-								        <tfoot class="tabla-datos-importantes">
-								            <tr>
-								            	<th></th>
-								                <th></th>
-								                <th></th>
-								                <th style="text-decoration: underline"><?php echo $this->lang->line('total'); ?></th>
-								                <th><?php echo '$ '.$total; ?></th>
-								                <th></th>
-								            </tr>
-								        </tfoot>
-								 
 								 		<tbody>
 								        <?php	
-								        foreach ($presupuestos as $row) {
+								        foreach ($presupuestos as $row) 
+								        {
 											
 											if($row->estado == 'Rechazado'){
-												echo '<tr style="background-color: rgba(182, 13, 13, 1);">';
+												echo '<tr style="background-color: #f56954; color: #fff;">';
 											}
 											else{
 					     						echo '<tr>';	
@@ -231,29 +169,67 @@ $aux2 = 0;
 										}			
 										?>
 										</tbody>
-								    </table>
-								    <?php
+								    </table>              
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+					
+						<div class="row">
+                        <!-- accepted payments column -->
+                        <div class="col-xs-6">
+                            <p class="lead"><?php echo $this->lang->line('notas');?></p>
+                            <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                                
+                            </p>
+                        </div><!-- /.col -->
+                        <div class="col-xs-6">
+                            <p class="lead"><?php echo $this->lang->line('totales');?></p>
+                            <div class="table-responsive">
+                                <table class="table">
+                                    <tr>
+                                        <th style="width:50%"><?php echo $this->lang->line('subtotal');?></th>
+                                        <td>$ <?php echo round($total,2);?></td>
+                                    </tr>
+                                    <tr>
+                                        <th><?php echo $this->lang->line('iva');?></th>
+                                        <td>$ <?php echo round($total*1.21-$total,2);?></td>
+                                    </tr>
+                                    <tr>
+                                        <th><?php echo $this->lang->line('total');?></th>
+                                        <td>$ <?php echo round($total*1.21,2);?></td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+					
+					<div class="row no-print">
+                        <div class="col-xs-12">
+                            <!--
+                            <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+                            -->
+                            <?php
 								    if($aux == 1 && $aux2 == 1){ 
 									    foreach($presupuesto as $row){
 									    ?>
-									    <div class="row">
-									    	<div class="col-md-2 col-md-offset-4">
-												<a role="button" class="btn btn-info" href="<?php echo base_url().'/index.php/Presupuestos/generarNuevoPresupuesto/'.$row->id_presupuesto ?>"><?php echo $this->lang->line('generar').' '.$this->lang->line('presupuesto') ?></a>
-											</div>
+									   		<a role="button" class="btn btn-primary pull-right" href="<?php echo base_url().'/index.php/Presupuestos/generarNuevoPresupuesto/'.$row->id_presupuesto ?>">
+									   			<?php echo $this->lang->line('generar').' '.$this->lang->line('presupuesto') ?>
+									   		</a>
+											
 									    <?php
-									    	if($row->id_estado_presupuesto == 1){
-											    echo '<div class="col-md-2">
-														<a role="button" class="btn btn-info" href="#">'.$this->lang->line('generar').' '.$this->lang->line('pedido').'</a>
-													  </div>';
+									    	if($row->id_estado_presupuesto == 1)
+									    	{
+											    echo ' <a role="button" class="btn btn-primary pull-right" href="#"  style="margin-right: 5px;">'.$this->lang->line('generar').' '.$this->lang->line('pedido').'</a>';
 											}
 										}
 									}
-									?>
-									</div>
-							    </div>
-					</div>
+									?> 
+                         </div>
+                    </div>						
+											
+				  		
+			  		</div>
+			  		
 				</div>
 			</div>
 		</div>  
-	</div>
-</nav>
+	

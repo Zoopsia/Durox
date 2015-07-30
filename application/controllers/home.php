@@ -15,7 +15,7 @@ class Home extends CI_Controller {
 		$this->load->model('visitas_model');
 	}
 
-	public function home()
+	public function index()
 	{
 		$db['empresas'] = $this->empresas_model->getRegistro(1);
 		$db['title']	= 'Inicio';

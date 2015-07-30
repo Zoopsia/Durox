@@ -1,23 +1,16 @@
-<nav class="navbar" role="navigation">
-	<div class="container">
+
 	    <div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default">
-		  			<div class="panel-heading">
-		  				<?php echo $this->lang->line('nueva').' '.$this->lang->line('visita'); ?>
-		  			</div>
-		  			
 		  			<div class="panel-body">
 		  				<div class="tab-content">
-		  					<!--TABLA PRINCIPAL CON PEDIDOS-->
-		  					
-	    					<!--BUSQUEDA AVANZADA DE PEDIDOS-->
-	    					
-								<h3><div style="padding: 0 0 20px 60px">
-									<a href="#">
-										<?php echo $this->lang->line('editar').' '.$this->lang->line('visita'); ?>
-									</a>
-								</div></h3>	
+		  						
+		  						<h3>
+									<div class="floatL form-title-left">
+										<a href="#"><?php echo $this->lang->line('editar').' '.$this->lang->line('visita')?></a>
+									</div>
+									<div class="clear"></div>
+								</h3>
 								<?php
 	    							foreach($visita as $value){
 	    						?>
@@ -25,8 +18,8 @@
 	    						<form action="<?php echo base_url()."index.php/Visitas/editarVisita/".$value->id_visita; ?>" class="form-horizontal" method="post">
 	    							<div style="padding: 0 50px">
 	    								<div class="form-group odd">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('vendedor'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('vendedor'); ?></label>
+												<div class="col-sm-6">
 													<select name="id_vendedor" class="form-control chosen-select">	
 														<?php
 															foreach($vendedores as $row){
@@ -48,8 +41,8 @@
 									    </div>
 	    								
 	    								<div class="form-group even">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('cliente'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('cliente'); ?></label>
+												<div class="col-sm-6">
 													<select name="id_cliente" class="form-control chosen-select">	
 														<?php
 															foreach($clientes as $row){
@@ -71,8 +64,8 @@
 									    </div>
 									      	  
 									    <div class="form-group odd">
-											<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('epoca').' '.$this->lang->line('visita'); ?></label>
-												<div class="col-sm-4">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('epoca').' '.$this->lang->line('visita'); ?></label>
+												<div class="col-sm-6">
 													<select name="id_epoca_visita" class="form-control chosen-select">	
 														<?php
 															foreach($epocas as $row){
@@ -89,22 +82,22 @@
 									    </div>
 	    								
 		    							<div class="form-group even">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('fecha'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('fecha'); ?></label>
+												<div class="col-sm-6">
 													<input type="text" name="date_upd" class="form-control" value="<?php echo $value->date_upd;?>">	 
 												</div>
 										</div>
 										
 										<div class="form-group odd">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('comentarios'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('comentarios'); ?></label>
+												<div class="col-sm-6">
 													<textarea name="comentarios" style="width: 100%; height: 100px;" ><?php echo $value->descripcion;?></textarea>	 
 												</div>
 										</div>
 										
 										<div class="form-group even" style="padding-bottom: 1%">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('valoracion'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1" style="margin-top: 1%">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('valoracion'); ?></label>
+												<div class="col-sm-6" style="margin-top: 1%">
 													<?php
 													for ($i=1; $i <= 5; $i++) {
 														if($value->valoracion == $i){ 
@@ -136,5 +129,4 @@
 				</div><!--panel-->
 			</div><!--contenedor-->
 		</div>    
-	</div>
-</nav>
+

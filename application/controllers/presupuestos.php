@@ -40,7 +40,7 @@ class Presupuestos extends My_Controller {
 		$db['tipo']				= $tipo;
 		$db['presupuesto']		= $presupuesto;
 		
-		$this->pestanas_vista($db);	
+		$this->cargar_vista($db, 'pestanas');	
 	}
 	
 
@@ -111,25 +111,22 @@ class Presupuestos extends My_Controller {
 	    return site_url($this->_subject.'/pestanas').'/'.$row->id_presupuesto;
 	}
 	
-	public function carga($id_visita=null){
-		
-		$db['empresas']		= $this->empresas_model->getRegistro(1);
+	public function carga($id_visita=null)
+	{
 		$db['clientes']		= $this->clientes_model->getTodo();
 		$db['vendedores']	= $this->vendedores_model->getTodo();
 		$db['productos']	= $this->presupuestos_model->getProductosTodo();
 		$db['visitas']		= $this->visitas_model->getTodo();
 		$db['estados']		= $this->presupuestos_model->getTodo('estados_presupuestos');
 		
-		if($id_visita){
+		if($id_visita)
+		{
 			$db['visita']	= $this->visitas_model->getRegistro($id_visita);;
 		}
 		else
 			$db['visita']	= '';
-			
-		$this->load->view("head.php", $db);
-		$this->load->view("nav_top.php");
-		$this->load->view("nav_left.php");	
-		$this->load->view($this->_subject."/carga.php");
+		
+		$this->cargar_vista($db, 'carga');
 				
 	}
 	

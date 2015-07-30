@@ -6,8 +6,7 @@ foreach($css_files as $file): ?>
 	<script src="<?php echo $file; ?>"></script>
 <?php endforeach; ?>
 
-<nav class="navbar" role="navigation">
-	<div class="container">
+
 	    <div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default">
@@ -19,5 +18,4 @@ foreach($css_files as $file): ?>
 				</div><!--panel-->
 			</div><!--contenedor-->
 		</div>    
-	</div>
-</nav>
+
