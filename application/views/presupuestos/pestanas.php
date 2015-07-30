@@ -10,9 +10,9 @@ $aux  = 0;
 $aux2 = 0;
 ?>
 <nav class="navbar" role="navigation">
-	<div class="container">
+	<!--<div class="container">-->
 	    <div class="row">
-			<div class="col-md-6">
+			<div class="col-md-12">
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
 		  				<h2><?php echo $this->lang->line('presupuesto'); ?></h2>						
@@ -96,9 +96,9 @@ $aux2 = 0;
 																		echo "<br>";
 																		echo $this->lang->line('cuit').': '.$key->cuit;
 																		echo "<br>";
-																		foreach ($razon_social as $value) {
-																			if($value->id_razon_social == $key->id_razon_social){	
-																				echo $value->razon_social;
+																		foreach ($iva as $value) {
+																			if($value->id_iva == $key->id_iva){	
+																				echo $value->iva;
 																				echo "<br>";
 																			}
 																		}
@@ -165,13 +165,15 @@ $aux2 = 0;
 		  			</div><!--panel body-->
 				</div><!--panel-->
 			</div><!--contenedor-->
-			<div class="col-md-6">
+		</div>
+		<div class="row">
+			<div class="col-md-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">
 				  		<?php echo $this->lang->line('detalle'); ?>
 			  		</div>
 			  		<div class="panel-body">
-						<div class="col-md-10">
+						<div class="col-md-10 col-md-offset-1">
 	     							<?php
 	     								foreach($presupuesto as $row){
 	     									if($row->id_estado_presupuesto==3){
@@ -216,7 +218,7 @@ $aux2 = 0;
 								        foreach ($presupuestos as $row) {
 											
 											if($row->estado == 'Rechazado'){
-												echo '<tr style="background-color: rgba(182, 13, 13, 1);">';
+												echo '<tr style="background-color: rgba(255, 0, 0, 1);">';
 											}
 											else{
 					     						echo '<tr>';	

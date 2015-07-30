@@ -23,13 +23,17 @@ class Grupos extends My_Controller {
 
 	public function adminClientes($id_grupo=null,$tabla=null,$save=null){
 		
-		$db['empresas']		=$this->empresas_model->getRegistro(1);
-		$db['grupos']		=$this->grupos_model->getTodo();
+		$db['empresas']		= $this->empresas_model->getRegistro(1);
+		$db['grupos']		= $this->grupos_model->getTodo();
 		
 		if($id_grupo!=null){
-			$db['id_grupo'] =$id_grupo;
-			$db['tabla'] 	=$tabla;
+			$db['id_grupo'] = $id_grupo;
+			$db['tabla'] 	= $tabla;
 		}
+		else {
+			$db['id_grupo'] = 0;
+		}
+		
 		
 		$db['save']			=$save;
 		
@@ -378,6 +382,64 @@ class Grupos extends My_Controller {
 		$id = $this->clientes_model->update($cliente, $id_cliente);	
 	}
 	
+	public function getRegla(){
+		$id_grupo_cliente	=	$this->input->post('id_grupo_cliente');
+		
+		if($id_grupo_cliente){
+			if($id_grupo_cliente!=1){
+				$reglas				= 	$this->reglas_model->getRegistro($id_grupo_cliente);
+				foreach($reglas as $row)
+				{
+					$mensaje	= '<input type="text" id="regla" name="regla" class="numeric form-control" pattern="^[A-Za-z0-9 ]+$" placeholder="'.$this->lang->line('nombre').'" required value="'.$row->nombre.'">';
+				}
+				echo $mensaje;
+			}
+		}
+	}
+	
+	public function getValorRegla(){
+		$id_grupo_cliente	=	$this->input->post('id_grupo_cliente');
+		
+		if($id_grupo_cliente){
+			if($id_grupo_cliente!=1){
+				$reglas				= 	$this->reglas_model->getRegistro($id_grupo_cliente);
+				foreach($reglas as $row)
+				{
+					$mensaje	= '<input type="text" id="valor" name="valor" class="numeric form-control" pattern="[0-9]*" placeholder="%" required value="'.$row->valor.'">';
+				}
+				echo $mensaje;
+			}
+		}
+	}
+	
+	public function getTipoRegla(){
+		$id_grupo_cliente	=	$this->input->post('id_grupo_cliente');
+		
+		if($id_grupo_cliente){
+			if($id_grupo_cliente!=1){
+				$reglas				= 	$this->reglas_model->getRegistro($id_grupo_cliente);
+				
+				
+				$mensaje = '<select name="tipo" id="tipo" class="form-control">';
+				foreach($reglas as $row)
+				{
+					if($row->aumento_descuento==1)
+					{	
+						$mensaje	.= '<option value="0">'.$this->lang->line('aumento').'</option>';					
+						$mensaje	.= '<option value="1" selected>'.$this->lang->line('descuento').'</option>';
+					}
+					else
+					{
+						$mensaje	.= '<option value="0" selected>'.$this->lang->line('aumento').'</option>';					
+						$mensaje	.= '<option value="1">'.$this->lang->line('descuento').'</option>';
+					}
+				}
+				$mensaje .= '</select>';
+				echo $mensaje;
+			}
+		}
+	}
+		
 	public function editarGrupo(){
 		
 		
@@ -386,13 +448,15 @@ class Grupos extends My_Controller {
 		if($id_grupo_cliente){
 			if($id_grupo_cliente!=1){
 				$grupo_cliente		=	$this->grupos_model->getRegistro($id_grupo_cliente);
+				$reglas				= 	$this->reglas_model->getRegistro($id_grupo_cliente);
 				
-				foreach ($grupo_cliente as $row){
+				
+				foreach ($grupo_cliente as $row)
+				{
 					$mensaje  = '<div class="input-group-addon"><span class="fa fa-users" aria-hidden="true"></span></div>';
 					$mensaje .= '<input type="text" name="grupo_nombre" class="form-control" pattern="^[A-Za-z0-9 ]+$" value="'.$row->grupo_nombre.'" placeholder="'.$this->lang->line('nombre').'" required>';
 					$mensaje .= '<input type="hidden" name="id_grupo" class="form-control" value="'.$row->id_grupo_cliente.'" required>';
 				}
-				
 				echo $mensaje;
 			}	
 		}
@@ -410,10 +474,16 @@ class Grupos extends My_Controller {
 				'tabla'			=> $this->_subject,
 				'id_tabla'		=> $this->input->post('id_grupo')	
 			);	
-					
+			
+			$arreglo_regla = array(
+				'nombre'			=> $this->input->post('regla'),
+				'valor'				=> $this->input->post('valor'),
+				'aumento_descuento'	=> $this->input->post('tipo')
+			);	
 						
 			if($save==2){
-				$id = $this->grupos_model->update($grupo, $this->input->post('id_grupo'));	
+				$id 		= $this->grupos_model->update($grupo, $this->input->post('id_grupo'));
+				$id_regla	= $this->reglas_model->update($arreglo_regla, $this->input->post('id_grupo'));
 				$mensaje2 = get_mensaje($arreglo_mensaje);
 				$this->adminClientes($this->input->post('id_grupo'));
 			}

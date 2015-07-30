@@ -87,21 +87,18 @@ function tablaPresupuesto($id_presupuesto){
 									<div class="col-md-5 col-md-offset-1">
 										<div class="alert alert-message-default alert-dismissible" role="alert">
 						  					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  						<div class="panel-heading">
-													<h3 class="panel-title" style="text-align: center"><?php echo $this->lang->line('vendedor'); ?></h3>
-												</div>
-												<div class="panel-body">
-													<hr style="margin: 0 0 20 0" />
+						  						<div class="panel-body">
 													<div class="row">
-														<div class="col-md-6">
+														<div class="col-md-4">
 															<?php
 																foreach ($vendedores as $key) {
 																	if($row->id_vendedor == $key->id_vendedor){
 																		echo '<img alt="User Pic" src="'.$key->imagen.'" class="img-circle img-responsive">';
 															?>
 														</div>
-														<div class="col-md-6">
+														<div class="col-md-7 col-md-offset-1">
 															<?php
+																		echo $this->lang->line('vendedor').': ';
 																		echo '<a href="'.base_url().'index.php/vendedores/pestanas/'.$key->id_vendedor.'">';
 																		echo $key->nombre.', '.$key->apellido;
 																		echo '</a>';
@@ -115,34 +112,31 @@ function tablaPresupuesto($id_presupuesto){
 													</div>
 												</div>
 										</div>	
-									</div>
+									</div>	
 									<div class="col-md-5">
 										<div class="alert alert-message-default alert-dismissible" role="alert">
 						  					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  						<div class="panel-heading">
-													<h3 class="panel-title" style="text-align: center"><?php echo $this->lang->line('cliente'); ?></h3>
-												</div>
-												<div class="panel-body">
-													<hr style="margin: 0 0 20 0" />
+						  						<div class="panel-body">
 													<div class="row">
-														<div class="col-md-6">
+														<div class="col-md-4">
 															<?php
 																foreach ($clientes as $key) {
 																	if($row->id_cliente == $key->id_cliente){
 																		echo '<img alt="User Pic" src="'.$key->imagen.'" class="img-circle img-responsive">';
 															?>
 														</div>
-														<div class="col-md-6">
+														<div class="col-md-7 col-md-offset-1">
 															<?php
+																		echo $this->lang->line('cliente').': ';
 																		echo '<a href="'.base_url().'index.php/clientes/pestanas/'.$key->id_cliente.'">';
 																		echo $key->nombre.', '.$key->apellido;
 																		echo '</a>';
 																		echo "<br>";
 																		echo $this->lang->line('cuit').': '.$key->cuit;
 																		echo "<br>";
-																		foreach ($razon_social as $value) {
-																			if($value->id_razon_social == $key->id_razon_social){	
-																				echo $value->razon_social;
+																		foreach ($iva as $value) {
+																			if($value->id_iva == $key->id_iva){	
+																				echo $value->iva;
 																				echo "<br>";
 																			}
 																		}

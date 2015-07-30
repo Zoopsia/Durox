@@ -29,7 +29,7 @@ class Visitas extends My_Controller {
 		$db['empresas']		= $this->empresas_model->getRegistro(1);
 		$db['clientes']		= $this->clientes_model->getTodo();
 		$db['vendedores']	= $this->vendedores_model->getTodo();
-		$db['razon_social']	= $this->clientes_model->getTodo('razon_social');
+		$db['iva']			= $this->clientes_model->getTodo('iva');
 		$db['estados']		= $this->presupuestos_model->getTodo('estados_presupuestos');
 		$db['epocas']		= $this->visitas_model->getEpocas();
 		$db['tipo']			= $tipo;
@@ -110,27 +110,18 @@ class Visitas extends My_Controller {
 			$crud->set_relation('id_vendedor','vendedores','{apellido} {nombre}');
 			
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
-			$crud->callback_delete(array($this,'delete_user'));
-			
+	
 			$crud->unset_export();
 			$crud->unset_print();
 			$crud->unset_read();
 			$crud->unset_edit();
 			$crud->unset_add();
+			$crud->unset_delete();
 			
 			$output = $crud->render();
 			
 			$this->crud_tabla($output);
 	}
-
-	public function delete_user($primary_key)
-	{
-		$arreglo = array(
-			'eliminado'		=> 1
-		);
-		return $this->visitas_model->update($arreglo,$primary_key);
-	}
-
 
 	function just_a_test($primary_key , $row)
 	{
