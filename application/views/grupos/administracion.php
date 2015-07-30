@@ -35,8 +35,6 @@ function editarGrupo(){
 		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
 	 		$('#editargrupo').attr('disabled',false).html(resp); 
 		}
-<<<<<<< HEAD
-=======
 	});
 	
 	$.ajax({
@@ -46,23 +44,10 @@ function editarGrupo(){
 		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
 	 		$('#nombre_regla').attr('disabled',false).html(resp); 
 		}
->>>>>>> e24556387c35087aae86c14726a5bb2f908d26b8
 	});
 	
 	$.ajax({
 	 	type: 'POST',
-<<<<<<< HEAD
-	 	url: '<?php echo base_url(); ?>index.php/grupos/getRegla', //Realizaremos la petición al metodo prueba del controlador cliente
-	 	data: 'id_grupo_cliente='+id_grupo_cliente,
-		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-	 		$('#nombre_regla').attr('disabled',false).html(resp); 
-		}
-	});
-	
-	$.ajax({
-	 	type: 'POST',
-=======
->>>>>>> e24556387c35087aae86c14726a5bb2f908d26b8
 	 	url: '<?php echo base_url(); ?>index.php/grupos/getValorRegla', //Realizaremos la petición al metodo prueba del controlador cliente
 	 	data: 'id_grupo_cliente='+id_grupo_cliente,
 		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función

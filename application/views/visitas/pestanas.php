@@ -79,7 +79,6 @@ function tablaPresupuesto($id_presupuesto){
 									if($visita){
 										foreach ($visitas as $row) {
 								?>	
-<<<<<<< HEAD
 												<div class="panel-body">
 						  							<div class="row">
 						  							<div class="col-md-4">
@@ -150,29 +149,14 @@ function tablaPresupuesto($id_presupuesto){
 						                                </div>
 						                                <div class="box-body">
 						                                  	<div style="display: inline-block;">
-=======
-								<div class="row">
-									<div class="col-md-5 col-md-offset-1">
-										<div class="alert alert-message-default alert-dismissible" role="alert">
-						  					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  						<div class="panel-body">
-													<div class="row">
-														<div class="col-md-4">
->>>>>>> e24556387c35087aae86c14726a5bb2f908d26b8
 															<?php
 																foreach ($vendedores as $key) {
 																	if($row->id_vendedor == $key->id_vendedor){
 																		echo '<img alt="User Pic" src="'.$key->imagen.'" class="img-circle img-responsive" style=" width: 100px; height: 100px;">';
 															?>
-<<<<<<< HEAD
 															</div>
 															<div style="display: inline-block; vertical-align: top; margin-left: 15px;">
-=======
-														</div>
-														<div class="col-md-7 col-md-offset-1">
->>>>>>> e24556387c35087aae86c14726a5bb2f908d26b8
 															<?php
-																		echo $this->lang->line('vendedor').': ';
 																		echo '<a href="'.base_url().'index.php/vendedores/pestanas/'.$key->id_vendedor.'">';
 																		echo $key->nombre.', '.$key->apellido;
 																		echo '</a>';
@@ -182,7 +166,6 @@ function tablaPresupuesto($id_presupuesto){
 																	}
 																}
 															?>
-<<<<<<< HEAD
 															</div>
 						                                </div><!-- /.box-body -->
 						                            </div>
@@ -201,33 +184,14 @@ function tablaPresupuesto($id_presupuesto){
 						                                </div>
 						                                <div class="box-body">
 						                                  	<div style="display: inline-block;">
-=======
-														</div>
-													</div>
-												</div>
-										</div>	
-									</div>	
-									<div class="col-md-5">
-										<div class="alert alert-message-default alert-dismissible" role="alert">
-						  					<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  						<div class="panel-body">
-													<div class="row">
-														<div class="col-md-4">
->>>>>>> e24556387c35087aae86c14726a5bb2f908d26b8
 															<?php
 																foreach ($clientes as $key) {
 																	if($row->id_cliente == $key->id_cliente){
 																		echo '<img alt="User Pic" src="'.$key->imagen.'" class="img-circle img-responsive" style=" width: 100px; height: 100px;">';
 															?>
-<<<<<<< HEAD
 															</div>
 															<div style="display: inline-block; vertical-align: top; margin-left: 15px;">
-=======
-														</div>
-														<div class="col-md-7 col-md-offset-1">
->>>>>>> e24556387c35087aae86c14726a5bb2f908d26b8
 															<?php
-																		echo $this->lang->line('cliente').': ';
 																		echo '<a href="'.base_url().'index.php/clientes/pestanas/'.$key->id_cliente.'">';
 																		echo $key->nombre.', '.$key->apellido;
 																		echo '</a>';

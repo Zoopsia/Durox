@@ -21,22 +21,9 @@ class Grupos extends My_Controller {
 		$this->load->model($this->_subject.'_model');
 	}
 
-<<<<<<< HEAD
+
 	public function adminClientes($id_grupo=null,$tabla=null,$save=null)
 	{
-		$db['grupos']		=$this->grupos_model->getTodo();
-		
-		if($id_grupo!=null)
-		{
-			$db['id_grupo'] =$id_grupo;
-			$db['tabla'] 	=$tabla;
-		}
-		
-		$db['save']			= $save;
-=======
-	public function adminClientes($id_grupo=null,$tabla=null,$save=null){
-		
-		$db['empresas']		= $this->empresas_model->getRegistro(1);
 		$db['grupos']		= $this->grupos_model->getTodo();
 		
 		if($id_grupo!=null){
@@ -47,9 +34,7 @@ class Grupos extends My_Controller {
 			$db['id_grupo'] = 0;
 		}
 		
-		
 		$db['save']			=$save;
->>>>>>> e24556387c35087aae86c14726a5bb2f908d26b8
 		
 		$this->cargar_vista($db, 'administracion');
 	}	
@@ -450,14 +435,8 @@ class Grupos extends My_Controller {
 			}
 		}
 	}
-<<<<<<< HEAD
 	
-=======
-		
->>>>>>> e24556387c35087aae86c14726a5bb2f908d26b8
 	public function editarGrupo(){
-		
-		
 		$id_grupo_cliente	=	$this->input->post('id_grupo_cliente');
 		
 		if($id_grupo_cliente){
