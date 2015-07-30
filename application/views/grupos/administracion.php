@@ -35,6 +35,8 @@ function editarGrupo(){
 		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
 	 		$('#editargrupo').attr('disabled',false).html(resp); 
 		}
+<<<<<<< HEAD
+=======
 	});
 	
 	$.ajax({
@@ -44,10 +46,23 @@ function editarGrupo(){
 		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
 	 		$('#nombre_regla').attr('disabled',false).html(resp); 
 		}
+>>>>>>> e24556387c35087aae86c14726a5bb2f908d26b8
 	});
 	
 	$.ajax({
 	 	type: 'POST',
+<<<<<<< HEAD
+	 	url: '<?php echo base_url(); ?>index.php/grupos/getRegla', //Realizaremos la petición al metodo prueba del controlador cliente
+	 	data: 'id_grupo_cliente='+id_grupo_cliente,
+		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+	 		$('#nombre_regla').attr('disabled',false).html(resp); 
+		}
+	});
+	
+	$.ajax({
+	 	type: 'POST',
+=======
+>>>>>>> e24556387c35087aae86c14726a5bb2f908d26b8
 	 	url: '<?php echo base_url(); ?>index.php/grupos/getValorRegla', //Realizaremos la petición al metodo prueba del controlador cliente
 	 	data: 'id_grupo_cliente='+id_grupo_cliente,
 		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
@@ -199,10 +214,10 @@ function volverHide(){
 		    									<option></option>
 		    									<?php
 		    										foreach ($grupos as $row) {
-		    											if($row->id_grupo_cliente==1){
+		    											if($row->id_grupo_cliente==0){
 		    												echo '<option value="'.$row->id_grupo_cliente.'">'.$row->grupo_nombre.'</option>';
 		    											}
-														else if($id_grupo==$row->id_grupo_cliente){
+														else if($id_grupo && $id_grupo == $row->id_grupo_cliente){
 															echo '<option value="'.$row->id_grupo_cliente.'" selected>'.$row->grupo_nombre.'</option>';
 															//----LLAMO FUNCION DE LLENAR LAS REGLAS---//
 															?><script>reglasActivas(), clientesActivos();</script><?php

@@ -127,9 +127,6 @@
                             <ul class="treeview-menu" style="display: none;">
 					            <li><a href="<?php echo base_url().'index.php/Productos/productos_abm/tab1'?>"><?php echo $this->lang->line('listado_de').' '.$this->lang->line('productos'); ?></a></li>
 					            <li><a href="<?php echo base_url().'index.php/Productos/productos_abm/tab1/add'?>"><?php echo $this->lang->line('nuevo'); ?></a></li>
-					            <li class="divider"></li>
-					            <li><a href="<?php echo base_url().'index.php/Productos/reglas/'?>"><?php echo $this->lang->line('reglas_descuento'); ?></a></li>
-					          	<li class="divider"></li>
 					            <li><a href="<?php echo base_url().'index.php/Productos/productos_abm/tab2'?>"><?php echo $this->lang->line('busqueda_avanzada'); ?></a></li>   
 							</ul>
 				        </li> 

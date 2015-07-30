@@ -9,6 +9,12 @@ $(document).ready(function(){
 $aux  = 0;
 $aux2 = 0;
 ?>
+<<<<<<< HEAD
+=======
+<nav class="navbar" role="navigation">
+	<!--<div class="container">-->
+	    <div class="row">
+>>>>>>> e24556387c35087aae86c14726a5bb2f908d26b8
 			<div class="col-md-12">
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
@@ -112,6 +118,7 @@ $aux2 = 0;
 														}
 													}
 												?>
+<<<<<<< HEAD
 						</div>
 						</div>
 						
@@ -120,6 +127,28 @@ $aux2 = 0;
                         <div class="col-xs-12 table-responsive">
                         	<?php echo $this->lang->line('detalle'); ?>
                                 <?php
+=======
+											</div>
+										</div>
+									</div>
+								</div>
+					            			
+	    					 
+	    				<!--contenedor de cada pestaña-->	
+		  			</div><!--panel body-->
+				</div><!--panel-->
+			</div><!--contenedor-->
+		</div>
+		<div class="row">
+			<div class="col-md-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+				  		<?php echo $this->lang->line('detalle'); ?>
+			  		</div>
+			  		<div class="panel-body">
+						<div class="col-md-10 col-md-offset-1">
+	     							<?php
+>>>>>>> e24556387c35087aae86c14726a5bb2f908d26b8
 	     								foreach($presupuesto as $row){
 	     									if($row->id_estado_presupuesto==3)
 	     									{
@@ -154,7 +183,11 @@ $aux2 = 0;
 								        {
 											
 											if($row->estado == 'Rechazado'){
+<<<<<<< HEAD
 												echo '<tr style="background-color: #f56954; color: #fff;">';
+=======
+												echo '<tr style="background-color: rgba(255, 0, 0, 1);">';
+>>>>>>> e24556387c35087aae86c14726a5bb2f908d26b8
 											}
 											else{
 					     						echo '<tr>';	
