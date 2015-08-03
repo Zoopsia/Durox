@@ -35,6 +35,8 @@ class Tipos extends My_Controller {
 			
 			$crud->display_as('tipos','Tipos');
 			
+			$crud->required_fields('tipo');
+			
 			$crud->set_subject('Tipos');
 			
 			$crud->fields('tipo');

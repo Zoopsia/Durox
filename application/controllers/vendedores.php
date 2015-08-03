@@ -58,6 +58,10 @@ class Vendedores extends My_Controller {
 			
 			$crud->display_as('nombre','Nombre')
 				 ->display_as('apellido','Apellido');
+				 
+			$crud->required_fields('nombre',
+							'apellido',
+							'contraseña');
 			
 			$crud->set_subject('vendedor');
 			

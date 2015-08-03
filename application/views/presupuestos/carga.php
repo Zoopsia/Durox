@@ -147,8 +147,8 @@ $('#formPresupuesto').submit(function(event){
 										?>		
 										<!-- CARGA DE PRESUPUESTO CON ID DE VISITA -->	
 	    								<div class="form-group odd">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('visita'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('visita'); ?></label>
+												<div class="col-sm-8">
 													<select name="id_visita" class="form-control chosen-select" required>	
 														<option value="<?php echo $row->id_visita; ?>" selected><?php echo $row->id_visita; ?></option>
 													</select>												      	 
@@ -156,8 +156,8 @@ $('#formPresupuesto').submit(function(event){
 									    </div>
 									    
 	    								<div class="form-group even">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('vendedor'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('vendedor'); ?></label>
+												<div class="col-sm-8">
 													<?php
 														foreach ($vendedores as $key) {
 															if($key->id_vendedor == $row->id_vendedor){
@@ -174,8 +174,8 @@ $('#formPresupuesto').submit(function(event){
 									    </div>
 	    								
 	    								<div class="form-group odd">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('cliente'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('cliente'); ?></label>
+												<div class="col-sm-8">
 													<?php
 														foreach ($clientes as $key) {
 															if($key->id_cliente == $row->id_cliente){
@@ -192,8 +192,8 @@ $('#formPresupuesto').submit(function(event){
 									    </div>
 									        								
 		    							<div class="form-group even">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('fecha'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('fecha'); ?></label>
+												<div class="col-sm-8">
 													<input type="text" name="fecha" class="form-control datepicker" value="<?php echo date('d/m/Y', strtotime($row->fecha));?>" required>	 
 												</div>
 										</div>
@@ -201,7 +201,8 @@ $('#formPresupuesto').submit(function(event){
 										<hr />
 										
 										<div class="form-group even">
-											<div class="col-sm-4 col-sm-offset-3">
+											<label class="col-sm-2 control-label"></label>
+											<div class="col-sm-8">
 												<button type="submit" class="btn btn-primary"><?php echo $this->lang->line('guardar'); ?></button>
 												<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" onclick="confirmarPresupuesto()">
 											</div>
@@ -215,8 +216,8 @@ $('#formPresupuesto').submit(function(event){
 										 
 										 <!-- NUEVA CARGA DE PRESUPUESTO -->
 										 <div class="form-group odd">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('visita'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('visita'); ?></label>
+												<div class="col-sm-8">
 													<select id="id_visita" name="id_visita" class="form-control chosen-select" onchange=" busqueda()">	
 														<option value='' disabled selected style='display:none;'>Seleccione una opcion...</option>
 														<?php
@@ -226,7 +227,7 @@ $('#formPresupuesto').submit(function(event){
 														?>
 													</select>												      	 
 									      		</div>
-									      		<div class="col-sm-1 col-sm-offset-3">
+									      		<div class="col-sm-1">
 										      		<a role="button" class="btn btn-primary btn-sm" href="<?php echo base_url().'index.php/Visitas/carga/'; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('agregar').' '.$this->lang->line('visita');?>" style="margin-top: 15%">
 														<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 													</a>
@@ -234,8 +235,8 @@ $('#formPresupuesto').submit(function(event){
 									    </div>
 									    
 	    								<div class="form-group even">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('vendedor'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('vendedor'); ?></label>
+												<div class="col-sm-8">
 													<select id="id_vendedor" name="id_vendedor" class="form-control chosen-select" onchange=" busqueda2()" data-placeholder="Seleccione un <?php echo $this->lang->line('vendedor'); ?>" required>	
 														<option></option>
 														<?php
@@ -245,7 +246,7 @@ $('#formPresupuesto').submit(function(event){
 														?>
 													</select>												      	 
 									      		</div>
-									      		<div class="col-sm-1 col-sm-offset-3">
+									      		<div class="col-sm-1">
 										      		<a role="button" class="btn btn-primary btn-sm" href="<?php echo base_url().'index.php/Vendedores/vendedores_abm/tab1/add'; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('agregar').' '.$this->lang->line('vendedor');?>" style="margin-top: 15%">
 														<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 													</a>
@@ -253,13 +254,13 @@ $('#formPresupuesto').submit(function(event){
 									    </div>
 	    								
 	    								<div class="form-group odd">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('cliente'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('cliente'); ?></label>
+												<div class="col-sm-8">
 													<select id="id_cliente" name="id_cliente" class="form-control chosen-select" data-placeholder="Seleccione un <?php echo $this->lang->line('cliente'); ?>" required>	
 														<!-- SE LLENA CON AJAX -->
 													</select> 
 									     		</div>
-									     		<div class="col-sm-1 col-sm-offset-3">
+									     		<div class="col-sm-1">
 										      		<a role="button" class="btn btn-primary btn-sm" href="<?php echo base_url().'index.php/Clientes/clientes_abm/tab1/add'; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('agregar').' '.$this->lang->line('cliente');?>" style="margin-top: 15%">
 														<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 													</a>
@@ -267,8 +268,8 @@ $('#formPresupuesto').submit(function(event){
 									    </div>
 									        								
 		    							<div class="form-group even">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('fecha'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1" id="date_add">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('fecha'); ?></label>
+												<div class="col-sm-8" id="date_add">
 													<input type="text" name="fecha" class="form-control datepicker" value="" required>	 
 												</div>
 										</div>
@@ -276,7 +277,8 @@ $('#formPresupuesto').submit(function(event){
 										<hr />
 										
 										<div class="form-group even">
-											<div class="col-sm-4 col-sm-offset-3">
+											<label class="col-sm-2 control-label"></label>
+											<div class="col-sm-8">
 												<button type="submit" class="btn btn-primary" id="button-submit" onclick="prueba()"><?php echo $this->lang->line('guardar'); ?></button>
 												<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" onclick="confirmarPresupuesto()">
 											</div>

@@ -64,6 +64,18 @@
 		
 		<!--------------------------------------------------------------------
 		----------------------------------------------------------------------
+								BookBlock
+		----------------------------------------------------------------------
+		--------------------------------------------------------------------->
+		
+		<link href="<?php echo base_url().'libraries/BookBlock/css/bookblock.css'?>" rel="stylesheet"/>
+		<script src="<?php echo base_url().'libraries/BookBlock/js/modernizr.custom.js'?>"></script>
+		<script src="<?php echo base_url().'libraries/BookBlock/js/jquerypp.custom.js'?>"></script>
+		<script src="<?php echo base_url().'libraries/BookBlock/js/jquery.bookblock.js'?>"></script>
+		<script src="<?php echo base_url().'libraries/BookBlock/js/bookblock.js'?>"></script>
+		
+		<!--------------------------------------------------------------------
+		----------------------------------------------------------------------
 								Mis librerias
 		----------------------------------------------------------------------
 		--------------------------------------------------------------------->

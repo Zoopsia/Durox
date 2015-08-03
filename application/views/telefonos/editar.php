@@ -53,7 +53,7 @@
 										
 										<div class="form-group even">
 										  	<label class="col-sm-2 control-label"><?php echo $this->lang->line('fax'); ?></label>
-										  		<div class="col-sm-1">
+										  		<div class="col-sm-8">
 										  			<?php
 														if($row->fax == 1)
 											   				echo '<input type="checkbox" name="fax" value="1" checked>';

@@ -58,7 +58,7 @@ function provincias_activas(){
 										
 										<div class="form-group even">
 											<label class="col-sm-2 control-label"><?php echo $this->lang->line('cod_postal'); ?></label>
-												<div class="col-sm-2">
+												<div class="col-sm-8">
 													<input type="text" name="cod_postal" class="form-control" pattern="[0-9]*" value="<?php echo $row->cod_postal ?>" required> 	    	
 												</div> 
 										</div>

@@ -25,6 +25,7 @@ class Productos extends My_Controller {
 		
 		$db['productos'] 	= $this->productos_model->getRegistro($id);
 		$db['imagenes'] 	= $this->productos_model->getImagenes($id);
+		$db['precios'] 		= $this->productos_model->getPrecios();
 
 		$this->cargar_vista($db, 'pestanas');			
 	}
@@ -48,6 +49,9 @@ class Productos extends My_Controller {
 			$crud->display_as('id_producto','N° Producto')
 				 ->display_as('nombre','Producto')
 				 ->display_as('ficha_tecnica','Ficha Técnica');
+				
+			$crud->required_fields('nombre',
+							'precio');
 			
 			$crud->set_subject('Productos');
 			

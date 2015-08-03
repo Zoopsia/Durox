@@ -64,7 +64,7 @@ function provincias_activas(){
 		  						<div style="padding: 0 50px">
 			  						<div class="form-group odd">
 										<label class="col-sm-2 control-label"><?php echo $this->lang->line('direccion'); ?></label>
-											<div class="col-sm-3">	
+											<div class="col-sm-8">	
 												<div class="input-group">		
 													<div class="input-group-addon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></div>
 													<input type="text" name="direccion" class="form-control" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('direccion'); ?>" required> 	    	 	
@@ -74,7 +74,7 @@ function provincias_activas(){
 									
 									<div class="form-group even">
 										<label class="col-sm-2 control-label"><?php echo $this->lang->line('cod_postal'); ?></label>
-											<div class="col-sm-3">
+											<div class="col-sm-8">
 												<input type="text" name="cod_postal" class="numeric form-control" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('cod_postal'); ?>" required> 	    	
 											</div> 
 									</div>

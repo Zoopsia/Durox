@@ -195,7 +195,7 @@ function volverHide(){
 									</div>
 	    							
 		    						<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupos_clientes'); ?></label>
-										<div class="col-md-3">
+										<div class="col-md-6">
 											<select id="grupos" name="id_grupo_cliente" class="form-control chosen-select" data-placeholder="Seleccione un Grupo..." onchange="reglasActivas(),clientesActivos()">
 		    									<option></option>
 		    									<?php
@@ -278,10 +278,9 @@ function volverHide(){
 		     						<div class="tab-content">
 			     						<div class="tab-pane fade" id="grupo1">
 			     							<div class="col-md-9" >
-				     							<div class="form-group">
-													<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupo'); ?></label>
-														
-														<div class="col-sm-5">
+				     							<div class="form-group odd">
+													<label class="col-sm-2 control-label"><?php echo $this->lang->line('grupo'); ?></label>
+														<div class="col-sm-8">
 															<div class="input-group">
 																<div class="input-group-addon"><span class="fa fa-users" aria-hidden="true"></span></div>
 																<input type="text" id="grupo_nombre" name="grupo_nombre" class="form-control" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('nombre'); ?>" required> 	    	
@@ -293,23 +292,23 @@ function volverHide(){
 									
 										<div class="tab-pane fade" id="grupo2">
 		     								<div class="col-md-9">
-		     									<div class="form-group">
-													<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('regla'); ?></label>
-														<div class="col-sm-5">
+		     									<div class="form-group odd">
+													<label class="col-sm-2 control-label"><?php echo $this->lang->line('regla'); ?></label>
+														<div class="col-sm-8">
 															<input type="text" id="regla" name="regla" class="numeric form-control" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('nombre'); ?>" required> 	    	
 														</div> 
 												</div>
 												
-												<div class="form-group">
-													<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('valor').' %'; ?></label>
-														<div class="col-sm-4">
+												<div class="form-group even">
+													<label class="col-sm-2 control-label"><?php echo $this->lang->line('valor').' %'; ?></label>
+														<div class="col-sm-8">
 															<input type="text" id="valor" name="valor" class="numeric form-control" pattern="[0-9]*" placeholder="%" required> 	    	
 														</div> 
 												</div>
 												
-												<div class="form-group">
-													<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('tipo'); ?></label>
-														<div class="col-sm-4">
+												<div class="form-group odd">
+													<label class="col-sm-2 control-label"><?php echo $this->lang->line('tipo'); ?></label>
+														<div class="col-sm-8">
 															<select name="tipo" id="tipo" class="form-control">
 																<option value="0" selected><?php echo $this->lang->line('aumento'); ?></option>
 																<option value="1"><?php echo $this->lang->line('descuento'); ?></option>
@@ -318,8 +317,8 @@ function volverHide(){
 												</div>
 												
 												<div class="form-group">
-										  			<label class="col-sm-1 col-sm-offset-1 control-label"></label>
-											      		<div class="col-md-6">
+										  			<label class="col-sm-2 control-label"></label>
+											      		<div class="col-md-8">
 												  	  		<input type="button" value="<?php echo $this->lang->line('guardar'); ?>" class="btn btn-primary" id="btn-guardar" onclick="nuevoGrupo()">
 												  	  		<button type="submit" class="btn btn-primary" name="btn-save" value="2"><?php echo $this->lang->line('guardaryvolver'); ?></button> 	
 												  	  		<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" id="btn-cancelar" onclick="confirmarGrupo()">

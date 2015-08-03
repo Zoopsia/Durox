@@ -371,3 +371,8 @@ input#cantidad{
 	vertical-align: top; 
 	margin-left: 15px;
 }
+
+.btn-mover-fotos{
+	margin-top: 15px; 
+	width: 30px
+}

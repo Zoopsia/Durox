@@ -51,6 +51,8 @@ class Pedidos extends My_Controller {
 				 ->display_as('id_vendedor','Vendedor')
 				 ->display_as('id_estado_pedido','Estado')
 				 ->display_as('date_add','Fecha Ingreso');
+				 
+			$crud->required_fields();
 			
 			$crud->set_subject('Pedidos');
 			
