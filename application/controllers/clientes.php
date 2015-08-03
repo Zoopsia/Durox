@@ -56,6 +56,13 @@ class Clientes extends My_Controller {
 				 ->display_as('razon_social','Razon Social')
 				 ->display_as('id_grupo_cliente','Grupo')
 				 ->display_as('id_iva','Situacion IVA');
+				 
+			$crud->required_fields('nombre',
+							'apellido',
+							'razon_social',
+							'cuit',
+							'id_grupo_cliente',
+							'id_iva');	 
 			
 			$crud->set_subject('Cliente');
 			
@@ -77,6 +84,7 @@ class Clientes extends My_Controller {
 			$crud->unset_print();
 			$crud->unset_read();
 			$crud->unset_edit();
+			$crud->unset_delete();
 			
 			$output = $crud->render();
 			

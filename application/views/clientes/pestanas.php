@@ -104,9 +104,14 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 					                	<?php
 						                    if($clientes)
 											{
-												foreach ($clientes as $row){ 
-							      					echo '<img alt="User Pic" src="'.$row->imagen.'" class="img-circle img-responsive">';
-													if($row->eliminado != 1){
+												foreach ($clientes as $row)
+												{
+													if($row->imagen != '')
+													{ 
+							      						echo '<img alt="User Pic" src="'.$row->imagen.'" class="img-perfil img-circle img-responsive">';
+													}
+													if($row->eliminado != 1)
+													{
 														echo '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#popEditar" style="margin-top: 10%">';
 												  			echo $this->lang->line('editar');
 														echo '</button>';
@@ -128,21 +133,14 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 													<form action="<?php echo base_url()."index.php/clientes/editarCliente/$row->id_cliente"?>" class="form-horizontal" method="post" enctype="multipart/form-data">
 														<div class="modal-body">
 											       				<div class="form-group">
-																  	<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('alias'); ?></label>
+																  	<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('alias'); ?></label>
 																		<div class="col-sm-4 col-sm-offset-1">
 																			<input type="text" name="alias" class="form-control" pattern="^[A-Za-z0-9 ]+$" value="<?php echo $row->nombre_fantasia ?>">	 
 																		</div>
 																</div>
 																
 																<div class="form-group">
-																  	<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('web'); ?></label>
-																		<div class="col-sm-4 col-sm-offset-1">
-																			<input type="text" name="web" class="form-control" pattern="^www.[a-zA-Z0.9._-]{4,}$" value="<?php echo $row->web ?>" placeholder="www.sitio-web.com">
-																		</div>
-																</div>
-																
-																<div class="form-group">
-																  	<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupos_clientes'); ?></label>
+																  	<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupos_clientes'); ?></label>
 																		<div class="col-sm-4 col-sm-offset-1">
 																			<select name="id_grupo_cliente" class="form-control chosen-select">
 																				<?php
@@ -160,7 +158,7 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 																</div>
 																
 																<div class="form-group">
-																  	<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('imagen'); ?></label>
+																  	<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('imagen'); ?></label>
 																		<div class="col-sm-4 col-sm-offset-1">
 																			<input type="file" name="imagen">	 
 																		</div>
@@ -179,45 +177,6 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 					                <div class=" col-md-9 col-lg-9 "><!--carga info cliente-->
 					                	<table class="table table-striped table-user-information"> 
 						                    <?php
-						                    /*---- MEJORAR ESTO !!! ---*/
-						                    if($telefonos)
-						                    {
-						                    	$i = 0;					                
-												foreach ($telefonos as $row) 
-												{
-													$i++;
-													if($i == 1){
-														$telefono = $row->telefono;
-														$cod_area = $row->cod_area;
-													}
-												}
-											}
-											
-											if($direcciones)
-						                    {
-						                    	$i = 0;					                
-												foreach ($direcciones as $row) 
-												{
-													$i++;
-													if($i == 1){
-														$direccion = $row->direccion;
-													}
-												}
-											}
-											
-											if($mails)
-						                    {
-						                    	$i = 0;					                
-												foreach ($mails as $row) 
-												{
-													$i++;
-													if($i == 1){
-														$mail = $row->mail;
-													}
-												}
-											}
-											/*---- VER LA FORMA DE MEJORAR LOS FOREACH ---*/
-						                    
 							                    if($clientes){
 							                    	foreach ($clientes as $row) 
 								      				{
@@ -230,12 +189,6 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 															echo  "<tr>";								                     
 											                echo  '<td>'.$this->lang->line('apellido').':</td>';
 											                echo  '<td class="tabla-datos-importantes">'.$row->apellido.'</td>';
-											                echo  "</tr><tr>";								                     
-											                echo  '<td>'.$this->lang->line('razon_social').':</td>';
-											                echo  '<td class="tabla-datos-importantes">'.$row->razon_social.'</td>';
-											                echo  "</tr><tr>";								                     
-											                echo  '<td>'.$this->lang->line('web').':</td>';
-											                echo  "<td class='tabla-datos-importantes'><a href='#' target='_blank' onclick=\"javascript:location.href='https://".$row->web."/'\">".$row->web."</a></td>";
 											                echo  "</tr><tr>";
 															echo  '<td>'.$this->lang->line('alias').':</td>';
 											                echo  '<td class="tabla-datos-importantes">'.$row->nombre_fantasia.'</td>';
@@ -243,33 +196,15 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 											                echo  '<td>'.$this->lang->line('cuit').':</td>';
 											                echo  '<td class="tabla-datos-importantes">'.cuit($row->cuit).'</td>';
 											                echo  "</tr><tr>";	
-											                echo  '<td>'.$this->lang->line('iva').':</td>';
-											                echo  '<td class="tabla-datos-importantes">'.$row->iva.'</td>';
+											                echo  '<td>'.$this->lang->line('razon_social').':</td>';
+											                echo  '<td class="tabla-datos-importantes">'.$row->razon_social.'</td>';
 															echo  "</tr><tr>";	
 											                echo  '<td>'.$this->lang->line('grupos_clientes').':</td>';
 											                echo  '<td class="tabla-datos-importantes"><a href="'.base_url().'index.php/Grupos/getReglasGrupos/'.$row->id_grupo_cliente.'">';
 											                echo  $row->grupo_nombre;
 											                echo  "</a></td>";
-											                echo  "</tr>";
-															if($telefonos){
-												                echo  "<tr>";
-																echo  '<td>'.$this->lang->line('telefono').':</td>';
-												                echo  '<td class="tabla-datos-importantes">'.$cod_area.' - '.$telefono.'</td>';
-																echo  "</tr>";
-															}
-															if($direcciones){
-												                echo  "<tr>";
-																echo  '<td>'.$this->lang->line('direccion').':</td>';
-												                echo  '<td class="tabla-datos-importantes">'.$direccion.'</td>';		
-												               	echo  "</tr>";
-															}
-															if($mails){
-												                echo  "<tr>";
-																echo  '<td>'.$this->lang->line('correo').':</td>';
-												                echo  '<td class="tabla-datos-importantes">'.$mail.'</td>';
-																echo  "</tr>";
-															}
-														    echo  "</tbody>";
+											                echo  "</tr>";		
+											                echo  "</tbody>";
 											        	}
 														else{
 															echo '<div class="row">
@@ -277,8 +212,7 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 														            	<div class="alert-message alert-message-danger">
 														                	<h4>'.$this->lang->line('cliente').' '.$this->lang->line('eliminado').'</h4>
 														                	<p>
-															                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. For performance
-															                    reasons, the Tooltip and Popover data-apis are opt-in, meaning 
+															                    
 																			</p>
 														            	</div>
 														        	</div>
@@ -411,11 +345,13 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 																				/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 																				echo '<td style="text-align: center;">';
 																				echo '<a href="'.base_url().'index.php/telefonos/cargaEditar/'.$row->id_telefono.'/'.$key->id_cliente.'/1"';
-																				echo 'class="btn btn-primary btn-xs glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('editar').'" style="margin : 0 5px">';
+																				echo 'class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('editar').'" style="margin : 0 5px">';
+																				echo '<i class="fa fa-edit"></i>';
 																				echo '</a>';
 																				/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 																				echo '<a href="#" onclick="eliminarTelefono('.$row->id_telefono.','.$key->id_cliente.',1)"';
-																				echo 'class="btn btn-danger btn-xs glyphicon glyphicon-minus" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('eliminar').'">';
+																				echo 'class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('eliminar').'">';
+																				echo '<i class="fa fa-minus"></i>';
 																				echo '</a>';
 																				echo '</td>';
 																				echo "</tr>";
@@ -443,9 +379,7 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 													            <div class="alert-message alert-message-danger">
 													                <h4>NO HAY TELÉFONO RELACIONADO CON EL CLIENTE</h4>
 													                <p>
-													                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. For performance
-													                    reasons, the Tooltip and Popover data-apis are opt-in, meaning 
-																	<a href="<?php echo base_url().'index.php/telefonos/telefonos/'.$row->id_cliente.'/1'; ?>"><?php echo $this->lang->line('agregar').' '.$this->lang->line('telefono'); ?></a>
+													                <a class="btn btn-default" href="<?php echo base_url().'index.php/telefonos/telefonos/'.$row->id_cliente.'/1'; ?>"><?php echo $this->lang->line('agregar').' '.$this->lang->line('telefono'); ?></a>
 																	</p>
 													            </div>
 													        </div>
@@ -531,11 +465,13 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 																				/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 																				echo '<td style="text-align: center;">';
 																				echo '<a href="'.base_url().'index.php/direcciones/cargaEditar/'.$row->id_direccion.'/'.$key->id_cliente.'/1"';
-																				echo 'class="btn btn-primary btn-xs glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('editar').'" style="margin : 0 5px">';
+																				echo 'class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('editar').'" style="margin : 0 5px">';
+																				echo '<i class="fa fa-edit"></i>';
 																				echo '</a>';
 																				/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 																				echo '<a href="#" onclick="eliminarDireccion('.$row->id_direccion.','.$key->id_cliente.',1)"';
-																				echo 'class="btn btn-danger btn-xs glyphicon glyphicon-minus" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('eliminar').'">';
+																				echo 'class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('eliminar').'">';
+																				echo '<i class="fa fa-minus"></i>';
 																				echo '</a>';
 																				echo '</td>';
 																				echo "</tr>";
@@ -562,9 +498,7 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 													            <div class="alert-message alert-message-danger">
 													                <h4>NO HAY DIRECCIÓN RELACIONADA CON EL CLIENTE</h4>
 													                <p>
-													                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. For performance
-													                    reasons, the Tooltip and Popover data-apis are opt-in, meaning 
-																	<a href="<?php echo base_url().'index.php/direcciones/direcciones/'.$row->id_cliente.'/1'; ?>"><?php echo $this->lang->line('agregar').' '.$this->lang->line('direccion'); ?></a>
+													                <a class="btn btn-default" href="<?php echo base_url().'index.php/direcciones/direcciones/'.$row->id_cliente.'/1'; ?>"><?php echo $this->lang->line('agregar').' '.$this->lang->line('direccion'); ?></a>
 																	</p>
 													            </div>
 													        </div>
@@ -639,11 +573,13 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 																				/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 																				echo '<td style="text-align: center;">';
 																				echo '<a href="'.base_url().'index.php/mails/cargaEditar/'.$row->id_mail.'/'.$key->id_cliente.'/1"';
-																				echo 'class="btn btn-primary btn-xs glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('editar').'" style="margin : 0 5px">';
+																				echo 'class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('editar').'" style="margin : 0 5px">';
+																				echo '<i class="fa fa-edit"></i>';
 																				echo '</a>';
 																				/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 																				echo '<a href="#" onclick="eliminarCorreo('.$row->id_mail.','.$key->id_cliente.',1)"';
-																				echo 'class="btn btn-danger btn-xs glyphicon glyphicon-minus" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('eliminar').'">';
+																				echo 'class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('eliminar').'">';
+																				echo '<i class="fa fa-minus"></i>';
 																				echo '</a>';
 																				echo '</td>';
 																				echo "</tr>";
@@ -670,9 +606,7 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 													            <div class="alert-message alert-message-danger">
 													                <h4>NO HAY CORREO RELACIONADO CON EL CLIENTE</h4>
 													                <p>
-													                    Lorem Ipsum is simply dummy text of the printing and typesetting industry. For performance
-													                    reasons, the Tooltip and Popover data-apis are opt-in, meaning 
-																	<a href="<?php echo base_url().'index.php/mails/mails/'.$row->id_cliente.'/1'; ?>"><?php echo $this->lang->line('agregar').' '.$this->lang->line('correo'); ?></a>
+													               	<a class="btn btn-default" href="<?php echo base_url().'index.php/mails/mails/'.$row->id_cliente.'/1'; ?>"><?php echo $this->lang->line('agregar').' '.$this->lang->line('correo'); ?></a>
 																	</p>
 													            </div>
 													        </div>

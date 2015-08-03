@@ -6,21 +6,27 @@ class Login extends CI_Controller {
 	{
 		parent::__construct();
 		$this->load->helper('url');
-		$this->load->model('usuarios_model','',TRUE);
+		$this->load->model('usuarios_model');
+		$this->load->model('empresas_model');
+		
 	}
 
 	function index()
 	{
+		$db['empresas'] = $this->empresas_model->getRegistro(1);
+		
 		$this->load->helper(array('form'));
-		$this->load->view('plantilla/head');
+		$this->load->view('plantilla/head', $db);
 		$this->load->view('login/inicio');
 	}
  
 	function logout()
 	{
+		$db['empresas'] = $this->empresas_model->getRegistro(1);
+		
 		$this->session->unset_userdata('logged_in');
 	  	session_destroy();
-	  	$this->load->view('plantilla/head');
+	  	$this->load->view('plantilla/head', $db);
 	   	$this->load->view('login/inicio');
 	}
 	

@@ -8,7 +8,17 @@
     <body class="bg-black">
 
         <div class="form-box" id="login-box">
-            <div class="header bg-light-blue">Casta</div>
+            <div class="header bg-light-blue">
+            	 <?php
+                	if($empresas)
+					{
+						foreach ($empresas as $row) 
+						{
+							echo $row->nombre;
+						}
+					}
+                ?>
+            </div>
            	<form action="<?php echo base_url()?>index.php/login/control" method="post">
            		
                 <div class="body bg-gray">

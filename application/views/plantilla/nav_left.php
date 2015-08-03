@@ -1,4 +1,6 @@
-<?php $array_activo = moduloActivo($this->uri->segment(1));?>
+<?php 
+$array_activo = moduloActivo($this->uri->segment(1));
+?>
 <div class="wrapper row-offcanvas row-offcanvas-left">
             <!-- Left side column. contains the logo and sidebar -->
             <aside class="left-side sidebar-offcanvas">                
@@ -10,7 +12,7 @@
                             <img src="<?php echo base_url()?>libraries/plantilla/img/avatar3.png" class="img-circle" alt="User Image" />
                         </div>
                         <div class="pull-left info">
-                            <p>Admin</p>
+                            <p><?php echo $session_data['usuario'] ?></p>
 
                             <a href="#">Administrador</a>
                         </div>
@@ -127,6 +129,9 @@
                             <ul class="treeview-menu" style="display: none;">
 					            <li><a href="<?php echo base_url().'index.php/Productos/productos_abm/tab1'?>"><?php echo $this->lang->line('listado_de').' '.$this->lang->line('productos'); ?></a></li>
 					            <li><a href="<?php echo base_url().'index.php/Productos/productos_abm/tab1/add'?>"><?php echo $this->lang->line('nuevo'); ?></a></li>
+					            <li class="divider"></li>
+					            <li><a href="<?php echo base_url().'index.php/Productos/reglas/'?>"><?php echo $this->lang->line('reglas_descuento'); ?></a></li>
+					          	<li class="divider"></li>
 					            <li><a href="<?php echo base_url().'index.php/Productos/productos_abm/tab2'?>"><?php echo $this->lang->line('busqueda_avanzada'); ?></a></li>   
 							</ul>
 				        </li> 
@@ -141,7 +146,6 @@
                             </a> 
                             <ul class="treeview-menu" style="display: none;">
 				            	<li><a href="<?php echo base_url().'index.php/Grupos/adminClientes/tab1'?>"><?php echo $this->lang->line('grupos'); ?></a></li>
-				          		<li><a href="<?php echo base_url().'index.php/Tipos/tipos_abm/'?>"><?php echo $this->lang->line('tipos'); ?></a></li>
 				          	</ul>
 				        </li>
                     </ul>

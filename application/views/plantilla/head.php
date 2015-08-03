@@ -21,6 +21,8 @@
 		--------------------------------------------------------------------->
 		
 		<script src="<?php echo base_url().'libraries/jquery-ui/jquery-ui.js'?>"></script>
+		<link href="<?php echo base_url()?>libraries/plantilla/css/jQueryUI/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+		
 
 
 		<!--------------------------------------------------------------------

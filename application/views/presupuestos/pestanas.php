@@ -9,7 +9,7 @@ $(document).ready(function(){
 $aux  = 0;
 $aux2 = 0;
 ?>
-			<div class="col-md-12">
+<div class="col-md-12">
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
 		  				<i class="fa fa-book"></i> <?php echo $this->lang->line('presupuesto'); ?>
@@ -94,7 +94,7 @@ $aux2 = 0;
 														echo $this->lang->line('id').' '.$this->lang->line('visita').': '.'<a href="'.base_url().'index.php/Visitas/carga/'.$row->id_visita.'/0">'.$row->id_visita.'</a>';
 														echo "</div>";
 														echo '<div class="odd">';
-														$date	= date_create($row->date_upd);
+														$date	= date_create($row->fecha);
 														echo $this->lang->line('fecha').': '.date_format($date, 'd/m/Y');
 														echo "</div>";
 														foreach($estados as $key){
@@ -120,8 +120,9 @@ $aux2 = 0;
                         <div class="col-xs-12 table-responsive">
                         	<?php echo $this->lang->line('detalle'); ?>
                                 <?php
-	     								foreach($presupuesto as $row){
-	     									if($row->id_estado_presupuesto==3)
+	     								foreach($presupuesto as $row)
+	     								{
+	     									if($row->id_estado_presupuesto == 3)
 	     									{
 	     										echo '<table class="table" cellspacing="0" width="100%">';
 	     									}
@@ -131,10 +132,15 @@ $aux2 = 0;
 	     								}
 										
 										$total = 0;
-										foreach ($presupuestos as $row) {
-											if($row->estado_linea != 3)
-												$total = $row->subtotal + $total;
+										if($presupuestos)
+										{
+											foreach ($presupuestos as $row) 
+											{
+												if($row->estado_linea != 3)
+													$total = $row->subtotal + $total;
+											}
 										}
+										
 										
 	     							?>
 								        <thead class="tabla-datos-importantes">
@@ -150,23 +156,26 @@ $aux2 = 0;
 								 
 								 		<tbody>
 								        <?php	
-								        foreach ($presupuestos as $row) 
-								        {
-											
-											if($row->estado == 'Rechazado'){
-												echo '<tr style="background-color: #f56954; color: #fff;">';
-											}
-											else{
-					     						echo '<tr>';	
-											}
-											echo '<td>'.$row->nombre.'</td>';
-											echo '<td>'.$row->cantidad.'</td>';
-											echo '<td>$ '.$row->preciobase.'</td>';
-											echo '<td>$ '.$row->precio.'</td>';
-											echo '<td>$ '.$row->subtotal.'</td>';
-											echo '<th>'.$row->estado.'</th>';				
-											echo '</tr>';
-										}			
+								        if($presupuestos)
+										{
+									        foreach ($presupuestos as $row) 
+									        {
+												
+												if($row->estado == 'Rechazado'){
+													echo '<tr style="background-color: #f56954 !important; color: #fff;">';
+												}
+												else{
+						     						echo '<tr>';	
+												}
+												echo '<td>'.$row->nombre.'</td>';
+												echo '<td>'.$row->cantidad.'</td>';
+												echo '<td>$ '.$row->preciobase.'</td>';
+												echo '<td>$ '.$row->precio.'</td>';
+												echo '<td>$ '.$row->subtotal.'</td>';
+												echo '<th>'.$row->estado.'</th>';				
+												echo '</tr>';
+											}	
+										}		
 										?>
 										</tbody>
 								    </table>              
@@ -204,6 +213,9 @@ $aux2 = 0;
 					
 					<div class="row no-print">
                         <div class="col-xs-12">
+                        	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#informacion">
+								<i class="fa fa-info-circle"></i>
+							</button>
                             <!--
                             <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
                             -->
@@ -223,13 +235,49 @@ $aux2 = 0;
 										}
 									}
 									?> 
+									
+									
                          </div>
-                    </div>						
-											
-				  		
+                    </div>	
+                   	
 			  		</div>
 			  		
 				</div>
 			</div>
+			
 		</div>  
-	
+		
+		
+		<!-- Modal -->
+<div class="modal fade" id="informacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><?php echo $this->lang->line('informacion');?></h4>
+      </div>
+      <div class="modal-body">
+      	<div class="row">	
+      		<div class="col-lg-4">
+      			<?php echo $this->lang->line('fecha'); ?> 
+      			<?php echo $this->lang->line('creacion'); ?> 
+			</div>
+			<div class="col-lg-8">
+				<?php echo date('d-m-Y H:i:s', strtotime($row->date_add)); ?>
+			</div>
+			
+			<div class="col-lg-4">
+      			<?php echo $this->lang->line('fecha'); ?> 
+      			<?php echo $this->lang->line('modificacion'); ?> 
+			</div>
+			<div class="col-lg-8">
+				<?php echo date('d-m-Y H:i:s', strtotime($row->date_upd)); ?>
+			</div>
+		</div>	
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->lang->line('cerrar');?></button>
+      </div>
+    </div>
+  </div>
+</div>

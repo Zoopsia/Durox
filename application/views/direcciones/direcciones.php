@@ -32,9 +32,6 @@ function provincias_activas(){
 
 </script>
 
-
-<nav class="navbar" role="navigation">
-	<div class="container">
 	    <div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default">
@@ -66,7 +63,7 @@ function provincias_activas(){
 		  						
 		  						<div style="padding: 0 50px">
 			  						<div class="form-group odd">
-										<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('direccion'); ?></label>
+										<label class="col-sm-2 control-label"><?php echo $this->lang->line('direccion'); ?></label>
 											<div class="col-sm-3">	
 												<div class="input-group">		
 													<div class="input-group-addon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></div>
@@ -76,7 +73,7 @@ function provincias_activas(){
 									</div>
 									
 									<div class="form-group even">
-										<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('cod_postal'); ?></label>
+										<label class="col-sm-2 control-label"><?php echo $this->lang->line('cod_postal'); ?></label>
 											<div class="col-sm-3">
 												<input type="text" name="cod_postal" class="numeric form-control" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('cod_postal'); ?>" required> 	    	
 											</div> 
@@ -84,8 +81,8 @@ function provincias_activas(){
 								
 		  
 									<div class="form-group odd">
-										<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('tipo'); ?></label>
-										  	<div class="col-md-3">
+										<label class="col-sm-2 control-label"><?php echo $this->lang->line('tipo'); ?></label>
+										  	<div class="col-md-8">
 												<select name="id_tipo" class="form-control chosen-select" data-placeholder="Seleccione un tipo..." required>
 													<option></option>
 													<?php
@@ -98,8 +95,8 @@ function provincias_activas(){
 									</div>
 									
 									<div class="form-group even">
-										<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('pais'); ?></label>
-										  	<div class="col-md-3">
+										<label class="col-sm-2 control-label"><?php echo $this->lang->line('pais'); ?></label>
+										  	<div class="col-md-8">
 												<select id="paises" name="id_pais" class="form-control" onchange="paises_activos()">	
 													<option value='' disabled selected style='display:none;'>Seleccione una opcion...</option>
 													<?php
@@ -113,16 +110,16 @@ function provincias_activas(){
 									
 									
 									<div class="form-group odd">
-										<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('provincia'); ?></label>
-										  	<div class="col-md-3">
+										<label class="col-sm-2 control-label"><?php echo $this->lang->line('provincia'); ?></label>
+										  	<div class="col-md-8">
 												<select id="provincias" name="id_provincia" class="form-control" onchange="provincias_activas()">	
 												</select>
 											</div>
 									</div>
 									
 									<div class="form-group even">
-										<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('departamento'); ?></label>
-										  	<div class="col-md-3">
+										<label class="col-sm-2 control-label"><?php echo $this->lang->line('departamento'); ?></label>
+										  	<div class="col-md-8">
 												<select id="departamentos" name="id_departamento" class="form-control">		
 												</select>
 											</div>
@@ -131,8 +128,8 @@ function provincias_activas(){
 									<hr />
 									
 									<div class="form-group">
-									  	<label class="col-sm-1 control-label"></label>
-								      		<div class="col-md-6">
+									  	<label class="col-sm-2 control-label"></label>
+								      		<div class="col-md-8">
 										  		<button type="submit" class="btn btn-primary" name="btn-save" value="1"><?php echo $this->lang->line('guardar'); ?></button>	 
 										  		<button type="submit" class="btn btn-primary" name="btn-save" value="2"><?php echo $this->lang->line('guardaryvolver'); ?></button> 	
 									  	  		<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" id="btn-cancelar" onclick="confirmar(<?php echo $id.",".$tipo; ?>)">	
@@ -145,5 +142,3 @@ function provincias_activas(){
 				</div><!--panel-->
 			</div><!--contenedor-->
 		</div>    
-	</div>
-</nav>

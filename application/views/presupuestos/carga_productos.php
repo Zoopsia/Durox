@@ -140,50 +140,111 @@ function funcion1($id_producto){
 
 </script>
 
-<nav class="navbar" role="navigation">
-	<div class="container">
+
 	    <div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default">
-		  			<div class="panel-heading">
-		  				<?php echo $this->lang->line('presupuesto').' '.$presupuesto; ?>
-		  			</div>
-		  			
 		  			<div class="panel-body">
+		  				<?php
+						if($presupuestos){
+							foreach ($presupuestos as $row) {
+						?>	
+								<div class="row invoice-info">
+                        			<div class="col-sm-4 invoice-col">
+                        				<b><?php echo $this -> lang -> line('vendedor'); ?></b>
+                           			<address>
+		                                <?php
+										foreach ($vendedores as $key) {
+											if ($row -> id_vendedor == $key -> id_vendedor) {
+												echo '<a href="' . base_url() . 'index.php/vendedores/pestanas/' . $key -> id_vendedor . '">';
+												echo $key -> nombre . ', ' . $key -> apellido;
+												echo '</a>';
+												echo "<br>";
+												echo $this -> lang -> line('id') . ': ' . $key -> id_vendedor;
+												echo "<br>";
+												$aux2 = 1;
+											}
+										}
+										?>
+									</address>
+			                        </div><!-- /.col -->
+			                        <div class="col-sm-4 invoice-col">
+		                            	<b><?php echo $this -> lang -> line('cliente'); ?></b>
+		                            <address>
+		                                <?php
+										foreach ($clientes as $key) {
+											if ($row -> id_cliente == $key -> id_cliente) {
+												echo '<a href="' . base_url() . 'index.php/clientes/pestanas/' . $key -> id_cliente . '">';
+												echo $key -> nombre . ', ' . $key -> apellido;
+												echo '</a>';
+												echo "<br>";
+												echo $this -> lang -> line('cuit') . ': ' . $key -> cuit;
+												echo "<br>";
+												foreach ($iva as $value) {
+													if ($value -> id_iva == $key -> id_iva) {
+														echo $value -> iva;
+														echo "<br>";
+													}
+												}
+												echo $this -> lang -> line('id') . ': ' . $key -> id_cliente;
+												echo "<br>";
+												$aux = 1;
+											}
+										}
+															?>
+		                            </address>
+                        </div><!-- /.col -->
+                        <div class="col-sm-4 invoice-col">
+                        	<b><?php echo $this -> lang -> line('presupuesto'); ?></b>
+                            <?php
+							echo '<div class="odd">';
+							echo $this -> lang -> line('id') . ' ' . $this -> lang -> line('presupuesto') . ': ' . '<a href="#">' . $row -> id_presupuesto . '</a>';
+							echo "</div>";
+							echo '<div class="even">';
+							echo $this -> lang -> line('id') . ' ' . $this -> lang -> line('visita') . ': ' . '<a href="' . base_url() . 'index.php/Visitas/carga/' . $row -> id_visita . '/0">' . $row -> id_visita . '</a>';
+							echo "</div>";
+							echo '<div class="odd">';
+							$date = date_create($row -> fecha);
+							echo $this -> lang -> line('fecha') . ': ' . date_format($date, 'd/m/Y');
+							echo "</div>";
+							foreach ($estados as $key) {
+								if ($key -> id_estado_presupuesto == $row -> id_estado_presupuesto) {
+									echo '<div class="even">';
+									echo $this -> lang -> line('estado') . ': ' . $key -> estado;
+									echo "</div>";
+								}
+							}
+							echo '<div class="odd">';
+							echo $this -> lang -> line('total') . ' ' . $this -> lang -> line('presupuesto') . ': $ ' . $row -> total;
+							echo "</div>";
+							echo "<br>";
+
+							}
+							}
+												?>
+						</div>
+						</div>
+		  				
+		  				
+		  				
 		  				<div class="tab-content">
-		  					<div class="row">
-		  						<div class="col-sm-6">
-			  						<h3><div style="padding: 0 0 20px 60px">
-										<a href="#">
-											<?php echo $this->lang->line('carga').' '.$this->lang->line('productos'); ?>
-										</a>
-									</div></h3>
-								</div>
-								
-								<div class="col-sm-2 col-sm-offset-3">
-									
-									
-								</div>
-							</div>	
-	    						<form action="" id="formProducto" class="form-inline" method="post">
-	    							<div class="row">
-		    							<div id="table" class="col-sm-11 col-sm-offset-1" style="padding: 0 50px">
-											 <!-- NUEVA CARGA DE PRESUPUESTO -->
-											
-											 <table class="table" cellspacing="0" width="100%">
-												<thead>
-													<tr>
-														<th class="th1"><?php echo $this->lang->line("producto"); ?></th>
-														<th class="th1"><?php echo $this->lang->line("cantidad"); ?></th>
-														<th class="th1"><?php echo $this->lang->line("precio").' '.$this->lang->line("base"); ?></th>
-														<th class="th1"><?php echo $this->lang->line("precio"); ?></th>
-														<th class="th1"><?php echo $this->lang->line("subtotal"); ?></th>
-														<th></th>
-														<th style="width: 107px"></th>
+		  					<form action="" id="formProducto" class="form-inline" method="post">
+	    						<div class="row">
+		    						<div id="table" class="col-sm-12" >
+										<table class="table" cellspacing="0" width="100%">
+											<thead>
+												<tr>
+													<th class="th"><?php echo $this->lang->line("producto"); ?></th>
+													<th class="th"><?php echo $this->lang->line("cantidad"); ?></th>
+													<th class="th"><?php echo $this->lang->line("precio").' '.$this->lang->line("base"); ?></th>
+													<th class="th"><?php echo $this->lang->line("precio"); ?></th>
+													<th class="th"><?php echo $this->lang->line("subtotal"); ?></th>
+													<th></th>
+													<th style="width: 107px"></th>
 													</tr>
-												</thead>
-											 	<tbody>
-													<tr>
+											</thead>
+											<tbody>
+												<tr>
 														<th>
 															<input type="text" id="producto" name="producto" class="numeric form-control" autocomplete="off" pattern="^[A-Za-z0-9 ]+$" onkeyup="ajaxSearch();" placeholder="<?php echo $this->lang->line('producto'); ?>" required>
 															<div id="suggestions">
@@ -203,22 +264,32 @@ function funcion1($id_producto){
 														</th>
 														<th></th>
 													</tr>
+											 		
+													
 													
 													<?php
 													if($tipo==1){
 														$total = 0;
-														foreach ($detalle as $row) {
-															if($row->estado_linea != 3){
-																echo '<tr>				
-																		<th>'.$row->nombre.'</th>
-																		<th>'.$row->cantidad.'</th>
-																		<th>'.'$'.$row->preciobase.'</th>
-																		<th>'.'$'.$row->precio.'</th>
-																		<th>'.'$'.$row->subtotal.'</th>
-																		<th><a href="#" class="btn btn-danger btn-xs glyphicon glyphicon-minus" onclick="sacarProducto('.$row->id_linea_producto_presupuesto.','.$presupuesto.')" role="button" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('anular').' '.$this->lang->line('producto').'"></th>
-																		<th></th>
-																	 </tr>';
-																$total = $total + $row->subtotal;
+														if($detalle)
+														{
+															foreach ($detalle as $row) 
+															{
+																if($row->estado_linea != 3){
+																	echo '<tr>				
+																			<th>'.$row->nombre.'</th>
+																			<th>'.$row->cantidad.'</th>
+																			<th>'.'$'.$row->preciobase.'</th>
+																			<th>'.'$'.$row->precio.'</th>
+																			<th>'.'$'.$row->subtotal.'</th>
+																			<th>
+																				<a href="#" class="btn btn-danger btn-xs" onclick="sacarProducto('.$row->id_linea_producto_presupuesto.','.$presupuesto.')" role="button" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('anular').' '.$this->lang->line('producto').'">
+																				<i class="fa fa-minus"></i>
+																				</a>
+																			</th>
+																			<th></th>
+																		 </tr>';
+																	$total = $total + $row->subtotal;
+																}
 															}
 														}
 														
@@ -280,5 +351,3 @@ function funcion1($id_producto){
 				</div><!--panel-->
 			</div><!--contenedor-->
 		</div>    
-	</div>
-</nav>

@@ -72,7 +72,7 @@ class Vendedores extends My_Controller {
 			$crud->unset_print();
 			$crud->unset_read();
 			$crud->unset_edit();
-			
+			$crud->unset_delete();
 			
 			$output = $crud->render();
 			

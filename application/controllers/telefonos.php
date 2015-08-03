@@ -23,16 +23,17 @@ class Telefonos extends My_Controller {
 	
 	public function telefonos($id, $tipo, $save=null, $id_telefono=null){
 		
-		if($tipo == 1){
+		if($tipo == 1)
+		{
 			$db['clientes']		= $this->clientes_model->getRegistro($id);
 			$db['telefonos']	= $this->clientes_model->getCruce($id,'telefonos');
 		}
-		else if($tipo == 2){
+		else if($tipo == 2)
+		{
 			$db['vendedores']	= $this->vendedores_model->getRegistro($id);
 			$db['telefonos']	= $this->vendedores_model->getCruce($id,'telefonos');
 		}
 		
-		$db['empresas']			= $this->empresas_model->getRegistro(1);
 		$db['tipos']			= $this->telefonos_model->getTipos();	
 		$db['id']				= $id;
 		$db['tipo']				= $tipo;
@@ -40,30 +41,20 @@ class Telefonos extends My_Controller {
 		$db['save']					= $save;
 		$db['id_telefono']			= $id_telefono;
 		
-		
-		$this->load->view("head.php", $db);
-		$this->load->view("nav_top.php");
-		$this->load->view("nav_left.php");	
-		
-		$this->load->view($this->_subject."/telefonos.php");
+		$this->cargar_vista($db, 'telefonos');
 					
 	}
 
 	public function cargaEditar($id,$id_usuario,$tipo){
 	
-			$db['empresas']		= $this->empresas_model->getRegistro(1);
-			$db['telefonos']	= $this->telefonos_model->getRegistro($id);
-			$db['tipos']		= $this->telefonos_model->getTipos();
+		$db['telefonos']	= $this->telefonos_model->getRegistro($id);
+		$db['tipos']		= $this->telefonos_model->getTipos();
 	
-			$db['id'] 			= $id;
-			$db['id_usuario']	= $id_usuario;
-			$db['tipo']			= $tipo;
+		$db['id'] 			= $id;
+		$db['id_usuario']	= $id_usuario;
+		$db['tipo']			= $tipo;
 	
-			$this->load->view("head.php", $db);
-			$this->load->view("nav_top.php");
-			$this->load->view("nav_left.php");	
-			$this->load->view($this->_subject."/editar.php");
-				
+		$this->cargar_vista($db, 'editar');				
 	}
 	
 	public function editarTelefonos($id,$id_usuario,$tipo){
@@ -207,11 +198,13 @@ class Telefonos extends My_Controller {
 						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 						$mensaje .= '<td style="text-align: center;">';
 						$mensaje .= '<a href="' . base_url() . 'index.php/telefonos/cargaEditar/' . $row -> id_telefono . '/' . $key -> id_cliente . '/1"';
-						$mensaje .= 'class="btn btn-primary btn-xs glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="' . $this -> lang -> line('editar') . '" style="margin : 0 5px">';
+						$mensaje .= 'class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="' . $this -> lang -> line('editar') . '" style="margin : 0 5px">';
+						$mensaje .= '<i class="fa fa-edit"></i>';
 						$mensaje .= '</a>';
 						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 						$mensaje .= '<a href="#" onclick="eliminarTelefono('.$row->id_telefono.','.$key->id_cliente.',1)"';
-						$mensaje .= 'class="btn btn-danger btn-xs glyphicon glyphicon-minus" data-toggle="tooltip" data-placement="bottom" title="' . $this -> lang -> line('eliminar') . '">';
+						$mensaje .= 'class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="bottom" title="' . $this -> lang -> line('eliminar') . '">';
+						$mensaje .= '<i class="fa fa-minus"></i>';
 						$mensaje .= '</a>';
 						$mensaje .= '</td>';
 						$mensaje .= "</tr>";
@@ -220,11 +213,13 @@ class Telefonos extends My_Controller {
 						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 						$mensaje .= '<td style="text-align: center;">';
 						$mensaje .= '<a href="'.base_url().'index.php/telefonos/cargaEditar/'.$row->id_telefono.'/'.$key->id_vendedor.'/2"';
-						$mensaje .= 'class="btn btn-primary btn-xs glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="' . $this -> lang -> line('editar') . '" style="margin : 0 5px">';
+						$mensaje .= 'class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="' . $this -> lang -> line('editar') . '" style="margin : 0 5px">';
+						$mensaje .= '<i class="fa fa-edit"></i>';
 						$mensaje .= '</a>';
 						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 						$mensaje .= '<a href="#" onclick="eliminarTelefono('.$row->id_telefono.','.$key->id_vendedor.',2)"';
-						$mensaje .= 'class="btn btn-danger btn-xs glyphicon glyphicon-minus" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('eliminar').'">';
+						$mensaje .= 'class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('eliminar').'">';
+						$mensaje .= '<i class="fa fa-minus"></i>';
 						$mensaje .= '</a>';
 						$mensaje .= '</td>';
 						$mensaje .= "</tr>";	

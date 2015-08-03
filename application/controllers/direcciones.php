@@ -32,7 +32,6 @@ class Direcciones extends My_Controller {
 			$db['direcciones']		= $this->vendedores_model->getCruce($id,'direcciones');
 		}
 
-		$db['empresas']				= $this->empresas_model->getRegistro(1);
 		$db['tipos']				= $this->direcciones_model->getTipos();
 		$db['paises']				= $this->direcciones_model->getPaises();
 		$db['id']					= $id;
@@ -41,39 +40,31 @@ class Direcciones extends My_Controller {
 		$db['save']					= $save;
 		$db['id_direccion']			= $id_direccion;
 		
-			
-		$this->load->view("head.php", $db);
-		$this->load->view("nav_top.php");
-		$this->load->view("nav_left.php");	
-		
-		$this->load->view($this->_subject."/direcciones.php");
-					
+		$this->cargar_vista($db, 'direcciones');
 	}
 
 	public function cargaEditar($id,$id_usuario,$tipo){
 	
-			$db['empresas']		= $this->empresas_model->getRegistro(1);
-			$db['direcciones']	= $this->direcciones_model->getRegistro($id);
+		$db['direcciones']	= $this->direcciones_model->getRegistro($id);
 			
-			foreach ($db['direcciones'] as $row) {
-				$db['provincias']	= $this->direcciones_model->getProvincias($row->id_pais);
-			}
+		foreach ($db['direcciones'] as $row) 
+		{
+			$db['provincias']	= $this->direcciones_model->getProvincias($row->id_pais);
+		}
 
-			foreach ($db['direcciones'] as $key) {
-				$db['departamentos'] = $this->direcciones_model->getDepartamentos($key->id_provincia);
-			}
-			$db['tipos']		= $this->direcciones_model->getTipos();
-			$db['paises']		= $this->direcciones_model->getPaises();
+		foreach ($db['direcciones'] as $key) 
+		{
+			$db['departamentos'] = $this->direcciones_model->getDepartamentos($key->id_provincia);
+		}
+		
+		$db['tipos']		= $this->direcciones_model->getTipos();
+		$db['paises']		= $this->direcciones_model->getPaises();
 			
-			$db['id'] 			= $id;
-			$db['id_usuario']	= $id_usuario;
-			$db['tipo']			= $tipo;
+		$db['id'] 			= $id;
+		$db['id_usuario']	= $id_usuario;
+		$db['tipo']			= $tipo;
 	
-			$this->load->view("head.php", $db);
-			$this->load->view("nav_top.php");
-			$this->load->view("nav_left.php");	
-			$this->load->view($this->_subject."/editar.php");
-				
+		$this->cargar_vista($db, 'editar');
 	}
 	
 	public function editarDireccion($id,$id_usuario,$tipo){
@@ -228,11 +219,13 @@ class Direcciones extends My_Controller {
 						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 						$mensaje .= '<td style="text-align: center;">';
 						$mensaje .= '<a href="' . base_url() . 'index.php/direcciones/cargaEditar/' . $row -> id_direccion . '/' . $key -> id_cliente . '/1"';
-						$mensaje .= 'class="btn btn-primary btn-xs glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="' . $this -> lang -> line('editar') . '" style="margin : 0 5px">';
+						$mensaje .= 'class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="' . $this -> lang -> line('editar') . '" style="margin : 0 5px">';
+						$mensaje .= '<i class="fa fa-edit"></i>';
 						$mensaje .= '</a>';
 						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 						$mensaje .= '<a href="#" onclick="eliminarDireccion('.$row->id_direccion.','.$key->id_cliente.',1)"';
-						$mensaje .= 'class="btn btn-danger btn-xs glyphicon glyphicon-minus" data-toggle="tooltip" data-placement="bottom" title="' . $this -> lang -> line('eliminar') . '">';
+						$mensaje .= 'class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="bottom" title="' . $this -> lang -> line('eliminar') . '">';
+						$mensaje .= '<i class="fa fa-minus"></i>';
 						$mensaje .= '</a>';
 						$mensaje .= '</td>';
 						$mensaje .= "</tr>";
@@ -241,11 +234,13 @@ class Direcciones extends My_Controller {
 						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 						$mensaje .= '<td style="text-align: center;">';
 						$mensaje .= '<a href="' . base_url() . 'index.php/direcciones/cargaEditar/' . $row -> id_direccion . '/' . $key -> id_vendedor . '/2"';
-						$mensaje .= 'class="btn btn-primary btn-xs glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="' . $this -> lang -> line('editar') . '" style="margin : 0 5px">';
+						$mensaje .= 'class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="' . $this -> lang -> line('editar') . '" style="margin : 0 5px">';
+						$mensaje .= '<i class="fa fa-edit"></i>';
 						$mensaje .= '</a>';
 						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 						$mensaje .= '<a href="#" onclick="eliminarDireccion('.$row->id_direccion.','.$key->id_vendedor.',2)"';
-						$mensaje .= 'class="btn btn-danger btn-xs glyphicon glyphicon-minus" data-toggle="tooltip" data-placement="bottom" title="' . $this -> lang -> line('eliminar') . '">';
+						$mensaje .= 'class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="bottom" title="' . $this -> lang -> line('eliminar') . '">';
+						$mensaje .= '<i class="fa fa-minus"></i>';
 						$mensaje .= '</a>';
 						$mensaje .= '</td>';
 						$mensaje .= "</tr>";	

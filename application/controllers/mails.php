@@ -37,8 +37,6 @@ class Mails extends My_Controller {
 			$db['mails']		= $this->vendedores_model->getCruce($id,'mails');
 		}
 		
-		$db['empresas']			= $this->empresas_model->getRegistro(1);
-		
 		$db['tipos']			= $this->mails_model->getTipos();	
 		$db['id']				= $id;
 		$db['tipo']				= $tipo;
@@ -46,13 +44,7 @@ class Mails extends My_Controller {
 		$db['save']				= $save;
 		$db['id_mail']			= $id_mail;
 		
-		
-		$this->load->view("head.php", $db);
-		$this->load->view("nav_top.php");
-		$this->load->view("nav_left.php");	
-		
-		$this->load->view($this->_subject."/mails.php");
-					
+		$this->cargar_vista($db, 'mails');
 	}
 /*--------------------------------------------------------------------------------	
  --------------------------------------------------------------------------------
@@ -61,20 +53,14 @@ class Mails extends My_Controller {
  --------------------------------------------------------------------------------*/
 	
 	public function cargaEditar($id,$id_usuario,$tipo){
+		$db['mails']		= $this->mails_model->getRegistro($id);
+		$db['tipos']		= $this->mails_model->getTipos();
 	
-			$db['empresas']		= $this->empresas_model->getRegistro(1);
-			$db['mails']		= $this->mails_model->getRegistro($id);
-			$db['tipos']		= $this->mails_model->getTipos();
+		$db['id'] 			= $id;
+		$db['id_usuario']	= $id_usuario;
+		$db['tipo']			= $tipo;
 	
-			$db['id'] 			= $id;
-			$db['id_usuario']	= $id_usuario;
-			$db['tipo']			= $tipo;
-	
-			$this->load->view("head.php", $db);
-			$this->load->view("nav_top.php");
-			$this->load->view("nav_left.php");	
-			$this->load->view($this->_subject."/editar.php");
-				
+		$this->cargar_vista($db, 'editar');			
 	}
 /*--------------------------------------------------------------------------------	
  --------------------------------------------------------------------------------
@@ -199,11 +185,13 @@ class Mails extends My_Controller {
 						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 						$mensaje .= '<td style="text-align: center;">';
 						$mensaje .= '<a href="'.base_url().'index.php/mails/cargaEditar/'.$row->id_mail.'/'.$key->id_cliente.'/1"';
-						$mensaje .= 'class="btn btn-primary btn-xs glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('editar').'" style="margin : 0 5px">';
+						$mensaje .= 'class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('editar').'" style="margin : 0 5px">';
+						$mensaje .= '<i class="fa fa-edit"></i>';
 						$mensaje .= '</a>';
 						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 						$mensaje .= '<a href="#" onclick="eliminarCorreo('.$row->id_mail.','.$key->id_cliente.',1)"';
-						$mensaje .= 'class="btn btn-danger btn-xs glyphicon glyphicon-minus" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('eliminar').'">';
+						$mensaje .= 'class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('eliminar').'">';
+						$mensaje .= '<i class="fa fa-minus"></i>';
 						$mensaje .= '</a>';
 						$mensaje .= '</td>';
 						$mensaje .= "</tr>";
@@ -212,11 +200,13 @@ class Mails extends My_Controller {
 						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 						$mensaje .= '<td style="text-align: center;">';
 						$mensaje .= '<a href="'.base_url().'index.php/mails/cargaEditar/'.$row->id_mail.'/'.$key->id_vendedor.'/2"';
-						$mensaje .= 'class="btn btn-primary btn-xs glyphicon glyphicon-edit" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('editar').'" style="margin : 0 5px">';
+						$mensaje .= 'class="btn btn-primary btn-xs" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('editar').'" style="margin : 0 5px">';
+						$mensaje .= '<i class="fa fa-edit"></i>';
 						$mensaje .= '</a>';
 						/*--- IMPORTANTE MANDAR EL TIPO AL FINAL 1 cliente 2 vendedor-----*/
 						$mensaje .= '<a href="#" onclick="eliminarCorreo('.$row->id_mail.','.$key->id_vendedor.',2)"';
-						$mensaje .= 'class="btn btn-danger btn-xs glyphicon glyphicon-minus" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('eliminar').'">';
+						$mensaje .= 'class="btn btn-danger btn-xs" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('eliminar').'">';
+						$mensaje .= '<i class="fa fa-minus"></i>';
 						$mensaje .= '</a>';
 						$mensaje .= '</td>';
 						$mensaje .= "</tr>";	

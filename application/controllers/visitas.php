@@ -85,7 +85,7 @@ class Visitas extends My_Controller {
 			$crud->columns('id_visita',
 							'id_cliente',
 							'id_vendedor',
-							'date_upd');
+							'fecha');
 			
 			$crud->display_as('id_visita','N° Visita')
 				 ->display_as('id_cliente','Cliente')
@@ -100,7 +100,7 @@ class Visitas extends My_Controller {
 			
 			
 							
-			$crud->order_by('date_upd','desc');
+			$crud->order_by('id_visita','desc');
 							
 			$crud->set_relation('id_cliente','clientes','{apellido} {nombre}');
 			$crud->set_relation('id_vendedor','vendedores','{apellido} {nombre}');
@@ -166,7 +166,8 @@ class Visitas extends My_Controller {
 										 
 							<tbody>';
 			
-			if($query){	
+			if($query)
+			{	
 				foreach ($query as $fila)
 				{
 				    $table .= "<tr><td>";	
@@ -188,15 +189,17 @@ class Visitas extends My_Controller {
 			}
 	}
 
-	public function nuevaVisita(){
+	public function nuevaVisita()
+	{
+		$array_date = explode('/', $this->input->post('date_add'));
+		$date = $array_date[2].'/'.$array_date[1].'/'.$array_date[0];
 		
 		$visita	= array(
 		
 			'id_cliente' 		=> $this->input->post('id_cliente'), 
 			'id_vendedor' 		=> $this->input->post('id_vendedor'), 
 			'id_epoca_visita'	=> $this->input->post('id_epoca_visita'),
-			'date_add'			=> $this->input->post('date_add'),
-			'date_upd'			=> $this->input->post('date_add'),
+			'fecha'				=> $date,
 			'valoracion'		=> $this->input->post('star1'),
 			'descripcion'		=> $this->input->post('comentarios')		
 		);
@@ -266,15 +269,7 @@ class Visitas extends My_Controller {
 			
 		$output = $crud->render();
 		
-		$db['empresas'] = $this->empresas_model->getRegistro(1);
-		$db['title']	= $this->_subject;
-		$db['subtitle'] = $this->lang->line($this->_subject.'_visita.php');
-		
-		$this->load->view("plantilla/head.php", $db);
-		$this->load->view("plantilla/nav_top.php", $output);
-		$this->load->view("plantilla/nav_left.php");	
-		$this->load->view($this->_subject."/buscar.php");
-		$this->load->view("plantilla/footer.php");	
+		$this->crud_tabla($output, 'buscar');
 	}
 	
 	function volverBusqueda($primary_key , $row)
@@ -288,9 +283,14 @@ class Visitas extends My_Controller {
 		$presupuesto	= $this->presupuestos_model->getRegistro($id_presupuesto);
 		$detalle		= $this->presupuestos_model->getDetallePresupuesto($id_presupuesto);
 		
-		foreach($presupuesto as $row){
-			$total = $row->total;
+		if($presupuesto)
+		{
+			foreach($presupuesto as $row)
+			{
+				$total = $row->total;
+			}
 		}
+		
 		
 		$mensaje = '<table class="table table-striped" cellspacing="0" width="100%">
 					<thead>
@@ -314,15 +314,21 @@ class Visitas extends My_Controller {
 					</tfoot>';
 		
 		$mensaje .= '<tbody>';
-		foreach($detalle as $row){
-			$mensaje .= '<tr>
-							<th>'.$row->nombre.'</th>
-							<th>'.$row->cantidad.'</th>
-							<th>$ '.$row->precio.'</th>
-							<th>$ '.$row->subtotal.'</th>
-							<th>'.$row->estado.'</th>
-						</tr>';
+		
+		if($detalle)
+		{
+			foreach($detalle as $row)
+			{
+				$mensaje .= '<tr>
+								<th>'.$row->nombre.'</th>
+								<th>'.$row->cantidad.'</th>
+								<th>$ '.$row->precio.'</th>
+								<th>$ '.$row->subtotal.'</th>
+								<th>'.$row->estado.'</th>
+							</tr>';
+			}
 		}
+		
 		$mensaje .= '</tbody>';
 		$mensaje .= '</table>';			
 		echo $mensaje;
@@ -335,17 +341,28 @@ class Visitas extends My_Controller {
 		$cruce			= $this->vendedores_model->sinCruce($id_vendedor);
 		
 		$mensaje = '';
-		foreach ($cruce as $row) {
-			if($row->eliminado!=1){
-				$cliente 		= $this->clientes_model->getRegistro($row->id_cliente);	
-				foreach ($cliente as $key) {
-					if($key->eliminado != 1){
-						$mensaje  .= '<option value="'.$key->id_cliente.'">'.$key->apellido.', '.$key->nombre;
-						$mensaje  .= '</option>';
+		if($cruce)
+		{
+			foreach ($cruce as $row) 
+			{
+				if($row->eliminado!=1)
+				{
+					$cliente 		= $this->clientes_model->getRegistro($row->id_cliente);	
+					if($cliente)
+					{
+						foreach ($cliente as $key) 
+						{
+							if($key->eliminado != 1)
+							{
+								$mensaje  .= '<option value="'.$key->id_cliente.'">'.$key->apellido.', '.$key->nombre;
+								$mensaje  .= '</option>';
+							}
+						}
 					}
 				}
-			}
-		}		
+			}		
+		}
+			
 		echo $mensaje;
 	}
 }
