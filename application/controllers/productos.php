@@ -23,7 +23,8 @@ class Productos extends My_Controller {
 	public function pestanas($id)
 	{
 		
-		$db['empresas']=$this->empresas_model->getRegistro(1);
+		$db['productos'] 	= $this->productos_model->getRegistro($id);
+		$db['imagenes'] 	= $this->productos_model->getImagenes($id);
 
 		$this->cargar_vista($db, 'pestanas');			
 	}
@@ -90,7 +91,7 @@ class Productos extends My_Controller {
 		$image_crud->set_table('productos_imagenes')
 		 		   ->set_relation_field('id_producto')
 				   ->set_ordering_field('orden')
-				   ->set_image_path('img/productos/imagenes/');
+				   ->set_image_path('img/productos/imagenes');
 			
 		$output = $image_crud->render();
 	

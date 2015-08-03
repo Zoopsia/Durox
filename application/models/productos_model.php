@@ -20,6 +20,28 @@ class Productos_model extends My_Model {
 				$_array_cruze	= $this->_array_cruze
 		);
 	}
+	
+	function getImagenes($id){
+		$this->db->select( '*');
+		$this->db->from('productos_imagenes');
+		$this->db->where('id_producto',$id);
+		$this->db->limit(1);
+		
+		$query = $this->db->get();
+		
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+			return $data;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
 			
 } 
 ?>

@@ -242,10 +242,9 @@ $aux2 = 0;
                    	
 			  		</div>
 			  		
-				</div>
-			</div>
-			
-		</div>  
+	</div>
+</div>
+ 
 		
 		
 		<!-- Modal -->
