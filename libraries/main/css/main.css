@@ -347,3 +347,27 @@ input#cantidad{
 .displayblock {
 	display: block;
 }
+
+.img-perfil
+{
+	width: 150px; 
+	height: 150px !important;
+}
+
+.img-perfil-sm
+{
+	width: 100px; 
+	height: 100px !important;
+}
+
+.img_div
+{
+	display: inline-block;
+}
+
+.datos_img
+{
+	display: inline-block; 
+	vertical-align: top; 
+	margin-left: 15px;
+}

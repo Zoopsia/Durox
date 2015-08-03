@@ -17,7 +17,7 @@
 		<div class='clear'></div>
 	</h3>
 <div class='form-content form-div'>
-	<?php echo form_open( $insert_url, 'method="post" id="crudForm" enctype="multipart/form-data"'); ?>
+	<?php echo form_open( $insert_url, 'method="post" id="crudForm" enctype="multipart/form-data" class="form-horizontal"'); ?>
 		<div style="padding-left: 24px">
 			<?php
 			$counter = 0;
@@ -27,10 +27,10 @@
 					$counter++;
 			?>
 			<div class='form-group <?php echo $even_odd?>' id="<?php echo $field->field_name; ?>_field_box">
-				<div class='form-display-as-box' id="<?php echo $field->field_name; ?>_display_as_box">
+				<label  class='col-sm-2' id="<?php echo $field->field_name; ?>_display_as_box">
 					<?php echo $input_fields[$field->field_name]->display_as?><?php echo ($input_fields[$field->field_name]->required)? "<span class='required'>*</span> " : ""?> :
-				</div>
-				<div class='form-input-box' id="<?php echo $field->field_name; ?>_input_box">
+				</label >
+				<div class='col-sm-8' id="<?php echo $field->field_name; ?>_input_box">
 					<?php echo $input_fields[$field->field_name]->input?>
 				</div>
 				<div class='clear'></div>
