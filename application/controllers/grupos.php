@@ -375,6 +375,64 @@ class Grupos extends My_Controller {
 		$id = $this->clientes_model->update($cliente, $id_cliente);	
 	}
 	
+	public function getRegla(){
+		$id_grupo_cliente	=	$this->input->post('id_grupo_cliente');
+		
+		if($id_grupo_cliente){
+			if($id_grupo_cliente!=1){
+				$reglas				= 	$this->reglas_model->getRegistro($id_grupo_cliente);
+				foreach($reglas as $row)
+				{
+					$mensaje	= '<input type="text" id="regla" name="regla" class="numeric form-control" pattern="^[A-Za-z0-9 ]+$" placeholder="'.$this->lang->line('nombre').'" required value="'.$row->nombre.'">';
+				}
+				echo $mensaje;
+			}
+		}
+	}
+	
+	public function getValorRegla(){
+		$id_grupo_cliente	=	$this->input->post('id_grupo_cliente');
+		
+		if($id_grupo_cliente){
+			if($id_grupo_cliente!=1){
+				$reglas				= 	$this->reglas_model->getRegistro($id_grupo_cliente);
+				foreach($reglas as $row)
+				{
+					$mensaje	= '<input type="text" id="valor" name="valor" class="numeric form-control" pattern="[0-9]*" placeholder="%" required value="'.$row->valor.'">';
+				}
+				echo $mensaje;
+			}
+		}
+	}
+	
+	public function getTipoRegla(){
+		$id_grupo_cliente	=	$this->input->post('id_grupo_cliente');
+		
+		if($id_grupo_cliente){
+			if($id_grupo_cliente!=1){
+				$reglas				= 	$this->reglas_model->getRegistro($id_grupo_cliente);
+				
+				
+				$mensaje = '<select name="tipo" id="tipo" class="form-control chosen-select">';
+				foreach($reglas as $row)
+				{
+					if($row->aumento_descuento==1)
+					{	
+						$mensaje	.= '<option value="0">'.$this->lang->line('aumento').'</option>';					
+						$mensaje	.= '<option value="1" selected>'.$this->lang->line('descuento').'</option>';
+					}
+					else
+					{
+						$mensaje	.= '<option value="0" selected>'.$this->lang->line('aumento').'</option>';					
+						$mensaje	.= '<option value="1">'.$this->lang->line('descuento').'</option>';
+					}
+				}
+				$mensaje .= '</select>';
+				echo $mensaje;
+			}
+		}
+	}
+	
 	public function editarGrupo(){
 		
 		

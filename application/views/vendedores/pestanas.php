@@ -825,7 +825,8 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 													echo '<td>'.$row->estado.'</td>';
 													echo "<td><a href='".base_url()."index.php/Visitas/carga/".$row->id_visita."/0' class='displayblock'>".$row->id_visita.'</a></td>';
 													echo "<td><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='displayblock'>".$row->apellido.', '.$row->nombre.'</a></td>';
-													echo '<td>'.$row->date_add;
+													$date = date_create($row -> fecha);
+													echo '<td>'.date_format($date, 'd/m/Y');
 													echo "</td>";
 													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
 													//echo "</a></tr>";

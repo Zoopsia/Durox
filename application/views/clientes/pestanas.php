@@ -140,6 +140,13 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 																</div>
 																
 																<div class="form-group">
+																  	<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('web'); ?></label>
+																		<div class="col-sm-4 col-sm-offset-1">
+																			<input type="text" name="web" class="form-control" pattern="^www.[a-zA-Z0.9._-]{4,}$" value="<?php echo $row->web ?>" placeholder="www.sitio-web.com">
+																		</div>
+																</div>
+																
+																<div class="form-group">
 																  	<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupos_clientes'); ?></label>
 																		<div class="col-sm-4 col-sm-offset-1">
 																			<select name="id_grupo_cliente" class="form-control chosen-select">
@@ -177,6 +184,45 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 					                <div class=" col-md-9 col-lg-9 "><!--carga info cliente-->
 					                	<table class="table table-striped table-user-information"> 
 						                    <?php
+						                    /*---- MEJORAR ESTO !!! ---*/
+						                    if($telefonos)
+						                    {
+						                    	$i = 0;					                
+												foreach ($telefonos as $row) 
+												{
+													$i++;
+													if($i == 1){
+														$telefono = $row->telefono;
+														$cod_area = $row->cod_area;
+													}
+												}
+											}
+											
+											if($direcciones)
+						                    {
+						                    	$i = 0;					                
+												foreach ($direcciones as $row) 
+												{
+													$i++;
+													if($i == 1){
+														$direccion = $row->direccion;
+													}
+												}
+											}
+											
+											if($mails)
+						                    {
+						                    	$i = 0;					                
+												foreach ($mails as $row) 
+												{
+													$i++;
+													if($i == 1){
+														$mail = $row->mail;
+													}
+												}
+											}
+											/*---- VER LA FORMA DE MEJORAR LOS FOREACH ---*/
+						                    
 							                    if($clientes){
 							                    	foreach ($clientes as $row) 
 								      				{
@@ -189,6 +235,12 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 															echo  "<tr>";								                     
 											                echo  '<td>'.$this->lang->line('apellido').':</td>';
 											                echo  '<td class="tabla-datos-importantes">'.$row->apellido.'</td>';
+											                echo  "</tr><tr>";								                     
+											                echo  '<td>'.$this->lang->line('razon_social').':</td>';
+											                echo  '<td class="tabla-datos-importantes">'.$row->razon_social.'</td>';
+											                echo  "</tr><tr>";								                     
+											                echo  '<td>'.$this->lang->line('web').':</td>';
+											                echo  "<td class='tabla-datos-importantes'><a href='#' target='_blank' onclick=\"javascript:location.href='https://".$row->web."/'\">".$row->web."</a></td>";
 											                echo  "</tr><tr>";
 															echo  '<td>'.$this->lang->line('alias').':</td>';
 											                echo  '<td class="tabla-datos-importantes">'.$row->nombre_fantasia.'</td>';
@@ -196,15 +248,33 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 											                echo  '<td>'.$this->lang->line('cuit').':</td>';
 											                echo  '<td class="tabla-datos-importantes">'.cuit($row->cuit).'</td>';
 											                echo  "</tr><tr>";	
-											                echo  '<td>'.$this->lang->line('razon_social').':</td>';
-											                echo  '<td class="tabla-datos-importantes">'.$row->razon_social.'</td>';
+											                echo  '<td>'.$this->lang->line('iva').':</td>';
+											                echo  '<td class="tabla-datos-importantes">'.$row->iva.'</td>';
 															echo  "</tr><tr>";	
 											                echo  '<td>'.$this->lang->line('grupos_clientes').':</td>';
 											                echo  '<td class="tabla-datos-importantes"><a href="'.base_url().'index.php/Grupos/getReglasGrupos/'.$row->id_grupo_cliente.'">';
 											                echo  $row->grupo_nombre;
 											                echo  "</a></td>";
-											                echo  "</tr>";		
-											                echo  "</tbody>";
+											                echo  "</tr>";
+															if($telefonos){
+												                echo  "<tr>";
+																echo  '<td>'.$this->lang->line('telefono').':</td>';
+												                echo  '<td class="tabla-datos-importantes">'.$cod_area.' - '.$telefono.'</td>';
+																echo  "</tr>";
+															}
+															if($direcciones){
+												                echo  "<tr>";
+																echo  '<td>'.$this->lang->line('direccion').':</td>';
+												                echo  '<td class="tabla-datos-importantes">'.$direccion.'</td>';		
+												               	echo  "</tr>";
+															}
+															if($mails){
+												                echo  "<tr>";
+																echo  '<td>'.$this->lang->line('correo').':</td>';
+												                echo  '<td class="tabla-datos-importantes">'.$mail.'</td>';
+																echo  "</tr>";
+															}
+														    echo  "</tbody>";
 											        	}
 														else{
 															echo '<div class="row">
@@ -697,7 +767,8 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 													echo '<td>'.$row->estado.'</td>';
 													echo "<td><a href='".base_url()."index.php/Visitas/carga/".$row->id_visita."/0' class='displayblock'>".$row->id_visita.'</a></td>';
 													echo "<td><a href='".base_url()."index.php/Vendedores/pestanas/".$row->id_vendedor."' class='displayblock'>".$row->apellido.', '.$row->nombre.'</a></td>';
-													echo '<td>'.$row->date_add;
+													$date = date_create($row -> fecha);
+													echo '<td>'.date_format($date, 'd/m/Y');
 													echo "</td>";
 													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
 													//echo "</a></tr>";

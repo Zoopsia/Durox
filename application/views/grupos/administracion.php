@@ -31,12 +31,38 @@ function editarGrupo(){
  	$.ajax({
 	 	type: 'POST',
 	 	url: '<?php echo base_url(); ?>index.php/grupos/editarGrupo', //Realizaremos la petición al metodo prueba del controlador cliente
-	 	data: 'id_grupo_cliente='+id_grupo_cliente, //Pasaremos por parámetro POST el id del grupo
-	 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-	 		//Activar y Rellenar la tabla
-	 		$('#editargrupo').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de reglas
-	 	}
+	 	data: 'id_grupo_cliente='+id_grupo_cliente,
+		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+	 		$('#editargrupo').attr('disabled',false).html(resp); 
+		}
 	});
+	
+	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/grupos/getRegla', //Realizaremos la petición al metodo prueba del controlador cliente
+	 	data: 'id_grupo_cliente='+id_grupo_cliente,
+		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+	 		$('#nombre_regla').attr('disabled',false).html(resp); 
+		}
+	});
+	
+	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/grupos/getValorRegla', //Realizaremos la petición al metodo prueba del controlador cliente
+	 	data: 'id_grupo_cliente='+id_grupo_cliente,
+		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+	 		$('#valor_regla').attr('disabled',false).html(resp); 
+		}
+	});	
+	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/grupos/getTipoRegla', //Realizaremos la petición al metodo prueba del controlador cliente
+	 	data: 'id_grupo_cliente='+id_grupo_cliente,
+		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+	 		$('#tipo_regla').attr('disabled',false).html(resp); 
+	 		$(".chosen-select").chosen({ width: '100%' });
+		}
+	});	
 }
 
 function nuevoGrupo(){
@@ -165,7 +191,6 @@ function volverHide(){
 												<li class="<?php echo $array_n['nuevogrupo']; ?> desactive"><a href="#tab2" data-toggle="tab" onclick="volverShow()"><?php echo $this->lang->line('nuevo').' '.$this->lang->line('grupo'); ?></a></li>
 												<li class="<?php echo $array_n['agregarcliente']; ?> desactive"><a href="#tab3" data-toggle="tab" onclick="volverShow()"><?php echo $this->lang->line('agregar').' '.$this->lang->line('cliente'); ?></a></li>
 												<li class="<?php echo $array_n['editargrupo']; ?> desactive"><a href="#tab4" data-toggle="tab" onclick="volverShow(), editarGrupo()"><?php echo $this->lang->line('editar').' '.$this->lang->line('grupo'); ?></a></li>
-												<li><a href="#"><?php echo $this->lang->line('administrar').' '.$this->lang->line('reglas'); ?></a></li>
 											</ul>
 									</div>
 	    							
@@ -342,28 +367,58 @@ function volverHide(){
 	    					<div class="tab-pane fade <?php echo $array_n['editargrupo']; ?>" id="tab4">
 	     						<!--TAB 4 EDITAR GRUPO -->
 	     						<form action="<?php echo base_url()."index.php/grupos/editarGrupo"?>" class="form-horizontal" method="post">
-								
-		     						<div class="col-md-9" >
-			     						<div class="form-group">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupo') ?></label>
-												<div class="col-sm-5">
+		     						<div style="padding: 0 50px" >
+			     						<div class="form-group odd">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('grupo') ?></label>
+												<div class="col-sm-8">
 													<div class="input-group" id="editargrupo">
 													<!-- Esta tabla se llena con AJAX -->	
 														   	
 													</div>
 												</div>
 										</div>
-		     						 
+										
+										<div class="form-group even">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('regla'); ?></label>
+												<div class="col-sm-8">
+													<div id="nombre_regla">
+													<!-- Esta tabla se llena con AJAX -->
+														
+													</div>	    	
+												</div> 
+										</div>
+										
+										<div class="form-group odd">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('valor').' %'; ?></label>
+												<div class="col-sm-8">
+													<div id="valor_regla">
+													<!-- Esta tabla se llena con AJAX -->
+																    	
+													</div>
+												</div> 
+										</div>
+												
+										<div class="form-group even">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('tipo'); ?></label>
+												<div class="col-sm-8">
+													<div id="tipo_regla">
+													<!-- Esta tabla se llena con AJAX -->	
+													
+													</div>
+												</div> 
+										</div>
+										
+		     							<hr />
 		     						
 			     						<div class="form-group">
-											<label class="col-sm-1 col-sm-offset-1 control-label"></label>
-												<div class="col-md-6">	
+											<label class="col-sm-2 control-label"></label>
+												<div class="col-md-8">	
 													<button type="submit" class="btn btn-primary" name="btn-save" value="2"><?php echo $this->lang->line('guardar'); ?></button> 	
 													<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" id="btn-cancelar" onclick="confirmarGrupo()">
 												</div>
 										</div>
 									</div>
-		     					</form>   						
+		     					</form>    						
 	    					</div>
 	    					
 	    				</div><!--contenedor de cada pestaña-->	

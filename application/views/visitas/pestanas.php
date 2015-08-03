@@ -199,7 +199,7 @@ function tablaPresupuesto($id_presupuesto){
 																		echo $key->nombre.', '.$key->apellido;
 																		echo '</a>';
 																		echo "<br>";
-																		echo $this->lang->line('cuit').': '.$key->cuit;
+																		echo $this->lang->line('cuit').': '.cuit($key->cuit);
 																		echo "<br>";
 																		foreach ($iva as $value) {
 																			if($value->id_iva == $key->id_iva){	
