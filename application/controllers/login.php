@@ -32,23 +32,23 @@ class Login extends CI_Controller {
 	
 	function control()
 	{
-	   $password = $this->input->post('password');
-	   $username = $this->input->post('username');
+		$db['empresas'] = $this->empresas_model->getRegistro(1);
+	   	$password = $this->input->post('password');
+	   	$username = $this->input->post('username');
 	   
-	   $usuario = $this->check_database($password, $username);
+	  	$usuario = $this->check_database($password, $username);
 	   
-	   if($usuario == FALSE)
-	   {
+	   	if($usuario == FALSE){
 		    $db['error'] = 'error';
 		    $this->load->view('plantilla/head.php', $db);
 			$this->load->view('login/inicio');
 			$this->load->view('plantilla/footer.php');
-	   }
-	   else
-	   {
+	   	}
+	   	else
+	   	{
 	     	//Go to private area
 			redirect('/home/','refresh');
-	   }
+	  	}
 	
 	}
 

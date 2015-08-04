@@ -18,8 +18,7 @@
 				  				<form action="<?php echo base_url()."index.php/telefonos/editarTelefonos/$row->id_telefono/$id_usuario/$tipo"?>" class="form-horizontal" method="post">
 									<div style="padding: 0 50px">
 										<div class="form-group odd">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('telefono'); ?></label>
-												
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('telefono').'*:'; ?></label>
 												<div class="col-sm-8">
 													<div class="input-group">
 														<div class="input-group-addon"><span class="glyphicon glyphicon-earphone" aria-hidden="true"></span></div>
@@ -29,14 +28,14 @@
 										</div>
 											 
 										<div class="form-group even">
-										  	<label class="col-sm-2 control-label"><?php echo $this->lang->line('cod_area'); ?></label>
+										  	<label class="col-sm-2 control-label"><?php echo $this->lang->line('cod_area').'*:'; ?></label>
 												<div class="col-sm-8">
 													<input type="text" name="cod_area" class="numeric form-control" pattern="[0-9]*" value="<?php echo $row->cod_area ?>" required>	 
 												</div>
 										</div>
 											  									  
 										<div class="form-group odd">
-										  	<label class="col-sm-2 control-label"><?php echo $this->lang->line('tipo'); ?></label>
+										  	<label class="col-sm-2 control-label"><?php echo $this->lang->line('tipo').'*:'; ?></label>
 										  		<div class="col-md-8">
 										    		<select name="id_tipo" class="form-control chosen-select">
 														<?php
@@ -52,7 +51,7 @@
 										</div>
 										
 										<div class="form-group even">
-										  	<label class="col-sm-2 control-label"><?php echo $this->lang->line('fax'); ?></label>
+										  	<label class="col-sm-2 control-label"><?php echo $this->lang->line('fax').':'; ?></label>
 										  		<div class="col-sm-8">
 										  			<?php
 														if($row->fax == 1)

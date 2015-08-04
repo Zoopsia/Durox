@@ -1,4 +1,9 @@
+<script>
+$(document).ready(function(){
 
+$('input').iCheck();
+});
+</script>
 	    <div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default">
@@ -28,7 +33,7 @@
 			  				<form action="<?php echo base_url()."index.php/telefonos/nuevoTelefono/$id/$tipo"?>" class="form-horizontal" method="post">
 								<div style="padding: 0 50px">
 									<div class="form-group odd">
-										<label class="col-sm-2 control-label"><?php echo $this->lang->line('telefono'); ?></label>
+										<label class="col-sm-2 control-label"><?php echo $this->lang->line('telefono').'*:'; ?></label>
 											
 											<div class="col-md-8">
 												<div class="input-group">
@@ -39,14 +44,14 @@
 									</div>
 									
 									<div class="form-group even">
-										<label class="col-sm-2 control-label"><?php echo $this->lang->line('cod_area'); ?></label>	 
+										<label class="col-sm-2 control-label"><?php echo $this->lang->line('cod_area').'*:'; ?></label>	 
 											<div class="col-md-8">
 												<input type="text" name="cod_area" class="numeric form-control" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('cod_area'); ?>" required>	 
 										</div>
 									</div>
 			  
 									<div class="form-group odd">
-									  	<label class="col-sm-2 control-label"><?php echo $this->lang->line('tipo'); ?></label>
+									  	<label class="col-sm-2 control-label"><?php echo $this->lang->line('tipo').'*:'; ?></label>
 											<div class="col-md-8">
 												<select name="id_tipo" class="form-control chosen-select" data-placeholder="Seleccione un tipo..." required>
 													<option></option>
@@ -60,10 +65,10 @@
 									</div>
 									
 									<div class="form-group even">
-										<label class="col-sm-2 control-label"><?php echo $this->lang->line('fax'); ?></label>
-											<div class="col-sm-8">
-										   		<input type="checkbox" name="fax" value="1">
-											</div>
+										<label class="col-sm-2 control-label"><?php echo $this->lang->line('fax').':'; ?></label>
+											<div class="col-md-8">
+												<input type="checkbox" name="fax" value="1">
+											</div>				
 								    </div> 
 								    
 								    <hr />

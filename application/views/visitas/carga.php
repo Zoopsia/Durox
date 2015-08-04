@@ -31,7 +31,7 @@ function busqueda(){
 	    							<div style="padding: 0 50px">
 	    								
 	    								<div class="form-group odd">
-											<label class="col-sm-2	 control-label"><?php echo $this->lang->line('vendedor'); ?></label>
+											<label class="col-sm-2	 control-label"><?php echo $this->lang->line('vendedor').'*:'; ?></label>
 												<div class="col-sm-8">
 													<select id="id_vendedor" name="id_vendedor" class="form-control chosen-select" onchange=" busqueda()" data-placeholder="Seleccione un <?php echo $this->lang->line('vendedor'); ?>" required>	
 														<option></option>
@@ -50,7 +50,7 @@ function busqueda(){
 									    </div>
 	    								
 	    								<div class="form-group even">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('cliente'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('cliente').'*:'; ?></label>
 												<div class="col-sm-8">
 													<select id="id_cliente" name="id_cliente" class="form-control chosen-select" data-placeholder="Seleccione un <?php echo $this->lang->line('cliente'); ?>" required>	
 														<!-- SE LLENA CON AJAX -->
@@ -64,7 +64,7 @@ function busqueda(){
 									    </div>
 									      	  
 									    <div class="form-group odd">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('epoca').' '.$this->lang->line('visita'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('epoca').' '.$this->lang->line('visita').'*:'; ?></label>
 												<div class="col-sm-8">
 													<select name="id_epoca_visita" class="form-control chosen-select" data-placeholder="Seleccione una <?php echo $this->lang->line('epoca'); ?>">	
 														<option></option>
@@ -78,21 +78,21 @@ function busqueda(){
 									    </div>
 	    								
 		    							<div class="form-group even">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('fecha'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('fecha').'*:'; ?></label>
 												<div class="col-sm-8">
 													<input type="text" name="date_add" class="form-control datepicker" value="" required>	 
 												</div>
 										</div>
 										
 										<div class="form-group odd">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('comentarios'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('comentarios').':'; ?></label>
 												<div class="col-sm-8">
 													<textarea name="comentarios" style="width: 100%; height: 100px;" ></textarea>	 
 												</div>
 										</div>
 										
 										<div class="form-group even" style="padding-bottom: 1%">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('valoracion'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('valoracion').':'; ?></label>
 												<div class="col-sm-8" style="margin-top: 1%">
 													<input name="star1" type="radio" value="1" class="star"/>
 													<input name="star1" type="radio" value="2" class="star"/>

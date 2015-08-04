@@ -71,6 +71,11 @@ class Vendedores_model extends My_Model {
 	}
 	
 	function updateSin($arreglo_campos, $id){
+		
+		if($this->db->field_exists('date_upd', $this->_tablename))
+		{
+			$arreglo_campos['date_upd'] = date('Y-m-d H:i:s'); 
+		}
 			
 		$this->db->where('id_sin_vendedor_cliente', $id);
 		$this->db->update('sin_vendedores_clientes', $arreglo_campos);

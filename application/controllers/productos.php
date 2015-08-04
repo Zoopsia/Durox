@@ -22,7 +22,7 @@ class Productos extends My_Controller {
 
 	public function pestanas($id)
 	{
-		
+		$db['id']			= $id;
 		$db['productos'] 	= $this->productos_model->getRegistro($id);
 		$db['imagenes'] 	= $this->productos_model->getImagenes($id);
 		$db['precios'] 		= $this->productos_model->getPrecios();
@@ -48,7 +48,8 @@ class Productos extends My_Controller {
 			
 			$crud->display_as('id_producto','N° Producto')
 				 ->display_as('nombre','Producto')
-				 ->display_as('ficha_tecnica','Ficha Técnica');
+				 ->display_as('ficha_tecnica','Ficha Técnica')
+				 ->display_as('descripcion','Descripción');
 				
 			$crud->required_fields('nombre',
 							'precio');
@@ -57,7 +58,8 @@ class Productos extends My_Controller {
 			
 			$crud->fields('nombre',
 						  'precio',
-						  'ficha_tecnica');
+						  'ficha_tecnica',
+						  'descripcion');
 						  
 			$crud->set_field_upload('ficha_tecnica','img/productos/documentos');			  
 							

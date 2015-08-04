@@ -90,10 +90,10 @@ $('#formPresupuesto').submit(function(event){
 				<p>. Presione "CANCELAR" si conoce el número de la visita.</p>					        		
 			</div>
 			<div class="modal-footer">
-				<a role="button" class="btn btn-primary" href="<?php echo base_url().'index.php/Visitas/carga/'; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('crear').' '.$this->lang->line('visita');?>">
+				<a role="button" class="btn btn-primary" href="<?php echo base_url().'index.php/Visitas/carga/'; ?>" data-placement="bottom" title="<?php echo $this->lang->line('crear').' '.$this->lang->line('visita');?>">
 					<?php echo $this->lang->line('crear'); ?>
 				</a>
-				<a role="button" class="btn btn-info" href="<?php echo base_url().'index.php/Visitas/buscar'?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('buscar').' '.$this->lang->line('visita');?>">
+				<a role="button" class="btn btn-info" href="<?php echo base_url().'index.php/Visitas/buscar'?>" data-placement="bottom" title="<?php echo $this->lang->line('buscar').' '.$this->lang->line('visita');?>">
 					<?php echo $this->lang->line('buscar'); ?>
 				</a>
 				<button type="button" class="btn btn-danger" data-dismiss="modal"><?php echo $this->lang->line('cancelar'); ?></button>
@@ -129,7 +129,7 @@ $('#formPresupuesto').submit(function(event){
 	    									if($visita==''){
 								?>		
 								<div class="col-sm-2 col-sm-offset-3">
-									<a role="button" class="btn btn-info" href="<?php echo base_url().'index.php/Visitas/buscar'?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('buscar').' '.$this->lang->line('visita');?>" style="margin-top: 15% ; width: 100px">
+									<a role="button" class="btn btn-info" href="<?php echo base_url().'index.php/Visitas/buscar'?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('buscar').' '.$this->lang->line('visita');?>" style="margin-top: 15% ; width: 85px">
 										<span class="glyphicon glyphicon-search" aria-hidden="true"></span>
 										<?php echo $this->lang->line('buscar'); ?>
 									</a>
@@ -147,7 +147,7 @@ $('#formPresupuesto').submit(function(event){
 										?>		
 										<!-- CARGA DE PRESUPUESTO CON ID DE VISITA -->	
 	    								<div class="form-group odd">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('visita'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('visita').'*:'; ?></label>
 												<div class="col-sm-8">
 													<select name="id_visita" class="form-control chosen-select" required>	
 														<option value="<?php echo $row->id_visita; ?>" selected><?php echo $row->id_visita; ?></option>
@@ -156,7 +156,7 @@ $('#formPresupuesto').submit(function(event){
 									    </div>
 									    
 	    								<div class="form-group even">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('vendedor'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('vendedor').'*:'; ?></label>
 												<div class="col-sm-8">
 													<?php
 														foreach ($vendedores as $key) {
@@ -174,7 +174,7 @@ $('#formPresupuesto').submit(function(event){
 									    </div>
 	    								
 	    								<div class="form-group odd">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('cliente'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('cliente').'*:'; ?></label>
 												<div class="col-sm-8">
 													<?php
 														foreach ($clientes as $key) {
@@ -192,7 +192,7 @@ $('#formPresupuesto').submit(function(event){
 									    </div>
 									        								
 		    							<div class="form-group even">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('fecha'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('fecha').'*:'; ?></label>
 												<div class="col-sm-8">
 													<input type="text" name="fecha" class="form-control datepicker" value="<?php echo date('d/m/Y', strtotime($row->fecha));?>" required>	 
 												</div>
@@ -216,7 +216,7 @@ $('#formPresupuesto').submit(function(event){
 										 
 										 <!-- NUEVA CARGA DE PRESUPUESTO -->
 										 <div class="form-group odd">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('visita'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('visita').'*:'; ?></label>
 												<div class="col-sm-8">
 													<select id="id_visita" name="id_visita" class="form-control chosen-select" onchange=" busqueda()">	
 														<option value='' disabled selected style='display:none;'>Seleccione una opcion...</option>
@@ -235,7 +235,7 @@ $('#formPresupuesto').submit(function(event){
 									    </div>
 									    
 	    								<div class="form-group even">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('vendedor'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('vendedor').'*:'; ?></label>
 												<div class="col-sm-8">
 													<select id="id_vendedor" name="id_vendedor" class="form-control chosen-select" onchange=" busqueda2()" data-placeholder="Seleccione un <?php echo $this->lang->line('vendedor'); ?>" required>	
 														<option></option>
@@ -254,7 +254,7 @@ $('#formPresupuesto').submit(function(event){
 									    </div>
 	    								
 	    								<div class="form-group odd">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('cliente'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('cliente').'*:'; ?></label>
 												<div class="col-sm-8">
 													<select id="id_cliente" name="id_cliente" class="form-control chosen-select" data-placeholder="Seleccione un <?php echo $this->lang->line('cliente'); ?>" required>	
 														<!-- SE LLENA CON AJAX -->
@@ -268,7 +268,7 @@ $('#formPresupuesto').submit(function(event){
 									    </div>
 									        								
 		    							<div class="form-group even">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('fecha'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('fecha').'*:'; ?></label>
 												<div class="col-sm-8" id="date_add">
 													<input type="text" name="fecha" class="form-control datepicker" value="" required>	 
 												</div>

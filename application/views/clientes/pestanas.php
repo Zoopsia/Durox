@@ -133,22 +133,22 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 													<form action="<?php echo base_url()."index.php/clientes/editarCliente/$row->id_cliente"?>" class="form-horizontal" method="post" enctype="multipart/form-data">
 														<div class="modal-body">
 											       				<div class="form-group">
-																  	<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('alias'); ?></label>
-																		<div class="col-sm-4 col-sm-offset-1">
+																  	<label class="col-sm-3 col-sm-offset-1 control-label"><?php echo $this->lang->line('alias').':'; ?></label>
+																		<div class="col-sm-4">
 																			<input type="text" name="alias" class="form-control" pattern="^[A-Za-z0-9 ]+$" value="<?php echo $row->nombre_fantasia ?>">	 
 																		</div>
 																</div>
 																
 																<div class="form-group">
-																  	<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('web'); ?></label>
-																		<div class="col-sm-4 col-sm-offset-1">
+																  	<label class="col-sm-3 col-sm-offset-1 control-label"><?php echo $this->lang->line('web').':'; ?></label>
+																		<div class="col-sm-4">
 																			<input type="text" name="web" class="form-control" pattern="^www.[a-zA-Z0.9._-]{4,}$" value="<?php echo $row->web ?>" placeholder="www.sitio-web.com">
 																		</div>
 																</div>
 																
 																<div class="form-group">
-																  	<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupos_clientes'); ?></label>
-																		<div class="col-sm-4 col-sm-offset-1">
+																  	<label class="col-sm-3 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupos_clientes').':'; ?></label>
+																		<div class="col-sm-4">
 																			<select name="id_grupo_cliente" class="form-control chosen-select">
 																				<?php
 																					if($grupos){
@@ -165,8 +165,8 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 																</div>
 																
 																<div class="form-group">
-																  	<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('imagen'); ?></label>
-																		<div class="col-sm-4 col-sm-offset-1">
+																  	<label class="col-sm-3 col-sm-offset-1 control-label"><?php echo $this->lang->line('imagen').':'; ?></label>
+																		<div class="col-sm-4">
 																			<input type="file" name="imagen">	 
 																		</div>
 																</div>	

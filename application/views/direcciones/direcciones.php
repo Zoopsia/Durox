@@ -63,7 +63,7 @@ function provincias_activas(){
 		  						
 		  						<div style="padding: 0 50px">
 			  						<div class="form-group odd">
-										<label class="col-sm-2 control-label"><?php echo $this->lang->line('direccion'); ?></label>
+										<label class="col-sm-2 control-label"><?php echo $this->lang->line('direccion').'*:'; ?></label>
 											<div class="col-sm-8">	
 												<div class="input-group">		
 													<div class="input-group-addon"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></div>
@@ -73,7 +73,7 @@ function provincias_activas(){
 									</div>
 									
 									<div class="form-group even">
-										<label class="col-sm-2 control-label"><?php echo $this->lang->line('cod_postal'); ?></label>
+										<label class="col-sm-2 control-label"><?php echo $this->lang->line('cod_postal').'*:'; ?></label>
 											<div class="col-sm-8">
 												<input type="text" name="cod_postal" class="numeric form-control" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('cod_postal'); ?>" required> 	    	
 											</div> 
@@ -81,7 +81,7 @@ function provincias_activas(){
 								
 		  
 									<div class="form-group odd">
-										<label class="col-sm-2 control-label"><?php echo $this->lang->line('tipo'); ?></label>
+										<label class="col-sm-2 control-label"><?php echo $this->lang->line('tipo').'*:'; ?></label>
 										  	<div class="col-md-8">
 												<select name="id_tipo" class="form-control chosen-select" data-placeholder="Seleccione un tipo..." required>
 													<option></option>
@@ -95,7 +95,7 @@ function provincias_activas(){
 									</div>
 									
 									<div class="form-group even">
-										<label class="col-sm-2 control-label"><?php echo $this->lang->line('pais'); ?></label>
+										<label class="col-sm-2 control-label"><?php echo $this->lang->line('pais').'*:'; ?></label>
 										  	<div class="col-md-8">
 												<select id="paises" name="id_pais" class="form-control" onchange="paises_activos()">	
 													<option value='' disabled selected style='display:none;'>Seleccione una opcion...</option>
@@ -110,7 +110,7 @@ function provincias_activas(){
 									
 									
 									<div class="form-group odd">
-										<label class="col-sm-2 control-label"><?php echo $this->lang->line('provincia'); ?></label>
+										<label class="col-sm-2 control-label"><?php echo $this->lang->line('provincia').'*:'; ?></label>
 										  	<div class="col-md-8">
 												<select id="provincias" name="id_provincia" class="form-control" onchange="provincias_activas()">	
 												</select>
@@ -118,7 +118,7 @@ function provincias_activas(){
 									</div>
 									
 									<div class="form-group even">
-										<label class="col-sm-2 control-label"><?php echo $this->lang->line('departamento'); ?></label>
+										<label class="col-sm-2 control-label"><?php echo $this->lang->line('departamento').'*:'; ?></label>
 										  	<div class="col-md-8">
 												<select id="departamentos" name="id_departamento" class="form-control">		
 												</select>

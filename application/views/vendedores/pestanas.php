@@ -340,7 +340,8 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 																		echo '<td>'.$row->id_cliente.'</td>';
 																		echo '<td>'.$row->nombre.'</td>';
 																		echo "<td>".$row->apellido."</td>";
-																		echo '<td>'.$row->date_add.'</td>';
+																		$date = date_create($key->date_upd);
+																		echo '<td>'.date_format($date, 'd/m/Y');
 																		echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs' style='margin : 0 5px'>";
 																		echo '<i class="fa fa-search"></i>';
 																		echo "</a>";

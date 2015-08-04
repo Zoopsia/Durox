@@ -18,8 +18,7 @@
 				  				<form action="<?php echo base_url()."index.php/mails/editarMails/$row->id_mail/$id_usuario/$tipo"?>" class="form-horizontal" method="post">
 									<div style="padding: 0 50px">
 										<div class="form-group odd">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('telefono'); ?></label>
-												
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('correo').'*:'; ?></label>
 												<div class="col-sm-8">
 													<div class="input-group">
 														<div class="input-group-addon"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span></div>
@@ -29,7 +28,7 @@
 										</div>
 											 		  
 										<div class="form-group even">
-										  	<label class="col-sm-2 control-label"><?php echo $this->lang->line('tipo'); ?></label>
+										  	<label class="col-sm-2 control-label"><?php echo $this->lang->line('tipo').'*:'; ?></label>
 										  		<div class="col-md-8">
 										    		<select name="id_tipo" class="form-control chosen-select">
 														<?php

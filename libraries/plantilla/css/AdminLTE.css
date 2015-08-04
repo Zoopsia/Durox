@@ -2721,7 +2721,7 @@ Component: timeline
 ----------------------------------- */
 .icheckbox_minimal,
 .iradio_minimal {
-	/*
+	
   display: inline-block;
   *display: inline;
   vertical-align: middle;
@@ -2732,9 +2732,10 @@ Component: timeline
   background: rgba(255, 255, 255, 0.7) url(iCheck/minimal/minimal.png) no-repeat;
   border: none;
   cursor: pointer;
-  */
+  
 }
 .icheckbox_minimal {
+  margin-top: 8px;
   background-position: 0 0;
 }
 .icheckbox_minimal.hover {
@@ -2751,6 +2752,7 @@ Component: timeline
   background-position: -80px 0;
 }
 .iradio_minimal {
+  display: none;
   background-position: -100px 0;
 }
 .iradio_minimal.hover {

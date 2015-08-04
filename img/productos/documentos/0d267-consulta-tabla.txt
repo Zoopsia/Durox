@@ -1,0 +1,42 @@
+SELECT productos.nombre, 
+linea_productos_pedidos.cantidad, 
+linea_productos_pedidos.precio,
+estados_productos_pedidos.estado
+FROM pedidos
+INNER JOIN visitas USING(id_visita)
+INNER JOIN linea_productos_pedidos USING(id_pedido)
+INNER JOIN productos USING (id_producto)
+INNER JOIN estados_productos_pedidos USING(id_estado_producto_pedido)
+WHERE id_pedido = 1
+
+
+SELECT id_pedido AS Pedido,
+id_presupuesto AS Presupuesto,
+id_visita AS Visita
+FROM pedidos
+INNER JOIN visitas USING(id_visita)
+INNER JOIN linea_productos_pedidos USING(id_pedido)
+INNER JOIN productos USING (id_producto)
+INNER JOIN estados_productos_pedidos USING(id_estado_producto_pedido)
+WHERE id_pedido = 1
+
+SELECT id_visita AS Visita,
+id_pedido AS Pedido,
+sin_visitas_presupuestos.id_presupuesto
+FROM visitas
+LEFT JOIN sin_visitas_presupuestos USING(id_visita)
+LEFT JOIN pedidos USING(id_visita)
+WHERE 1
+ORDER BY id_visita
+
+
+/-----TABLA-------/
+
+SELECT id_pedido AS Pedido,
+id_visita AS Visita,
+sin_visitas_presupuestos.id_presupuesto AS Presupuesto
+FROM pedidos
+RIGHT JOIN visitas USING(id_visita)
+LEFT JOIN sin_visitas_presupuestos USING(id_visita)
+WHERE 1
+ORDER BY id_visita
