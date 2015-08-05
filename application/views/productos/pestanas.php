@@ -45,7 +45,7 @@ $(function() {
 					<?php
 						}
 						else{
-							echo '<a href="'.base_url().'index.php/productos/producto_imagen/'.$id.'">'.$this->lang->line('cargar').' '.$this->lang->line('imagen').'</a>';
+							echo '<a href="'.base_url().'index.php/productos/producto_imagen/'.$id.'">'.$this->lang->line('cargar').' '.$this->lang->line('imagen').' <i class="fa fa-upload"></i></a>';
 						}
 					?>
 				</div>
@@ -90,7 +90,7 @@ $(function() {
 								if($row->ficha_tecnica){
 									echo  "<tr>";
 									echo  '<td>'.$this->lang->line('ficha').':</td>';
-									echo  '<td class="tabla-datos-importantes"><a href="'.base_url().'img/productos/documentos/'.$row->ficha_tecnica.'" download>'.$this->lang->line('descarga').' <span class="glyphicon glyphicon-download-alt" aria-hidden="true"></span></a></td>';
+									echo  '<td class="tabla-datos-importantes"><a href="'.base_url().'img/productos/documentos/'.$row->ficha_tecnica.'" download>'.$this->lang->line('descarga').' <i class="fa fa-download"></i></a></td>';
 									echo  "</tr>";
 								}
 								else{

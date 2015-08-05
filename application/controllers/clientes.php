@@ -30,7 +30,9 @@ class Clientes extends My_Controller {
 		$db['mails']		= $this->clientes_model->getCruce($id,'mails');
 		$db['pedidos']		= $this->clientes_model->getPedidos($id);
 		$db['presupuestos']	= $this->clientes_model->getPresupuestos($id);
+		$db['iva']			= $this->clientes_model->getTodo('iva');
 		$db['grupos']		= $this->grupos_model->getTodo();
+		
 		
 		$this->cargar_vista($db, 'pestanas');				
 	}
@@ -126,18 +128,36 @@ class Clientes extends My_Controller {
 				}
 			}
 			
-			$cliente	= array(		
+			$cliente	= array(
+					'nombre'			=> $this->input->post('nombre'),
+					'apellido'			=> $this->input->post('apellido'),
+					'razon_social'		=> $this->input->post('razon_social'),
+					'cuit'				=> $this->input->post('cuit'),		
 					'nombre_fantasia'	=> $this->input->post('alias'),
 					'web'				=> $this->input->post('web'),
 					'id_grupo_cliente'	=> $this->input->post('id_grupo_cliente'),
+					'id_iva'			=> $this->input->post('id_iva'),
 					'imagen'			=> $imagen
 			);
 			
 		}
+		else{
+			
+			$cliente	= array(
+					'nombre'			=> $this->input->post('nombre'),
+					'apellido'			=> $this->input->post('apellido'),
+					'razon_social'		=> $this->input->post('razon_social'),
+					'cuit'				=> $this->input->post('cuit'),		
+					'nombre_fantasia'	=> $this->input->post('alias'),
+					'web'				=> $this->input->post('web'),
+					'id_grupo_cliente'	=> $this->input->post('id_grupo_cliente'),
+					'id_iva'			=> $this->input->post('id_iva')
+			);
+		}
 			
 		$id = $this->clientes_model->update($cliente, $id_cliente);	
 		
-		$this->pestanas($id_cliente);
+		redirect('clientes/pestanas/'.$id_cliente,'refresh');
 		
 	}
 

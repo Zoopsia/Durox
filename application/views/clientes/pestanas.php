@@ -1,7 +1,88 @@
 <script>
+
+<?php
+if($clientes){
+	foreach($clientes as $row){
+		echo "var cuit =".$row->cuit.";";
+	}
+}
+?>
 $(document).ready(function(){	
 	document.body.style.background = "url(<?php echo base_url().'/img/otro_fondo.jpg' ?>) no-repeat";
+	//$('#btn-guardar').hide();
+	//$('#btn-cancelar').hide();		
 });
+
+function editable(){
+	var r = confirm("¿Esta seguro que quiere editar este registro?");
+    if (r == true) {
+		$(".cambio").removeAttr("disabled");
+		$(".cambio").removeClass("editable");
+		$('#btn-guardar').show();
+		$('#btn-cancelar').show();
+		$('#btn-editar').hide();
+		$("div#div-mover").removeClass("col-md-3 col-lg-3 col-md-offset-5");
+		$("div#div-mover").addClass("col-md-3 col-lg-3 col-md-offset-4");
+		$("input#web").removeClass("web");
+		$("input#web").removeAttr("onclick");
+		$("input#web").removeAttr("readonly");
+		$('#cuit').val(cuit);
+		$('#span').show();
+	}
+}
+
+function cancelar(){
+	var r = confirm("¿Esta seguro que quiere cancelar los cambios?");
+    if (r == true) {
+		$(".cambio").attr("disabled", true);
+		$(".cambio").addClass("editable");
+		$('#btn-guardar').hide();
+		$('#btn-cancelar').hide();
+		$('#btn-editar').show();
+		$("div#div-mover").addClass("col-md-3 col-lg-3 col-md-offset-5");
+		$("div#div-mover").removeClass("col-md-3 col-lg-3 col-md-offset-4");
+		$("input#web").addClass("web");
+		$('#id_iva').html('');
+		$('#id_grupo_cliente').html('');
+		<?php
+			if($clientes){
+				foreach($clientes as $row){
+					if($row->web){
+						echo "$('input#web').attr('onClick',\"window.open('https://".$row->web."/')\");";
+						echo '$("input#web").attr("readonly", true);';
+						echo '$("input#web").attr("disabled", false);';
+						echo "$('#web').val('".$row->web."');";
+					}
+					
+					echo "$('#nombre').val('".$row->nombre."');";
+					echo "$('#apellido').val('".$row->apellido."');";
+					echo "$('#razon_social').val('".$row->razon_social."');";
+					echo "$('#alias').val('".$row->nombre_fantasia."');";
+					echo "$('#cuit').val('".cuit($row->cuit)."');";
+					
+					if($iva){
+						foreach ($iva as $key) {
+							if($key->id_iva == $row->id_iva)
+								echo "$('#id_iva').append(\"<option value='".$key->id_iva."' selected='selected'>".$key->iva."</option>\");";
+							else
+								echo "$('#id_iva').append(\"<option value='".$key->id_iva."'>".$key->iva."</option>\");";
+						}
+					}
+					
+					if($grupos){
+						foreach ($grupos as $key) {
+							if($key->id_grupo_cliente == $row->id_grupo_cliente)
+								echo "$('#id_grupo_cliente').append(\"<option value='".$key->id_grupo_cliente."' selected='selected'>".$key->grupo_nombre."</option>\");";
+							else
+								echo "$('#id_grupo_cliente').append(\"<option value='".$key->id_grupo_cliente."'>".$key->grupo_nombre."</option>\");";
+						}
+					}												
+				}	
+			}
+		?>
+	}
+}
+
 
 function eliminarDireccion($id_direccion, $id_cliente, $tipo){
 	var direccion	= $id_direccion;
@@ -106,82 +187,22 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 											{
 												foreach ($clientes as $row)
 												{
+													echo '<form action="'.base_url()."index.php/clientes/editarCliente/$row->id_cliente".'" class="form-horizontal" method="post" enctype="multipart/form-data">';
 													if($row->imagen != '')
 													{ 
 							      						echo '<img alt="User Pic" src="'.$row->imagen.'" class="img-perfil img-circle img-responsive">';
 													}
-													if($row->eliminado != 1)
-													{
-														echo '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#popEditar" style="margin-top: 10%">';
-												  			echo $this->lang->line('editar');
-														echo '</button>';
-													}
 												}
 											}	
 					                	?>
-					                	
+					                	<span id="span" class="btn btn-dropbox btn-file editable cambio" style="display: none">
+					                		<?php echo $this->lang->line('imagen');?>
+											<input type="file" id="imagen" class="form-group editable cambio" name="imagen">	 
+										</span>
+											
 									</div>
-					                <!-- Modal -->
-										<div class="modal fade" id="popEditar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-											<div class="modal-dialog" role="document">
-												<div class="modal-content">
-													<div class="modal-header">
-														<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-															<h4 class="modal-title" id="myModalLabel"><?php echo $this->lang->line('editar').' '.$this->lang->line('cliente'); ?></h4>
-													</div>
-													<?php foreach($clientes as $row){ ?>
-													<form action="<?php echo base_url()."index.php/clientes/editarCliente/$row->id_cliente"?>" class="form-horizontal" method="post" enctype="multipart/form-data">
-														<div class="modal-body">
-											       				<div class="form-group">
-																  	<label class="col-sm-3 col-sm-offset-1 control-label"><?php echo $this->lang->line('alias').':'; ?></label>
-																		<div class="col-sm-4">
-																			<input type="text" name="alias" class="form-control" pattern="^[A-Za-z0-9 ]+$" value="<?php echo $row->nombre_fantasia ?>">	 
-																		</div>
-																</div>
-																
-																<div class="form-group">
-																  	<label class="col-sm-3 col-sm-offset-1 control-label"><?php echo $this->lang->line('web').':'; ?></label>
-																		<div class="col-sm-4">
-																			<input type="text" name="web" class="form-control" pattern="^www.[a-zA-Z0.9._-]{4,}$" value="<?php echo $row->web ?>" placeholder="www.sitio-web.com">
-																		</div>
-																</div>
-																
-																<div class="form-group">
-																  	<label class="col-sm-3 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupos_clientes').':'; ?></label>
-																		<div class="col-sm-4">
-																			<select name="id_grupo_cliente" class="form-control chosen-select">
-																				<?php
-																					if($grupos){
-																						foreach ($grupos as $key) {
-																							if($key->id_grupo_cliente == $row->id_grupo_cliente)
-																								echo '<option value="'.$key->id_grupo_cliente.'" selected>'.$key->grupo_nombre.'</option>';
-																							else
-																								echo '<option value="'.$key->id_grupo_cliente.'">'.$key->grupo_nombre.'</option>';
-																						}
-																					}
-																				?>
-																			</select>	 
-																		</div>
-																</div>
-																
-																<div class="form-group">
-																  	<label class="col-sm-3 col-sm-offset-1 control-label"><?php echo $this->lang->line('imagen').':'; ?></label>
-																		<div class="col-sm-4">
-																			<input type="file" name="imagen">	 
-																		</div>
-																</div>	
-																<?php } ?>
-														</div>
-														<div class="modal-footer">
-															<button type="submit" class="btn btn-primary"><?php echo $this->lang->line('guardar'); ?></button>
-															<button type="button" class="btn btn-danger" data-dismiss="modal"><?php echo $this->lang->line('cancelar'); ?></button>
-														</div>
-											      	</form>
-											    </div>
-											</div>
-										</div>
 					                
-					                <div class=" col-md-9 col-lg-9 "><!--carga info cliente-->
+									<div class=" col-md-9 col-lg-9 "><!--carga info cliente-->
 					                	<table class="table table-striped table-user-information"> 
 						                    <?php
 						                    /*---- MEJORAR ESTO !!! ---*/
@@ -229,49 +250,82 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 								      					if($row->eliminado != 1){
 											            	echo "<tbody>";
 											                echo  "<tr>";
-											                echo  '<td>'.$this->lang->line('nombre').':</td>';
-											                echo  '<td class="tabla-datos-importantes">'.$row->nombre.'</td>';
+											                echo  '<td class="padtop">'.$this->lang->line('nombre').':</td>';
+											                echo  '<td class="tabla-datos-importantes"><input class="form-control editable cambio" id="nombre" name="nombre" type="text" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->nombre.'" maxlength="128" disabled placeholder="'.$this->lang->line('nombre').'" autocomplete="off" required></td>';
+											                //echo  '<td class="tabla-datos-importantes"><input type'.$row->nombre.'</td>';
 											                echo  "</tr>";
 															echo  "<tr>";								                     
-											                echo  '<td>'.$this->lang->line('apellido').':</td>';
-											                echo  '<td class="tabla-datos-importantes">'.$row->apellido.'</td>';
+											                echo  '<td class="padtop">'.$this->lang->line('apellido').':</td>';
+											                echo  '<td class="tabla-datos-importantes"><input class="form-control editable cambio" id="apellido" name="apellido" type="text" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->apellido.'" maxlength="128" disabled placeholder="'.$this->lang->line('apellido').'" autocomplete="off" required></td>';
 											                echo  "</tr><tr>";								                     
-											                echo  '<td>'.$this->lang->line('razon_social').':</td>';
-											                echo  '<td class="tabla-datos-importantes">'.$row->razon_social.'</td>';
+											                echo  '<td class="padtop">'.$this->lang->line('razon_social').':</td>';
+											                echo  '<td class="tabla-datos-importantes"><input class="form-control editable cambio" id="razon_social" name="razon_social" type="text" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->razon_social.'" maxlength="128" disabled placeholder="'.$this->lang->line('razon_social').'" autocomplete="off" required></td>';
 											                echo  "</tr><tr>";								                     
-											                echo  '<td>'.$this->lang->line('web').':</td>';
-											                echo  "<td class='tabla-datos-importantes'><a href='#' target='_blank' onclick=\"javascript:location.href='https://".$row->web."/'\">".$row->web."</a></td>";
+											                echo  '<td class="padtop">'.$this->lang->line('web').':</td>';
+											                echo  "<td class='tabla-datos-importantes'>";
+											                if($row->web){
+											                	echo  "<input type='text' name='web' id='web' class='form-control editable cambio web' pattern='^www.[a-zA-Z0.9._- ]{4,}$' value='".$row->web."' placeholder='www.sitio-web.com' autocomplete='off' readonly onclick=\"javascript:window.open('https://".$row->web."/')\">";											                
+															}
+															else{
+																echo  "<input type='text' name='web' id='web' class='form-control editable cambio web' pattern='^www.[a-zA-Z0.9._- ]{4,}$' placeholder='www.sitio-web.com' autocomplete='off' disable>";
+															}
+											                echo  "</td>";
 											                echo  "</tr><tr>";
-															echo  '<td>'.$this->lang->line('alias').':</td>';
-											                echo  '<td class="tabla-datos-importantes">'.$row->nombre_fantasia.'</td>';
+															echo  '<td class="padtop">'.$this->lang->line('alias').':</td>';
+											                echo  '<td class="tabla-datos-importantes"><input type="text" name="alias" id="alias" class="form-control editable cambio" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->nombre_fantasia.'" placeholder="'.$this->lang->line('alias').'" autocomplete="off" disabled></td>';
 											                echo  "</tr><tr>";		
-											                echo  '<td>'.$this->lang->line('cuit').':</td>';
-											                echo  '<td class="tabla-datos-importantes">'.cuit($row->cuit).'</td>';
+											                echo  '<td class="padtop">'.$this->lang->line('cuit').':</td>';							
+											                echo  '<td class="tabla-datos-importantes"><input type="text" name="cuit" id="cuit" class="form-control editable cambio" pattern="[0-9]*.{10,11}" value="'.cuit($row->cuit).'" placeholder="'.$this->lang->line('cuit').'" maxlength="11" autocomplete="off" disabled required></td>';
 											                echo  "</tr><tr>";	
-											                echo  '<td>'.$this->lang->line('iva').':</td>';
-											                echo  '<td class="tabla-datos-importantes">'.$row->iva.'</td>';
+															
+											                echo  '<td class="padtop">'.$this->lang->line('iva').':</td>';
+											                echo  '<td class="tabla-datos-importantes">';
+															echo '<select name="id_iva" id="id_iva" class="form-control editable cambio" disabled>';
+																if($iva){
+																	foreach ($iva as $key) {
+																		if($key->id_iva == $row->id_iva)
+																			echo '<option value="'.$key->id_iva.'" selected>'.$key->iva.'</option>';
+																		else
+																			echo '<option value="'.$key->id_iva.'">'.$key->iva.'</option>';
+																	}
+																}			
+															echo '</select>';	 
+											                echo  "</td>";
 															echo  "</tr><tr>";	
-											                echo  '<td>'.$this->lang->line('grupos_clientes').':</td>';
-											                echo  '<td class="tabla-datos-importantes"><a href="'.base_url().'index.php/Grupos/getReglasGrupos/'.$row->id_grupo_cliente.'">';
-											                echo  $row->grupo_nombre;
-											                echo  "</a></td>";
+															
+															
+											                echo  '<td class="padtop">'.$this->lang->line('grupos_clientes').':</td>';
+															echo  '<td class="tabla-datos-importantes">';
+											                echo '<select name="id_grupo_cliente" id="id_grupo_cliente" class="form-control editable cambio" disabled>';
+																if($grupos){
+																	foreach ($grupos as $key) {
+																		if($key->id_grupo_cliente == $row->id_grupo_cliente)
+																			echo '<option value="'.$key->id_grupo_cliente.'" selected>'.$key->grupo_nombre.'</option>';
+																		else
+																			echo '<option value="'.$key->id_grupo_cliente.'">'.$key->grupo_nombre.'</option>';
+																	}
+																}			
+															echo '</select>';	 
+											                echo  "</td>";
+											                //<a href="'.base_url().'index.php/Grupos/getReglasGrupos/'.$row->id_grupo_cliente.'">';
+											                //echo  $row->grupo_nombre;
 											                echo  "</tr>";
 															if($telefonos){
 												                echo  "<tr>";
-																echo  '<td>'.$this->lang->line('telefono').':</td>';
-												                echo  '<td class="tabla-datos-importantes">'.$cod_area.' - '.$telefono.'</td>';
+																echo  '<td class="padtop">'.$this->lang->line('telefono').':</td>';
+												                echo  '<td class="tabla-datos-importantes"><input type="text" name="telefono" class="form-control editable"  value="'.$cod_area.' - '.$telefono.'" autocomplete="off" disabled></td>';
 																echo  "</tr>";
 															}
 															if($direcciones){
 												                echo  "<tr>";
-																echo  '<td>'.$this->lang->line('direccion').':</td>';
-												                echo  '<td class="tabla-datos-importantes">'.$direccion.'</td>';		
+																echo  '<td class="padtop">'.$this->lang->line('direccion').':</td>';
+												                echo  '<td class="tabla-datos-importantes"><input type="text" name="direccion" class="form-control editable"  value="'.$direccion.'" autocomplete="off" disabled></td>';		
 												               	echo  "</tr>";
 															}
 															if($mails){
 												                echo  "<tr>";
-																echo  '<td>'.$this->lang->line('correo').':</td>';
-												                echo  '<td class="tabla-datos-importantes">'.$mail.'</td>';
+																echo  '<td class="padtop">'.$this->lang->line('correo').':</td>';
+												                echo  '<td class="tabla-datos-importantes"><input type="text" name="mail" class="form-control editable"  value="'.$mail.'" autocomplete="off" disabled style="width: 300px !important;"></td>';
 																echo  "</tr>";
 															}
 														    echo  "</tbody>";
@@ -294,8 +348,24 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 					                    </table>
 					                </div>
 					            </div>
-					            			
+					            	
+					            <div class="row">
+					            	<div id="div-mover" class="col-md-3 col-lg-3 col-md-offset-5">
+					            		<button type="button" id="btn-editar" class="btn btn-primary btn-sm" onclick="editable()">
+											<?php echo $this->lang->line('editar');?>
+										</button>
+										<!--submit boton cambiar-->
+					            		<button type="submit" id="btn-guardar" class="btn btn-primary btn-sm" style="display: none;">
+											<?php echo $this->lang->line('guardar');?>
+										</button>
+										<button type="button" id="btn-cancelar" class="btn btn-danger btn-sm" onclick="cancelar()" style="display: none;">
+											<?php echo $this->lang->line('cancelar');?>
+										</button>
+					            	</div>
+					            </div>
+					            </form>		
 	    					</div> <!--TAB 1 INFO CLIENTE -->
+	    					
 	     					<div class="tab-pane fade" id="tab2">
 	     					<!--TABLA DE VENDEDORES CON RESPECTO AL CLIENTE-->	
 	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
