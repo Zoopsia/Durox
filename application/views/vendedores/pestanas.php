@@ -49,8 +49,6 @@ function editable(){
 	$('#btn-cancelar').show();
 	$('#btn-editar').hide();
 	$('#btn-eliminar').hide();
-	$("div#div-mover").removeClass("col-md-3 col-lg-3 col-md-offset-5");
-	$("div#div-mover").addClass("col-md-3 col-lg-3 col-md-offset-5");
 	$('#span').show();
 }
 
@@ -67,8 +65,6 @@ function cancelar(){
 		$('#btn-cancelar').hide();
 		$('#btn-eliminar').show();
 		$('#btn-editar').show();
-		$("div#div-mover").addClass("col-md-3 col-lg-3 col-md-offset-5");
-		$("div#div-mover").removeClass("col-md-3 col-lg-3 col-md-offset-4");
 		<?php
 			if($vendedores){
 				foreach($vendedores as $row){
@@ -167,6 +163,7 @@ function coinciden(){
 
 function confirmarContraseña(){
 	var contraseña  = $('#contraseña').val();
+	var confirm_contraseña  = $('#confirm_contraseña').val();
 	<?php
 	if($vendedores){
 		foreach($vendedores as $row){
@@ -176,10 +173,14 @@ function confirmarContraseña(){
 	?>
 	
 	if(contraseña != <?php echo $aux?>){
-		$("#confirm_contraseña").attr("required", true);
-		$("#confirm_contraseña").focus();
-		$("#formulario").attr("onsubmit","return coinciden()");
-		return false;
+		if(contraseña == confirm_contraseña){
+			$("#confirm_contraseña").attr("required", true);
+			$("#confirm_contraseña").focus();
+			$("#formulario").attr("onsubmit","return coinciden()");
+			return false;
+		}
+		else
+			return true;
 	}
 }
 
@@ -293,7 +294,7 @@ $bandera = 0;
 					            if($bandera != 1){
 					            ?>
 					            <div class="row">
-					            	<div id="div-mover" class="col-md-3 col-lg-3 col-md-offset-5">
+					            	<div id="div-mover" class="col-md-3 col-lg-3 col-lg-offset-10">
 					            		<button type="button" id="btn-editar" class="btn btn-primary btn-sm" onclick="editable()">
 											<?php echo $this->lang->line('editar');?>
 										</button>

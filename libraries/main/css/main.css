@@ -356,8 +356,8 @@ input#cantidad{
 
 .img-perfil-sm
 {
-	width: 150px; 
-	height: 150px !important;
+	width: 100px; 
+	height: 100px !important;
 }
 
 .img_div
@@ -429,4 +429,7 @@ input.web:hover{
 
 .displaynone{
 	display: none !important;
+}
+.img-bookblock{
+	height: 300px !important;
 }

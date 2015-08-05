@@ -241,7 +241,8 @@ function tablaPresupuesto($id_presupuesto){
 										            <table class="table table-striped table-bordered" cellspacing="0" width="100%">
 												        <thead>
 												            <tr>
-												            	<th><?php echo $this->lang->line('presupuesto'); ?></th>
+												            	<th><?php echo $this->lang->line('id'); ?></th>
+												            	<th><?php echo $this->lang->line('date'); ?></th>
 												            	<th><?php echo $this->lang->line('estado'); ?></th>
 												            	<th><?php echo $this->lang->line('total'); ?></th>
 												            	<th></th>
@@ -250,7 +251,8 @@ function tablaPresupuesto($id_presupuesto){
 												 
 												        <tfoot>
 												            <tr>
-												            	<th><?php echo $this->lang->line('presupuesto'); ?></th>
+												            	<th><?php echo $this->lang->line('id'); ?></th>
+												            	<th><?php echo $this->lang->line('date'); ?></th>
 												            	<th><?php echo $this->lang->line('estado'); ?></th>
 												            	<th><?php echo $this->lang->line('total'); ?></th>
 												            	<th></th>
@@ -263,7 +265,8 @@ function tablaPresupuesto($id_presupuesto){
 															    {
 																	echo '<tr>';
 																	echo '<td>'.$row->id_presupuesto.'</td>';
-																	
+																	$date	= date_create($row->fecha);
+																	echo '<td>'.date_format($date, 'd/m/Y').'</td>';
 																	foreach($estados as $key){
 																		if($key->id_estado_presupuesto == $row->id_estado_presupuesto)	
 																			echo '<td>'.$key->estado.'</td>';
@@ -371,8 +374,8 @@ function tablaPresupuesto($id_presupuesto){
 									<div class="col-lg-10"></div>
 									<div class="col-lg-2">
 										<?php
-											echo '<a role="button" class="btn btn-danger" href="'.base_url().'index.php/Visitas/editar/'.$row->id_visita.'">'.$this->lang->line('eliminar').'</a> ';
-											echo '<a role="button" class="btn btn-primary" href="'.base_url().'index.php/Visitas/editar/'.$row->id_visita.'">'.$this->lang->line('editar').'</a>';
+											echo '<a role="button" class="btn btn-primary btn-sm" href="'.base_url().'index.php/Visitas/editar/'.$row->id_visita.'" style="margin-right: 3px">'.$this->lang->line('editar').'</a>';
+											echo '<a role="button" class="btn btn-danger btn-sm" href="'.base_url().'index.php/Visitas/editar/'.$row->id_visita.'">'.$this->lang->line('eliminar').'</a> ';
 										?>
 									</div>
 								</div>

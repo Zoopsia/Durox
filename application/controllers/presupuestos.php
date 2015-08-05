@@ -398,8 +398,8 @@ class Presupuestos extends My_Controller {
 				$mensaje	.= '<th>'.'$'.$row->preciobase.'</th>';
 				$mensaje	.= '<th>'.'$'.$row->precio.'</th>';
 				$mensaje	.= '<th>'.'$'.$row->subtotal.'</th>';
-				$mensaje	.= '<th><a href="#" class="btn btn-danger btn-xs" onclick="sacarProducto('.$row->id_linea_producto_presupuesto.','.$presupuesto.')" role="button" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('anular').' '.$this->lang->line('producto').'">';
-				$mensaje	.='<span class="glyphicon glyphicon-minus"></span>';
+				$mensaje	.= '<th><a href="#" class="btn btn-danger btn-xs" onclick="sacarProducto('.$row->id_linea_producto_presupuesto.','.$presupuesto.')" role="button" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('sacar').' '.$this->lang->line('producto').'">';
+				$mensaje	.= '<i class="fa fa-minus"></i>';
 				$mensaje	.= '</a></th>';
 				$mensaje	.= '<th style="width: 107px"></th>';
 				$mensaje	.= '</tr>';
@@ -412,7 +412,7 @@ class Presupuestos extends My_Controller {
 				$mensaje	.= '<th>'.'$'.$row->precio.'</th>';
 				$mensaje	.= '<th>'.'$'.$row->subtotal.'</th>';
 				$mensaje	.= '<th><a href="#" class="btn btn-success btn-xs" onclick="ingresarProducto('.$row->id_linea_producto_presupuesto.','.$presupuesto.')" role="button" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('insertar').' '.$this->lang->line('producto').'">';
-				$mensaje	.='<span class="glyphicon glyphicon-plus"></span>';
+				$mensaje	.= '<i class="fa fa-plus"></i>';
 				$mensaje	.= '</a></th>';
 				$mensaje	.= '<th>'.$row->estado.'</th>';
 				$mensaje	.= '</tr>';
@@ -454,7 +454,7 @@ class Presupuestos extends My_Controller {
 		$tabla				= $this->presupuestos_model->getDetallePresupuesto($presupuesto);
 
 		$cambioEstado		= $this->presupuestos_model->getTodo();
-		
+
 		if($cambioEstado){
 			foreach($cambioEstado as $row){
 				if($row->id_presupuesto == $presupuesto){
@@ -474,7 +474,7 @@ class Presupuestos extends My_Controller {
 				}
 			}
 		}
-			
+	
 		if($this->input->post('total'))
 		{
 			$total		= $this->input->post('total');

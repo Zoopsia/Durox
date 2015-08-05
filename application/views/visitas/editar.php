@@ -12,8 +12,8 @@
 	    						<form action="<?php echo base_url()."index.php/Visitas/editarVisita/".$value->id_visita; ?>" class="form-horizontal" method="post">
 	    							<div style="padding: 0 50px">
 	    								<div class="form-group odd">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('vendedor'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('vendedor'); ?></label>
+												<div class="col-sm-8">
 													<select name="id_vendedor" class="form-control chosen-select">	
 														<?php
 															foreach($vendedores as $row){
@@ -27,7 +27,7 @@
 														?>
 													</select>												      	 
 									      		</div>
-									      		<div class="col-sm-1 col-sm-offset-3">
+									      		<div class="col-sm-1">
 										      		<a role="button" class="btn btn-primary btn-sm" href="<?php echo base_url().'index.php/Vendedores/vendedores_abm/tab1/add'; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('agregar').' '.$this->lang->line('vendedor');?>" style="margin-top: 15%">
 														<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 													</a>
@@ -35,8 +35,8 @@
 									    </div>
 	    								
 	    								<div class="form-group even">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('cliente'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('cliente'); ?></label>
+												<div class="col-sm-8">
 													<select name="id_cliente" class="form-control chosen-select">	
 														<?php
 															foreach($clientes as $row){
@@ -50,7 +50,7 @@
 														?>
 													</select>												      	 
 									     		</div>
-									     		<div class="col-sm-1 col-sm-offset-3">
+									     		<div class="col-sm-1">
 										      		<a role="button" class="btn btn-primary btn-sm" href="<?php echo base_url().'index.php/Clientes/clientes_abm/tab1/add'; ?>" data-toggle="tooltip" data-placement="bottom" title="<?php echo $this->lang->line('agregar').' '.$this->lang->line('cliente');?>" style="margin-top: 15%">
 														<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
 													</a>
@@ -58,8 +58,8 @@
 									    </div>
 									      	  
 									    <div class="form-group odd">
-											<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('epoca').' '.$this->lang->line('visita'); ?></label>
-												<div class="col-sm-4">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('epoca').' '.$this->lang->line('visita'); ?></label>
+												<div class="col-sm-8">
 													<select name="id_epoca_visita" class="form-control chosen-select">	
 														<?php
 															foreach($epocas as $row){
@@ -76,22 +76,22 @@
 									    </div>
 	    								
 		    							<div class="form-group even">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('fecha'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
-													<input type="text" name="date_upd" class="form-control" value="<?php echo $value->date_upd;?>">	 
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('fecha'); ?></label>
+												<div class="col-sm-8">
+													<input type="text" name="date_upd" class="form-control datepicker" value="<?php echo date('d/m/Y', strtotime( $value->date_upd));?>">	 
 												</div>
 										</div>
 										
 										<div class="form-group odd">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('comentarios'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('comentarios'); ?></label>
+												<div class="col-sm-8">
 													<textarea name="comentarios" style="width: 100%; height: 100px;" ><?php echo $value->descripcion;?></textarea>	 
 												</div>
 										</div>
 										
 										<div class="form-group even" style="padding-bottom: 1%">
-											<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('valoracion'); ?></label>
-												<div class="col-sm-4 col-sm-offset-1" style="margin-top: 1%">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('valoracion'); ?></label>
+												<div class="col-sm-8" style="margin-top: 1%">
 													<?php
 													for ($i=1; $i <= 5; $i++) {
 														if($value->valoracion == $i){ 
@@ -108,7 +108,8 @@
 										<hr />
 										
 										<div class="form-group even">
-											<div class="col-sm-4 col-sm-offset-3">
+											<label class="col-sm-2 control-label"></label>
+											<div class="col-sm-8">
 												<button type="submit" class="btn btn-primary"><?php echo $this->lang->line('guardar'); ?></button>
 												<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" onclick="confirmarVisita()">
 											</div>

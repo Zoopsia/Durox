@@ -92,6 +92,16 @@ class Presupuestos_model extends My_Model {
 	function insertLinea($arreglo){
 		
 		//----INSERTO CAMPOS EN TABLA ----//
+		if($this->db->field_exists('date_add', $this->_tablename))
+		{
+			$arreglo['date_add'] = date('Y-m-d H:i:s'); 
+		}
+		
+		if($this->db->field_exists('date_upd', $this->_tablename))
+		{
+			$arreglo['date_upd'] = date('Y-m-d H:i:s'); 
+		}
+		
 		
 		$this->db->insert('linea_productos_presupuestos', $arreglo);
 		 
@@ -102,6 +112,16 @@ class Presupuestos_model extends My_Model {
 	function insertCruceVisita($arreglo_cruce){
 		
 		//----INSERTO CAMPOS EN TABLA CRUCE ----//
+		
+		if($this->db->field_exists('date_add', $this->_tablename))
+		{
+			$arreglo_cruce['date_add'] = date('Y-m-d H:i:s'); 
+		}
+		
+		if($this->db->field_exists('date_upd', $this->_tablename))
+		{
+			$arreglo_cruce['date_upd'] = date('Y-m-d H:i:s'); 
+		}
 		
 		$this->db->insert('sin_visitas_presupuestos', $arreglo_cruce);
 	}
@@ -155,6 +175,12 @@ class Presupuestos_model extends My_Model {
     }  
 	
 	public function updateLinea($arreglo_campos, $id){
+		
+		if($this->db->field_exists('date_upd', $this->_tablename))
+		{
+			$arreglo_campos['date_upd'] = date('Y-m-d H:i:s'); 
+		}
+		
 		$this->db->where('id_linea_producto_presupuesto', $id);
 		$this->db->update('linea_productos_presupuestos', $arreglo_campos);
 		

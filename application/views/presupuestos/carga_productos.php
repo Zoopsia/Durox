@@ -343,9 +343,7 @@ function funcion1($id_producto){
 											</div>
 										</div>
 									</div>
-	    						</form>
-	    						
-	    						
+	    					</form>
 	    				</div><!--contenedor de cada pestaña-->
 		  			</div><!--panel body-->
 				</div><!--panel-->
