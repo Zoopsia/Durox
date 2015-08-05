@@ -7,28 +7,21 @@ if($clientes){
 	}
 }
 ?>
-$(document).ready(function(){	
-	document.body.style.background = "url(<?php echo base_url().'/img/otro_fondo.jpg' ?>) no-repeat";
-	//$('#btn-guardar').hide();
-	//$('#btn-cancelar').hide();		
-});
 
 function editable(){
-	var r = confirm("¿Esta seguro que quiere editar este registro?");
-    if (r == true) {
-		$(".cambio").removeAttr("disabled");
-		$(".cambio").removeClass("editable");
-		$('#btn-guardar').show();
-		$('#btn-cancelar').show();
-		$('#btn-editar').hide();
-		$("div#div-mover").removeClass("col-md-3 col-lg-3 col-md-offset-5");
-		$("div#div-mover").addClass("col-md-3 col-lg-3 col-md-offset-4");
-		$("input#web").removeClass("web");
-		$("input#web").removeAttr("onclick");
-		$("input#web").removeAttr("readonly");
-		$('#cuit').val(cuit);
-		$('#span').show();
-	}
+	$(".cambio").removeAttr("disabled");
+	$(".cambio").removeClass("editable");
+	$('#btn-guardar').show();
+	$('#btn-cancelar').show();
+	$('#btn-editar').hide();
+	$('#btn-eliminar').hide();
+	$("div#div-mover").removeClass("col-md-3 col-lg-3 col-md-offset-5");
+	$("div#div-mover").addClass("col-md-3 col-lg-3 col-md-offset-5");
+	$("input#web").removeClass("web");
+	$("input#web").removeAttr("onclick");
+	$("input#web").removeAttr("readonly");
+	$('#cuit').val(cuit);
+	$('#span').show();
 }
 
 function cancelar(){
@@ -38,6 +31,7 @@ function cancelar(){
 		$(".cambio").addClass("editable");
 		$('#btn-guardar').hide();
 		$('#btn-cancelar').hide();
+		$('#btn-eliminar').show();
 		$('#btn-editar').show();
 		$("div#div-mover").addClass("col-md-3 col-lg-3 col-md-offset-5");
 		$("div#div-mover").removeClass("col-md-3 col-lg-3 col-md-offset-4");
@@ -83,6 +77,12 @@ function cancelar(){
 	}
 }
 
+function eliminar($id){
+	var r = confirm("¿Esta seguro que quiere eliminar el registro?");
+    if (r == true) {
+		window.location.assign("/Durox/index.php/Clientes/delete_user/"+$id);
+	}
+}
 
 function eliminarDireccion($id_direccion, $id_cliente, $tipo){
 	var direccion	= $id_direccion;
@@ -147,6 +147,9 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
     }
 }				
 </script>
+<?php
+$bandera = 0;
+?>
 <!--
 <nav class="navbar" role="navigation">
 
@@ -168,7 +171,7 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 					    	<li><a href="#tab4" data-toggle="tab"><?php echo $this->lang->line('pedidos'); ?></a></li>
 					    	<li><a href="#tab5" data-toggle="tab"><?php echo $this->lang->line('presupuestos'); ?></a></li>
 					    	<li><a href="#tab6" data-toggle="tab"><?php echo $this->lang->line('alarmas'); ?></a></li>
-							<?php
+						 	<?php
 										}
 									}
 								}
@@ -179,7 +182,7 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 		  				
 		  				<div class="tab-content">
 	    					<div class="tab-pane fade in active" id="tab1">
-	    					<!--INFO GRAL DEL CLIENTE-->	
+	    					<!--INFO GRAL DEL CLIENTE-->
 	    						<div class="row">
 					                <div class="col-md-3 col-lg-3 " align="center"> 
 					                	<?php
@@ -341,6 +344,7 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 														            	</div>
 														        	</div>
 																</div>';
+															$bandera = 1;
 														}
 										            }
 										        }
@@ -348,13 +352,18 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 					                    </table>
 					                </div>
 					            </div>
-					            	
+					            
+					            <?php
+					            if($bandera != 1){
+					            ?>
 					            <div class="row">
 					            	<div id="div-mover" class="col-md-3 col-lg-3 col-md-offset-5">
 					            		<button type="button" id="btn-editar" class="btn btn-primary btn-sm" onclick="editable()">
 											<?php echo $this->lang->line('editar');?>
 										</button>
-										<!--submit boton cambiar-->
+										<button type="button" id="btn-eliminar" class="btn btn-danger btn-sm" onclick="eliminar(<?php echo $id?>)">
+											<?php echo $this->lang->line('eliminar');?>
+										</button>
 					            		<button type="submit" id="btn-guardar" class="btn btn-primary btn-sm" style="display: none;">
 											<?php echo $this->lang->line('guardar');?>
 										</button>
@@ -363,6 +372,9 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 										</button>
 					            	</div>
 					            </div>
+					            <?php
+								}
+								?>
 					            </form>		
 	    					</div> <!--TAB 1 INFO CLIENTE -->
 	    					

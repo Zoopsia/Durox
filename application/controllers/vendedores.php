@@ -29,6 +29,7 @@ class Vendedores extends My_Controller {
 		$db['direcciones']	= $this->vendedores_model->getCruce($id,'direcciones');
 		$db['mails']		= $this->vendedores_model->getCruce($id,'mails');
 		$db['presupuestos']	= $this->vendedores_model->getPresupuestos($id);
+		$db['id']			= $id;
 		
 		$db['cruce']		= $this->vendedores_model->sinCruce($id);
 		$db['clientes_todo']= $this->clientes_model->getTodo();
@@ -85,10 +86,15 @@ class Vendedores extends My_Controller {
 	
 	public function delete_user($primary_key)
 	{
-		$arreglo = array(
-			'eliminado'		=> 1
-		);
-		return $this->vendedores_model->update($arreglo,$primary_key);
+		if($this->vendedores_model->permitirEliminar($primary_key)){
+			$arreglo = array(
+				'eliminado'		=> 1
+			);
+			
+			$id 				= $this->vendedores_model->update($arreglo,$primary_key);
+		
+		}
+		return redirect($this->_subject.'/pestanas/'.$primary_key,'refresh');
 	}
 
 	function just_a_test($primary_key , $row)
@@ -117,16 +123,25 @@ class Vendedores extends My_Controller {
 				}
 			}
 			
-			$vendedor	= array(		
+			$vendedor	= array(
+					'nombre'			=> $this->input->post('nombre'),
+					'apellido'			=> $this->input->post('apellido'),		
 					'contraseña' 		=> $this->input->post('contraseña'),
 					'imagen'			=> $imagen
 			);
 			
 		}
+		else {
+			$vendedor	= array(
+					'nombre'			=> $this->input->post('nombre'),
+					'apellido'			=> $this->input->post('apellido'),		
+					'contraseña' 		=> $this->input->post('contraseña')
+			);
+		}
 			
 		$id = $this->vendedores_model->update($vendedor, $id_vendedor);	
 		
-		$this->pestanas($id_vendedor);
+		redirect('vendedores/pestanas/'.$id_vendedor,'refresh');
 		
 	}
 	

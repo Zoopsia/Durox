@@ -422,3 +422,11 @@ input.web:hover{
     cursor: inherit;
     display: block;
 }
+
+.transparente{
+	background-color: transparent !important;
+}
+
+.displaynone{
+	display: none !important;
+}

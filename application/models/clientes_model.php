@@ -143,7 +143,5 @@ class Clientes_model extends My_Model {
 			return FALSE;
 		}
 	}
-		
-	
 } 
 ?>

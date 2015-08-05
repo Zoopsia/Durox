@@ -32,6 +32,7 @@ class Clientes extends My_Controller {
 		$db['presupuestos']	= $this->clientes_model->getPresupuestos($id);
 		$db['iva']			= $this->clientes_model->getTodo('iva');
 		$db['grupos']		= $this->grupos_model->getTodo();
+		$db['id']			= $id;
 		
 		
 		$this->cargar_vista($db, 'pestanas');				
@@ -94,12 +95,16 @@ class Clientes extends My_Controller {
 	}
 
 	public function delete_user($primary_key)
-	{	
-		$arreglo = array(
-			'eliminado'		=> 1
-		);
+	{
+		if($this->clientes_model->permitirEliminar($primary_key)){
+			$arreglo = array(
+				'eliminado'		=> 1
+			);
 			
-		return $this->clientes_model->update($arreglo,$primary_key);
+			$id 				= $this->clientes_model->update($arreglo,$primary_key);
+		
+		}
+		return redirect($this->_subject.'/pestanas/'.$primary_key,'refresh');
 	}
 	
 	function just_a_test($primary_key , $row)

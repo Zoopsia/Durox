@@ -40,9 +40,53 @@
 ?>
 
 <script>
-$(document).ready(function(){	
-	document.body.style.background = "url(<?php echo base_url().'/img/fondo.jpg' ?>) no-repeat";
-});
+function editable(){
+	$("#confirm_contraseña").removeClass("displaynone");
+	$("#td_confirmar").html('Confirmar Contraseña');
+	$(".cambio").removeAttr("disabled");
+	$(".cambio").removeClass("editable");
+	$('#btn-guardar').show();
+	$('#btn-cancelar').show();
+	$('#btn-editar').hide();
+	$('#btn-eliminar').hide();
+	$("div#div-mover").removeClass("col-md-3 col-lg-3 col-md-offset-5");
+	$("div#div-mover").addClass("col-md-3 col-lg-3 col-md-offset-5");
+	$('#span').show();
+}
+
+function cancelar(){
+	var r = confirm("¿Esta seguro que quiere cancelar los cambios?");
+    if (r == true) {
+    	$("#confirm_contraseña").addClass("displaynone");
+    	$("#confirm_contraseña").removeAttr("required");
+    	$("#confirm_contraseña").val('');
+		$("#td_confirmar").html('');
+		$(".cambio").attr("disabled", true);
+		$(".cambio").addClass("editable");
+		$('#btn-guardar').hide();
+		$('#btn-cancelar').hide();
+		$('#btn-eliminar').show();
+		$('#btn-editar').show();
+		$("div#div-mover").addClass("col-md-3 col-lg-3 col-md-offset-5");
+		$("div#div-mover").removeClass("col-md-3 col-lg-3 col-md-offset-4");
+		<?php
+			if($vendedores){
+				foreach($vendedores as $row){
+					echo "$('#nombre').val('".$row->nombre."');";
+					echo "$('#apellido').val('".$row->apellido."');";
+					echo "$('#contraseña').val('".$row->contraseña."');";											
+				}	
+			}
+		?>
+	}
+}
+
+function eliminar($id){
+	var r = confirm("¿Esta seguro que quiere eliminar el registro?");
+    if (r == true) {
+		window.location.assign("/Durox/index.php/Vendedores/delete_user/"+$id);
+	}
+}
 
 function eliminarDireccion($id_direccion, $id_cliente, $tipo){
 	var direccion	= $id_direccion;
@@ -105,8 +149,47 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 		 	}
 		});
     }
-}				
+}
+
+function coinciden(){
+	var contraseña  = $('#contraseña').val();
+	var confirm_contraseña  = $('#confirm_contraseña').val();
+	
+	if(contraseña == confirm_contraseña){
+		return true;
+	}
+	else{
+		$("#contraseña").focus();
+		alert("Las contraseñas no coinciden!");
+		return false;	
+	}
+}	
+
+function confirmarContraseña(){
+	var contraseña  = $('#contraseña').val();
+	<?php
+	if($vendedores){
+		foreach($vendedores as $row){
+			$aux = $row->contraseña;
+		}
+	}
+	?>
+	
+	if(contraseña != <?php echo $aux?>){
+		$("#confirm_contraseña").attr("required", true);
+		$("#confirm_contraseña").focus();
+		$("#formulario").attr("onsubmit","return coinciden()");
+		return false;
+	}
+}
+
+			
 </script>
+
+
+<?php
+$bandera = 0;
+?>
 <!--
 <nav class="navbar" role="navigation">
 	<div class="container">
@@ -138,7 +221,8 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 		  				<div class="tab-content">
 	    					<div class="tab-pane <?php echo $array_n['tab1']; ?>" id="tab1">
 	    						<div class="row"><!--Cargo imagen vendedor-->
-					                <div class="col-md-3 col-lg-3 " align="center"> 
+					                <div class="col-md-3 col-lg-3 " align="center">
+					                	<form id="formulario" action="<?php echo base_url()."index.php/vendedores/editarVendedor/$row->id_vendedor"?>" class="form-horizontal" method="post" onsubmit="return confirmarContraseña()"enctype="multipart/form-data"> 
 					                	<?php
 					                		if($vendedores){
 						                    	foreach ($vendedores as $row)
@@ -147,52 +231,16 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 													{
 														echo '<img alt="User Pic" src="'.$row->imagen.'" class="img-perfil img-circle img-responsive ">';
 													}
-													
-													if($row->eliminado != 1)
-													{
-														echo '<button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#popEditar" style="margin-top: 10%">';
-												  			echo $this->lang->line('editar');
-														echo '</button>';
-													}
 												}
 											}
 					                	?>
+					                	<span id="span" class="btn btn-dropbox btn-file editable cambio" style="display: none">
+					                		<?php echo $this->lang->line('imagen');?>
+											<input type="file" id="imagen" class="form-group editable cambio" name="imagen">	 
+										</span>
+											
 									</div>
-					               	<!-- Modal -->
-										<div class="modal fade" id="popEditar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-											<div class="modal-dialog" role="document">
-												<div class="modal-content">
-													<div class="modal-header">
-														<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-															<h4 class="modal-title" id="myModalLabel"><?php echo $this->lang->line('editar').' '.$this->lang->line('vendedor'); ?></h4>
-													</div>
-													<?php foreach($vendedores as $row){ ?>
-													<form action="<?php echo base_url()."index.php/vendedores/editarVendedor/$row->id_vendedor"?>" class="form-horizontal" method="post" enctype="multipart/form-data">
-														<div class="modal-body">
-											       				<div class="form-group">
-																  	<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('contraseña'); ?></label>
-																		<div class="col-sm-4 col-sm-offset-1">
-																			<input type="text" name="contraseña" class="form-control" pattern="^[A-Za-z0-9 ]+$" value="<?php echo $row->contraseña ?>">	 
-																		</div>
-																</div>
-																
-																<div class="form-group">
-																  	<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('imagen'); ?></label>
-																		<div class="col-sm-4 col-sm-offset-1">
-																			<input type="file" name="imagen">	 
-																		</div>
-																</div>	
-																<?php } ?>
-														</div>
-														<div class="modal-footer">
-															<button type="button" class="btn btn-danger" data-dismiss="modal"><?php echo $this->lang->line('cancelar'); ?></button>
-															<button type="submit" class="btn btn-primary"><?php echo $this->lang->line('guardar'); ?></button>
-														</div>
-											      	</form>
-											    </div>
-											</div>
-										</div>
-					                
+					               	
 					                <div class=" col-md-9 col-lg-9 "> 
 					                	<table class="table table-striped table-user-information"> 
 						                    <?php
@@ -202,20 +250,24 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 								      					if($row->eliminado != 1){
 											            	echo "<tbody>";
 											                echo  "<tr>";
-											                echo  '<td>'.$this->lang->line('nombre').':</td>';
-											                echo  '<td class="tabla-datos-importantes">'.$row->nombre.'</td>';
+											                echo  '<td class="padtop" style="width: 209px">'.$this->lang->line('nombre').':</td>';
+											                echo  '<td class="tabla-datos-importantes"><input class="form-control editable cambio" id="nombre" name="nombre" type="text" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->nombre.'" maxlength="128" disabled placeholder="'.$this->lang->line('nombre').'" autocomplete="off" required></td>';
 											                echo  "</tr>";
 															echo  "<tr>";								                     
-											                echo  '<td>'.$this->lang->line('apellido').':</td>';
-											                echo  '<td class="tabla-datos-importantes">'.$row->apellido.'</td>';
+											                echo  '<td class="padtop">'.$this->lang->line('apellido').':</td>';
+											                echo  '<td class="tabla-datos-importantes"><input class="form-control editable cambio" id="apellido" name="apellido" type="text" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->apellido.'" maxlength="128" disabled placeholder="'.$this->lang->line('apellido').'" autocomplete="off" required></td>';
 											                echo  "</tr><tr>";	
-											                echo  '<td>'.$this->lang->line('id').':</td>';
-											                echo  '<td class="tabla-datos-importantes">'.$row->id_vendedor.'</td>';
+											                echo  '<td class="padtop">'.$this->lang->line('id').':</td>';
+											                echo  '<td class="tabla-datos-importantes"><input type="text" name="id" class="form-control editable"  value="'.$row->id_vendedor.'" autocomplete="off" disabled style="width: 300px !important;"></td>';
 											                echo  "</tr>";
 															echo  "<tr>";								                     
-											                echo  '<td>'.$this->lang->line('contraseña').':</td>';
-											                echo  '<td class="tabla-datos-importantes">'.$row->contraseña.'</td>';
-											                echo  "</tr><tr>";		
+											                echo  '<td class="padtop">'.$this->lang->line('contraseña').':</td>';
+											                echo  '<td class="tabla-datos-importantes"><input type="text" name="contraseña" id="contraseña" class="form-control editable cambio" pattern="^[A-Za-z0-9 ]+$" value="'.$row->contraseña.'" placeholder="'.$this->lang->line('contraseña').'" autocomplete="off" disabled required></td>';
+											                echo  "</tr>";	
+											                echo  "<tr>";								                     
+											                echo  '<td class="padtop transparente" id="td_confirmar"></td>';
+											                echo  '<td class="tabla-datos-importantes transparente"><input type="text" name="confirm_contraseña" id="confirm_contraseña" class="form-control editable cambio displaynone" pattern="^[A-Za-z0-9 ]+$" value="" placeholder="'.$this->lang->line('confirmar').' '.$this->lang->line('contraseña').'" autocomplete="off" disabled></td>';
+											                echo  "</tr>";	
 											                echo  "</tbody>";
 											        	}
 														else{
@@ -228,6 +280,7 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 														            	</div>
 														        	</div>
 																</div>';
+															$bandera = 1;
 														}
 										            }
 									            }
@@ -235,10 +288,31 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 					                    </table>
 					                </div>
 					            </div>
-					            		
-					            <div id="editado">
-					            	
-					            </div>	
+					            
+					            <?php
+					            if($bandera != 1){
+					            ?>
+					            <div class="row">
+					            	<div id="div-mover" class="col-md-3 col-lg-3 col-md-offset-5">
+					            		<button type="button" id="btn-editar" class="btn btn-primary btn-sm" onclick="editable()">
+											<?php echo $this->lang->line('editar');?>
+										</button>
+										<button type="button" id="btn-eliminar" class="btn btn-danger btn-sm" onclick="eliminar(<?php echo $id?>)">
+											<?php echo $this->lang->line('eliminar');?>
+										</button>
+					            		<button type="submit" id="btn-guardar" class="btn btn-primary btn-sm" style="display: none;">
+											<?php echo $this->lang->line('guardar');?>
+										</button>
+										<button type="button" id="btn-cancelar" class="btn btn-danger btn-sm" onclick="cancelar()" style="display: none;">
+											<?php echo $this->lang->line('cancelar');?>
+										</button>
+					            	</div>
+					            </div>
+					            <?php
+								}
+								?>
+					            </form>
+					            
 	    					</div> <!--TAB 1 INFO VENDEDOR -->
 	     					<div class="tab-pane <?php echo $array_n['tab2']; ?>" id="tab2">
 	     						
