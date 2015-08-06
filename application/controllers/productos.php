@@ -122,7 +122,10 @@ class Productos extends My_Controller {
 		$arreglo = array(
 			'eliminado'		=> 1
 		);
-		return $this->productos_model->update($arreglo,$primary_key);
+		
+		$id 	= $this->productos_model->update($arreglo,$primary_key);
+		
+		return redirect($this->_subject.'/pestanas/'.$primary_key,'refresh');
 	}
 
 	function just_a_test($primary_key , $row)
@@ -136,5 +139,22 @@ class Productos extends My_Controller {
 		$db['empresas'] = $this->empresas_model->getRegistro(1);
 		$this->cargar_vista($db, 'reglas');	
 						
+	}
+	
+	function editarProducto($id_producto)
+	{
+		
+		$producto	= array(
+					'nombre'			=> $this->input->post('nombre'),
+					'precio'			=> $this->input->post('precio'),		
+					'codigo' 			=> $this->input->post('codigo'),
+					'descripcion'		=> $this->input->post('editor1')
+		);
+
+			
+		$id = $this->productos_model->update($producto, $id_producto);	
+		
+		redirect('productos/pestanas/'.$id_producto,'refresh');
+		
 	}
 }

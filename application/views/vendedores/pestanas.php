@@ -147,40 +147,28 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
     }
 }
 
-function coinciden(){
-	var contraseña  = $('#contraseña').val();
-	var confirm_contraseña  = $('#confirm_contraseña').val();
-	
-	if(contraseña == confirm_contraseña){
-		return true;
-	}
-	else{
-		$("#contraseña").focus();
-		alert("Las contraseñas no coinciden!");
-		return false;	
-	}
-}	
-
 function confirmarContraseña(){
+	
 	var contraseña  = $('#contraseña').val();
-	var confirm_contraseña  = $('#confirm_contraseña').val();
 	<?php
 	if($vendedores){
 		foreach($vendedores as $row){
-			$aux = $row->contraseña;
+			echo "var aux = '".$row->contraseña."';";
 		}
 	}
 	?>
 	
-	if(contraseña != <?php echo $aux?>){
-		if(contraseña == confirm_contraseña){
+	//----VER-----//
+	if(contraseña != aux){
+		if($('#contraseña').val() != $('#confirm_contraseña').val()){
 			$("#confirm_contraseña").attr("required", true);
+			alert("Las contraseñas no coinciden!");
 			$("#confirm_contraseña").focus();
-			$("#formulario").attr("onsubmit","return coinciden()");
 			return false;
 		}
-		else
+		else{
 			return true;
+		}
 	}
 }
 

@@ -1,15 +1,23 @@
    <!DOCTYPE html>
-<html class="bg-black">
+<html>
     <head>
         <meta charset="UTF-8">
-        <title>Casta</title>
-       
+        <?php
+        if($empresas)
+		{
+			foreach ($empresas as $row) 
+			{
+				echo '<title>'.$row->nombre.'</title>';
+			}
+		}
+        ?>
+
     </head>
     <body class="bg-black">
 
         <div class="form-box" id="login-box">
             <div class="header bg-light-blue">
-            	 <?php
+            	<?php
                 	if($empresas)
 					{
 						foreach ($empresas as $row) 

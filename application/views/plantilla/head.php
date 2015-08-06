@@ -93,7 +93,9 @@
         <link href="<?php echo base_url()?>libraries/plantilla/css/ionicons.min.css" rel="stylesheet" type="text/css" />
         <!-- Theme style -->
         <link href="<?php echo base_url()?>libraries/plantilla/css/AdminLTE.css" rel="stylesheet" type="text/css" />
-        
+        <!-- CK Editor -->
+        <script src="<?php echo base_url()?>libraries/plantilla/js/plugins/ckeditor/ckeditor.js" type="text/javascript"></script>
+
         <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
         <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
         <!--[if lt IE 9]>

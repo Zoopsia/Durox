@@ -147,7 +147,6 @@ $aux2 = 0;
 								            <tr>
 								            	<th><?php echo $this->lang->line('producto'); ?></th>
 								                <th><?php echo $this->lang->line('cantidad'); ?></th>
-								                <th><?php echo $this->lang->line('precio').' '.$this->lang->line('base'); ?></th>
 								                <th><?php echo $this->lang->line('precio'); ?></th>
 								                <th><?php echo $this->lang->line('subtotal'); ?></th>
 								                <th><?php echo $this->lang->line('estado'); ?></th>
@@ -169,7 +168,6 @@ $aux2 = 0;
 												}
 												echo '<td>'.$row->nombre.'</td>';
 												echo '<td>'.$row->cantidad.'</td>';
-												echo '<td>$ '.$row->preciobase.'</td>';
 												echo '<td>$ '.$row->precio.'</td>';
 												echo '<td>$ '.$row->subtotal.'</td>';
 												echo '<th>'.$row->estado.'</th>';				
