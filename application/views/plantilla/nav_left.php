@@ -147,6 +147,7 @@ $array_activo = moduloActivo($this->uri->segment(1));
                             <ul class="treeview-menu" style="display: none;">
 				            	<li><a href="<?php echo base_url().'index.php/Grupos/adminClientes/tab1'?>"><?php echo $this->lang->line('grupos'); ?></a></li>
 				          		<li><a href="<?php echo base_url().'index.php/Tipos/tipos_abm/'?>"><?php echo $this->lang->line('tipos'); ?></a></li>
+				          		<li><a href="<?php echo base_url().'index.php/Documentos/documentos_abm/'?>"><?php echo $this->lang->line('documentos'); ?></a></li>
 				          	</ul>
 				        </li>
                     </ul>
