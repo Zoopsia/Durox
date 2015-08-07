@@ -1,10 +1,3 @@
-<script>
-$(document).ready(function(){	
-	document.body.style.background = "url(<?php echo base_url().'/img/fondorepetir.jpg' ?>)";
-});		
-	
-</script>
-
 <?php
 $aux  = 0;
 $aux2 = 0;

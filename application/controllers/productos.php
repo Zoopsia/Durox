@@ -143,14 +143,38 @@ class Productos extends My_Controller {
 	
 	function editarProducto($id_producto)
 	{
+		$destino 	= 'img/productos/documentos/';
 		
-		$producto	= array(
+		if(isset($_FILES['ficha_tecnica']['tmp_name']))
+		{
+			$origen 	= $_FILES['ficha_tecnica']['tmp_name'];
+			$url		= $destino.$_FILES['ficha_tecnica']['name'];
+			$imagen		= $_FILES['ficha_tecnica']['name'];
+			if(!empty($_FILES['ficha_tecnica']['tmp_name'])){
+				copy($origen, $url);	
+			}
+			else {
+				foreach ($registro as $key) {
+					$imagen = $key->imagen;
+				}
+			}
+			
+			$producto	= array(
+					'nombre'			=> $this->input->post('nombre'),
+					'precio'			=> $this->input->post('precio'),		
+					'codigo' 			=> $this->input->post('codigo'),
+					'descripcion'		=> $this->input->post('editor1'),
+					'ficha_tecnica'		=> $imagen
+			);
+		}
+		else{
+			$producto	= array(
 					'nombre'			=> $this->input->post('nombre'),
 					'precio'			=> $this->input->post('precio'),		
 					'codigo' 			=> $this->input->post('codigo'),
 					'descripcion'		=> $this->input->post('editor1')
-		);
-
+			);
+		}
 			
 		$id = $this->productos_model->update($producto, $id_producto);	
 		

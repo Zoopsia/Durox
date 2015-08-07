@@ -1,8 +1,6 @@
 <script>
-$(function() {
-			
+$(function() {		
 	$( '#bb-bookblock' ).bookblock();
-
 });
 
 <?php
@@ -23,6 +21,9 @@ function editable(){
 	$('#btn-eliminar').hide();
 	$('#precio').val(precio);
 	$('#ficha_tecnica').show();
+	$('#ficha_tecnica').attr('type', 'file');
+	$("#ficha_tecnica").removeClass("web");
+	$("#ficha_tecnica").addClass("editable2");
 	$('#textarea').html('<textarea id="editor1" name="editor1" rows="10" cols="80">'+descripcion+'</textarea>');
 	CKEDITOR.replace('editor1');
 }
@@ -44,11 +45,15 @@ function cancelar(){
 		$('#btn-eliminar').show();
 		$('#btn-editar').show();
 		$('#ficha_tecnica').hide();
+		$('#ficha_tecnica').attr('type', 'text');
+		$("#ficha_tecnica").addClass("web");
+		$("#ficha_tecnica").removeClass("editable2");
 		<?php
 			if($productos){
 				foreach($productos as $row){
 					echo "$('#nombre').val('".$row->nombre."');";
 					echo "$('#precio').val('$ ".$row->precio."');";	
+					echo "$('#ficha_tecnica').val('$ ".$row->ficha_tecnica."');";	
 					echo "$('#textarea').html('<blockquote><em>".trim($row->descripcion)."</em></blockquote>');";
 					if($row->codigo)
 						echo "$('#codigo').val('".$row->codigo."');";									
@@ -139,19 +144,22 @@ $bandera = 0;
 											echo  "</tr>";
 											$date	= date_create($row->date_upd);
 											echo  "<tr>";
-											echo  '<td class="padtop" style="width: 251px">'.$this->lang->line('date').' '.$this->lang->line('sincronizacion').':</td>';
+											echo  '<td class="padtop" style="width: 209px">'.$this->lang->line('date').' '.$this->lang->line('sincronizacion').':</td>';
 											echo  '<td class="tabla-datos-importantes"><input type="text" name="fecha" class="form-control editable"  value="'.date_format($date, 'd/m/Y').'" autocomplete="off" disabled></td>';
 											echo  "</tr>";
 											if($row->ficha_tecnica){
 												echo  "<tr>";
 												echo  '<td class="padtop">'.$this->lang->line('ficha').':</td>';
-												echo  '<td class="tabla-datos-importantes"><a href="'.base_url().'img/productos/documentos/'.$row->ficha_tecnica.'" download>'.$this->lang->line('descarga').' <i class="fa fa-download"></i></a></td>';
+												echo  '<td class="tabla-datos-importantes">';
+												echo  '<input type="text" name="ficha_tecnica" id="ficha_tecnica" class="form-control editable cambio web" value="'.$row->ficha_tecnica.'" autocomplete="off" disabled>';
+								                echo  '</td>';
+												//echo  '<td class="tabla-datos-importantes"><a href="'.base_url().'img/productos/documentos/'.$row->ficha_tecnica.'" download>'.$this->lang->line('descarga').' <i class="fa fa-download"></i></a></td>';
 												echo  "</tr>";
 											}
 											else{
 												echo  "<tr>";
 												echo  '<td class="padtop">'.$this->lang->line('ficha').':</td>';
-												echo  '<td class="tabla-datos-importantes"><input type="file" name="ficha_tecnica" id="ficha_tecnica" style="display: none"></td>';
+												echo  '<td class="tabla-datos-importantes"><input type="file" name="ficha_tecnica" class="form-control editable2" id="ficha_tecnica" style="display: none"></td>';
 												echo  "</tr>";
 											}
 											echo  "<tr>";

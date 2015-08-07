@@ -1,5 +1,5 @@
    <!DOCTYPE html>
-<html>
+<html style="background-color: transparent">
     <head>
         <meta charset="UTF-8">
         <?php

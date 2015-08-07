@@ -1,5 +1,4 @@
 <script>
-
 <?php
 if($clientes){
 	foreach($clientes as $row){

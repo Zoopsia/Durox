@@ -1,9 +1,4 @@
 <script>
-$(document).ready(function(){	
-	document.body.style.background = "url(<?php echo base_url().'/img/fondo_abm.jpg' ?>) no-repeat";
-});		
-
-	
 function modal($id_presupuesto){
 	var id_presupuesto  = $id_presupuesto;
 	var url				= '<?php echo base_url(); ?>index.php/Presupuestos/pestanas/'+id_presupuesto;
