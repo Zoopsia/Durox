@@ -187,11 +187,11 @@ class Presupuestos extends My_Controller {
 		//----- LO LLEVO A LA CARGA DE PRODUCTOS DEL PRESUPUESTO -----//
 		if($id_presupuesto)
 		{
-			$db['presupuesto']	= $id_presupuesto;
-			$db['informacion']	= $this->presupuestos_model->getPresupuestoInfo($id_presupuesto);
-			$db['productos']	= $this->presupuestos_model->getProductosTodo();
-			$db['visita']		= $id_visita;
-			$db['tipo']			= 0;
+			$db['presupuesto']		= $id_presupuesto;
+			$db['informacion']		= $this->presupuestos_model->getPresupuestoInfo($id_presupuesto);
+			$db['productos']		= $this->presupuestos_model->getProductosTodo();
+			$db['visita']			= $id_visita;
+			$db['tipo']				= 0;
 			$db['presupuestos']		= $this->presupuestos_model->getRegistro($id_presupuesto);
 			$db['clientes']			= $this->clientes_model->getTodo();
 			$db['vendedores']		= $this->vendedores_model->getTodo();
@@ -353,7 +353,8 @@ class Presupuestos extends My_Controller {
 
 		$detalle			= $this->presupuestos_model->getDetallePresupuesto($presupuesto);
 			
-		$mensaje = '<table class="table" cellspacing="0" width="100%">
+		$mensaje = '<form action="" id="formProducto" class="form-inline" method="post">
+					<table class="table" cellspacing="0" width="100%">
 					<thead>
 						<tr>
 							
@@ -441,7 +442,8 @@ class Presupuestos extends My_Controller {
 					</tfoot>';
 		
 		
-		$mensaje .= '</table>';
+		$mensaje .= '</table>
+					</form>';
 		
 		$mensaje .= '<form action="'.base_url().'index.php/Presupuestos/totalPresupuesto/'.$presupuesto.'" id="formGuardar" class="form-inline" method="post">';			
 		$mensaje .= '<input type="number" id="total" name="total" pattern="[0-9 ]*" placeholder="'.$total.'" value="'.$total.'" required hidden>';			

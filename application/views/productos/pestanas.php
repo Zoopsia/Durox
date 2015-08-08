@@ -20,7 +20,7 @@ function editable(){
 	$('#btn-editar').hide();
 	$('#btn-eliminar').hide();
 	$('#precio').val(precio);
-	$('#ficha_tecnica').show();
+	$('#ficha_tecnica1').show();
 	$('#ficha_tecnica').attr('type', 'file');
 	$("#ficha_tecnica").removeClass("web");
 	$("#ficha_tecnica").addClass("editable2");
@@ -44,7 +44,7 @@ function cancelar(){
 		$('#btn-cancelar').hide();
 		$('#btn-eliminar').show();
 		$('#btn-editar').show();
-		$('#ficha_tecnica').hide();
+		$('#ficha_tecnica1').hide();
 		$('#ficha_tecnica').attr('type', 'text');
 		$("#ficha_tecnica").addClass("web");
 		$("#ficha_tecnica").removeClass("editable2");
@@ -53,8 +53,9 @@ function cancelar(){
 				foreach($productos as $row){
 					echo "$('#nombre').val('".$row->nombre."');";
 					echo "$('#precio').val('$ ".$row->precio."');";	
-					echo "$('#ficha_tecnica').val('$ ".$row->ficha_tecnica."');";	
 					echo "$('#textarea').html('<blockquote><em>".trim($row->descripcion)."</em></blockquote>');";
+					if($row->ficha_tecnica)
+						echo "$('#ficha_tecnica').val('".$row->ficha_tecnica."');";	
 					if($row->codigo)
 						echo "$('#codigo').val('".$row->codigo."');";									
 				}	
@@ -159,7 +160,7 @@ $bandera = 0;
 											else{
 												echo  "<tr>";
 												echo  '<td class="padtop">'.$this->lang->line('ficha').':</td>';
-												echo  '<td class="tabla-datos-importantes"><input type="file" name="ficha_tecnica" class="form-control editable2" id="ficha_tecnica" style="display: none"></td>';
+												echo  '<td class="tabla-datos-importantes"><input type="file" name="ficha_tecnica" class="form-control editable2" id="ficha_tecnica1" style="display: none"></td>';
 												echo  "</tr>";
 											}
 											echo  "<tr>";
