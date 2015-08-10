@@ -24,9 +24,14 @@ class Pedidos_model extends My_Model {
 	function getDetallePedido($id)
 	{
 		$sql = "SELECT 
-					productos.nombre AS nombre, 
+					productos.nombre AS nombre,
+					productos.id_producto AS producto, 
+					productos.precio AS preciobase,
 					linea_productos_$this->_tablename.cantidad AS cantidad, 
 					linea_productos_$this->_tablename.precio AS precio,
+					linea_productos_$this->_tablename.subtotal AS subtotal,
+					linea_productos_$this->_tablename.id_linea_producto_pedido AS id_linea_producto_pedido,
+					linea_productos_$this->_tablename.id_estado_producto_pedido AS estado_linea,
 					estados_productos_$this->_tablename.estado AS estado
 				FROM 
 					$this->_tablename 
@@ -82,5 +87,24 @@ class Pedidos_model extends My_Model {
 		}
 	}
 		
+	function insertLinea($arreglo){
+		
+		//----INSERTO CAMPOS EN TABLA ----//
+		if($this->db->field_exists('date_add', $this->_tablename))
+		{
+			$arreglo['date_add'] = date('Y-m-d H:i:s'); 
+		}
+		
+		if($this->db->field_exists('date_upd', $this->_tablename))
+		{
+			$arreglo['date_upd'] = date('Y-m-d H:i:s'); 
+		}
+		
+		
+		$this->db->insert('linea_productos_pedidos', $arreglo);
+		 
+		return $this->db->insert_id();
+		
+	}
 } 
 ?>

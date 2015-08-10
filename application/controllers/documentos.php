@@ -22,6 +22,7 @@ class Documentos extends My_Controller {
 	public function documentos_abm(){
 		
 		$db['documentos']		= $this->documentos_model->getTodo();		
+		$db['tipos']			= $this->documentos_model->getTodo('tipos_documentos');
 		
 		$this->cargar_vista($db, 'pestanas');
 		    
@@ -34,7 +35,7 @@ class Documentos extends My_Controller {
 		$bandera = 0;
 		if(isset($_FILES['documento']['tmp_name']))
 		{
-			if($_FILES['documento']['type'] == "application/pdf"){
+			if($_FILES['documento']['type'] == "application/pdf" || $_FILES['documento']['type'] == "application/octet-stream"){
 				$origen 	= $_FILES['documento']['tmp_name'];
 				$url		= $destino.$_FILES['documento']['name'];
 				$imagen		= base_url().$url;
@@ -52,15 +53,24 @@ class Documentos extends My_Controller {
 							'documento'		=> $imagen
 						);
 						
-						$this->documentos_model->insert($arreglo);
+						$id_documento	= $this->documentos_model->insert($arreglo);
 					}
 				}
 				else { //----SINO LO INSERTO YA QUE ES EL PRIMER DOCUMENTO---//
 					$arreglo = array(
 						'documento'		=> $imagen
 					);
-					$this->documentos_model->insert($arreglo);
+					$id_documento		= $this->documentos_model->insert($arreglo);
 				}
+			}
+
+			foreach($_POST['tipo_documento'] as $row){
+				$sin = array(
+					'id_tipo_documento'		=> $row,
+					'id_documento'			=> $id_documento
+				);
+				
+				$id_sin		= $this->documentos_model->insertTipo($sin);
 			}
 		}	
 		
@@ -73,7 +83,7 @@ class Documentos extends My_Controller {
 
 		if(isset($_FILES['documento']['tmp_name']))
 		{
-			if($_FILES['documento']['type'] == "application/pdf"){
+			if($_FILES['documento']['type'] == "application/pdf" || $_FILES['documento']['type'] == "application/octet-stream"){
 				$origen 	= $_FILES['documento']['tmp_name'];
 				$url		= $destino.$_FILES['documento']['name'];
 				$imagen		= base_url().$url;
@@ -84,9 +94,20 @@ class Documentos extends My_Controller {
 				$arreglo = array(
 					'documento'		=> $imagen
 				);
-				
-				$mensaje = '<iframe src="'.base_url().$url.'" name="vistaprevia" frameborder="0" class="vistaprevia" align="right">';
-
+				if($_FILES['documento']['type'] == "application/pdf")
+					$mensaje = '<iframe src="'.base_url().$url.'" name="vistaprevia" frameborder="0" class="vistaprevia" align="right">';
+				else {
+					$mensaje = '<div class="row">
+								<div class="col-sm-6 col-md-6">
+									<div class="alert-message alert-message-success">
+										<h4>NO SE PUEDE GENERAR VISTA PREVIA</h4>
+										<p>'.$_FILES['documento']['name'].'
+																					                    
+										</p>
+									</div>
+								</div>
+							</div>';
+				}
 			}
 			else{
 				$mensaje = '<div class="row">
@@ -107,15 +128,34 @@ class Documentos extends My_Controller {
 	function deleteDocumento(){
 		
 		$id_documento		= $this->input->post('id_documento');
+		$documento			= $this->documentos_model->getRegistro($id_documento);
+		$direccion			= base_url();
 		
 		if($id_documento){
-			$arreglo = array(
-				'eliminado'		=> 1
-			);
-			$id 				= $this->documentos_model->update($arreglo,$id_documento);
+			foreach($documento as $row){
+				$enlace = substr($row->documento,strlen($direccion));
+				unlink($enlace);
+			}
+			$this->documentos_model->deleteDocumento($id_documento);
 		}
 		
-		$documentos		= $this->documentos_model->getTodo();
+		$this->armarDocumento();
+	}
+
+	function ordenarDocumento(){
+		$id_tipo_documento		= $this->input->post('id_tipo_documento');
+		
+		$this->armarDocumento($id_tipo_documento);
+	}
+	
+	function armarDocumento($id_tipo=null){
+		
+		if($id_tipo){
+			$documentos		= $this->documentos_model->getDocumentosTipo($id_tipo);
+		}
+		else
+			$documentos		= $this->documentos_model->getTodo();
+		
 		$i = 0;
 		$mensaje = '';
 		if($documentos){
@@ -124,9 +164,15 @@ class Documentos extends My_Controller {
 							 	<div class="box-tools pull-right">
 						        	<button class="btn btn-danger btn-xs" onclick="deleteDocumento('.$row->id_documento.')"><i class="fa fa-times"></i></button>
 						        </div>
-						        <a href="'.$row->documento.'" style="padding: 25% 0 25% 25%" target="_blank">
-						        	<i class="fa fa-file-pdf-o fa-5x"></i>
-						        </a>
+						        <a href="'.$row->documento.'" style="padding: 25% 0 25% 25%" target="_blank">';
+				$cadena   = substr($row->documento,strrpos($row->documento,'.'));
+				if($cadena == '.pdf')
+					$mensaje .=    	'<i class="fa fa-file-pdf-o fa-5x"></i>';
+				else if($cadena == '.docx' || $cadena == '.doc')
+					$mensaje .=    	'<i class="fa fa-file-word-o fa-5x"></i>';
+				else if($cadena == '.xlsx' || $cadena == '.xls')
+					$mensaje .=    	'<i class="fa fa-file-excel-o fa-5x"></i>';
+				$mensaje .=    '</a>
 						        <br>
 						       	<p class="text-center">'.cortarCadena($row->documento).'</p>
 						    </div>';
@@ -139,5 +185,4 @@ class Documentos extends My_Controller {
 
 		echo $mensaje;
 	}
-
 }

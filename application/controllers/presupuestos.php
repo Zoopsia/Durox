@@ -28,17 +28,18 @@ class Presupuestos extends My_Controller {
 
 	public function pestanas($id, $tipo=1)
 	{
-		$db['presupuesto']		= $this->presupuestos_model->getRegistro($id);
-		$db['clientes']			= $this->clientes_model->getTodo();
-		$db['vendedores']		= $this->vendedores_model->getTodo();
+		$presupuesto			= $this->presupuestos_model->getRegistro($id);
+		$db['presupuesto']		= $presupuesto;
 		
+		foreach($presupuesto as $row) {
+			$db['clientes']		= $this->clientes_model->getRegistro($row->id_cliente);
+			$db['vendedores']	= $this->vendedores_model->getRegistro($row->id_vendedor);
+		}
 		$db['iva']				= $this->clientes_model->getTodo('iva');		
 		$db['presupuestos']		= $this->presupuestos_model->getDetallePresupuesto($id);
 		$db['estados']			= $this->presupuestos_model->getTodo('estados_presupuestos');
-		$db['productos']		= $this->presupuestos_model->getProductosTodo();
 		$db['id_presupuesto']	= $id;
 		$db['tipo']				= $tipo;
-		
 		
 		$this->cargar_vista($db, 'pestanas');	
 	}

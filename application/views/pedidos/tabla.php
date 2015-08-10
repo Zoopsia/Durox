@@ -6,7 +6,8 @@ foreach($css_files as $file): ?>
 	<script src="<?php echo $file; ?>"></script>
 <?php endforeach; ?>
 
-<?php $array_n = pestañaActiva($this->uri->segment(3));?>	
+<?php $array_n = pestañaActiva($this->uri->segment(3));?>
+
 <!--
 <nav class="navbar" role="navigation">
 	<div class="container">
@@ -24,6 +25,7 @@ foreach($css_files as $file): ?>
 		  			<div class="panel-body">
 		  				<div class="tab-content">
 		  					<!--TABLA PRINCIPAL CON PEDIDOS-->
+		  							  					
 		  					<div class="tab-pane <?php echo $array_n['listado']?>" id="tab1">
 	    						<?php echo $output; ?>
 	    					</div>
@@ -36,8 +38,8 @@ foreach($css_files as $file): ?>
 		  			</div><!--panel body-->
 				</div><!--panel-->
 			</div><!--contenedor-->
-		</div>  
-		<!--  
+		</div>    
+		<!--
 	</div>
 </nav>
 -->

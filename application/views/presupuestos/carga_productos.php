@@ -7,23 +7,24 @@ function funcion2(){
 
 window.onbeforeunload = function(){
 	if(evento == 0){
-		return 'Los datos van a ser eliminados...'
+		return "Los datos van a ser eliminados...";
 	}
 }
-window.onunload = function () {
+
+window.addEventListener('unload', function() {
 	if(evento == 0){
-		var presupuesto = $('#presupuesto').val();
 		$.ajax({
-			 	type: 'POST',
-			 	url: '<?php echo base_url(); ?>index.php/Presupuestos/deletePresupuesto', //Realizaremos la petición al metodo prueba del controlador direcciones
-			 	data: {'presupuesto': presupuesto},
-			 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-			 		
-			 	}
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/Presupuestos/deletePresupuesto', //Realizaremos la petición al metodo prueba del controlador direcciones
+		 	data: 'presupuesto='+$('#presupuesto').val(),
+		 	success: function(resp) {
+
+		  	},
+		 	async: false
 		});
 	}
-};
-
+});
+      
 $( document ).ready(function() {
     document.getElementById("producto").focus();
     <?php

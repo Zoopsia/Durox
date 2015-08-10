@@ -35,16 +35,14 @@ $aux2 = 0;
 		                                <?php
 											foreach ($vendedores as $key) 
 											{
-												if($row->id_vendedor == $key->id_vendedor)
-												{
-													echo '<a href="'.base_url().'index.php/vendedores/pestanas/'.$key->id_vendedor.'">';
-													echo $key->nombre.', '.$key->apellido;
-													echo '</a>';
-													echo "<br>";
-													echo $this->lang->line('id').': '.$key->id_vendedor;
-													echo "<br>";
+												echo '<a href="'.base_url().'index.php/vendedores/pestanas/'.$key->id_vendedor.'">';
+												echo $key->nombre.', '.$key->apellido;
+												echo '</a>';
+												echo "<br>";
+												echo $this->lang->line('id').': '.$key->id_vendedor;
+												echo "<br>";
+												if($key->eliminado == 0)
 													$aux2 = 1;
-												}
 											}
 										?>
 									</address>
@@ -53,58 +51,55 @@ $aux2 = 0;
 		                            	<b><?php echo $this->lang->line('cliente');?></b>
 		                            <address>
 		                                <?php
-																foreach ($clientes as $key) 
-																{
-																	if($row->id_cliente == $key->id_cliente)
-																	{
-																		echo '<a href="'.base_url().'index.php/clientes/pestanas/'.$key->id_cliente.'">';
-																		echo $key->nombre.', '.$key->apellido;
-																		echo '</a>';
-																		echo "<br>";
-																		echo $this->lang->line('cuit').': '.cuit($key->cuit);
-																		echo "<br>";
-																		foreach ($iva as $value) {
-																			if($value->id_iva == $key->id_iva){	
-																				echo $value->iva;
-																				echo "<br>";
-																			}
-																		}
-																		echo $this->lang->line('id').': '.$key->id_cliente;
-																		echo "<br>";
-																		$aux = 1;
-																	}
-																}
-															?>
+											foreach ($clientes as $key) 
+											{
+												echo '<a href="'.base_url().'index.php/clientes/pestanas/'.$key->id_cliente.'">';
+												echo $key->nombre.', '.$key->apellido;
+												echo '</a>';
+												echo "<br>";
+												echo $this->lang->line('cuit').': '.cuit($key->cuit);
+												echo "<br>";
+												foreach ($iva as $value) {
+													if($value->id_iva == $key->id_iva){	
+														echo $value->iva;
+														echo "<br>";
+													}
+												}
+												echo $this->lang->line('id').': '.$key->id_cliente;
+												echo "<br>";
+												if($key->eliminado == 0)
+													$aux = 1;
+											}
+										?>
 		                            </address>
                         </div><!-- /.col -->
                         <div class="col-sm-4 invoice-col">
                         	<b><?php echo $this->lang->line('presupuesto');?></b>
                             <?php
-														echo '<div class="odd">';
-														echo $this->lang->line('id').' '.$this->lang->line('presupuesto').': '.'<a href="#">'.$row->id_presupuesto.'</a>';
+												echo '<div class="odd">';
+												echo $this->lang->line('id').' '.$this->lang->line('presupuesto').': '.'<a href="#">'.$row->id_presupuesto.'</a>';
+												echo "</div>";
+												echo '<div class="even">';
+												echo $this->lang->line('id').' '.$this->lang->line('visita').': '.'<a href="'.base_url().'index.php/Visitas/carga/'.$row->id_visita.'/0">'.$row->id_visita.'</a>';
+												echo "</div>";
+												echo '<div class="odd">';
+												$date	= date_create($row->fecha);
+												echo $this->lang->line('fecha').': '.date_format($date, 'd/m/Y');
+												echo "</div>";
+												foreach($estados as $key){
+													if($key->id_estado_presupuesto == $row->id_estado_presupuesto){
+														echo '<div class="even">';	
+														echo $this->lang->line('estado').': '.$key->estado;
 														echo "</div>";
-														echo '<div class="even">';
-														echo $this->lang->line('id').' '.$this->lang->line('visita').': '.'<a href="'.base_url().'index.php/Visitas/carga/'.$row->id_visita.'/0">'.$row->id_visita.'</a>';
-														echo "</div>";
-														echo '<div class="odd">';
-														$date	= date_create($row->fecha);
-														echo $this->lang->line('fecha').': '.date_format($date, 'd/m/Y');
-														echo "</div>";
-														foreach($estados as $key){
-															if($key->id_estado_presupuesto == $row->id_estado_presupuesto){
-																echo '<div class="even">';	
-																echo $this->lang->line('estado').': '.$key->estado;
-																echo "</div>";
-															}
-														}
-														echo '<div class="odd">';
-														echo $this->lang->line('total').' '.$this->lang->line('presupuesto').': $ '.$row->total;
-														echo "</div>";
-														echo "<br>";
-														
-														}
 													}
-												?>
+												}
+												echo '<div class="odd">';
+												echo $this->lang->line('total').' '.$this->lang->line('presupuesto').': $ '.$row->total;
+												echo "</div>";
+												echo "<br>";							
+								}
+							}
+							?>
 						</div>
 						</div>
 						
@@ -115,11 +110,11 @@ $aux2 = 0;
                                 <?php
 	     								foreach($presupuesto as $row)
 	     								{
-	     									if($row->id_estado_presupuesto == 3)
+	     									if($row->id_estado_presupuesto == 3 || $row->id_estado_presupuesto == 2)
 	     									{
 	     										echo '<table class="table" cellspacing="0" width="100%">';
 	     									}
-											else {
+											else{
 												echo '<table class="table table-striped" cellspacing="0" width="100%">';
 											}
 	     								}
@@ -152,9 +147,11 @@ $aux2 = 0;
 										{
 									        foreach ($presupuestos as $row) 
 									        {
-												
 												if($row->estado == 'Rechazado'){
 													echo '<tr style="background-color: #f56954 !important; color: #fff;">';
+												}
+												else if($row->estado == 'Aceptado'){
+													echo '<tr style="background-color: #5CB85C !important; color: #fff;">';
 												}
 												else{
 						     						echo '<tr>';	
@@ -211,23 +208,27 @@ $aux2 = 0;
                             <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
                             -->
                             <?php
+                            	if($presupuesto){
 								    if($aux == 1 && $aux2 == 1){ 
 									    foreach($presupuesto as $row){
+									    	if($row->id_estado_presupuesto != 2)
+											{
 									    ?>
 									   		<a role="button" class="btn btn-primary pull-right" href="<?php echo base_url().'/index.php/Presupuestos/generarNuevoPresupuesto/'.$row->id_presupuesto ?>">
 									   			<?php echo $this->lang->line('generar').' '.$this->lang->line('presupuesto') ?>
 									   		</a>
 											
 									    <?php
-									    	if($row->id_estado_presupuesto == 1)
-									    	{
-											    echo ' <a role="button" class="btn btn-primary pull-right" href="#"  style="margin-right: 5px;">'.$this->lang->line('generar').' '.$this->lang->line('pedido').'</a>';
+											
+									    		if($row->id_estado_presupuesto != 2 && $row->id_estado_presupuesto != 3)
+									    		{
+											    echo ' <a role="button" class="btn btn-primary pull-right" href="'.base_url().'/index.php/Pedidos/generarNuevoPedido/'.$row->id_presupuesto.'"  style="margin-right: 5px;">'.$this->lang->line('generar').' '.$this->lang->line('pedido').'</a>';
+												}
 											}
 										}
 									}
-									?> 
-									
-									
+								}
+							?>		
                          </div>
                     </div>	
                    	
