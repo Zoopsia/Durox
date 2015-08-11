@@ -367,4 +367,22 @@ class Visitas extends My_Controller {
 			
 		echo $mensaje;
 	}
+	
+	function editarVisto(){
+		$mensaje 	= $this->visitas_model->mensajesNuevos();
+	
+		if($mensaje){
+			foreach($mensaje as $row) {
+				$id = $row->id_visita; 	
+				if($row->id_visita = $this->input->post('id_visita'.$id)){
+					$arreglo = array(
+						'visto'		=> $this->input->post('estado'.$id)
+					);
+					$id = $this->visitas_model->update($arreglo, $id);
+				}
+			}	
+		}
+		
+		redirect($this->input->post('url'),'refresh');
+	}
 }

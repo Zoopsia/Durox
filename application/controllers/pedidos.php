@@ -129,7 +129,9 @@ class Pedidos extends My_Controller {
 					'id_vendedor'			=> $row->id_vendedor,
 					'id_estado_pedido'		=> 1,
 					'total'					=> $row->total,
-					'fecha'					=> date('Y-m-d')	
+					'fecha'					=> date('Y-m-d'),
+					'id_origen'				=> 2,
+					'visto'					=> 0	
 				);
 			}
 		}
@@ -167,6 +169,23 @@ class Pedidos extends My_Controller {
 		}
 		redirect('Pedidos/pestanas/'.$id,'refresh');	
 	}	
-
+	
+	function editarVisto(){
+		$mensaje 	= $this->pedidos_model->mensajesNuevos();
+	
+		if($mensaje){
+			foreach($mensaje as $row) {
+				$id = $row->id_pedido; 	
+				if($row->id_pedido = $this->input->post('id_pedido'.$id)){
+					$arreglo = array(
+						'visto'		=> $this->input->post('estado'.$id)
+					);
+					$id = $this->pedidos_model->update($arreglo, $id);
+				}
+			}	
+		}
+		
+		redirect($this->input->post('url'),'refresh');
+	}
 
 }

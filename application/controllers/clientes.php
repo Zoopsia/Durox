@@ -182,10 +182,10 @@ class Clientes extends My_Controller {
 	}
 	
 	function editarVisto(){
-		$clientes 	= $this->clientes_model->mensajesNuevos();
+		$mensaje 	= $this->clientes_model->mensajesNuevos();
 	
-		if($clientes){
-			foreach($clientes as $row) {
+		if($mensaje){
+			foreach($mensaje as $row) {
 				$id = $row->id_cliente; 	
 				if($row->id_cliente = $this->input->post('id_cliente'.$id)){
 					$arreglo = array(

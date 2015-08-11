@@ -145,7 +145,9 @@ class Presupuestos extends My_Controller {
 				'id_visita'				=> $this->input->post('id_visita'),
 				'id_cliente' 			=> $this->input->post('id_cliente'), 
 				'id_vendedor' 			=> $this->input->post('id_vendedor'),
-				'fecha'					=> $fecha
+				'fecha'					=> $fecha,
+				'id_origen'				=> 2,
+				'visto'					=> 0
 			);
 	
 			$id_presupuesto 	= $this->presupuestos_model->insert($presupuesto);
@@ -174,7 +176,9 @@ class Presupuestos extends My_Controller {
 				'id_visita'				=> $id_visita,
 				'id_cliente' 			=> $this->input->post('id_cliente'), 
 				'id_vendedor' 			=> $this->input->post('id_vendedor'),
-				'fecha'					=> $fecha
+				'fecha'					=> $fecha,
+				'id_origen'				=> 2,
+				'visto'					=> 0
 			);
 	
 			$id_presupuesto 	= $this->presupuestos_model->insert($presupuesto);
@@ -624,5 +628,23 @@ class Presupuestos extends My_Controller {
 			}
 		}		
 		echo $mensaje;
+	}
+	
+	function editarVisto(){
+		$mensaje 	= $this->presupuestos_model->mensajesNuevos();
+	
+		if($mensaje){
+			foreach($mensaje as $row) {
+				$id = $row->id_presupuesto; 	
+				if($row->id_presupuesto = $this->input->post('id_presupuesto'.$id)){
+					$arreglo = array(
+						'visto'		=> $this->input->post('estado'.$id)
+					);
+					$id = $this->presupuestos_model->update($arreglo, $id);
+				}
+			}	
+		}
+		
+		redirect($this->input->post('url'),'refresh');
 	}
 }

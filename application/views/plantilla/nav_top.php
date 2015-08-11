@@ -8,6 +8,10 @@
 		$mensajes += count($vendedores_mensajes);
 	if($productos_mensajes)
 		$mensajes += count($productos_mensajes);
+	if($pedidos_mensajes)
+		$mensajes += count($pedidos_mensajes);
+	if($presupuestos_mensajes)
+		$mensajes += count($presupuestos_mensajes);
 	
 ?>
     <body class="skin-blue">
@@ -116,24 +120,37 @@
                         <li class="dropdown notifications-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-plus-square"></i>
+                                <?php if($mensajes>0){?>
                                 <span class="label label-success"><?php echo $mensajes ?></span>
+                                <?php } ?>
                             </a>
+                            <?php
+                            if($mensajes>0){
+                            ?>	
                             <ul class="dropdown-menu">
                                 <li class="header"><?php echo ' '.$mensajes.' '.$this->lang->line('registros').' '.$this->lang->line('nuevos')?></li>
                                 <li>
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu">
+                                    	<?php 
+                                        if($productos_mensajes){
+                                        ?>
                                     	<li>
                                             <a  href='#' data-toggle="modal" data-target="#modal_productos">
                                                 <i class="fa fa-archive primary"></i><?php echo ' '.count($productos_mensajes).' '.$this->lang->line('productos').' '.$this->lang->line('nuevos');?>
                                             </a>
                                         </li>
+                                        <?php 
+										}
+                                        if($pedidos_mensajes){
+                                        ?>
                                         <li>
-                                            <a href="#">
-                                                <i class="fa fa-shopping-cart success"></i> 2 pedidos nuevos
+                                            <a  href='#' data-toggle="modal" data-target="#modal_pedidos">
+                                                <i class="fa fa-shopping-cart success"></i><?php echo ' '.count($pedidos_mensajes).' '.$this->lang->line('pedidos').' '.$this->lang->line('nuevos');?>
                                             </a>
                                         </li>
                                         <?php 
+                                        }
                                         if($clientes_mensajes){
                                         ?>
                                         <li>
@@ -143,26 +160,41 @@
                                         </li>
                                 		<?php
 										}
-										?>
+										if($visitas_mensajes){
+                                        ?>
                                 		<li>
                                             <a  href='#' data-toggle="modal" data-target="#modal_visitas">
                                                 <i class="fa fa-car danger"></i><?php echo ' '.count($visitas_mensajes).' '.$this->lang->line('visitas').' '.$this->lang->line('nuevas');?>
                                             </a>
                                         </li>
+                                        <?php 
+										}
+                                        if($vendedores_mensajes){
+                                        ?>
                                         <li>
                                             <a  href='#' data-toggle="modal" data-target="#modal_vendedores">
                                                 <i class="fa fa-briefcase bg-purple"></i><?php echo ' '.count($vendedores_mensajes).' '.$this->lang->line('vendedores').' '.$this->lang->line('nuevos');?>
                                             </a>
                                         </li>
+                                        <?php
+										}
+                                        if($presupuestos_mensajes){
+                                        ?>
                                         <li>
-                                            <a href="#">
-                                                <i class="fa fa-book bg-maroon"></i> 12 presupuestos nuevos
+                                            <a  href='#' data-toggle="modal" data-target="#modal_presupuestos">
+                                                <i class="fa fa-book bg-maroon"></i><?php echo ' '.count($presupuestos_mensajes).' '.$this->lang->line('presupuestos').' '.$this->lang->line('nuevos');?>
                                             </a>
                                         </li>
+                                        <?php 
+                                        }
+                                        ?>
                                     </ul>
                                 </li>
                                 <li class="footer"><a href="#">Ver todos</a></li>
                             </ul>
+                            <?php
+                            }
+							?>
                         </li>
                        
                         <!-- User Account: style can be found in dropdown.less -->

@@ -182,6 +182,23 @@ class Productos extends My_Controller {
 		$id = $this->productos_model->update($producto, $id_producto);	
 		
 		redirect('productos/pestanas/'.$id_producto,'refresh');
+	}
+
+	function editarVisto(){
+		$mensaje 	= $this->productos_model->mensajesNuevos();
+	
+		if($mensaje){
+			foreach($mensaje as $row) {
+				$id = $row->id_producto; 	
+				if($row->id_producto = $this->input->post('id_producto'.$id)){
+					$arreglo = array(
+						'visto'		=> $this->input->post('estado'.$id)
+					);
+					$id = $this->productos_model->update($arreglo, $id);
+				}
+			}	
+		}
 		
+		redirect($this->input->post('url'),'refresh');
 	}
 }

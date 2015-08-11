@@ -213,5 +213,42 @@ class Presupuestos_model extends My_Model {
 			return FALSE;
 		}
 	}
+	
+	function presupuestosNuevos(){
+		
+		$sql = 'SELECT 
+					presupuestos.*,
+					clientes.nombre as Cnombre,
+					clientes.apellido as Capellido,
+					clientes.id_cliente as id_cliente,
+					vendedores.nombre as Vnombre,
+					vendedores.apellido	as Vapellido,
+					vendedores.id_vendedor as id_vendedor
+				FROM 
+					presupuestos 
+				INNER JOIN
+					clientes
+				USING
+					(id_cliente)
+				INNER JOIN
+					vendedores
+				USING
+					(id_vendedor)
+				WHERE
+					presupuestos.visto = 0
+				AND
+					presupuestos.eliminado = 0';
+		
+		$query = $this->db->query($sql);
+						
+		if($query->num_rows() > 0){
+			foreach ($query->result() as $fila){
+				$data[] = $fila;
+			}
+			return $data;
+		}else{
+			return FALSE;
+		}							
+	}
 } 
 ?>

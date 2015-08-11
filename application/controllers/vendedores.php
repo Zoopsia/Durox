@@ -229,5 +229,23 @@ class Vendedores extends My_Controller {
 		$id_cliente	= $this->vendedores_model->updateSin($sin,$id_sin);
 		redirect('/vendedores/pestanas/'.$id_vendedor.'/'.$aux.'/'.$aux2,'location');
 	}
+		
+	function editarVisto(){
+		$mensaje 	= $this->vendedores_model->mensajesNuevos();
+	
+		if($mensaje){
+			foreach($mensaje as $row) {
+				$id = $row->id_vendedor; 	
+				if($row->id_vendedor = $this->input->post('id_vendedor'.$id)){
+					$arreglo = array(
+						'visto'		=> $this->input->post('estado'.$id)
+					);
+					$id = $this->vendedores_model->update($arreglo, $id);
+				}
+			}	
+		}
+		
+		redirect($this->input->post('url'),'refresh');
+	}
 	
 }
