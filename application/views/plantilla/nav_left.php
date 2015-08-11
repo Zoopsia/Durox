@@ -49,7 +49,7 @@ $array_activo = moduloActivo($this->uri->segment(1));
                             
 							<ul class="treeview-menu" style="display: none;">
 					           <li><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/tab1'?>"><?php echo $this->lang->line('listado_de').' '.$this->lang->line('clientes'); ?></a></li>
-					           <li><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/tab1/add'?>"><?php echo $this->lang->line('nuevo'); ?></a></li>
+					           <li><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/tab1/add'?>"><?php echo $this->lang->line('nuevo').' '.$this->lang->line('cliente'); ?></a></li>
 					           <li class="divider"></li>
 					           <li><a href="<?php echo base_url().'index.php/Clientes/clientes_abm/tab2'?>"><?php echo $this->lang->line('busqueda_avanzada'); ?></a></li>
 				          	</ul>
@@ -66,7 +66,7 @@ $array_activo = moduloActivo($this->uri->segment(1));
 				          		
 							<ul class="treeview-menu" style="display: none;">
 								<li><a href="<?php echo base_url().'index.php/Vendedores/vendedores_abm/tab1'?>"><?php echo $this->lang->line('listado_de').' '.$this->lang->line('vendedores'); ?></a></li>
-								<li><a href="<?php echo base_url().'index.php/Vendedores/vendedores_abm/tab1/add'?>"><?php echo $this->lang->line('nuevo'); ?></a></li>
+								<li><a href="<?php echo base_url().'index.php/Vendedores/vendedores_abm/tab1/add'?>"><?php echo $this->lang->line('nuevo').' '.$this->lang->line('vendedor'); ?></a></li>
 								<li class="divider"></li>
 								<li><a href="<?php echo base_url().'index.php/Vendedores/vendedores_abm/tab2'?>"><?php echo $this->lang->line('busqueda_avanzada'); ?></a></li>
 							</ul>
@@ -82,7 +82,7 @@ $array_activo = moduloActivo($this->uri->segment(1));
                             </a>  
 							<ul class="treeview-menu" style="display: none;">
 					            <li><a href="<?php echo base_url().'index.php/Pedidos/pedidos_abm/tab1'?>"><?php echo $this->lang->line('listado_de').' '.$this->lang->line('pedidos'); ?></a></li>
-					            <li><a href="<?php echo base_url().'index.php/Pedidos/pedidos_abm/tab1/add'?>"><?php echo $this->lang->line('nuevo'); ?></a></li>
+					        <!--<li><a href="<?php echo base_url().'index.php/Pedidos/pedidos_abm/tab1/add'?>"><?php echo $this->lang->line('nuevo').' '.$this->lang->line('pedido'); ?></a></li>-->
 					            <li class="divider"></li>
 					            <li><a href="<?php echo base_url().'index.php/Pedidos/pedidos_abm/tab2'?>"><?php echo $this->lang->line('busqueda_avanzada'); ?></a></li>
 				          	</ul>
@@ -98,7 +98,7 @@ $array_activo = moduloActivo($this->uri->segment(1));
                             </a> 
                             <ul class="treeview-menu" style="display: none;">
 					            <li><a href="<?php echo base_url().'index.php/Presupuestos/presupuestos_abm/tab1'?>"><?php echo $this->lang->line('listado_de').' '.$this->lang->line('presupuestos'); ?></a></li>
-					            <li><a href="<?php echo base_url().'index.php/Presupuestos/carga/'?>"><?php echo $this->lang->line('nuevo'); ?></a></li>
+					            <li><a href="<?php echo base_url().'index.php/Presupuestos/carga/'?>"><?php echo $this->lang->line('nuevo').' '.$this->lang->line('presupuesto'); ?></a></li>
 					            <li class="divider"></li>
 					            <li><a href="<?php echo base_url().'index.php/Presupuestos/presupuestos_abm/tab2'?>"><?php echo $this->lang->line('busqueda_avanzada'); ?></a></li>
 				         	</ul>
@@ -114,7 +114,7 @@ $array_activo = moduloActivo($this->uri->segment(1));
                             </a> 
                             <ul class="treeview-menu" style="display: none;">
                             	<li><a href="<?php echo base_url().'index.php/Visitas/visitas_abm/tab1'?>"><?php echo $this->lang->line('listado_de').' '.$this->lang->line('visitas'); ?></a></li>
-				          		<li><a href="<?php echo base_url().'index.php/Visitas/carga'?>"><?php echo $this->lang->line('cargar').' '.$this->lang->line('visita'); ?></a></li>
+				          		<li><a href="<?php echo base_url().'index.php/Visitas/carga'?>"><?php echo $this->lang->line('nueva').' '.$this->lang->line('visita'); ?></a></li>
 							</ul>
 				        </li>
 				        
@@ -128,7 +128,7 @@ $array_activo = moduloActivo($this->uri->segment(1));
                             </a> 
                             <ul class="treeview-menu" style="display: none;">
 					            <li><a href="<?php echo base_url().'index.php/Productos/productos_abm/tab1'?>"><?php echo $this->lang->line('listado_de').' '.$this->lang->line('productos'); ?></a></li>
-					            <li><a href="<?php echo base_url().'index.php/Productos/productos_abm/tab1/add'?>"><?php echo $this->lang->line('nuevo'); ?></a></li>
+					            <li><a href="<?php echo base_url().'index.php/Productos/productos_abm/tab1/add'?>"><?php echo $this->lang->line('nuevo').' '.$this->lang->line('producto'); ?></a></li>
 					            <li class="divider"></li>
 					            <!--<li><a href="<?php echo base_url().'index.php/Productos/reglas/'?>"><?php echo $this->lang->line('reglas_descuento'); ?></a></li>
 					          	<li class="divider"></li>-->

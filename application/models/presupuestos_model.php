@@ -126,35 +126,6 @@ class Presupuestos_model extends My_Model {
 		$this->db->insert('sin_visitas_presupuestos', $arreglo_cruce);
 	}
 	
-	function getPresupuestoInfo($id){
-		$this->db->select( 'presupuestos.*,
-							clientes.nombre AS Cnombre,
-							clientes.apellido AS Capellido,
-							vendedores.nombre AS Vnombre,
-							vendedores.apellido AS Vapellido
-		');
-		$this->db->from('presupuestos');
-		$this->db->join('clientes', 'presupuestos.id_cliente = clientes.id_cliente', 'inner');
-		$this->db->join('vendedores', 'presupuestos.id_vendedor = vendedores.id_vendedor', 'inner');
-		$this->db->where('id_presupuesto',$id);
-		
-		$query = $this->db->get();
-		
-		
-		if($query->num_rows() > 0)
-		{
-			foreach ($query->result() as $fila)
-			{
-				$data[] = $fila;
-			}
-			return $data;
-		}
-		else
-		{
-			return FALSE;
-		}
-	}
-	
 	public function buscarProducto($producto) {
         $this->db->select('nombre');
         $this->db->select('id_producto');

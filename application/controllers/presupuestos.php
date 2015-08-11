@@ -32,10 +32,12 @@ class Presupuestos extends My_Controller {
 		$presupuesto			= $this->presupuestos_model->getRegistro($id);
 		$db['presupuesto']		= $presupuesto;
 		
-		foreach($presupuesto as $row) {
-			$db['clientes']		= $this->clientes_model->getRegistro($row->id_cliente);
-			$db['vendedores']	= $this->vendedores_model->getRegistro($row->id_vendedor);
-			$db['pedido']		= $this->pedidos_model->getPedido($row->id_visita);
+		if($presupuesto){
+			foreach($presupuesto as $row) {
+				$db['clientes']		= $this->clientes_model->getRegistro($row->id_cliente);
+				$db['vendedores']	= $this->vendedores_model->getRegistro($row->id_vendedor);
+				$db['pedido']		= $this->pedidos_model->getPedido($row->id_visita);
+			}
 		}
 		$db['iva']				= $this->clientes_model->getTodo('iva');		
 		$db['presupuestos']		= $this->presupuestos_model->getDetallePresupuesto($id);
@@ -195,7 +197,6 @@ class Presupuestos extends My_Controller {
 		if($id_presupuesto)
 		{
 			$db['presupuesto']		= $id_presupuesto;
-			$db['informacion']		= $this->presupuestos_model->getPresupuestoInfo($id_presupuesto);
 			$db['productos']		= $this->presupuestos_model->getProductosTodo();
 			$db['visita']			= $id_visita;
 			$db['tipo']				= 0;
@@ -532,8 +533,6 @@ class Presupuestos extends My_Controller {
 		if($presupuesto){
 			$this->presupuestos_model->deletePresupuesto($presupuesto);
 		}
-		
-		echo $presupuesto;
 	}
 	
 	public function generarNuevoPresupuesto($id_presupuesto)
@@ -598,7 +597,6 @@ class Presupuestos extends My_Controller {
 			$db['presupuestos']		= $this->presupuestos_model->getRegistro($id);
 			$db['productos']		= $this->presupuestos_model->getProductosTodo();
 			$db['tipo']				= 1;
-			$db['informacion']		= $this->presupuestos_model->getPresupuestoInfo($id);
 			
 			foreach($db['presupuestos'] as $row)
 			{

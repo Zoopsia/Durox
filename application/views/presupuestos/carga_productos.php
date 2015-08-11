@@ -18,7 +18,7 @@ window.addEventListener('unload', function() {
 		 	url: '<?php echo base_url(); ?>index.php/Presupuestos/deletePresupuesto', //Realizaremos la petición al metodo prueba del controlador direcciones
 		 	data: 'presupuesto='+$('#presupuesto').val(),
 		 	success: function(resp) {
-
+		 		
 		  	},
 		 	async: false
 		});

@@ -108,6 +108,7 @@ $aux2 = 0;
                         <div class="col-xs-12 table-responsive">
                         	<?php echo $this->lang->line('detalle'); ?>
                                 <?php
+                                	if($presupuesto){
 	     								foreach($presupuesto as $row)
 	     								{
 	     									if($row->id_estado_presupuesto == 3 || $row->id_estado_presupuesto == 2)
@@ -118,19 +119,17 @@ $aux2 = 0;
 												echo '<table class="table table-striped" cellspacing="0" width="100%">';
 											}
 	     								}
-										
-										$total = 0;
-										if($presupuestos)
+									}	
+									$total = 0;
+									if($presupuestos)
+									{
+										foreach ($presupuestos as $row) 
 										{
-											foreach ($presupuestos as $row) 
-											{
-												if($row->estado_linea != 3)
-													$total = $row->subtotal + $total;
-											}
+											if($row->estado_linea != 3)
+												$total = $row->subtotal + $total;
 										}
-										
-										
-	     							?>
+									}
+								?>
 								        <thead class="tabla-datos-importantes">
 								            <tr>
 								            	<th><?php echo $this->lang->line('producto'); ?></th>
@@ -229,18 +228,18 @@ $aux2 = 0;
 											}
 										}
 									}
-								}
 								
-								if($pedido){
-									if($tengopedido == 0){
-										foreach($pedido as $row){
-											echo 	'<a role="button" class="btn btn-success pull-right" href="'.base_url().'/index.php/Pedidos/pestanas/'.$row->id_pedido.'">
-														'.$this->lang->line('ver').' '.$this->lang->line('pedido').'
-													</a>';
+								
+									if($pedido){
+										if($tengopedido == 0){
+											foreach($pedido as $row){
+												echo 	'<a role="button" class="btn btn-success pull-right" href="'.base_url().'/index.php/Pedidos/pestanas/'.$row->id_pedido.'">
+															'.$this->lang->line('ver').' '.$this->lang->line('pedido').'
+														</a>';
+											}
 										}
 									}
 								}
-								
 							?>		
                          </div>
                     </div>	
