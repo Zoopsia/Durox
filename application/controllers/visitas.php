@@ -201,7 +201,9 @@ class Visitas extends My_Controller {
 			'id_epoca_visita'	=> $this->input->post('id_epoca_visita'),
 			'fecha'				=> $date,
 			'valoracion'		=> $this->input->post('star1'),
-			'descripcion'		=> $this->input->post('comentarios')		
+			'descripcion'		=> $this->input->post('comentarios'),
+			'visto'				=> 0,
+			'id_origen'			=> 2		
 		);
 
 		$id_visita = $this->visitas_model->insert($visita);

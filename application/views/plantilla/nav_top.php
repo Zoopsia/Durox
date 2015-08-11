@@ -1,3 +1,7 @@
+<?php 	
+	$mensajes = 0;
+	$mensajes += count($visitas_mensajes);
+?>
     <body class="skin-blue">
         <!-- header logo: style can be found in header.less -->
         <header class="header">
@@ -104,10 +108,10 @@
                         <li class="dropdown notifications-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-plus-square"></i>
-                                <span class="label label-success">8</span>
+                                <span class="label label-success"><?php echo $mensajes ?></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li class="header">8 registros nuevos</li>
+                                <li class="header"><?php echo ' '.$mensajes.' '.$this->lang->line('registros').' '.$this->lang->line('nuevos')?></li>
                                 <li>
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu">
@@ -126,9 +130,19 @@
                                                 <i class="fa fa-user warning"></i> 1 clientes nuevos
                                             </a>
                                         </li>
+                                		<li>
+                                            <a  href='#' data-toggle="modal" data-target="#modal_mensajes">
+                                                <i class="fa fa-car danger"></i><?php echo ' '.count($visitas_mensajes).' '.$this->lang->line('visitas').' '.$this->lang->line('nuevas');?>
+                                            </a>
+                                        </li>
                                         <li>
                                             <a href="#">
-                                                <i class="fa fa-car danger"></i> 3 visitas nuevas
+                                                <i class="fa fa-briefcase bg-purple"></i> 2 vendedores nuevos
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a href="#">
+                                                <i class="fa fa-book bg-maroon"></i> 12 presupuestos nuevos
                                             </a>
                                         </li>
                                     </ul>

@@ -113,8 +113,8 @@ $array_activo = moduloActivo($this->uri->segment(1));
                                 <i class="fa pull-right fa-angle-left"></i>
                             </a> 
                             <ul class="treeview-menu" style="display: none;">
-				            	<li><a href="<?php echo base_url().'index.php/Visitas/visitas_abm/tab1'?>"><?php echo $this->lang->line('listado_de').' '.$this->lang->line('visitas'); ?></a></li>
-				          		<li><a href="<?php echo base_url().'index.php/Visitas/carga'?>"><?php echo $this->lang->line('nueva'); ?></a></li>
+                            	<li><a href="<?php echo base_url().'index.php/Visitas/visitas_abm/tab1'?>"><?php echo $this->lang->line('listado_de').' '.$this->lang->line('visitas'); ?></a></li>
+				          		<li><a href="<?php echo base_url().'index.php/Visitas/carga'?>"><?php echo $this->lang->line('cargar').' '.$this->lang->line('visita'); ?></a></li>
 							</ul>
 				        </li>
 				        

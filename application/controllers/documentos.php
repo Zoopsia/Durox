@@ -63,14 +63,18 @@ class Documentos extends My_Controller {
 					$id_documento		= $this->documentos_model->insert($arreglo);
 				}
 			}
-
-			foreach($_POST['tipo_documento'] as $row){
-				$sin = array(
-					'id_tipo_documento'		=> $row,
-					'id_documento'			=> $id_documento
-				);
-				
-				$id_sin		= $this->documentos_model->insertTipo($sin);
+			
+			if($id_documento){
+				if(!empty($_POST['tipo_documento'])){
+					foreach($_POST['tipo_documento'] as $row){
+						$sin = array(
+							'id_tipo_documento'		=> $row,
+							'id_documento'			=> $id_documento
+						);
+						
+						$id_sin		= $this->documentos_model->insertTipo($sin);
+					}
+				}
 			}
 		}	
 		
@@ -144,8 +148,10 @@ class Documentos extends My_Controller {
 
 	function ordenarDocumento(){
 		$id_tipo_documento		= $this->input->post('id_tipo_documento');
-		
-		$this->armarDocumento($id_tipo_documento);
+		if($id_tipo_documento!=0)
+			$this->armarDocumento($id_tipo_documento);
+		else
+			$this->armarDocumento();
 	}
 	
 	function armarDocumento($id_tipo=null){
@@ -178,7 +184,7 @@ class Documentos extends My_Controller {
 						    </div>';
 				$i ++;
 				if($i%6 == 0){
-					$mensaje .= "<br><br><br><br><br>";
+					$mensaje .= "<br><br><br><br><br><br><br>";
 				}
 			}
 		}

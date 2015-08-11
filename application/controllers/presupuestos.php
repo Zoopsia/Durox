@@ -21,6 +21,7 @@ class Presupuestos extends My_Controller {
 		$this->load->model('grupos_model');
 		$this->load->model('reglas_model');
 		$this->load->model('visitas_model');
+		$this->load->model('pedidos_model');
 			
 		$this->load->model($this->_subject.'_model');
 	}
@@ -34,6 +35,7 @@ class Presupuestos extends My_Controller {
 		foreach($presupuesto as $row) {
 			$db['clientes']		= $this->clientes_model->getRegistro($row->id_cliente);
 			$db['vendedores']	= $this->vendedores_model->getRegistro($row->id_vendedor);
+			$db['pedido']		= $this->pedidos_model->getPedido($row->id_visita);
 		}
 		$db['iva']				= $this->clientes_model->getTodo('iva');		
 		$db['presupuestos']		= $this->presupuestos_model->getDetallePresupuesto($id);

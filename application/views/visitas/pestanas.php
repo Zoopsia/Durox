@@ -314,6 +314,7 @@ function tablaPresupuesto($id_presupuesto){
 
 	    						<?php
 	    							if($pedido){
+	    								foreach($pedido as $row){
 	    						?>		
 										    <div class="col-sm-6 col-md-6">
 									        	<div class="box box-default">
@@ -329,7 +330,7 @@ function tablaPresupuesto($id_presupuesto){
 									            <div class="alert-message alert-message-success">
 									                <h4>PEDIDO RELACIONADO CON LA VISITA</h4>
 									                <p>
-									                 	<a href="#"><?php echo $this->lang->line('ver').' '.$this->lang->line('pedido'); ?></a>
+									                 	<a href="<?php echo base_url().'index.php/Pedidos/pestanas/'.$row->id_pedido?>"><?php echo $this->lang->line('ver').' '.$this->lang->line('pedido'); ?></a>
 													</p>
 									            </div>
 									            
@@ -337,7 +338,8 @@ function tablaPresupuesto($id_presupuesto){
 									            
 									        </div>
 										</div>
-								<?php	
+								<?php
+										}	
 	    							}
 									else 
 									{
@@ -355,7 +357,7 @@ function tablaPresupuesto($id_presupuesto){
 									            <div class="alert-message alert-message-danger">
 									                <h4>NO HAY PEDIDO RELACIONADO CON LA VISITA</h4>
 									                <p>
-									                   	<a class="btn btn-default" href="<?php echo base_url().'index.php/Pedidos/carga/'; ?>"><?php echo $this->lang->line('agregar').' '.$this->lang->line('pedido'); ?></a>
+									                   <!--<a class="btn btn-default" href="<?php echo base_url().'index.php/Pedidos/carga/'; ?>"><?php echo $this->lang->line('agregar').' '.$this->lang->line('pedido'); ?></a>-->
 													</p>
 									            </div>
 									            </div>

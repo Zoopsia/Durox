@@ -1,4 +1,7 @@
 <script>
+
+var tipos = new Array(); 
+
 function buscar(){
 	var file = new FormData();
 	file.append("documento",document.getElementById('documento').files[0]);
@@ -76,14 +79,29 @@ function deleteDocumento($id){
 }
 
 function ordenarDocumentos(id_tipo_documento){
-	$.ajax({
-		type: 'POST',
-		url: '<?php echo base_url(); ?>index.php/documentos/ordenarDocumento', //Realizaremos la petición al metodo prueba del controlador cliente
-		data: 'id_tipo_documento='+id_tipo_documento , //Pasaremos por parámetro POST el id del grupo
-		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-			$('#mostrarDocumentos').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de reglas
-		 }
-	});
+	
+	//$('#tipo'+id_tipo_documento).css("background-color", "#3C8DBC");
+	//$('#tipo'+id_tipo_documento).css("color", "white");
+	if(id_tipo_documento!=0){
+		$.ajax({
+			type: 'POST',
+			url: '<?php echo base_url(); ?>index.php/documentos/ordenarDocumento', //Realizaremos la petición al metodo prueba del controlador cliente
+			data: 'id_tipo_documento='+id_tipo_documento , //Pasaremos por parámetro POST el id del grupo
+			success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+				$('#mostrarDocumentos').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de reglas
+			 }
+		});
+	}
+	else{
+		$.ajax({
+			type: 'POST',
+			url: '<?php echo base_url(); ?>index.php/documentos/ordenarDocumento', //Realizaremos la petición al metodo prueba del controlador cliente
+			data: 'id_tipo_documento='+id_tipo_documento , //Pasaremos por parámetro POST el id del grupo
+			success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+				$('#mostrarDocumentos').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de reglas
+			 }
+		});
+	}
 }
 </script>
 <div class="row">
@@ -150,9 +168,10 @@ function ordenarDocumentos(id_tipo_documento){
 									<?php
 										if($tipos){
 											foreach ($tipos as $row) {
-												echo '<li><a href="#" onclick="ordenarDocumentos('.$row->id_tipo_documento.')">'.$row->tipo_documento.'</a></li>';
+												echo '<li id="tipo'.$row->id_tipo_documento.'"><a href="#" onclick="ordenarDocumentos('.$row->id_tipo_documento.')">'.$row->tipo_documento.'</a></li>';
 											}
 										}
+										echo '<li><a href="#" onclick="ordenarDocumentos(0)">Todo</a></li>';
 									?>
 								</ul>
 							</li>
@@ -185,7 +204,7 @@ function ordenarDocumentos(id_tipo_documento){
 									             </div>';
 								$i ++;
 								if($i%6 == 0){
-									$mensaje .= "<br><br><br><br><br>";
+									$mensaje .= "<br><br><br><br><br><br><br>";
 								}
 							}
 							

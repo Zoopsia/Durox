@@ -41,14 +41,13 @@ class Documentos_model extends My_Model {
 		$sql = "SELECT 
 					* 
 				FROM 
-					$this->_tablename
-				INNER JOIN
 					sin_tipos_documentos
+				INNER JOIN
+					$this->_tablename
 				USING
 					 ($this->_id_table)
 				WHERE 
-					$this->_id_table = '$id'";
-					
+					id_tipo_documento = '$id'";
 
 		$query = $this->db->query($sql);
 		

@@ -208,6 +208,7 @@ $aux2 = 0;
                             <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
                             -->
                             <?php
+                            	$tengopedido = 0;
                             	if($presupuesto){
 								    if($aux == 1 && $aux2 == 1){ 
 									    foreach($presupuesto as $row){
@@ -224,10 +225,22 @@ $aux2 = 0;
 									    		{
 											    echo ' <a role="button" class="btn btn-primary pull-right" href="'.base_url().'/index.php/Pedidos/generarNuevoPedido/'.$row->id_presupuesto.'"  style="margin-right: 5px;">'.$this->lang->line('generar').' '.$this->lang->line('pedido').'</a>';
 												}
+												$tengopedido = 1;
 											}
 										}
 									}
 								}
+								
+								if($pedido){
+									if($tengopedido == 0){
+										foreach($pedido as $row){
+											echo 	'<a role="button" class="btn btn-success pull-right" href="'.base_url().'/index.php/Pedidos/pestanas/'.$row->id_pedido.'">
+														'.$this->lang->line('ver').' '.$this->lang->line('pedido').'
+													</a>';
+										}
+									}
+								}
+								
 							?>		
                          </div>
                     </div>	
