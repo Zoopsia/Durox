@@ -61,7 +61,6 @@ class Productos_model extends My_Model {
 		{
 			return FALSE;
 		}
-	}
-			
+	}		
 } 
 ?>

@@ -72,7 +72,7 @@ class Vendedores extends My_Controller {
 					
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
 			$crud->callback_delete(array($this,'delete_user'));
-			$crud->callback_after_insert(array($this, 'insert_date'));
+			$crud->callback_after_insert(array($this, 'insertDatos'));
 			
 			$crud->unset_export();
 			$crud->unset_print();
@@ -85,13 +85,16 @@ class Vendedores extends My_Controller {
 			$this->crud_tabla($output);
 	}
 	
-	function insert_date($post_array, $primary_key)
+	function insertDatos($post_array, $primary_key)
 	{
 		$arreglo	= array(
-			'date_add'		=> date('Y-m-d H:i:s')
+			'date_add'		=> date('Y-m-d H:i:s'),
+			'visto'			=> 0,
+			'id_origen'		=> 2,
+			'id_db'			=> 0
 		);
 		
-		$id			= $this->productos_model->update($arreglo,$primary_key);
+		$id			= $this->vendedores_model->update($arreglo,$primary_key);
 		
 		return true;
 	}

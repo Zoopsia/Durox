@@ -1,6 +1,14 @@
 <?php 	
 	$mensajes = 0;
-	$mensajes += count($visitas_mensajes);
+	if($visitas_mensajes)
+		$mensajes += count($visitas_mensajes);
+	if($clientes_mensajes)
+		$mensajes += count($clientes_mensajes);
+	if($vendedores_mensajes)
+		$mensajes += count($vendedores_mensajes);
+	if($productos_mensajes)
+		$mensajes += count($productos_mensajes);
+	
 ?>
     <body class="skin-blue">
         <!-- header logo: style can be found in header.less -->
@@ -116,8 +124,8 @@
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu">
                                     	<li>
-                                            <a href="#">
-                                                <i class="fa fa-archive primary"></i> 2 productos nuevos
+                                            <a  href='#' data-toggle="modal" data-target="#modal_productos">
+                                                <i class="fa fa-archive primary"></i><?php echo ' '.count($productos_mensajes).' '.$this->lang->line('productos').' '.$this->lang->line('nuevos');?>
                                             </a>
                                         </li>
                                         <li>
@@ -125,19 +133,25 @@
                                                 <i class="fa fa-shopping-cart success"></i> 2 pedidos nuevos
                                             </a>
                                         </li>
+                                        <?php 
+                                        if($clientes_mensajes){
+                                        ?>
                                         <li>
-                                            <a href="#">
-                                                <i class="fa fa-user warning"></i> 1 clientes nuevos
+                                            <a  href='#' data-toggle="modal" data-target="#modal_clientes">
+                                                <i class="fa fa-user warning"></i><?php echo ' '.count($clientes_mensajes).' '.$this->lang->line('clientes').' '.$this->lang->line('nuevos');?>
                                             </a>
                                         </li>
+                                		<?php
+										}
+										?>
                                 		<li>
-                                            <a  href='#' data-toggle="modal" data-target="#modal_mensajes">
+                                            <a  href='#' data-toggle="modal" data-target="#modal_visitas">
                                                 <i class="fa fa-car danger"></i><?php echo ' '.count($visitas_mensajes).' '.$this->lang->line('visitas').' '.$this->lang->line('nuevas');?>
                                             </a>
                                         </li>
                                         <li>
-                                            <a href="#">
-                                                <i class="fa fa-briefcase bg-purple"></i> 2 vendedores nuevos
+                                            <a  href='#' data-toggle="modal" data-target="#modal_vendedores">
+                                                <i class="fa fa-briefcase bg-purple"></i><?php echo ' '.count($vendedores_mensajes).' '.$this->lang->line('vendedores').' '.$this->lang->line('nuevos');?>
                                             </a>
                                         </li>
                                         <li>

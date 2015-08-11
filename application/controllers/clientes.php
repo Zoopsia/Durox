@@ -78,7 +78,7 @@ class Clientes extends My_Controller {
 							
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
 			$crud->callback_delete(array($this,'delete_user'));
-			$crud->callback_after_insert(array($this, 'insert_date'));
+			$crud->callback_after_insert(array($this, 'insertDatos'));
 			
 			$crud->set_relation('id_iva','iva','iva');
 			
@@ -95,10 +95,13 @@ class Clientes extends My_Controller {
 			$this->crud_tabla($output);
 	}
 	
-	function insert_date($post_array, $primary_key)
+	function insertDatos($post_array, $primary_key)
 	{
 		$arreglo	= array(
-			'date_add'		=> date('Y-m-d H:i:s')
+			'date_add'		=> date('Y-m-d H:i:s'),
+			'visto'			=> 0,
+			'id_origen'		=> 2,
+			'id_db'			=> 0
 		);
 		
 		$id			= $this->clientes_model->update($arreglo,$primary_key);
@@ -177,5 +180,22 @@ class Clientes extends My_Controller {
 		redirect('clientes/pestanas/'.$id_cliente,'refresh');
 		
 	}
-
+	
+	function editarVisto(){
+		$clientes 	= $this->clientes_model->mensajesNuevos();
+	
+		if($clientes){
+			foreach($clientes as $row) {
+				$id = $row->id_cliente; 	
+				if($row->id_cliente = $this->input->post('id_cliente'.$id)){
+					$arreglo = array(
+						'visto'		=> $this->input->post('estado'.$id)
+					);
+					$id = $this->clientes_model->update($arreglo, $id);
+				}
+			}	
+		}
+		
+		redirect($this->input->post('url'),'refresh');
+	}
 }

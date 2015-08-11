@@ -126,7 +126,7 @@ class Visitas_model extends My_Model {
 				USING
 					(id_vendedor)
 				WHERE
-					visto = 0';
+					visitas.visto = 0';
 		
 		$query = $this->db->query($sql);
 						
