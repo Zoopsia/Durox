@@ -83,15 +83,13 @@ class Clientes_model extends My_Model {
 	function getPedidos($id){
 			
 		$sql = "SELECT 
-					pedidos.*, 
-					vendedores.nombre as v_nombre,
-					clientes.nombre as c_nombre 
+					* 
 				FROM 
-					$this->_tablename 
-				INNER JOIN
-					pedidos USING (id_cliente)
-				INNER JOIN
+					pedidos
+				INNER JOIN 
 					vendedores USING (id_vendedor)
+				INNER JOIN 
+					estados_pedidos USING (id_estado_pedido)
 				WHERE 
 					$this->_id_table = '$id'
 				AND

@@ -776,16 +776,24 @@ $bandera = 0;
 							        <thead>
 							            <tr>
 							            	<th><?php echo $this->lang->line('pedido'); ?></th>
-							                <th><?php echo $this->lang->line('vendedor'); ?></th>
-							                <th><?php echo $this->lang->line('date'); ?></th>
+							                <th><?php echo $this->lang->line('presupuesto'); ?></th>
+							            	<th><?php echo $this->lang->line('visita'); ?></th>
+							            	<th><?php echo $this->lang->line('vendedor'); ?></th>
+							            	<th><?php echo $this->lang->line('date'); ?></th>
+							            	<th><?php echo $this->lang->line('monto'); ?></th>
+							            	<th><?php echo $this->lang->line('estado'); ?></th>
 							            </tr>
 							        </thead>
 							 
 							        <tfoot>
 							            <tr>
 							            	<th><?php echo $this->lang->line('pedido'); ?></th>
-							                <th><?php echo $this->lang->line('vendedor'); ?></th>
-							                <th><?php echo $this->lang->line('date'); ?></th>
+							                <th><?php echo $this->lang->line('presupuesto'); ?></th>
+							            	<th><?php echo $this->lang->line('visita'); ?></th>
+							            	<th><?php echo $this->lang->line('vendedor'); ?></th>
+							            	<th><?php echo $this->lang->line('date'); ?></th>
+							            	<th><?php echo $this->lang->line('monto'); ?></th>
+							            	<th><?php echo $this->lang->line('estado'); ?></th>
 							            </tr>
 							        </tfoot>
 							 
@@ -794,15 +802,16 @@ $bandera = 0;
 									       	if($pedidos){							                
 										      	foreach ($pedidos as $row) 
 										     	{
-										    		echo '<tr>';
-													echo "<td><a href='".base_url()."index.php/pedidos/pestanas/".$row->id_vendedor."'>".$row->id_pedido.'</a>';
+										     		echo '<tr>';
+													echo "<td><a href='".base_url()."index.php/pedidos/pestanas/".$row->id_pedido."' class='displayblock'>".$row->id_pedido.'</a>';
+													echo "<td><a href='".base_url()."index.php/Presupuestos/pestanas/".$row->id_presupuesto."' class='displayblock'>".$row->id_presupuesto.'</a></td>';
+													echo "<td><a href='".base_url()."index.php/Visitas/carga/".$row->id_visita."/0' class='displayblock'>".$row->id_visita.'</a></td>';
+													echo "<td><a href='".base_url()."index.php/Vendedores/pestanas/".$row->id_vendedor."' class='displayblock'>".$row->apellido.', '.$row->nombre.'</a></td>';
+													$date = date_create($row -> fecha);
+													echo '<td>'.date_format($date, 'd/m/Y');
 													echo "</td>";
-													echo "<td><a href='".base_url()."index.php/Vendedores/pestanas/".$row->id_vendedor."'>".$row->v_nombre.'</a>';
-													echo "</td>";
-													echo '<td>'.$row->date_add;
-													echo "</td>";
-													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
-													//echo "</a></tr>";
+													echo '<td>$ '.$row->total.'</td>';
+													echo '<td>'.$row->estado.'</td>';
 													echo "</tr>";
 												}
 											}
@@ -817,20 +826,20 @@ $bandera = 0;
 							        <thead>
 							            <tr>
 							            	<th><?php echo $this->lang->line('presupuesto'); ?></th>
-							            	<th><?php echo $this->lang->line('estado'); ?></th>
 							            	<th><?php echo $this->lang->line('visita'); ?></th>
-							                <th><?php echo $this->lang->line('vendedor'); ?></th>
-							                <th><?php echo $this->lang->line('date'); ?></th>
+							            	<th><?php echo $this->lang->line('vendedor'); ?></th>
+							            	<th><?php echo $this->lang->line('date'); ?></th>
+							            	<th><?php echo $this->lang->line('estado'); ?></th>
 							            </tr>
 							        </thead>
 							 
 							        <tfoot>
 							            <tr>
 							            	<th><?php echo $this->lang->line('presupuesto'); ?></th>
-							            	<th><?php echo $this->lang->line('estado'); ?></th>
 							            	<th><?php echo $this->lang->line('visita'); ?></th>
-							                <th><?php echo $this->lang->line('vendedor'); ?></th>
-							                <th><?php echo $this->lang->line('date'); ?></th>
+							            	<th><?php echo $this->lang->line('vendedor'); ?></th>
+							            	<th><?php echo $this->lang->line('date'); ?></th>
+							            	<th><?php echo $this->lang->line('estado'); ?></th>
 							            </tr>
 							        </tfoot>
 							 
@@ -841,14 +850,12 @@ $bandera = 0;
 										     	{
 										    		echo '<tr>';
 													echo "<td><a href='".base_url()."index.php/Presupuestos/pestanas/".$row->id_presupuesto."' class='displayblock'>".$row->id_presupuesto.'</a></td>';
-													echo '<td>'.$row->estado.'</td>';
 													echo "<td><a href='".base_url()."index.php/Visitas/carga/".$row->id_visita."/0' class='displayblock'>".$row->id_visita.'</a></td>';
 													echo "<td><a href='".base_url()."index.php/Vendedores/pestanas/".$row->id_vendedor."' class='displayblock'>".$row->apellido.', '.$row->nombre.'</a></td>';
 													$date = date_create($row -> fecha);
 													echo '<td>'.date_format($date, 'd/m/Y');
 													echo "</td>";
-													//echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/vendedores_pestanas/".$row->id_vendedor."' class='btn btn-default'>Ver</a></td>";
-													//echo "</a></tr>";
+													echo '<td>'.$row->estado.'</td>';
 													echo "</tr>";
 												}
 											}

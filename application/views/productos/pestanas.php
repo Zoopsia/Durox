@@ -112,7 +112,9 @@ $bandera = 0;
 				</div>
 				
 				<div class=" col-md-7 col-lg-7 "><!--carga info cliente-->
+					<?php if($productos) { ?>
 					<form id="formulario" action="<?php echo base_url()."index.php/Productos/editarProducto/$row->id_producto"?>" class="form-horizontal" method="post" enctype="multipart/form-data"> 
+					<?php } ?>
 						<div class="row">
 							<div class=" col-md-12 col-lg-12 ">
 								<table class="table table-striped table-user-information"> 
@@ -152,7 +154,9 @@ $bandera = 0;
 												echo  "<tr>";
 												echo  '<td class="padtop">'.$this->lang->line('ficha').':</td>';
 												echo  '<td class="tabla-datos-importantes">';
-												echo  '<input type="text" name="ficha_tecnica" id="ficha_tecnica" class="form-control editable cambio web" value="'.$row->ficha_tecnica.'" autocomplete="off" disabled>';
+												echo  '<a href="'.base_url().'img/productos/documentos/'.$row->ficha_tecnica.'" download style="display:"inherit>';
+												echo  "<input type='text' name='ficha_tecnica' id='ficha_tecnica' class='form-control editable cambio web' value='".$row->ficha_tecnica."' autocomplete='off' disabled>";
+								                echo  '</a>';
 								                echo  '</td>';
 												//echo  '<td class="tabla-datos-importantes"><a href="'.base_url().'img/productos/documentos/'.$row->ficha_tecnica.'" download>'.$this->lang->line('descarga').' <i class="fa fa-download"></i></a></td>';
 												echo  "</tr>";

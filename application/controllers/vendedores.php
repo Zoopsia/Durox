@@ -28,6 +28,7 @@ class Vendedores extends My_Controller {
 		$db['telefonos']	= $this->vendedores_model->getCruce($id,'telefonos');
 		$db['direcciones']	= $this->vendedores_model->getCruce($id,'direcciones');
 		$db['mails']		= $this->vendedores_model->getCruce($id,'mails');
+		$db['pedidos']		= $this->vendedores_model->getPedidos($id);
 		$db['presupuestos']	= $this->vendedores_model->getPresupuestos($id);
 		$db['id']			= $id;
 		
@@ -87,11 +88,15 @@ class Vendedores extends My_Controller {
 	
 	function insertDatos($post_array, $primary_key)
 	{
+		$session_data = $this->session->userdata('logged_in');
+		
 		$arreglo	= array(
 			'date_add'		=> date('Y-m-d H:i:s'),
 			'visto'			=> 0,
 			'id_origen'		=> 2,
-			'id_db'			=> 0
+			'id_db'			=> 0,
+			'user_add'		=> $session_data['id_usuario'],
+			'user_upd'		=> $session_data['id_usuario']
 		);
 		
 		$id			= $this->vendedores_model->update($arreglo,$primary_key);
@@ -101,14 +106,20 @@ class Vendedores extends My_Controller {
 	
 	public function delete_user($primary_key)
 	{
-		if($this->vendedores_model->permitirEliminar($primary_key)){
-			$arreglo = array(
-				'eliminado'		=> 1
-			);
-			
-			$id 				= $this->vendedores_model->update($arreglo,$primary_key);
-		
+		if($this->vendedores_model->permitirEliminarPresupuesto($primary_key)){
+			if($this->vendedores_model->permitirEliminarPedido($primary_key)){
+				$arreglo = array(
+					'eliminado'		=> 1
+				);
+				
+				$id 				= $this->vendedores_model->update($arreglo,$primary_key);
+			}
+			else
+				echo "<script>alert('El registro no pude ser eliminado...');</script>";
 		}
+		else
+			echo "<script>alert('El registro no pude ser eliminado...');</script>";
+		
 		return redirect($this->_subject.'/pestanas/'.$primary_key,'refresh');
 	}
 

@@ -72,11 +72,18 @@ class Vendedores_model extends My_Model {
 	
 	function updateSin($arreglo_campos, $id){
 		
+		$session_data = $this->session->userdata('logged_in');
+		
 		if($this->db->field_exists('date_upd', $this->_tablename))
 		{
 			$arreglo_campos['date_upd'] = date('Y-m-d H:i:s'); 
 		}
-			
+		
+		if($this->db->field_exists('user_upd', $this->_tablename))
+		{
+			$arreglo_campos['user_upd'] = $session_data['id_usuario']; 
+		}	
+		
 		$this->db->where('id_sin_vendedor_cliente', $id);
 		$this->db->update('sin_vendedores_clientes', $arreglo_campos);
 		
@@ -97,6 +104,37 @@ class Vendedores_model extends My_Model {
 					$this->_id_table = '$id'
 				AND
 					presupuestos.eliminado = 0";
+					
+		$query = $this->db->query($sql);
+		
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+			return $data;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	
+	function getPedidos($id){
+			
+		$sql = "SELECT 
+					* 
+				FROM 
+					pedidos
+				INNER JOIN 
+					clientes USING (id_cliente)
+				INNER JOIN 
+					estados_pedidos USING (id_estado_pedido)
+				WHERE 
+					$this->_id_table = '$id'
+				AND
+					pedidos.eliminado = 0";
 					
 		$query = $this->db->query($sql);
 		

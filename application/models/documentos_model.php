@@ -25,6 +25,8 @@ class Documentos_model extends My_Model {
 	
 	function insertTipo($sin){
 		
+		$session_data = $this->session->userdata('logged_in');
+		
 		if($this->db->field_exists('date_add', $this->_tablename))
 		{
 			$sin['date_add'] = date('Y-m-d H:i:s'); 
@@ -33,6 +35,16 @@ class Documentos_model extends My_Model {
 		if($this->db->field_exists('date_upd', $this->_tablename))
 		{
 			$sin['date_upd'] = date('Y-m-d H:i:s'); 
+		}
+		
+		if($this->db->field_exists('user_add', $this->_tablename))
+		{
+			$sin['user_add'] = $session_data['id_usuario']; 
+		}
+		
+		if($this->db->field_exists('user_upd', $this->_tablename))
+		{
+			$sin['user_upd'] = $session_data['id_usuario']; 
 		}
 		$this->db->insert('sin_tipos_documentos', $sin);
 	}

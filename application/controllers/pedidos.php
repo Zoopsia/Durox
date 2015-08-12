@@ -32,9 +32,11 @@ class Pedidos extends My_Controller {
 		$pedido					= $this->pedidos_model->getRegistro($id);
 		$db['pedido']			= $pedido;
 		
-		foreach($pedido as $row) {
-			$db['clientes']		= $this->clientes_model->getRegistro($row->id_cliente);
-			$db['vendedores']	= $this->vendedores_model->getRegistro($row->id_vendedor);
+		if($pedido){
+			foreach($pedido as $row) {
+				$db['clientes']		= $this->clientes_model->getRegistro($row->id_cliente);
+				$db['vendedores']	= $this->vendedores_model->getRegistro($row->id_vendedor);
+			}
 		}
 		$db['iva']				= $this->clientes_model->getTodo('iva');		
 		$db['pedidos']			= $this->pedidos_model->getDetallePedido($id);
@@ -61,7 +63,7 @@ class Pedidos extends My_Controller {
 							'id_cliente',
 							'id_vendedor',
 							'id_estado_pedido',
-							'date_add');
+							'fecha');
 			
 			$crud->display_as('id_pedido','N° Pedido')
 				 ->display_as('id_cliente','Cliente')
@@ -89,11 +91,12 @@ class Pedidos extends My_Controller {
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
 			$crud->callback_delete(array($this,'delete_user'));
 			
-			
 			$crud->unset_export();
 			$crud->unset_print();
 			$crud->unset_read();
 			$crud->unset_edit();
+			$crud->unset_add();
+			$crud->unset_delete();
 			
 			$output = $crud->render();
 			

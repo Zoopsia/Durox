@@ -20,6 +20,13 @@ function tablaPresupuesto($id_presupuesto){
 	 	}
 	});
 }	
+
+function eliminar($id){
+	var r = confirm("¿Esta seguro que quiere eliminar el registro?");
+    if (r == true) {
+		window.location.assign("/Durox/index.php/Visitas/delete_user/"+$id);
+	}
+}
 </script>
 <!-- Modal -->
 <div class="modal fade" id="ModalBuscar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -72,7 +79,8 @@ function tablaPresupuesto($id_presupuesto){
 							<div class="tab-pane fade in active" id="visita">
 								<?php
 									if($visita){
-										foreach ($visitas as $row) {
+										if($visitas){
+											foreach ($visitas as $row) {
 								?>	
 												<div class="panel-body">
 						  							<div class="row">
@@ -216,7 +224,8 @@ function tablaPresupuesto($id_presupuesto){
 										</div>	
 									</div>	
 							<?php
-								} //foreach ($visitas as $row)
+									}//foreach ($visitas as $row)
+								}  //if($visitas){
 							} //if($visita){
 							?>
 							<?php
@@ -372,7 +381,9 @@ function tablaPresupuesto($id_presupuesto){
 									<div class="col-lg-2">
 										<?php
 											echo '<a role="button" class="btn btn-primary btn-sm" href="'.base_url().'index.php/Visitas/editar/'.$row->id_visita.'" style="margin-right: 3px">'.$this->lang->line('editar').'</a>';
-											echo '<a role="button" class="btn btn-danger btn-sm" href="'.base_url().'index.php/Visitas/editar/'.$row->id_visita.'">'.$this->lang->line('eliminar').'</a> ';
+											echo 	'<button type="button" id="btn-eliminar" class="btn btn-danger btn-sm" onclick="eliminar('.$row->id_visita.')">
+														'.$this->lang->line('eliminar').'
+													</button>';
 										?>
 									</div>
 								</div>

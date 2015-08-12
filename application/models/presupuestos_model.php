@@ -92,6 +92,8 @@ class Presupuestos_model extends My_Model {
 	function insertLinea($arreglo){
 		
 		//----INSERTO CAMPOS EN TABLA ----//
+		$session_data = $this->session->userdata('logged_in');
+		
 		if($this->db->field_exists('date_add', $this->_tablename))
 		{
 			$arreglo['date_add'] = date('Y-m-d H:i:s'); 
@@ -102,6 +104,15 @@ class Presupuestos_model extends My_Model {
 			$arreglo['date_upd'] = date('Y-m-d H:i:s'); 
 		}
 		
+		if($this->db->field_exists('user_add', $this->_tablename))
+		{
+			$arreglo['user_add'] = $session_data['id_usuario']; 
+		}
+		
+		if($this->db->field_exists('user_upd', $this->_tablename))
+		{
+			$arreglo['user_upd'] = $session_data['id_usuario']; 
+		}
 		
 		$this->db->insert('linea_productos_presupuestos', $arreglo);
 		 
@@ -112,6 +123,7 @@ class Presupuestos_model extends My_Model {
 	function insertCruceVisita($arreglo_cruce){
 		
 		//----INSERTO CAMPOS EN TABLA CRUCE ----//
+		$session_data = $this->session->userdata('logged_in');
 		
 		if($this->db->field_exists('date_add', $this->_tablename))
 		{
@@ -123,6 +135,16 @@ class Presupuestos_model extends My_Model {
 			$arreglo_cruce['date_upd'] = date('Y-m-d H:i:s'); 
 		}
 		
+		if($this->db->field_exists('user_add', $this->_tablename))
+		{
+			$arreglo_cruce['user_add'] = $session_data['id_usuario']; 
+		}
+		
+		if($this->db->field_exists('user_upd', $this->_tablename))
+		{
+			$arreglo_cruce['user_upd'] = $session_data['id_usuario']; 
+		}
+
 		$this->db->insert('sin_visitas_presupuestos', $arreglo_cruce);
 	}
 	
@@ -147,9 +169,16 @@ class Presupuestos_model extends My_Model {
 	
 	public function updateLinea($arreglo_campos, $id){
 		
+		$session_data = $this->session->userdata('logged_in');
+		
 		if($this->db->field_exists('date_upd', $this->_tablename))
 		{
 			$arreglo_campos['date_upd'] = date('Y-m-d H:i:s'); 
+		}
+		
+		if($this->db->field_exists('user_upd', $this->_tablename))
+		{
+			$arreglo_campos['user_upd'] = $session_data['id_usuario']; 
 		}
 		
 		$this->db->where('id_linea_producto_presupuesto', $id);

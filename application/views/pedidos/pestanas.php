@@ -1,7 +1,7 @@
 <div class="col-md-12">
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
-		  				<i class="fa fa-book"></i> <?php echo $this->lang->line('presupuesto'); ?>
+		  				<i class="fa fa-book"></i> <?php echo $this->lang->line('pedido'); ?>
                    	</div>
 		  			<div class="panel-body">
 		  				  				
@@ -31,6 +31,7 @@
 		                            	<b><?php echo $this->lang->line('cliente');?></b>
 		                            <address>
 		                                <?php
+		                                if($clientes){
 											foreach ($clientes as $key) 
 											{
 												echo '<a href="'.base_url().'index.php/clientes/pestanas/'.$key->id_cliente.'">';
@@ -48,6 +49,7 @@
 												echo $this->lang->line('id').': '.$key->id_cliente;
 												echo "<br>";
 											}
+										}
 										?>
 		                            </address>
                         </div><!-- /.col -->
@@ -86,6 +88,7 @@
                         <div class="col-xs-12 table-responsive">
                         	<?php echo $this->lang->line('detalle'); ?>
                                 <?php
+                                	if($pedido){
 	     								foreach($pedido as $row)
 	     								{
 	     									if($row->id_estado_pedido == 3)
@@ -96,18 +99,16 @@
 												echo '<table class="table table-striped" cellspacing="0" width="100%">';
 											}
 	     								}
-										
-										$total = 0;
-										if($pedidos)
+									}	
+									$total = 0;
+									if($pedidos)
+									{
+										foreach ($pedidos as $row) 
 										{
-											foreach ($pedidos as $row) 
-											{
-												if($row->estado_linea != 3)
-													$total = $row->subtotal + $total;
-											}
+											if($row->estado_linea != 3)
+												$total = $row->subtotal + $total;
 										}
-										
-										
+									}	
 	     							?>
 								        <thead class="tabla-datos-importantes">
 								            <tr>

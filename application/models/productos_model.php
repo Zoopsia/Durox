@@ -61,6 +61,45 @@ class Productos_model extends My_Model {
 		{
 			return FALSE;
 		}
-	}		
+	}
+
+/*--------------------------------------------------------------------------------	
+ --------------------------------------------------------------------------------
+ 			Función para ver si se puede eliminar el registro
+ --------------------------------------------------------------------------------
+ --------------------------------------------------------------------------------*/	
+ 
+	function permitirEliminarEstadoPresupuesto($id){
+
+		$this->db->select('*');
+		$this->db->from('linea_productos_presupuestos');
+		$this->db->join('estados_productos_presupuestos', 'estados_productos_presupuestos.id_estado_producto_presupuesto = linea_productos_presupuestos.id_estado_producto_presupuesto');
+		$this->db->where($this->_id_table, $id);
+		$this->db->where('eliminar_'.$this->_subject, 0);
+		
+		
+		if($this->db->count_all_results()>0){
+			return FALSE;
+		}
+		else
+			return TRUE;
+	}
+	
+	function permitirEliminarEstadoPedido($id){
+
+		$this->db->select('*');
+		$this->db->from('linea_productos_pedidos');
+		$this->db->join('estados_productos_pedidos', 'estados_productos_pedidos.id_estado_producto_pedido = linea_productos_pedidos.id_estado_producto_pedido');
+		$this->db->where($this->_id_table, $id);
+		$this->db->where('eliminar_'.$this->_subject, 0);
+		
+		
+		if($this->db->count_all_results()>0){
+			return FALSE;
+		}
+		else
+			return TRUE;
+	}
+			
 } 
 ?>

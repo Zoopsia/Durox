@@ -30,7 +30,7 @@ foreach($css_files as $file):
 	    					</div>
 	    					<!--BUSQUEDA AVANZADA DE CLIENTES-->
 	    					<div class="tab-pane <?php echo $array_n['busqueda']; ?>" id="tab2">
-	    						BUSQUEDA
+	    						BUSQUEDA 
 	    					</div>
 	
 	    				</div><!--contenedor de cada pestaña-->	

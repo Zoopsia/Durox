@@ -118,6 +118,25 @@ class Visitas extends My_Controller {
 			
 			$this->crud_tabla($output);
 	}
+	
+	public function delete_user($primary_key)
+	{
+		if($this->visitas_model->permitirEliminarPresupuesto($primary_key)){
+			if($this->visitas_model->permitirEliminarPedido($primary_key)){
+				$arreglo = array(
+					'eliminado'		=> 1
+				);
+				
+				$id 				= $this->visitas_model->update($arreglo,$primary_key);
+			}
+			else 
+				echo "<script>alert('El registro no pude ser eliminado...');</script>";
+		}
+		else
+			echo "<script>alert('El registro no pude ser eliminado...');</script>";
+		
+		return redirect($this->_subject.'/carga/'.$primary_key.'/0','refresh');	
+	}
 
 	function just_a_test($primary_key , $row)
 	{

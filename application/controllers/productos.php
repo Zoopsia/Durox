@@ -85,11 +85,15 @@ class Productos extends My_Controller {
 
 	function insertDatos($post_array, $primary_key)
 	{
+		$session_data = $this->session->userdata('logged_in');
+		
 		$arreglo	= array(
 			'date_add'		=> date('Y-m-d H:i:s'),
 			'visto'			=> 0,
 			'id_origen'		=> 2,
-			'id_db'			=> 0
+			'id_db'			=> 0,
+			'user_add'		=> $session_data['id_usuario'],
+			'user_upd'		=> $session_data['id_usuario']
 		);
 		
 		$id			= $this->productos_model->update($arreglo,$primary_key);
@@ -122,11 +126,20 @@ class Productos extends My_Controller {
 
 	public function delete_user($primary_key)
 	{
-		$arreglo = array(
-			'eliminado'		=> 1
-		);
+		if($this->productos_model->permitirEliminarEstadoPresupuesto($primary_key)){
+			if($this->productos_model->permitirEliminarEstadoPedido($primary_key)){
+				$arreglo = array(
+					'eliminado'		=> 1
+				);
+				
+				$id 	= $this->productos_model->update($arreglo,$primary_key);
+			}
+			else
+				echo "<script>alert('El registro no pude ser eliminado...');</script>";	
+		}
+		else
+			echo "<script>alert('El registro no pude ser eliminado...');</script>";
 		
-		$id 	= $this->productos_model->update($arreglo,$primary_key);
 		
 		return redirect($this->_subject.'/pestanas/'.$primary_key,'refresh');
 	}
@@ -146,28 +159,29 @@ class Productos extends My_Controller {
 	
 	function editarProducto($id_producto)
 	{
+		$registro	= $this->productos_model->getRegistro($id_producto);
 		$destino 	= 'img/productos/documentos/';
 		
 		if(isset($_FILES['ficha_tecnica']['tmp_name']))
 		{
-			$origen 	= $_FILES['ficha_tecnica']['tmp_name'];
-			$url		= $destino.$_FILES['ficha_tecnica']['name'];
-			$imagen		= $_FILES['ficha_tecnica']['name'];
+			$origen 		= $_FILES['ficha_tecnica']['tmp_name'];
+			$url			= $destino.$_FILES['ficha_tecnica']['name'];
+			$ficha_tecnica	= $_FILES['ficha_tecnica']['name'];
 			if(!empty($_FILES['ficha_tecnica']['tmp_name'])){
 				copy($origen, $url);	
 			}
 			else {
 				foreach ($registro as $key) {
-					$imagen = $key->imagen;
+					$ficha_tecnica = $key->ficha_tecnica;
 				}
-			}
+			}			
 			
 			$producto	= array(
 					'nombre'			=> $this->input->post('nombre'),
 					'precio'			=> $this->input->post('precio'),		
 					'codigo' 			=> $this->input->post('codigo'),
 					'descripcion'		=> $this->input->post('editor1'),
-					'ficha_tecnica'		=> $imagen
+					'ficha_tecnica'		=> $ficha_tecnica
 			);
 		}
 		else{

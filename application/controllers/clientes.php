@@ -97,11 +97,15 @@ class Clientes extends My_Controller {
 	
 	function insertDatos($post_array, $primary_key)
 	{
+		$session_data = $this->session->userdata('logged_in');
+		
 		$arreglo	= array(
 			'date_add'		=> date('Y-m-d H:i:s'),
 			'visto'			=> 0,
 			'id_origen'		=> 2,
-			'id_db'			=> 0
+			'id_db'			=> 0,
+			'user_add'		=> $session_data['id_usuario'],
+			'user_upd'		=> $session_data['id_usuario']
 		);
 		
 		$id			= $this->clientes_model->update($arreglo,$primary_key);
@@ -111,14 +115,20 @@ class Clientes extends My_Controller {
 	
 	public function delete_user($primary_key)
 	{
-		if($this->clientes_model->permitirEliminar($primary_key)){
-			$arreglo = array(
-				'eliminado'		=> 1
-			);
-			
-			$id 				= $this->clientes_model->update($arreglo,$primary_key);
-		
+		if($this->clientes_model->permitirEliminarPresupuesto($primary_key)){
+			if($this->clientes_model->permitirEliminarPedido($primary_key)){
+				$arreglo = array(
+					'eliminado'		=> 1
+				);
+				
+				$id 				= $this->clientes_model->update($arreglo,$primary_key);
+			}
+			else
+				echo "<script>alert('El registro no pude ser eliminado...');</script>";		
 		}
+		else
+			echo "<script>alert('El registro no pude ser eliminado...');</script>";
+		
 		return redirect($this->_subject.'/pestanas/'.$primary_key,'refresh');
 	}
 	
