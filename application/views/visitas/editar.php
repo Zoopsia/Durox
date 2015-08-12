@@ -12,7 +12,7 @@
 	    						<form action="<?php echo base_url()."index.php/Visitas/editarVisita/".$value->id_visita; ?>" class="form-horizontal" method="post">
 	    							<div style="padding: 0 50px">
 	    								<div class="form-group odd">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('vendedor'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('vendedor').'*: '; ?></label>
 												<div class="col-sm-8">
 													<select name="id_vendedor" class="form-control chosen-select">	
 														<?php
@@ -35,7 +35,7 @@
 									    </div>
 	    								
 	    								<div class="form-group even">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('cliente'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('cliente').'*: '; ?></label>
 												<div class="col-sm-8">
 													<select name="id_cliente" class="form-control chosen-select">	
 														<?php
@@ -58,7 +58,7 @@
 									    </div>
 									      	  
 									    <div class="form-group odd">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('epoca').' '.$this->lang->line('visita'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('epoca').' '.$this->lang->line('visita').'*: '; ?></label>
 												<div class="col-sm-8">
 													<select name="id_epoca_visita" class="form-control chosen-select">	
 														<?php
@@ -76,21 +76,21 @@
 									    </div>
 	    								
 		    							<div class="form-group even">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('fecha'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('fecha').'*: '; ?></label>
 												<div class="col-sm-8">
 													<input type="text" name="date_upd" class="form-control datepicker" value="<?php echo date('d/m/Y', strtotime( $value->date_upd));?>">	 
 												</div>
 										</div>
 										
 										<div class="form-group odd">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('comentarios'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('comentarios').': '; ?></label>
 												<div class="col-sm-8">
 													<textarea name="comentarios" style="width: 100%; height: 100px;" ><?php echo $value->descripcion;?></textarea>	 
 												</div>
 										</div>
 										
 										<div class="form-group even" style="padding-bottom: 1%">
-											<label class="col-sm-2 control-label"><?php echo $this->lang->line('valoracion'); ?></label>
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('valoracion').': '; ?></label>
 												<div class="col-sm-8" style="margin-top: 1%">
 													<?php
 													for ($i=1; $i <= 5; $i++) {
@@ -105,6 +105,24 @@
 												</div>
 										</div>
 										
+										<div class="form-group odd">
+											<label class="col-sm-2 control-label"><?php echo $this->lang->line('visto').': '; ?></label>
+												<div class="col-sm-8">
+													<select name="visto" class="form-control chosen-select">	
+														<?php
+															if($value->visto == 1){
+																echo '<option value="1" selected>SI</option>';
+																echo '<option value="0">NO</option>';
+															}
+															else{
+																echo '<option value="1">SI</option>';
+																echo '<option value="0" selected>NO</option>';
+															}
+														?>
+													</select>												      	 
+									     		</div>
+									    </div>
+									    
 										<hr />
 										
 										<div class="form-group even">

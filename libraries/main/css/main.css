@@ -499,3 +499,7 @@ input.web:hover{
 .text-center{
 	text-align: center;
 }
+
+a[href].sinhref:after {
+    content: none !important;
+}

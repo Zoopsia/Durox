@@ -240,7 +240,8 @@ class Visitas extends My_Controller {
 			'id_epoca_visita'	=> $this->input->post('id_epoca_visita'),
 			'date_upd'			=> $this->input->post('date_upd'),
 			'valoracion'		=> $this->input->post('star1'),
-			'descripcion'		=> $this->input->post('comentarios')		
+			'descripcion'		=> $this->input->post('comentarios'),
+			'visto'				=> $this->input->post('visto')	
 		);
 
 		$id = $this->visitas_model->update($visita,$id_visita);

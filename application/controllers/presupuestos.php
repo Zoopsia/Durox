@@ -628,19 +628,27 @@ class Presupuestos extends My_Controller {
 		echo $mensaje;
 	}
 	
-	function editarVisto(){
-		$mensaje 	= $this->presupuestos_model->mensajesNuevos();
-	
-		if($mensaje){
-			foreach($mensaje as $row) {
-				$id = $row->id_presupuesto; 	
-				if($row->id_presupuesto = $this->input->post('id_presupuesto'.$id)){
-					$arreglo = array(
-						'visto'		=> $this->input->post('estado'.$id)
-					);
-					$id = $this->presupuestos_model->update($arreglo, $id);
-				}
-			}	
+	function editarVisto($id=null){
+		if($id){
+			$arreglo = array(
+				'visto'		=> $this->input->post('visto')
+			);
+			$id = $this->presupuestos_model->update($arreglo, $id);
+		}
+		else{
+			$mensaje 	= $this->presupuestos_model->mensajesNuevos();
+		
+			if($mensaje){
+				foreach($mensaje as $row) {
+					$id = $row->id_presupuesto; 	
+					if($row->id_presupuesto = $this->input->post('id_presupuesto'.$id)){
+						$arreglo = array(
+							'visto'		=> $this->input->post('estado'.$id)
+						);
+						$id = $this->presupuestos_model->update($arreglo, $id);
+					}
+				}	
+			}
 		}
 		
 		redirect($this->input->post('url'),'refresh');

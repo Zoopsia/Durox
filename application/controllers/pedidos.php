@@ -173,19 +173,27 @@ class Pedidos extends My_Controller {
 		redirect('Pedidos/pestanas/'.$id,'refresh');	
 	}	
 	
-	function editarVisto(){
-		$mensaje 	= $this->pedidos_model->mensajesNuevos();
-	
-		if($mensaje){
-			foreach($mensaje as $row) {
-				$id = $row->id_pedido; 	
-				if($row->id_pedido = $this->input->post('id_pedido'.$id)){
-					$arreglo = array(
-						'visto'		=> $this->input->post('estado'.$id)
-					);
-					$id = $this->pedidos_model->update($arreglo, $id);
-				}
-			}	
+	function editarVisto($id=null){
+		if($id){
+			$arreglo = array(
+				'visto'		=> $this->input->post('visto')
+			);
+			$id = $this->pedidos_model->update($arreglo, $id);
+		}
+		else{	
+			$mensaje 	= $this->pedidos_model->mensajesNuevos();
+		
+			if($mensaje){
+				foreach($mensaje as $row) {
+					$id = $row->id_pedido; 	
+					if($row->id_pedido = $this->input->post('id_pedido'.$id)){
+						$arreglo = array(
+							'visto'		=> $this->input->post('estado'.$id)
+						);
+						$id = $this->pedidos_model->update($arreglo, $id);
+					}
+				}	
+			}
 		}
 		
 		redirect($this->input->post('url'),'refresh');
