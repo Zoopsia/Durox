@@ -1,8 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Tipos extends My_Controller {
+class Epocas extends My_Controller {
 	
-	protected $_subject		= 'tipos';
+	protected $_subject		= 'epocas';
 	
 	
 	
@@ -19,7 +19,7 @@ class Tipos extends My_Controller {
 		
 	}
 
-	public function tipos_abm(){
+	public function epocas_abm(){
 			
 			$crud = new grocery_CRUD();
 
@@ -27,19 +27,19 @@ class Tipos extends My_Controller {
 			
 			$crud->set_language("spanish");
 			
-			$crud->where('tipos.eliminado', 0);
+			$crud->where('epocas_visitas.eliminado', 0);
 			
-			$crud->set_table('tipos');
+			$crud->set_table('epocas_visitas');
 			
-			$crud->columns(	'tipo');
+			$crud->columns('epoca');
 			
-			$crud->display_as('tipos','Tipos');
+			$crud->display_as('epoca','Epoca');
 			
-			$crud->required_fields('tipo');
+			$crud->required_fields('epoca');
 			
-			$crud->set_subject('Tipos');
+			$crud->set_subject('Época');
 			
-			$crud->fields('tipo');
+			$crud->fields('epoca');
 
 			$crud->callback_after_insert(array($this, 'insertDatos'));
 			$crud->callback_after_update(array($this, 'updateDatos'));
@@ -64,7 +64,7 @@ class Tipos extends My_Controller {
 			'user_upd'		=> $session_data['id_usuario']
 		);
 		
-		$id			= $this->tipos_model->update($arreglo,$primary_key);
+		$id			= $this->epocas_model->update($arreglo,$primary_key);
 		
 		return true;
 	}
@@ -77,7 +77,7 @@ class Tipos extends My_Controller {
 			'user_upd'		=> $session_data['id_usuario']
 		);
 		
-		$id			= $this->tipos_model->update($arreglo,$primary_key);
+		$id			= $this->epocas_model->update($arreglo,$primary_key);
 		
 		return true;
 	}

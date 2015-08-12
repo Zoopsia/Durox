@@ -275,27 +275,29 @@ class Grupos extends My_Controller {
 							</tfoot>
 							<tbody>';
 			
-			foreach ($clientes as $row) {
-				$bandera = 0;
-				if($grupos_clientes){
-					foreach ($grupos_clientes as $key) {
-						if($row->id_cliente == $key->id_cliente)
-							$bandera = 1;
+			if($clientes){
+				foreach ($clientes as $row) {
+					$bandera = 0;
+					if($grupos_clientes){
+						foreach ($grupos_clientes as $key) {
+							if($row->id_cliente == $key->id_cliente)
+								$bandera = 1;
+						}
 					}
+					if($bandera == 0){
+							$table .= "<tr><td>";
+							$table .= $row->nombre;
+							$table .= "</td><td>";
+							$table .= $row->apellido;
+							$table .= "</td><td>";
+							$table .= cuit($row->cuit);
+							$table .= '</td><td style="text-align: center">';
+							$table .= '<button type="button" class="btn-sm btn-success btn-plus" onclick="cargarCliente('.$row->id_cliente.')">';
+							$table .= '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>';
+							$table .= '</button>';
+							$table .= "</td></tr>";
+					}	
 				}
-				if($bandera == 0){
-						$table .= "<tr><td>";
-						$table .= $row->nombre;
-						$table .= "</td><td>";
-						$table .= $row->apellido;
-						$table .= "</td><td>";
-						$table .= cuit($row->cuit);
-						$table .= '</td><td style="text-align: center">';
-						$table .= '<button type="button" class="btn-sm btn-success btn-plus" onclick="cargarCliente('.$row->id_cliente.')">';
-						$table .= '<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>';
-						$table .= '</button>';
-						$table .= "</td></tr>";
-				}	
 			}
 			
 			$table .=	'</tbody>

@@ -279,7 +279,7 @@ function volverHide(){
 			     						<div class="tab-pane fade" id="grupo1">
 			     							<div class="col-md-9" >
 				     							<div class="form-group odd">
-													<label class="col-sm-2 control-label"><?php echo $this->lang->line('grupo'); ?></label>
+													<label class="col-sm-2 control-label"><?php echo $this->lang->line('grupo').'*: '; ?></label>
 														<div class="col-sm-8">
 															<div class="input-group">
 																<div class="input-group-addon"><span class="fa fa-users" aria-hidden="true"></span></div>
@@ -293,21 +293,21 @@ function volverHide(){
 										<div class="tab-pane fade" id="grupo2">
 		     								<div class="col-md-9">
 		     									<div class="form-group odd">
-													<label class="col-sm-2 control-label"><?php echo $this->lang->line('regla'); ?></label>
+													<label class="col-sm-2 control-label"><?php echo $this->lang->line('regla').'*: '; ?></label>
 														<div class="col-sm-8">
 															<input type="text" id="regla" name="regla" class="numeric form-control" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('nombre'); ?>" required> 	    	
 														</div> 
 												</div>
 												
 												<div class="form-group even">
-													<label class="col-sm-2 control-label"><?php echo $this->lang->line('valor').' %'; ?></label>
+													<label class="col-sm-2 control-label"><?php echo $this->lang->line('valor').'*: %'; ?></label>
 														<div class="col-sm-8">
 															<input type="text" id="valor" name="valor" class="numeric form-control" pattern="[0-9]*" placeholder="%" required> 	    	
 														</div> 
 												</div>
 												
 												<div class="form-group odd">
-													<label class="col-sm-2 control-label"><?php echo $this->lang->line('tipo'); ?></label>
+													<label class="col-sm-2 control-label"><?php echo $this->lang->line('tipo').'*: '; ?></label>
 														<div class="col-sm-8">
 															<select name="tipo" id="tipo" class="form-control">
 																<option value="0" selected><?php echo $this->lang->line('aumento'); ?></option>
