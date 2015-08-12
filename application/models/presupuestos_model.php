@@ -218,6 +218,7 @@ class Presupuestos_model extends My_Model {
 		
 		$sql = 'SELECT 
 					presupuestos.*,
+					origen.origen,
 					clientes.nombre as Cnombre,
 					clientes.apellido as Capellido,
 					clientes.id_cliente as id_cliente,
@@ -225,7 +226,11 @@ class Presupuestos_model extends My_Model {
 					vendedores.apellido	as Vapellido,
 					vendedores.id_vendedor as id_vendedor
 				FROM 
-					presupuestos 
+					presupuestos
+				INNER JOIN 
+					origen 
+				USING 
+					(id_origen) 
 				INNER JOIN
 					clientes
 				USING

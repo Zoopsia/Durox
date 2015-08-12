@@ -21,6 +21,7 @@
 		      			<th><?php echo $this->lang->line('cliente')?></th>
 		      			<th><?php echo $this->lang->line('vendedor')?></th>
 		      			<th><?php echo $this->lang->line('date')?></th>
+		      			<th><?php echo $this->lang->line('origen')?></th>
 		      			<th><?php echo $this->lang->line('estado')?></th>
 	      			</tr>
 	      		</thead>
@@ -32,6 +33,7 @@
 				  		<td><a href="http://localhost/Durox/index.php/Vendedores/pestanas/<?php echo $row->id_vendedor ?>" class="displayblock"><?php echo $row->Vapellido.', '.$row->Vnombre ?></a></td>
 				  		<?php $date	= date_create($row->fecha); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
+						<td><?php echo $row->origen?></td>
 				  		<td>
 				  			<select name="estado<?php echo $row->id_visita ?>">
 				  				<option value="1" selected><?php echo $this->lang->line('visto')?></option>
@@ -75,6 +77,7 @@
 		      			<th><?php echo $this->lang->line('nombre')?></th>
 		      			<th><?php echo $this->lang->line('apellido')?></th>
 		      			<th><?php echo $this->lang->line('date')?></th>
+		      			<th><?php echo $this->lang->line('origen')?></th>
 		      			<th><?php echo $this->lang->line('estado')?></th>
 	      			</tr>
 	      		</thead>
@@ -87,6 +90,7 @@
 				  		<td><a href="http://localhost/Durox/index.php/Clientes/pestanas/<?php echo $row->id_cliente ?>" class="displayblock"><?php echo $row->apellido ?></a></td>
 				  		<?php $date	= date_create($row->date_add); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
+				  		<td><?php echo $row->origen?></td>
 				  		<td>
 				  			<select name="estado<?php echo $row->id_cliente ?>">
 				  				<option value="1" selected><?php echo $this->lang->line('visto')?></option>
@@ -131,6 +135,7 @@
 		      			<th><?php echo $this->lang->line('nombre')?></th>
 		      			<th><?php echo $this->lang->line('apellido')?></th>
 		      			<th><?php echo $this->lang->line('date')?></th>
+		      			<th><?php echo $this->lang->line('origen')?></th>
 		      			<th><?php echo $this->lang->line('estado')?></th>
 	      			</tr>
 	      		</thead>
@@ -143,6 +148,7 @@
 				  		<td><a href="http://localhost/Durox/index.php/Vendedores/pestanas/<?php echo $row->id_vendedor ?>" class="displayblock"><?php echo $row->apellido ?></a></td>
 				  		<?php $date	= date_create($row->date_add); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
+				  		<td><?php echo $row->origen?></td>
 				  		<td>
 				  			<select name="estado<?php echo $row->id_vendedor ?>">
 				  				<option value="1" selected><?php echo $this->lang->line('visto')?></option>
@@ -187,6 +193,7 @@
 		      			<th><?php echo $this->lang->line('nombre')?></th>
 		      			<th><?php echo $this->lang->line('precio')?></th>
 		      			<th><?php echo $this->lang->line('date')?></th>
+		      			<th><?php echo $this->lang->line('origen')?></th>
 		      			<th><?php echo $this->lang->line('estado')?></th>
 	      			</tr>
 	      		</thead>
@@ -199,6 +206,7 @@
 				  		<td><a href="http://localhost/Durox/index.php/Productos/pestanas/<?php echo $row->id_producto ?>" class="displayblock"><?php echo $row->precio ?></a></td>
 				  		<?php $date	= date_create($row->date_add); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
+				  		<td><?php echo $row->origen?></td>
 				  		<td>
 				  			<select name="estado<?php echo $row->id_producto ?>">
 				  				<option value="1" selected><?php echo $this->lang->line('visto')?></option>
@@ -245,6 +253,7 @@
 		      			<th><?php echo $this->lang->line('cliente')?></th>
 		      			<th><?php echo $this->lang->line('vendedor')?></th>
 		      			<th><?php echo $this->lang->line('date')?></th>
+		      			<th><?php echo $this->lang->line('origen')?></th>
 		      			<th><?php echo $this->lang->line('estado')?></th>
 	      			</tr>
 	      		</thead>
@@ -258,6 +267,7 @@
 				  		<td><a href="http://localhost/Durox/index.php/Vendedores/pestanas/<?php echo $row->id_vendedor ?>" class="displayblock"><?php echo $row->Vapellido.', '.$row->Vnombre ?></a></td>
 				  		<?php $date	= date_create($row->fecha); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
+				  		<td><?php echo $row->origen?></td>
 				  		<td>
 				  			<select name="estado<?php echo $row->id_pedido ?>">
 				  				<option value="1" selected><?php echo $this->lang->line('visto')?></option>
@@ -303,6 +313,7 @@
 		      			<th><?php echo $this->lang->line('cliente')?></th>
 		      			<th><?php echo $this->lang->line('vendedor')?></th>
 		      			<th><?php echo $this->lang->line('date')?></th>
+		      			<th><?php echo $this->lang->line('origen')?></th>
 		      			<th><?php echo $this->lang->line('estado')?></th>
 	      			</tr>
 	      		</thead>
@@ -315,6 +326,7 @@
 				  		<td><a href="http://localhost/Durox/index.php/Vendedores/pestanas/<?php echo $row->id_vendedor ?>" class="displayblock"><?php echo $row->Vapellido.', '.$row->Vnombre ?></a></td>
 				  		<?php $date	= date_create($row->fecha); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
+				  		<td><?php echo $row->origen?></td>
 				  		<td>
 				  			<select name="estado<?php echo $row->id_presupuesto ?>">
 				  				<option value="1" selected><?php echo $this->lang->line('visto')?></option>

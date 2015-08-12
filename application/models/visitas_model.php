@@ -109,6 +109,7 @@ class Visitas_model extends My_Model {
 		
 		$sql = 'SELECT 
 					visitas.*,
+					origen.origen,
 					clientes.nombre as Cnombre,
 					clientes.apellido as Capellido,
 					clientes.id_cliente as id_cliente,
@@ -117,6 +118,10 @@ class Visitas_model extends My_Model {
 					vendedores.id_vendedor as id_vendedor
 				FROM 
 					visitas 
+				INNER JOIN 
+					origen 
+				USING 
+					(id_origen)
 				INNER JOIN
 					clientes
 				USING

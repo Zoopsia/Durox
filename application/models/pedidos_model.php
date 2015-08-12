@@ -123,6 +123,7 @@ class Pedidos_model extends My_Model {
 		
 		$sql = 'SELECT 
 					pedidos.*,
+					origen.origen,
 					clientes.nombre as Cnombre,
 					clientes.apellido as Capellido,
 					clientes.id_cliente as id_cliente,
@@ -131,6 +132,10 @@ class Pedidos_model extends My_Model {
 					vendedores.id_vendedor as id_vendedor
 				FROM 
 					pedidos 
+				INNER JOIN 
+					origen 
+				USING 
+					(id_origen)
 				INNER JOIN
 					clientes
 				USING
