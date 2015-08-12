@@ -8,6 +8,7 @@ if($clientes){
 ?>
 
 function editable(){
+	
 	$(".cambio").removeAttr("disabled");
 	$(".cambio").removeClass("editable");
 	$('#btn-guardar').show();
@@ -19,6 +20,17 @@ function editable(){
 	$("input#web").removeAttr("readonly");
 	$('#cuit').val(cuit);
 	$('#span').show();
+	$('#grupo').html('<select name="id_grupo_cliente" id="id_grupo_cliente" class="form-control cambio"></select>');
+	<?php
+	if($grupos){
+		foreach ($grupos as $key) {
+			if($key->id_grupo_cliente == $row->id_grupo_cliente)
+				echo "$('#id_grupo_cliente').append(\"<option value='".$key->id_grupo_cliente."' selected='selected'>".$key->grupo_nombre."</option>\");";
+			else
+				echo "$('#id_grupo_cliente').append(\"<option value='".$key->id_grupo_cliente."'>".$key->grupo_nombre."</option>\");";
+		}
+	}
+	?>
 }
 
 function cancelar(){
@@ -32,7 +44,6 @@ function cancelar(){
 		$('#btn-editar').show();
 		$("input#web").addClass("web");
 		$('#id_iva').html('');
-		$('#id_grupo_cliente').html('');
 		<?php
 			if($clientes){
 				foreach($clientes as $row){
@@ -61,9 +72,7 @@ function cancelar(){
 					if($grupos){
 						foreach ($grupos as $key) {
 							if($key->id_grupo_cliente == $row->id_grupo_cliente)
-								echo "$('#id_grupo_cliente').append(\"<option value='".$key->id_grupo_cliente."' selected='selected'>".$key->grupo_nombre."</option>\");";
-							else
-								echo "$('#id_grupo_cliente').append(\"<option value='".$key->id_grupo_cliente."'>".$key->grupo_nombre."</option>\");";
+								echo "$('#grupo').html(\"<input type='text' class='form-control editable cambio' value='".$row->grupo_nombre."' autocomplete='off' disabled>\");";
 						}
 					}												
 				}	
@@ -153,7 +162,7 @@ $bandera = 0;
 	    <div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default">
-		  			<div class="panel-heading">
+		  			<div class="panel-heading no-print">
 		  				<ul class="nav nav-tabs nav-justified">
 							<li class="active"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('cliente'); ?></a></li>
 							<?php
@@ -290,10 +299,18 @@ $bandera = 0;
 															echo '</select>';	 
 											                echo  "</td>";
 															echo  "</tr><tr>";	
-															
-															
-											                echo  '<td class="padtop">'.$this->lang->line('grupos_clientes').':</td>';
+															echo  '<td class="padtop">'.$this->lang->line('grupos_clientes').':</td>';
 															echo  '<td class="tabla-datos-importantes">';
+											                echo  '<div id="grupo">';
+															if($grupos){
+																foreach ($grupos as $key) {
+																	if($key->id_grupo_cliente == $row->id_grupo_cliente)
+																		echo  '<input type="text" class="form-control editable cambio" value="'.$row->grupo_nombre.'" autocomplete="off" disabled>';
+																	
+																}	
+															}
+															echo  '</div>';
+															/*
 											                echo '<select name="id_grupo_cliente" id="id_grupo_cliente" class="form-control editable cambio" disabled>';
 																if($grupos){
 																	foreach ($grupos as $key) {
@@ -303,8 +320,9 @@ $bandera = 0;
 																			echo '<option value="'.$key->id_grupo_cliente.'">'.$key->grupo_nombre.'</option>';
 																	}
 																}			
-															echo '</select>';	 
-											                echo  "</td>";
+															echo '</select>';
+															*/	 
+											               	echo  "</td>";
 											                //<a href="'.base_url().'index.php/Grupos/getReglasGrupos/'.$row->id_grupo_cliente.'">';
 											                //echo  $row->grupo_nombre;
 											                echo  "</tr>";
@@ -351,19 +369,27 @@ $bandera = 0;
 					            <?php
 					            if($bandera != 1){
 					            ?>
-					            <div class="row">
-					            	<div id="div-mover" class="col-md-3 col-lg-3 col-lg-offset-10">
-					            		<button type="button" id="btn-editar" class="btn btn-primary btn-sm" onclick="editable()">
-											<?php echo $this->lang->line('editar');?>
+					            <div class="row no-print">
+			                        <div class="col-xs-12">
+			                        	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#informacion">
+											<i class="fa fa-info-circle"></i>
 										</button>
-										<button type="button" id="btn-eliminar" class="btn btn-danger btn-sm" onclick="eliminar(<?php echo $id?>)">
+			                            
+			                            <button type="button" class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+                            		
+					            		
+										<button type="button" id="btn-eliminar" class="btn btn-danger btn-sm pull-right" onclick="eliminar(<?php echo $id?>)" style="margin-left: 5px">
 											<?php echo $this->lang->line('eliminar');?>
 										</button>
-					            		<button type="submit" id="btn-guardar" class="btn btn-primary btn-sm" style="display: none;">
-											<?php echo $this->lang->line('guardar');?>
+										<button type="button" id="btn-editar" class="btn btn-primary btn-sm pull-right" onclick="editable()">
+											<?php echo $this->lang->line('editar');?>
 										</button>
-										<button type="button" id="btn-cancelar" class="btn btn-danger btn-sm" onclick="cancelar()" style="display: none;">
+										
+										<button type="button" id="btn-cancelar" class="btn btn-danger btn-sm pull-right" onclick="cancelar()" style="display: none; margin-left: 5px">
 											<?php echo $this->lang->line('cancelar');?>
+										</button>
+										<button type="submit" id="btn-guardar" class="btn btn-primary btn-sm pull-right" style="display: none;">
+											<?php echo $this->lang->line('guardar');?>
 										</button>
 					            	</div>
 					            </div>
@@ -879,3 +905,81 @@ $bandera = 0;
 	
 </nav>
 -->
+
+		<!-- Modal -->
+<?php if($clientes){ foreach($clientes as $row){ ?>
+<div class="modal fade" id="informacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><?php echo $this->lang->line('informacion');?></h4>
+      </div>
+      <form action="<?php echo base_url()."index.php/Clientes/editarVisto/".$row->id_cliente; ?>" class="form-horizontal" method="post">
+      <div class="modal-body">
+      	<div class="row">
+      		<table class="table table-striped">
+      			<tr>
+      				<td>
+		      		<div class="col-lg-8">
+		      			<?php echo $this->lang->line('fecha'); ?> 
+		      			<?php echo $this->lang->line('creacion').' :'; ?> 
+					</div>
+					</td>
+					<td>
+					<div class="col-lg-8">
+						<?php echo date('d-m-Y H:i:s', strtotime($row->date_add)); ?>
+					</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<div class="col-lg-8">
+		      			<?php echo $this->lang->line('fecha'); ?> 
+		      			<?php echo $this->lang->line('modificacion').' :'; ?> 
+					</div>
+					</td>
+					<td>
+					<div class="col-lg-8">
+						<?php echo date('d-m-Y H:i:s', strtotime($row->date_upd)); ?>
+					</div>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+					<div class="col-lg-8">
+		      			<?php echo $this->lang->line('cliente'); ?> 
+		      			<?php echo $this->lang->line('visto').' :'; ?> 
+					</div>
+					</td>
+					<td>
+					<div class="col-lg-8">
+						<select name="visto" class="form-control chosen-select">	
+							<?php
+							if($row->visto == 1){
+								echo '<option value="1" selected>SI</option>';
+								echo '<option value="0">NO</option>';
+							}
+							else{
+								echo '<option value="1">SI</option>';
+								echo '<option value="0" selected>NO</option>';
+							}
+							?>
+						</select>	
+					</div>
+					</td>
+				</tr>
+			</table>
+			<input type="hidden" name="url" value="<?php echo current_url(); ?>">
+		</div>	
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->lang->line('cerrar');?></button>
+      	<button type="submit" class="btn btn-primary">Guardar cambios</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<?php } } ?>

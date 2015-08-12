@@ -191,21 +191,28 @@ class Clientes extends My_Controller {
 		
 	}
 	
-	function editarVisto(){
-		$mensaje 	= $this->clientes_model->mensajesNuevos();
-	
-		if($mensaje){
-			foreach($mensaje as $row) {
-				$id = $row->id_cliente; 	
-				if($row->id_cliente = $this->input->post('id_cliente'.$id)){
-					$arreglo = array(
-						'visto'		=> $this->input->post('estado'.$id)
-					);
-					$id = $this->clientes_model->update($arreglo, $id);
-				}
-			}	
+	function editarVisto($id=null){
+		if($id){
+			$arreglo = array(
+				'visto'		=> $this->input->post('visto')
+			);
+			$id = $this->clientes_model->update($arreglo, $id);
 		}
+		else{
+			$mensaje 	= $this->clientes_model->mensajesNuevos();
 		
+			if($mensaje){
+				foreach($mensaje as $row) {
+					$id = $row->id_cliente; 	
+					if($row->id_cliente = $this->input->post('id_cliente'.$id)){
+						$arreglo = array(
+							'visto'		=> $this->input->post('estado'.$id)
+						);
+						$id = $this->clientes_model->update($arreglo, $id);
+					}
+				}	
+			}
+		}
 		redirect($this->input->post('url'),'refresh');
 	}
 }
