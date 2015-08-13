@@ -68,6 +68,9 @@ function cancelar(){
 }
 
 function cambiarImagen(){
+	if(!document.getElementById("em-text").innerHTML){
+		$("#textarea").addClass("no-print");
+	}
 	$('.img-cambiar').attr('style','height: 270px !important');
 	setTimeout(function(){ $('.img-cambiar').attr('style','height: 300px !important'); }, 100);
 	
@@ -116,7 +119,7 @@ $bandera = 0;
 					<?php
 						}
 						else{
-							echo '<a href="'.base_url().'index.php/productos/producto_imagen/'.$id.'">'.$this->lang->line('cargar').' '.$this->lang->line('imagen').' <i class="fa fa-upload"></i></a>';
+							echo '<a class="no-print" href="'.base_url().'index.php/productos/producto_imagen/'.$id.'">'.$this->lang->line('cargar').' '.$this->lang->line('imagen').' <i class="fa fa-upload"></i></a>';
 						}
 					?>
 				</div>
@@ -213,7 +216,7 @@ $bandera = 0;
 										if($row->eliminado != 1)
 										{
 											echo '<div id="textarea">';
-											echo "<blockquote><em>";
+											echo "<blockquote><em id='em-text'>";
 											echo $row->descripcion;
 											echo "</em></blockquote>";
 											echo "</div>";

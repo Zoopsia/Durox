@@ -55,10 +55,12 @@ class Vendedores extends My_Controller {
 			
 			$crud->set_table('vendedores');
 			
-			$crud->columns(	'nombre',
+			$crud->columns(	'id_vendedor',
+							'nombre',
 							'apellido');
 			
-			$crud->display_as('nombre','Nombre')
+			$crud->display_as('id_vendedor','ID')
+				 ->display_as('nombre','Nombre')
 				 ->display_as('apellido','Apellido');
 				 
 			$crud->required_fields('nombre',

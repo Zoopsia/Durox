@@ -51,10 +51,16 @@ class Clientes extends My_Controller {
 			
 			$crud->set_table('clientes');
 			
-			$crud->columns(	'nombre',
-							'apellido');
+			$crud->columns(	'id_cliente',
+							'nombre',
+							'apellido',
+							'cuit',
+							'razon_social');
+							
+			$crud->callback_column('cuit',array($this,'_callback_cuit'));
 			
-			$crud->display_as('nombre','Nombre')
+			$crud->display_as('id_cliente','ID')
+				 ->display_as('nombre','Nombre')
 				 ->display_as('apellido','Apellido')
 				 ->display_as('razon_social','Razon Social')
 				 ->display_as('id_grupo_cliente','Grupo')
@@ -93,6 +99,10 @@ class Clientes extends My_Controller {
 			$output = $crud->render();
 			
 			$this->crud_tabla($output);
+	}
+
+	public function _callback_cuit($value, $row){
+		return cuit($value);
 	}
 	
 	function insertDatos($post_array, $primary_key)
