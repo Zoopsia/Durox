@@ -49,6 +49,7 @@ function editable(){
 	$('#btn-cancelar').show();
 	$('#btn-editar').hide();
 	$('#btn-eliminar').hide();
+	$('#btn-print').hide();
 	$('#span').show();
 }
 
@@ -65,6 +66,7 @@ function cancelar(){
 		$('#btn-cancelar').hide();
 		$('#btn-eliminar').show();
 		$('#btn-editar').show();
+		$('#btn-print').show();
 		<?php
 			if($vendedores){
 				foreach($vendedores as $row){
@@ -186,7 +188,7 @@ $bandera = 0;
 	    <div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default">
-		  			<div class="panel-heading">
+		  			<div class="panel-heading no-print">
 		  				<ul class="nav nav-tabs nav-justified">
 							<li class="<?php echo $array_n['tab1']; ?>"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('vendedor'); ?></a></li>
 							<?php
@@ -247,15 +249,15 @@ $bandera = 0;
 															echo  "<tr>";								                     
 											                echo  '<td class="padtop">'.$this->lang->line('apellido').':</td>';
 											                echo  '<td class="tabla-datos-importantes"><input class="form-control editable cambio" id="apellido" name="apellido" type="text" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->apellido.'" maxlength="128" disabled placeholder="'.$this->lang->line('apellido').'" autocomplete="off" required></td>';
-											                echo  "</tr><tr>";	
+											                echo  "</tr><tr class='no-print'>";	
 											                echo  '<td class="padtop">'.$this->lang->line('id').':</td>';
 											                echo  '<td class="tabla-datos-importantes"><input type="text" name="id" class="form-control editable"  value="'.$row->id_vendedor.'" autocomplete="off" disabled style="width: 300px !important;"></td>';
 											                echo  "</tr>";
-															echo  "<tr>";								                     
+															echo  "<tr class='no-print'>";								                     
 											                echo  '<td class="padtop">'.$this->lang->line('contraseña').':</td>';
 											                echo  '<td class="tabla-datos-importantes"><input type="text" name="contraseña" id="contraseña" class="form-control editable cambio" pattern="^[A-Za-z0-9 ]+$" value="'.$row->contraseña.'" placeholder="'.$this->lang->line('contraseña').'" autocomplete="off" disabled required></td>';
 											                echo  "</tr>";	
-											                echo  "<tr>";								                     
+											                echo  "<tr class='no-print'>";								                     
 											                echo  '<td class="padtop transparente" id="td_confirmar"></td>';
 											                echo  '<td class="tabla-datos-importantes transparente"><input type="text" name="confirm_contraseña" id="confirm_contraseña" class="form-control editable cambio displaynone" pattern="^[A-Za-z0-9 ]+$" value="" placeholder="'.$this->lang->line('confirmar').' '.$this->lang->line('contraseña').'" autocomplete="off" disabled></td>';
 											                echo  "</tr>";	
@@ -283,19 +285,27 @@ $bandera = 0;
 					            <?php
 					            if($bandera != 1){
 					            ?>
-					            <div class="row">
-					            	<div id="div-mover" class="col-md-3 col-lg-3 col-lg-offset-10">
-					            		<button type="button" id="btn-editar" class="btn btn-primary btn-sm" onclick="editable()">
-											<?php echo $this->lang->line('editar');?>
+					            <div class="row no-print">
+					            	<div class="col-xs-12">
+					            		<button type="button" class="btn btn-default" data-toggle="modal" data-target="#informacion">
+											<i class="fa fa-info-circle"></i>
 										</button>
-										<button type="button" id="btn-eliminar" class="btn btn-danger btn-sm" onclick="eliminar(<?php echo $id?>)">
+			                            
+			                            <button type="button" class="btn btn-default" id="btn-print" onclick="window.print()"><i class="fa fa-print"></i> Print</button>
+                            		
+					            		
+										<button type="button" id="btn-eliminar" class="btn btn-danger btn-sm pull-right" onclick="eliminar(<?php echo $id?>)" style="margin-left: 5px">
 											<?php echo $this->lang->line('eliminar');?>
 										</button>
-					            		<button type="submit" id="btn-guardar" class="btn btn-primary btn-sm" style="display: none;">
-											<?php echo $this->lang->line('guardar');?>
+										<button type="button" id="btn-editar" class="btn btn-primary btn-sm pull-right" onclick="editable()">
+											<?php echo $this->lang->line('editar');?>
 										</button>
-										<button type="button" id="btn-cancelar" class="btn btn-danger btn-sm" onclick="cancelar()" style="display: none;">
+					            		
+										<button type="button" id="btn-cancelar" class="btn btn-danger btn-sm pull-right" onclick="cancelar()" style="display: none; margin-left: 5px">
 											<?php echo $this->lang->line('cancelar');?>
+										</button>
+										<button type="submit" id="btn-guardar" class="btn btn-primary btn-sm pull-right" style="display: none;">
+											<?php echo $this->lang->line('guardar');?>
 										</button>
 					            	</div>
 					            </div>
@@ -964,3 +974,80 @@ $bandera = 0;
 </nav>
 
 -->
+		<!-- Modal -->
+<?php if($vendedores){ foreach($vendedores as $row){ ?>
+<div class="modal fade" id="informacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><?php echo $this->lang->line('informacion');?></h4>
+      </div>
+      <form action="<?php echo base_url()."index.php/Vendedores/editarVisto/".$row->id_vendedor; ?>" class="form-horizontal" method="post">
+      <div class="modal-body">
+      	<div class="row">
+      		<table class="table table-striped">
+      			<tr>
+      				<td>
+		      		<div class="col-lg-8">
+		      			<?php echo $this->lang->line('fecha'); ?> 
+		      			<?php echo $this->lang->line('creacion').' :'; ?> 
+					</div>
+					</td>
+					<td>
+					<div class="col-lg-8">
+						<?php echo date('d-m-Y H:i:s', strtotime($row->date_add)); ?>
+					</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<div class="col-lg-8">
+		      			<?php echo $this->lang->line('fecha'); ?> 
+		      			<?php echo $this->lang->line('modificacion').' :'; ?> 
+					</div>
+					</td>
+					<td>
+					<div class="col-lg-8">
+						<?php echo date('d-m-Y H:i:s', strtotime($row->date_upd)); ?>
+					</div>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+					<div class="col-lg-8">
+		      			<?php echo $this->lang->line('vendedor'); ?> 
+		      			<?php echo $this->lang->line('visto').' :'; ?> 
+					</div>
+					</td>
+					<td>
+					<div class="col-lg-8">
+						<select name="visto" class="form-control chosen-select">	
+							<?php
+							if($row->visto == 1){
+								echo '<option value="1" selected>SI</option>';
+								echo '<option value="0">NO</option>';
+							}
+							else{
+								echo '<option value="1">SI</option>';
+								echo '<option value="0" selected>NO</option>';
+							}
+							?>
+						</select>	
+					</div>
+					</td>
+				</tr>
+			</table>
+			<input type="hidden" name="url" value="<?php echo current_url(); ?>">
+		</div>	
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->lang->line('cerrar');?></button>
+      	<button type="submit" class="btn btn-primary">Guardar cambios</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<?php } } ?>

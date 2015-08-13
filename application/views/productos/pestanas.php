@@ -1,4 +1,5 @@
 <script>
+
 $(function() {		
 	$( '#bb-bookblock' ).bookblock();
 });
@@ -19,6 +20,7 @@ function editable(){
 	$('#btn-cancelar').show();
 	$('#btn-editar').hide();
 	$('#btn-eliminar').hide();
+	$('#btn-print').hide();
 	$('#precio').val(precio);
 	$('#ficha_tecnica1').show();
 	$('#ficha_tecnica').attr('type', 'file');
@@ -44,6 +46,7 @@ function cancelar(){
 		$('#btn-cancelar').hide();
 		$('#btn-eliminar').show();
 		$('#btn-editar').show();
+		$('#btn-print').show();
 		$('#ficha_tecnica1').hide();
 		$('#ficha_tecnica').attr('type', 'text');
 		$("#ficha_tecnica").addClass("web");
@@ -64,7 +67,11 @@ function cancelar(){
 	}
 }
 
-
+function cambiarImagen(){
+	$('.img-cambiar').attr('style','height: 270px !important');
+	setTimeout(function(){ $('.img-cambiar').attr('style','height: 300px !important'); }, 100);
+	
+}
 
 </script>
 <?php
@@ -72,11 +79,14 @@ $bandera = 0;
 ?>
 <div class="col-md-12">
 	<div class="panel panel-default">
-		<div class="panel-heading">
+		<div class="panel-heading no-print">
 			<i class="fa fa-archive"></i> <?php echo $this->lang->line('producto'); ?>
         </div>
 		
 		<div class="panel-body">
+			<?php if($productos) { ?>
+			<form id="formulario" action="<?php echo base_url()."index.php/Productos/editarProducto/$row->id_producto"?>" class="form-horizontal" method="post" enctype="multipart/form-data"> 
+			<?php } ?>
 			<div class="row">
 				<div class="col-md-5 col-lg-5 " align="center"> 
 					<?php
@@ -90,14 +100,14 @@ $bandera = 0;
 									if($row->url != '')
 									{
 										echo '<div class="bb-item">';
-										echo '<img alt="User Pic" src="'.base_url().'img/productos/imagenes/'.$row->url.'" class="img-rounded img-responsive img-bookblock">';
+										echo '<img alt="User Pic" src="'.base_url().'img/productos/imagenes/'.$row->url.'" class="img-rounded img-responsive img-bookblock img-cambiar">';
 										echo '</div>';
 									}
 								}
 								
 						?>
 					</div>
-					<nav>
+					<nav class="no-print">
 						<a id="bb-nav-first" href="#"><button class="btn-mover-fotos"><i class="fa fa-angle-double-left fa-2x"></i></button></a>
 						<a id="bb-nav-prev" href="#"><button class="btn-mover-fotos"><i class="fa fa-angle-left fa-2x"></i></button></a>
 						<a id="bb-nav-next" href="#"><button class="btn-mover-fotos"><i class="fa fa-angle-right fa-2x"></i></button></a>
@@ -112,144 +122,148 @@ $bandera = 0;
 				</div>
 				
 				<div class=" col-md-7 col-lg-7 "><!--carga info cliente-->
-					<?php if($productos) { ?>
-					<form id="formulario" action="<?php echo base_url()."index.php/Productos/editarProducto/$row->id_producto"?>" class="form-horizontal" method="post" enctype="multipart/form-data"> 
-					<?php } ?>
-						<div class="row">
-							<div class=" col-md-12 col-lg-12 ">
-								<table class="table table-striped table-user-information"> 
-								<?php
-								if($productos){
+					<div class="row">
+						<div class=" col-md-12 col-lg-12 ">
+							<table class="table table-striped table-user-information"> 
+							<?php
+							if($productos){
+								foreach ($productos as $row) 
+								{
+									if($row->eliminado != 1)
+									{
+										echo "<tbody>";
+										echo  "<tr>";
+										echo  '<td class="padtop">'.$this->lang->line('nombre').':</td>';
+										echo  '<td class="tabla-datos-importantes"><input class="form-control editable cambio" id="nombre" name="nombre" type="text" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->nombre.'" maxlength="128" disabled placeholder="'.$this->lang->line('nombre').'" autocomplete="off" required></td>';
+										echo  "</tr>";
+										echo  "<tr class='no-print'>";
+										echo  '<td class="padtop">'.$this->lang->line('id').':</td>';
+										echo  '<td class="tabla-datos-importantes"><input type="text" name="id" class="form-control editable"  value="'.$row->id_producto.'" autocomplete="off" disabled style="width: 275px !important;"></td>';
+										echo  "</tr>";
+										echo  "<tr>";
+										echo  '<td class="padtop">'.$this->lang->line('precio').':</td>';
+										echo  '<td class="tabla-datos-importantes"><input type="text" name="precio" id="precio" class="form-control editable cambio" pattern="[0-9]*.{1,}" value="$ '.$row->precio.'" placeholder="'.$this->lang->line('precio').'" autocomplete="off" disabled required></td>';
+										echo  "</tr>";
+										echo  "<tr>";
+										echo  '<td class="padtop">'.$this->lang->line('codigo').':</td>';
+										echo  '<td class="tabla-datos-importantes"><input type="text" name="codigo" id="codigo" class="form-control editable cambio" value="'.$row->codigo.'" placeholder="'.$this->lang->line('codigo').'" autocomplete="off" disabled></td>';
+										echo  "</tr>";
+										echo  "<tr class='no-print'>";
+										echo  '<td class="padtop">'.$this->lang->line('id').' '.$this->lang->line('id').':</td>';
+										echo  '<td class="tabla-datos-importantes"><input type="text" name="id_sin" class="form-control editable"  value="'.$row->id_sin.'" autocomplete="off" disabled style="width: 275px !important;"></td>';
+										echo  "</tr>";
+										$date	= date_create($row->date_upd);
+										echo  "<tr>";
+										echo  '<td class="padtop" style="width: 209px">'.$this->lang->line('date').' '.$this->lang->line('sincronizacion').':</td>';
+										echo  '<td class="tabla-datos-importantes"><input type="text" name="fecha" class="form-control editable"  value="'.date_format($date, 'd/m/Y').'" autocomplete="off" disabled></td>';
+										echo  "</tr>";
+										if($row->ficha_tecnica){
+											echo  "<tr class='no-print'>";
+											echo  '<td class="padtop">'.$this->lang->line('ficha').':</td>';
+											echo  '<td class="tabla-datos-importantes">';
+											echo  '<a href="'.base_url().'img/productos/documentos/'.$row->ficha_tecnica.'" download style="display:"inherit>';
+											echo  "<input type='text' name='ficha_tecnica' id='ficha_tecnica' class='form-control editable cambio web' value='".$row->ficha_tecnica."' autocomplete='off' disabled>";
+							                echo  '</a>';
+							                echo  '</td>';
+											//echo  '<td class="tabla-datos-importantes"><a href="'.base_url().'img/productos/documentos/'.$row->ficha_tecnica.'" download>'.$this->lang->line('descarga').' <i class="fa fa-download"></i></a></td>';
+											echo  "</tr>";
+										}
+										else{
+											echo  "<tr class='no-print'>";
+											echo  '<td class="padtop">'.$this->lang->line('ficha').':</td>';
+											echo  '<td class="tabla-datos-importantes"><input type="file" name="ficha_tecnica" class="form-control editable2" id="ficha_tecnica1" style="display: none"></td>';
+											echo  "</tr>";
+										}
+										echo  "<tr class='no-print'>";
+										echo  '<td  class="padtop" colspan="2" style="text-align: center">';
+										echo '<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#popPrecios">';
+										echo $this->lang->line('ver').' '.$this->lang->line('precios');
+										echo '</button>';
+										echo '</td>';
+										echo  "</tr>";
+										echo  "</tbody>";
+									}
+									else
+									{
+										echo '<div class="row">
+												<div class="col-md-offset-3 col-sm-6 col-md-6">
+													<div class="alert-message alert-message-danger">
+														<h4>'.$this->lang->line('producto').' '.$this->lang->line('eliminado').'</h4>
+														<p>
+																		                    
+														</p>
+													</div>
+												</div>
+											  </div>';
+										$bandera = 1;
+									}
+								}
+							}
+							?>
+							</table>
+						</div>
+					</div>
+					<div class="row">
+						<div class=" col-md-12 col-lg-12 ">
+							<?php
+								if($productos)
+								{
 									foreach ($productos as $row) 
 									{
 										if($row->eliminado != 1)
 										{
-											echo "<tbody>";
-											echo  "<tr>";
-											echo  '<td class="padtop">'.$this->lang->line('nombre').':</td>';
-											echo  '<td class="tabla-datos-importantes"><input class="form-control editable cambio" id="nombre" name="nombre" type="text" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->nombre.'" maxlength="128" disabled placeholder="'.$this->lang->line('nombre').'" autocomplete="off" required></td>';
-											echo  "</tr>";
-											echo  "<tr>";
-											echo  '<td class="padtop">'.$this->lang->line('id').':</td>';
-											echo  '<td class="tabla-datos-importantes"><input type="text" name="id" class="form-control editable"  value="'.$row->id_producto.'" autocomplete="off" disabled style="width: 275px !important;"></td>';
-											echo  "</tr>";
-											echo  "<tr>";
-											echo  '<td class="padtop">'.$this->lang->line('precio').':</td>';
-											echo  '<td class="tabla-datos-importantes"><input type="text" name="precio" id="precio" class="form-control editable cambio" pattern="[0-9]*.{1,}" value="$ '.$row->precio.'" placeholder="'.$this->lang->line('precio').'" autocomplete="off" disabled required></td>';
-											echo  "</tr>";
-											echo  "<tr>";
-											echo  '<td class="padtop">'.$this->lang->line('codigo').':</td>';
-											echo  '<td class="tabla-datos-importantes"><input type="text" name="codigo" id="codigo" class="form-control editable cambio" value="'.$row->codigo.'" placeholder="'.$this->lang->line('codigo').'" autocomplete="off" disabled></td>';
-											echo  "</tr>";
-											echo  "<tr>";
-											echo  '<td class="padtop">'.$this->lang->line('id').' '.$this->lang->line('id').':</td>';
-											echo  '<td class="tabla-datos-importantes"><input type="text" name="id_sin" class="form-control editable"  value="'.$row->id_sin.'" autocomplete="off" disabled style="width: 275px !important;"></td>';
-											echo  "</tr>";
-											$date	= date_create($row->date_upd);
-											echo  "<tr>";
-											echo  '<td class="padtop" style="width: 209px">'.$this->lang->line('date').' '.$this->lang->line('sincronizacion').':</td>';
-											echo  '<td class="tabla-datos-importantes"><input type="text" name="fecha" class="form-control editable"  value="'.date_format($date, 'd/m/Y').'" autocomplete="off" disabled></td>';
-											echo  "</tr>";
-											if($row->ficha_tecnica){
-												echo  "<tr>";
-												echo  '<td class="padtop">'.$this->lang->line('ficha').':</td>';
-												echo  '<td class="tabla-datos-importantes">';
-												echo  '<a href="'.base_url().'img/productos/documentos/'.$row->ficha_tecnica.'" download style="display:"inherit>';
-												echo  "<input type='text' name='ficha_tecnica' id='ficha_tecnica' class='form-control editable cambio web' value='".$row->ficha_tecnica."' autocomplete='off' disabled>";
-								                echo  '</a>';
-								                echo  '</td>';
-												//echo  '<td class="tabla-datos-importantes"><a href="'.base_url().'img/productos/documentos/'.$row->ficha_tecnica.'" download>'.$this->lang->line('descarga').' <i class="fa fa-download"></i></a></td>';
-												echo  "</tr>";
-											}
-											else{
-												echo  "<tr>";
-												echo  '<td class="padtop">'.$this->lang->line('ficha').':</td>';
-												echo  '<td class="tabla-datos-importantes"><input type="file" name="ficha_tecnica" class="form-control editable2" id="ficha_tecnica1" style="display: none"></td>';
-												echo  "</tr>";
-											}
-											echo  "<tr>";
-											echo  '<td  class="padtop" colspan="2" style="text-align: center">';
-											echo '<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#popPrecios">';
-											echo $this->lang->line('ver').' '.$this->lang->line('precios');
-											echo '</button>';
-											echo '</td>';
-											echo  "</tr>";
-											echo  "</tbody>";
+											echo '<div id="textarea">';
+											echo "<blockquote><em>";
+											echo $row->descripcion;
+											echo "</em></blockquote>";
+											echo "</div>";
 										}
-										else
-										{
-											echo '<div class="row">
-													<div class="col-md-offset-3 col-sm-6 col-md-6">
-														<div class="alert-message alert-message-danger">
-															<h4>'.$this->lang->line('producto').' '.$this->lang->line('eliminado').'</h4>
-															<p>
-																			                    
-															</p>
-														</div>
-													</div>
-												  </div>';
-											$bandera = 1;
-										}
+									
+										$precio_base = $row->precio;
 									}
 								}
-								?>
-								</table>
-							</div>
+							?>
 						</div>
-						<div class="row">
-							<div class=" col-md-12 col-lg-12 ">
-								<?php
-									if($productos)
-									{
-										foreach ($productos as $row) 
-										{
-											if($row->eliminado != 1)
-											{
-												echo '<div id="textarea">';
-												echo "<blockquote><em>";
-												echo $row->descripcion;
-												echo "</em></blockquote>";
-												echo "</div>";
-											}
-											
-											$precio_base = $row->precio;
-										}
-									}
-								?>
-							</div>
-						</div>
-						<?php
-						if($bandera != 1){
-						?>
-						<div class="row">
-							<div id="div-mover" class="col-md-4 col-lg-4 col-lg-offset-8">
-						    	<button type="button" id="btn-editar" class="btn btn-primary btn-sm" onclick="editable()">
-									<?php echo $this->lang->line('editar');?>
-								</button>
-								<button type="button" id="btn-eliminar" class="btn btn-danger btn-sm" onclick="eliminar(<?php echo $id?>)">
-									<?php echo $this->lang->line('eliminar');?>
-								</button>
-						        <button type="submit" id="btn-guardar" class="btn btn-primary btn-sm" style="display: none; margin-top: 15px;">
-									<?php echo $this->lang->line('guardar');?>
-								</button>
-								<button type="button" id="btn-cancelar" class="btn btn-danger btn-sm" onclick="cancelar()" style="display: none; margin-top: 15px;">
-									<?php echo $this->lang->line('cancelar');?>
-								</button>
-							</div>
-						</div>
-						<?php
-						}
-						?>
-					</form>
+					</div>
 				</div>
 			</div>
+			<?php
+			if($bandera != 1){
+			?>
+			<div class="row no-print" style="padding-top: 10px">
+				<div class="col-xs-12">
+					<button type="button" class="btn btn-default" data-toggle="modal" data-target="#informacion">
+						<i class="fa fa-info-circle"></i>
+					</button>
+			                            
+			        <button type="button" class="btn btn-default" id="btn-print" onclick="cambiarImagen(); window.print()"><i class="fa fa-print"></i> Print</button>
+                    			
+					<button type="button" id="btn-eliminar" class="btn btn-danger btn-sm pull-right" onclick="eliminar(<?php echo $id?>)" style="margin-left: 5px">
+						<?php echo $this->lang->line('eliminar');?>
+					</button>
+					<button type="button" id="btn-editar" class="btn btn-primary btn-sm pull-right" onclick="editable()">
+						<?php echo $this->lang->line('editar');?>
+					</button>
+								
+					<button type="button" id="btn-cancelar" class="btn btn-danger btn-sm pull-right" onclick="cancelar()" style="display: none; margin-left: 5px">
+						<?php echo $this->lang->line('cancelar');?>
+					</button>
+					<button type="submit" id="btn-guardar" class="btn btn-primary btn-sm pull-right" style="display: none; ">
+						<?php echo $this->lang->line('guardar');?>
+					</button>
+				</div>
+			</div>
+			<?php
+			}
+			?>
+			</form>
 		</div>  		
 	</div>
 </div>
  
 		
 		
-		<!-- Modal -->
+<!-- Modal Precios -->
 <div class="modal fade" id="popPrecios" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
@@ -312,7 +326,83 @@ $bandera = 0;
   </div>
 </div>
 
-
+<!-- Modal INFO -->
+<?php if($productos){ foreach($productos as $row){ ?>
+<div class="modal fade" id="informacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel"><?php echo $this->lang->line('informacion');?></h4>
+      </div>
+      <form action="<?php echo base_url()."index.php/Productos/editarVisto/".$row->id_producto; ?>" class="form-horizontal" method="post">
+      <div class="modal-body">
+      	<div class="row">
+      		<table class="table table-striped">
+      			<tr>
+      				<td>
+		      		<div class="col-lg-8">
+		      			<?php echo $this->lang->line('fecha'); ?> 
+		      			<?php echo $this->lang->line('creacion').' :'; ?> 
+					</div>
+					</td>
+					<td>
+					<div class="col-lg-8">
+						<?php echo date('d-m-Y H:i:s', strtotime($row->date_add)); ?>
+					</div>
+					</td>
+				</tr>
+				<tr>
+					<td>
+					<div class="col-lg-8">
+		      			<?php echo $this->lang->line('fecha'); ?> 
+		      			<?php echo $this->lang->line('modificacion').' :'; ?> 
+					</div>
+					</td>
+					<td>
+					<div class="col-lg-8">
+						<?php echo date('d-m-Y H:i:s', strtotime($row->date_upd)); ?>
+					</div>
+					</td>
+				</tr>
+				
+				<tr>
+					<td>
+					<div class="col-lg-8">
+		      			<?php echo $this->lang->line('producto'); ?> 
+		      			<?php echo $this->lang->line('visto').' :'; ?> 
+					</div>
+					</td>
+					<td>
+					<div class="col-lg-8">
+						<select name="visto" class="form-control chosen-select">	
+							<?php
+							if($row->visto == 1){
+								echo '<option value="1" selected>SI</option>';
+								echo '<option value="0">NO</option>';
+							}
+							else{
+								echo '<option value="1">SI</option>';
+								echo '<option value="0" selected>NO</option>';
+							}
+							?>
+						</select>	
+					</div>
+					</td>
+				</tr>
+			</table>
+			<input type="hidden" name="url" value="<?php echo current_url(); ?>">
+		</div>	
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->lang->line('cerrar');?></button>
+      	<button type="submit" class="btn btn-primary">Guardar cambios</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+<?php } } ?>
 <script>
 	var Page = (function() {
 	var config = {

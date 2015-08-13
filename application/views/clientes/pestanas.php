@@ -15,12 +15,14 @@ function editable(){
 	$('#btn-cancelar').show();
 	$('#btn-editar').hide();
 	$('#btn-eliminar').hide();
+	$('#btn-print').hide();
 	$("input#web").removeClass("web");
 	$("input#web").removeAttr("onclick");
 	$("input#web").removeAttr("readonly");
 	$('#cuit').val(cuit);
 	$('#span').show();
 	$('#grupo').html('<select name="id_grupo_cliente" id="id_grupo_cliente" class="form-control cambio"></select>');
+	$('#iva').html('<select name="id_iva" id="id_iva" class="form-control cambio"></select>');
 	<?php
 	if($grupos){
 		foreach ($grupos as $key) {
@@ -28,6 +30,14 @@ function editable(){
 				echo "$('#id_grupo_cliente').append(\"<option value='".$key->id_grupo_cliente."' selected='selected'>".$key->grupo_nombre."</option>\");";
 			else
 				echo "$('#id_grupo_cliente').append(\"<option value='".$key->id_grupo_cliente."'>".$key->grupo_nombre."</option>\");";
+		}
+	}
+	if($iva){
+		foreach ($iva as $key) {
+			if($key->id_iva == $row->id_iva)
+				echo "$('#id_iva').append(\"<option value='".$key->id_iva."' selected='selected'>".$key->iva."</option>\");";
+			else
+				echo "$('#id_iva').append(\"<option value='".$key->id_iva."'>".$key->iva."</option>\");";
 		}
 	}
 	?>
@@ -42,8 +52,8 @@ function cancelar(){
 		$('#btn-cancelar').hide();
 		$('#btn-eliminar').show();
 		$('#btn-editar').show();
+		$('#btn-print').show();
 		$("input#web").addClass("web");
-		$('#id_iva').html('');
 		<?php
 			if($clientes){
 				foreach($clientes as $row){
@@ -63,9 +73,7 @@ function cancelar(){
 					if($iva){
 						foreach ($iva as $key) {
 							if($key->id_iva == $row->id_iva)
-								echo "$('#id_iva').append(\"<option value='".$key->id_iva."' selected='selected'>".$key->iva."</option>\");";
-							else
-								echo "$('#id_iva').append(\"<option value='".$key->id_iva."'>".$key->iva."</option>\");";
+								echo "$('#iva').html(\"<input type='text' class='form-control editable cambio' value='".$row->iva."' autocomplete='off' disabled>\");";
 						}
 					}
 					
@@ -149,7 +157,17 @@ function eliminarCorreo($id_mail, $id_cliente, $tipo){
 		 	}
 		});
     }
-}				
+}	
+
+function imprimir(){
+	if(!$("input#web").val()){
+		$("#no-web").addClass("no-print");
+	}
+	
+	if(!$("input#alias").val()){
+		$("#no-alias").addClass("no-print");
+	}
+}			
 </script>
 <?php
 $bandera = 0;
@@ -202,7 +220,7 @@ $bandera = 0;
 												}
 											}	
 					                	?>
-					                	<span id="span" class="btn btn-dropbox btn-file editable cambio" style="display: none">
+					                	<span id="span" class="btn btn-dropbox btn-file editable cambio no-print" style="display: none">
 					                		<?php echo $this->lang->line('imagen');?>
 											<input type="file" id="imagen" class="form-group editable cambio" name="imagen">	 
 										</span>
@@ -267,7 +285,7 @@ $bandera = 0;
 											                echo  "</tr><tr>";								                     
 											                echo  '<td class="padtop">'.$this->lang->line('razon_social').':</td>';
 											                echo  '<td class="tabla-datos-importantes"><input class="form-control editable cambio" id="razon_social" name="razon_social" type="text" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->razon_social.'" maxlength="128" disabled placeholder="'.$this->lang->line('razon_social').'" autocomplete="off" required></td>';
-											                echo  "</tr><tr>";								                     
+											                echo  "</tr><tr id='no-web'>";					                     
 											                echo  '<td class="padtop">'.$this->lang->line('web').':</td>';
 											                echo  "<td class='tabla-datos-importantes'>";
 											                if($row->web){
@@ -277,7 +295,7 @@ $bandera = 0;
 																echo  "<input type='text' name='web' id='web' class='form-control editable cambio web' pattern='^www.[a-zA-Z0.9._- ]{4,}$' placeholder='www.sitio-web.com' autocomplete='off' disable>";
 															}
 											                echo  "</td>";
-											                echo  "</tr><tr>";
+											                echo  "</tr><tr id='no-alias'>";
 															echo  '<td class="padtop">'.$this->lang->line('alias').':</td>';
 											                echo  '<td class="tabla-datos-importantes"><input type="text" name="alias" id="alias" class="form-control editable cambio" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->nombre_fantasia.'" placeholder="'.$this->lang->line('alias').'" autocomplete="off" disabled></td>';
 											                echo  "</tr><tr>";		
@@ -287,16 +305,15 @@ $bandera = 0;
 															
 											                echo  '<td class="padtop">'.$this->lang->line('iva').':</td>';
 											                echo  '<td class="tabla-datos-importantes">';
-															echo '<select name="id_iva" id="id_iva" class="form-control editable cambio" disabled>';
+															echo  '<div id="iva">';
 																if($iva){
 																	foreach ($iva as $key) {
 																		if($key->id_iva == $row->id_iva)
-																			echo '<option value="'.$key->id_iva.'" selected>'.$key->iva.'</option>';
-																		else
-																			echo '<option value="'.$key->id_iva.'">'.$key->iva.'</option>';
-																	}
-																}			
-															echo '</select>';	 
+																			echo  '<input type="text" class="form-control editable cambio" value="'.$key->iva.'" autocomplete="off" disabled>';
+																	
+																}	
+															}
+															echo  '</div>';
 											                echo  "</td>";
 															echo  "</tr><tr>";	
 															echo  '<td class="padtop">'.$this->lang->line('grupos_clientes').':</td>';
@@ -310,21 +327,7 @@ $bandera = 0;
 																}	
 															}
 															echo  '</div>';
-															/*
-											                echo '<select name="id_grupo_cliente" id="id_grupo_cliente" class="form-control editable cambio" disabled>';
-																if($grupos){
-																	foreach ($grupos as $key) {
-																		if($key->id_grupo_cliente == $row->id_grupo_cliente)
-																			echo '<option value="'.$key->id_grupo_cliente.'" selected>'.$key->grupo_nombre.'</option>';
-																		else
-																			echo '<option value="'.$key->id_grupo_cliente.'">'.$key->grupo_nombre.'</option>';
-																	}
-																}			
-															echo '</select>';
-															*/	 
 											               	echo  "</td>";
-											                //<a href="'.base_url().'index.php/Grupos/getReglasGrupos/'.$row->id_grupo_cliente.'">';
-											                //echo  $row->grupo_nombre;
 											                echo  "</tr>";
 															if($telefonos){
 												                echo  "<tr>";
@@ -375,9 +378,8 @@ $bandera = 0;
 											<i class="fa fa-info-circle"></i>
 										</button>
 			                            
-			                            <button type="button" class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+			                            <button type="button" class="btn btn-default" id="btn-print" onclick="imprimir(); window.print()"><i class="fa fa-print"></i> Print</button>
                             		
-					            		
 										<button type="button" id="btn-eliminar" class="btn btn-danger btn-sm pull-right" onclick="eliminar(<?php echo $id?>)" style="margin-left: 5px">
 											<?php echo $this->lang->line('eliminar');?>
 										</button>

@@ -28,9 +28,8 @@ foreach($css_files as $file): ?>
 	    					</div>
 	    					<!--BUSQUEDA AVANZADA DE PRODUCTOS-->
 	    					<div class="tab-pane <?php echo $array_n['busqueda']?>" id="tab2">
-	    						BUSQUEDA
+	    						
 	    					</div>
-	
 	    				</div><!--contenedor de cada pestaña-->	
 		  			</div><!--panel body-->
 				</div><!--panel-->

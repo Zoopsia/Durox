@@ -215,4 +215,5 @@ class Clientes extends My_Controller {
 		}
 		redirect($this->input->post('url'),'refresh');
 	}
+
 }

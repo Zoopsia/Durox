@@ -159,7 +159,8 @@ function volverShow(){
 function volverHide(){
 	document.getElementById('volver').style.display = 'none';
 	$('.desactive').removeClass('active');
-	
+	$('#clientes').html('');
+	$('#clientegrupo').html('');
 }
 </script>
 
@@ -336,8 +337,8 @@ function volverHide(){
 		     					<div class="col-sm-2">
 							        <nav class="nav-tab nav-justified nav-sidebar">
 							        	<ul class="nav nav-sidebar">
-							            	<li><a href="#cliente1" data-toggle="tab" onclick="nuevoCliente()"><?php echo $this->lang->line('clientes'); ?></a></li>
-							                <li><a href="#cliente2" data-toggle="tab" onclick="nuevoCliente2()"><?php echo $this->lang->line('clientes').' '.$this->lang->line('grupo'); ?></a></li>
+							            	<li class="desactive"><a href="#cliente1" data-toggle="tab" onclick="nuevoCliente()"><?php echo $this->lang->line('clientes'); ?></a></li>
+							                <li class="desactive"><a href="#cliente2" data-toggle="tab" onclick="nuevoCliente2()"><?php echo $this->lang->line('clientes').' '.$this->lang->line('grupo'); ?></a></li>
 							            </ul>
 							    	</nav>
 							    </div>
