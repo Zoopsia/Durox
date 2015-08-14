@@ -198,7 +198,6 @@ class Clientes extends My_Controller {
 		$id = $this->clientes_model->update($cliente, $id_cliente);	
 		
 		redirect('clientes/pestanas/'.$id_cliente,'refresh');
-		
 	}
 	
 	function editarVisto($id=null){

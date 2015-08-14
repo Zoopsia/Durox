@@ -21,26 +21,10 @@ function editable(){
 	$("input#web").removeAttr("readonly");
 	$('#cuit').val(cuit);
 	$('#span').show();
-	$('#grupo').html('<select name="id_grupo_cliente" id="id_grupo_cliente" class="form-control cambio"></select>');
-	$('#iva').html('<select name="id_iva" id="id_iva" class="form-control cambio"></select>');
-	<?php
-	if($grupos){
-		foreach ($grupos as $key) {
-			if($key->id_grupo_cliente == $row->id_grupo_cliente)
-				echo "$('#id_grupo_cliente').append(\"<option value='".$key->id_grupo_cliente."' selected='selected'>".$key->grupo_nombre."</option>\");";
-			else
-				echo "$('#id_grupo_cliente').append(\"<option value='".$key->id_grupo_cliente."'>".$key->grupo_nombre."</option>\");";
-		}
-	}
-	if($iva){
-		foreach ($iva as $key) {
-			if($key->id_iva == $row->id_iva)
-				echo "$('#id_iva').append(\"<option value='".$key->id_iva."' selected='selected'>".$key->iva."</option>\");";
-			else
-				echo "$('#id_iva').append(\"<option value='".$key->id_iva."'>".$key->iva."</option>\");";
-		}
-	}
-	?>
+	$('#grupo').show();
+	$('#input-grupo').hide();
+	$('#iva').show();
+	$('#input-iva').hide();
 }
 
 function cancelar(){
@@ -54,6 +38,10 @@ function cancelar(){
 		$('#btn-editar').show();
 		$('#btn-print').show();
 		$("input#web").addClass("web");
+		$('#grupo').hide();
+		$('#input-grupo').show();
+		$('#iva').hide();
+		$('#input-iva').show();
 		<?php
 			if($clientes){
 				foreach($clientes as $row){
@@ -69,20 +57,7 @@ function cancelar(){
 					echo "$('#razon_social').val('".$row->razon_social."');";
 					echo "$('#alias').val('".$row->nombre_fantasia."');";
 					echo "$('#cuit').val('".cuit($row->cuit)."');";
-					
-					if($iva){
-						foreach ($iva as $key) {
-							if($key->id_iva == $row->id_iva)
-								echo "$('#iva').html(\"<input type='text' class='form-control editable cambio' value='".$row->iva."' autocomplete='off' disabled>\");";
-						}
-					}
-					
-					if($grupos){
-						foreach ($grupos as $key) {
-							if($key->id_grupo_cliente == $row->id_grupo_cliente)
-								echo "$('#grupo').html(\"<input type='text' class='form-control editable cambio' value='".$row->grupo_nombre."' autocomplete='off' disabled>\");";
-						}
-					}												
+															
 				}	
 			}
 		?>
@@ -305,29 +280,50 @@ $bandera = 0;
 															
 											                echo  '<td class="padtop">'.$this->lang->line('iva').':</td>';
 											                echo  '<td class="tabla-datos-importantes">';
-															echo  '<div id="iva">';
-																if($iva){
-																	foreach ($iva as $key) {
-																		if($key->id_iva == $row->id_iva)
-																			echo  '<input type="text" class="form-control editable cambio" value="'.$key->iva.'" autocomplete="off" disabled>';
-																	
-																}	
-															}
+															
+															if($iva){
+																echo  '<div id="iva" style="display: none">';
+																echo '<select name="id_iva" id="id_iva" class="form-control cambio">';
+																foreach ($iva as $key) {
+																	if($key->id_iva == $row->id_iva){
+																		$iva = $row->iva;
+																		echo '<option value="'.$key->id_iva.'" selected>'.$key->iva.'</option>';
+																	}	
+																	else
+																		echo '<option value="'.$key->id_iva.'">'.$key->iva.'</option>';
+																}
+																echo '</select>';	
+																echo  '</div>';
+																echo  '<span id="input-iva">';
+																echo  '<input type="text" class="form-control editable cambio" value="'.$iva.'" autocomplete="off" disabled>';
+																echo  '</span>';
+															}	
+															
 															echo  '</div>';
 											                echo  "</td>";
 															echo  "</tr><tr>";	
+															
 															echo  '<td class="padtop">'.$this->lang->line('grupos_clientes').':</td>';
 															echo  '<td class="tabla-datos-importantes">';
-											                echo  '<div id="grupo">';
-															if($grupos){
+											                
+											                if($grupos){
+																echo  '<div id="grupo" style="display: none">';
+																echo '<select name="id_grupo_cliente" id="id_grupo_cliente" class="form-control cambio">';
 																foreach ($grupos as $key) {
-																	if($key->id_grupo_cliente == $row->id_grupo_cliente)
-																		echo  '<input type="text" class="form-control editable cambio" value="'.$row->grupo_nombre.'" autocomplete="off" disabled>';
-																	
-																}	
+																	if($key->id_grupo_cliente == $row->id_grupo_cliente){
+																		$grupo = $row->grupo_nombre;
+																		echo '<option value="'.$key->id_grupo_cliente.'" selected>'.$key->grupo_nombre.'</option>';
+																	}	
+																	else
+																		echo '<option value="'.$key->id_grupo_cliente.'">'.$key->grupo_nombre.'</option>';
+																}
+																echo '</select>';	
+																echo  '</div>';
+																echo  '<span id="input-grupo">';
+																echo  '<input type="text" class="form-control editable cambio" value="'.$grupo.'" autocomplete="off" disabled>';
+																echo  '</span>';
 															}
-															echo  '</div>';
-											               	echo  "</td>";
+															echo  "</td>";
 											                echo  "</tr>";
 															if($telefonos){
 												                echo  "<tr>";
