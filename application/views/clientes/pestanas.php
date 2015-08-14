@@ -249,15 +249,7 @@ $bandera = 0;
 								      				{
 								      					if($row->eliminado != 1){
 											            	echo "<tbody>";
-											                echo  "<tr>";
-											                echo  '<td class="padtop">'.$this->lang->line('nombre').':</td>';
-											                echo  '<td class="tabla-datos-importantes"><input class="form-control editable cambio" id="nombre" name="nombre" type="text" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->nombre.'" maxlength="128" disabled placeholder="'.$this->lang->line('nombre').'" autocomplete="off" required></td>';
-											                //echo  '<td class="tabla-datos-importantes"><input type'.$row->nombre.'</td>';
-											                echo  "</tr>";
-															echo  "<tr>";								                     
-											                echo  '<td class="padtop">'.$this->lang->line('apellido').':</td>';
-											                echo  '<td class="tabla-datos-importantes"><input class="form-control editable cambio" id="apellido" name="apellido" type="text" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->apellido.'" maxlength="128" disabled placeholder="'.$this->lang->line('apellido').'" autocomplete="off" required></td>';
-											                echo  "</tr><tr>";								                     
+											                echo  "<tr>";								                     
 											                echo  '<td class="padtop">'.$this->lang->line('razon_social').':</td>';
 											                echo  '<td class="tabla-datos-importantes"><input class="form-control editable cambio" id="razon_social" name="razon_social" type="text" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->razon_social.'" maxlength="128" disabled placeholder="'.$this->lang->line('razon_social').'" autocomplete="off" required></td>';
 											                echo  "</tr><tr id='no-web'>";					                     
@@ -270,17 +262,25 @@ $bandera = 0;
 																echo  "<input type='text' name='web' id='web' class='form-control editable cambio web' pattern='^www.[a-zA-Z0.9._- ]{4,}$' placeholder='www.sitio-web.com' autocomplete='off' disable>";
 															}
 											                echo  "</td>";
-											                echo  "</tr><tr id='no-alias'>";
+											                echo  "</tr>";
+															echo  "<tr>";
+											                echo  '<td class="padtop">'.$this->lang->line('nombre').' '.$this->lang->line('contacto').':</td>';
+											                echo  '<td class="tabla-datos-importantes"><input class="form-control editable cambio" id="nombre" name="nombre" type="text" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->nombre.'" maxlength="128" disabled placeholder="'.$this->lang->line('nombre').'" autocomplete="off" required></td>';
+											                echo  "</tr>";
+															echo  "<tr>";								                     
+											                echo  '<td class="padtop">'.$this->lang->line('apellido').' '.$this->lang->line('contacto').':</td>';
+											                echo  '<td class="tabla-datos-importantes"><input class="form-control editable cambio" id="apellido" name="apellido" type="text" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->apellido.'" maxlength="128" disabled placeholder="'.$this->lang->line('apellido').'" autocomplete="off" required></td>';
+											                echo  "</tr>";
+											                echo  "<tr id='no-alias'>";
 															echo  '<td class="padtop">'.$this->lang->line('alias').':</td>';
 											                echo  '<td class="tabla-datos-importantes"><input type="text" name="alias" id="alias" class="form-control editable cambio" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->nombre_fantasia.'" placeholder="'.$this->lang->line('alias').'" autocomplete="off" disabled></td>';
 											                echo  "</tr><tr>";		
 											                echo  '<td class="padtop">'.$this->lang->line('cuit').':</td>';							
 											                echo  '<td class="tabla-datos-importantes"><input type="text" name="cuit" id="cuit" class="form-control editable cambio" pattern="[0-9]*.{10,11}" value="'.cuit($row->cuit).'" placeholder="'.$this->lang->line('cuit').'" maxlength="11" autocomplete="off" disabled required></td>';
 											                echo  "</tr><tr>";	
-															
 											                echo  '<td class="padtop">'.$this->lang->line('iva').':</td>';
 											                echo  '<td class="tabla-datos-importantes">';
-															
+															//--- HAY UN SELECT ESCONDIDO PARA EDITAR---//
 															if($iva){
 																echo  '<div id="iva" style="display: none">';
 																echo '<select name="id_iva" id="id_iva" class="form-control cambio">';
@@ -298,14 +298,12 @@ $bandera = 0;
 																echo  '<input type="text" class="form-control editable cambio" value="'.$iva.'" autocomplete="off" disabled>';
 																echo  '</span>';
 															}	
-															
 															echo  '</div>';
 											                echo  "</td>";
 															echo  "</tr><tr>";	
-															
 															echo  '<td class="padtop">'.$this->lang->line('grupos_clientes').':</td>';
 															echo  '<td class="tabla-datos-importantes">';
-											                
+											                //--- HAY UN SELECT ESCONDIDO PARA EDITAR---//
 											                if($grupos){
 																echo  '<div id="grupo" style="display: none">';
 																echo '<select name="id_grupo_cliente" id="id_grupo_cliente" class="form-control cambio">';

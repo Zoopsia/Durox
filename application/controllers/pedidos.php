@@ -84,7 +84,7 @@ class Pedidos extends My_Controller {
 							
 			$crud->order_by('date_add','asc');
 							
-			$crud->set_relation('id_cliente','clientes','{apellido} {nombre}');
+			$crud->set_relation('id_cliente','clientes','{razon_social}');
 			$crud->set_relation('id_vendedor','vendedores','{apellido} {nombre}');
 			$crud->set_relation('id_estado_pedido','estados_pedidos','estado');
 			

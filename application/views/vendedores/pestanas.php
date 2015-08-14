@@ -335,6 +335,7 @@ $bandera = 0;
 										        <thead>
 										            <tr>
 										            	<th><?php echo $this->lang->line('id'); ?></th>
+										            	<th><?php echo $this->lang->line('razon_social'); ?></th>
 										                <th><?php echo $this->lang->line('nombre'); ?></th>
 										                <th><?php echo $this->lang->line('apellido'); ?></th>
 										                <th style="text-align: center"><?php echo $this->lang->line('acciones'); ?></th>
@@ -344,6 +345,7 @@ $bandera = 0;
 										        <tfoot>
 										            <tr>
 										            	<th><?php echo $this->lang->line('id'); ?></th>
+										            	<th><?php echo $this->lang->line('razon_social'); ?></th>
 										                <th><?php echo $this->lang->line('nombre'); ?></th>
 										                <th><?php echo $this->lang->line('apellido'); ?></th>
 										                <th style="text-align: center"><?php echo $this->lang->line('acciones'); ?></th>
@@ -360,6 +362,7 @@ $bandera = 0;
 														      			if($key->id_cliente == $row->id_cliente && $key->eliminado==0){
 																      		echo '<tr>';
 																			echo '<td>'.$row->id_cliente.'</td>';
+																			echo '<td>'.$row->razon_social.'</td>';
 																			echo '<td>'.$row->nombre.'</td>';
 																			echo "<td>".$row->apellido."</td>";
 																			echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs' style='margin : 0 5px'>";
@@ -387,6 +390,7 @@ $bandera = 0;
 										        <thead>
 										            <tr>
 										            	<th><?php echo $this->lang->line('id'); ?></th>
+										            	<th><?php echo $this->lang->line('razon_social'); ?></th>
 										                <th><?php echo $this->lang->line('nombre'); ?></th>
 										                <th><?php echo $this->lang->line('apellido'); ?></th>
 										                <th><?php echo $this->lang->line('date'); ?></th>
@@ -397,6 +401,7 @@ $bandera = 0;
 										        <tfoot>
 										            <tr>
 										            	<th><?php echo $this->lang->line('id'); ?></th>
+										            	<th><?php echo $this->lang->line('razon_social'); ?></th>
 										                <th><?php echo $this->lang->line('nombre'); ?></th>
 										                <th><?php echo $this->lang->line('apellido'); ?></th>
 										                <th><?php echo $this->lang->line('date'); ?></th>
@@ -413,6 +418,7 @@ $bandera = 0;
 													      			if($key->id_cliente == $row->id_cliente && $key->eliminado==1){
 															      		echo '<tr>';
 																		echo '<td>'.$row->id_cliente.'</td>';
+																		echo '<td>'.$row->razon_social.'</td>';
 																		echo '<td>'.$row->nombre.'</td>';
 																		echo "<td>".$row->apellido."</td>";
 																		$date = date_create($key->date_upd);
@@ -442,6 +448,7 @@ $bandera = 0;
 											        <thead>
 											            <tr>
 											            	<th><?php echo $this->lang->line('id'); ?></th>
+											            	<th><?php echo $this->lang->line('razon_social'); ?></th>
 											                <th><?php echo $this->lang->line('nombre'); ?></th>
 											                <th><?php echo $this->lang->line('apellido'); ?></th>
 											                <th style="text-align: center"><?php echo $this->lang->line('acciones'); ?></th>
@@ -451,6 +458,7 @@ $bandera = 0;
 											        <tfoot>
 											            <tr>
 											            	<th><?php echo $this->lang->line('id'); ?></th>
+											            	<th><?php echo $this->lang->line('razon_social'); ?></th>
 											                <th><?php echo $this->lang->line('nombre'); ?></th>
 											                <th><?php echo $this->lang->line('apellido'); ?></th>
 											                <th style="text-align: center"><?php echo $this->lang->line('acciones'); ?></th>
@@ -477,6 +485,7 @@ $bandera = 0;
 																				
 																				echo '<tr>';
 																				echo '<td>'.$row->id_cliente.'</td>';
+																				echo '<td>'.$row->razon_social.'</td>';
 																				echo '<td>'.$row->nombre.'</td>';
 																				echo "<td>".$row->apellido."</td>";
 																				echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/cargarCliente/".$row->id_cliente."/".$value->id_vendedor."' class='btn btn-success btn-xs' role='button'>";
@@ -493,6 +502,7 @@ $bandera = 0;
 																	    {
 																			echo '<tr>';
 																			echo '<td>'.$row->id_cliente.'</td>';
+																			echo '<td>'.$row->razon_social.'</td>';
 																			echo '<td>'.$row->nombre.'</td>';
 																			echo "<td>".$row->apellido."</td>";
 																			echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/cargarCliente/".$row->id_cliente."/".$value->id_vendedor."' class='btn btn-success btn-xs' role='button'>";
@@ -899,7 +909,7 @@ $bandera = 0;
 													echo "<td><a href='".base_url()."index.php/pedidos/pestanas/".$row->id_pedido."' class='displayblock'>".$row->id_pedido.'</a>';
 													echo "<td><a href='".base_url()."index.php/Presupuestos/pestanas/".$row->id_presupuesto."' class='displayblock'>".$row->id_presupuesto.'</a></td>';
 													echo "<td><a href='".base_url()."index.php/Visitas/carga/".$row->id_visita."/0' class='displayblock'>".$row->id_visita.'</a></td>';
-													echo "<td><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='displayblock'>".$row->apellido.', '.$row->nombre.'</a></td>';
+													echo "<td><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='displayblock'>".$row->razon_social.'</a></td>';
 													$date = date_create($row -> fecha);
 													echo '<td>'.date_format($date, 'd/m/Y');
 													echo "</td>";
@@ -944,7 +954,7 @@ $bandera = 0;
 										    		echo '<tr>';
 													echo "<td><a href='".base_url()."index.php/Presupuestos/pestanas/".$row->id_presupuesto."' class='displayblock'>".$row->id_presupuesto.'</a></td>';
 													echo "<td><a href='".base_url()."index.php/Visitas/carga/".$row->id_visita."/0' class='displayblock'>".$row->id_visita.'</a></td>';
-													echo "<td><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='displayblock'>".$row->apellido.', '.$row->nombre.'</a></td>';
+													echo "<td><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='displayblock'>".$row->razon_social.'</a></td>';
 													$date = date_create($row -> fecha);
 													echo '<td>'.date_format($date, 'd/m/Y');
 													echo "</td>";

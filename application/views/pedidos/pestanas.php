@@ -5,7 +5,14 @@
 <div class="col-md-12">
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
-		  				<i class="fa fa-shopping-cart"></i> <?php echo $this->lang->line('pedido').' N° '.$row->id_pedido; ?>
+		  				<div class="row">
+		  					<div class="col-lg-2">
+				  				<i class="fa fa-shopping-cart"></i> <?php echo $this->lang->line('pedido').' N° '.$row->id_pedido; ?>
+		                  	</div>
+		                   	<div id="imagen-durox" class="col-lg-3 col-lg-offset-2" align="center" style="display: none">
+		                   		<img alt="DUROX" src="<?php echo base_url().'/img/durox.png'?>">
+                   			</div>
+                   		</div>
                    	</div>
 		  			<div class="panel-body">
 		  				  				
@@ -42,7 +49,7 @@
 											foreach ($clientes as $key) 
 											{
 												echo '<a class="sinhref" href="'.base_url().'index.php/clientes/pestanas/'.$key->id_cliente.'">';
-												echo $key->apellido.', '.$key->nombre;
+												echo $key->razon_social;
 												echo '</a>';
 												echo "<br>";
 												echo $this->lang->line('cuit').': '.cuit($key->cuit);

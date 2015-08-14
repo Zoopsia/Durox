@@ -59,7 +59,7 @@ $aux2 = 0;
 											foreach ($clientes as $key) 
 											{
 												echo '<a class="sinhref" href="'.base_url().'index.php/clientes/pestanas/'.$key->id_cliente.'">';
-												echo $key->apellido.', '.$key->nombre;
+												echo $key->razon_social;
 												echo '</a>';
 												echo "<br>";
 												echo $this->lang->line('cuit').': '.cuit($key->cuit);

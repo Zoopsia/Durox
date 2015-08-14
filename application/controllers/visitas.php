@@ -102,7 +102,7 @@ class Visitas extends My_Controller {
 							
 			$crud->order_by('id_visita','desc');
 							
-			$crud->set_relation('id_cliente','clientes','{apellido} {nombre}');
+			$crud->set_relation('id_cliente','clientes','{razon_social}');
 			$crud->set_relation('id_vendedor','vendedores','{apellido} {nombre}');
 			
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));

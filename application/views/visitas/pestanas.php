@@ -199,7 +199,7 @@ function eliminar($id){
 															<div class="datos_img">
 															<?php
 																		echo '<a href="'.base_url().'index.php/clientes/pestanas/'.$key->id_cliente.'">';
-																		echo $key->nombre.', '.$key->apellido;
+																		echo $key->razon_social;
 																		echo '</a>';
 																		echo "<br>";
 																		echo $this->lang->line('cuit').': '.cuit($key->cuit);

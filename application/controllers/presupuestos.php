@@ -82,7 +82,7 @@ class Presupuestos extends My_Controller {
 							
 			$crud->order_by('id_presupuesto','desc');
 							
-			$crud->set_relation('id_cliente','clientes','{apellido} {nombre}');
+			$crud->set_relation('id_cliente','clientes','{razon_social}');
 			$crud->set_relation('id_vendedor','vendedores','{apellido} {nombre}');
 			$crud->set_relation('id_estado_presupuesto','estados_presupuestos','estado');
 			

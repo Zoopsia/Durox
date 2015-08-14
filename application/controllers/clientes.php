@@ -52,16 +52,17 @@ class Clientes extends My_Controller {
 			$crud->set_table('clientes');
 			
 			$crud->columns(	'id_cliente',
-							'nombre',
-							'apellido',
+							'razon_social',
 							'cuit',
-							'razon_social');
+							'nombre',
+							'apellido'
+							);
 							
 			$crud->callback_column('cuit',array($this,'_callback_cuit'));
 			
 			$crud->display_as('id_cliente','ID')
-				 ->display_as('nombre','Nombre')
-				 ->display_as('apellido','Apellido')
+				 ->display_as('nombre','Nombre Contacto')
+				 ->display_as('apellido','Apellido Contacto')
 				 ->display_as('razon_social','Razon Social')
 				 ->display_as('id_grupo_cliente','Grupo')
 				 ->display_as('id_iva','Situacion IVA');
