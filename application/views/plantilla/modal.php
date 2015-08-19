@@ -26,11 +26,14 @@
 	      			</tr>
 	      		</thead>
 	      		<tbody>
-	      			<?php foreach($visitas_mensajes as $row) { ?>
+	      			<?php 
+	      			if($visitas_mensajes){
+	      				foreach($visitas_mensajes as $row) { 
+	      			?>
 	      			<tr>
-				  		<td><a href="http://localhost/Durox/index.php/Visitas/carga/<?php echo $row->id_visita ?>/0" class="displayblock"><?php echo $row->id_visita ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Clientes/pestanas/<?php echo $row->id_cliente ?>" class="displayblock"><?php echo $row->razon_social ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Vendedores/pestanas/<?php echo $row->id_vendedor ?>" class="displayblock"><?php echo $row->Vapellido.', '.$row->Vnombre ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Visitas/carga/'.$row->id_visita ?>/0" class="displayblock"><?php echo $row->id_visita ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Clientes/pestanas/'.$row->id_cliente ?>" class="displayblock"><?php echo $row->razon_social ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Vendedores/pestanas/'.$row->id_vendedor ?>" class="displayblock"><?php echo $row->Vapellido.', '.$row->Vnombre ?></a></td>
 				  		<?php $date	= date_create($row->fecha); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
 						<td><?php echo $row->origen?></td>
@@ -42,7 +45,10 @@
 				  		</td>
 				  		<input type="hidden" name="id_visita<?php echo $row->id_visita ?>" value="<?php echo $row->id_visita ?>">
 				  	</tr>
-			 		<?php }?>
+			 		<?php 
+			 			}					
+					}
+					?>
 	      		</tbody>
 	      	</table>
 	      	<input type="hidden" name="url" value="<?php echo $url ?>">
@@ -81,11 +87,14 @@
 	      			</tr>
 	      		</thead>
 	      		<tbody>
-	      			<?php foreach($clientes_mensajes as $row) { ?>
+	      			<?php
+	      			if($clientes_mensajes){ 
+	      				foreach($clientes_mensajes as $row) { 
+	      			?>
 	      			<tr>
 	      				
-				  		<td><a href="http://localhost/Durox/index.php/Clientes/pestanas/<?php echo $row->id_cliente ?>" class="displayblock"><?php echo $row->id_cliente ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Clientes/pestanas/<?php echo $row->id_cliente ?>" class="displayblock"><?php echo $row->razon_social ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Clientes/pestanas/'.$row->id_cliente ?>" class="displayblock"><?php echo $row->id_cliente ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Clientes/pestanas/'.$row->id_cliente ?>" class="displayblock"><?php echo $row->razon_social ?></a></td>
 				  		<?php $date	= date_create($row->date_add); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
 				  		<td><?php echo $row->origen?></td>
@@ -97,7 +106,10 @@
 				  		</td>
 				  		<input type="hidden" name="id_cliente<?php echo $row->id_cliente ?>" value="<?php echo $row->id_cliente ?>">
 				  	</tr>
-			 		<?php }?>
+			 		<?php 
+			 			}					
+					}
+					?>
 	      		</tbody>
 	      	</table>
 	      	<input type="hidden" name="url" value="<?php echo $url ?>">
@@ -138,12 +150,14 @@
 	      			</tr>
 	      		</thead>
 	      		<tbody>
-	      			<?php foreach($vendedores_mensajes as $row) { ?>
+	      			<?php 
+	      			if($vendedores_mensajes){
+	      				foreach($vendedores_mensajes as $row) { ?>
 	      			<tr>
 	      				
-				  		<td><a href="http://localhost/Durox/index.php/Vendedores/pestanas/<?php echo $row->id_vendedor ?>" class="displayblock"><?php echo $row->id_vendedor ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Vendedores/pestanas/<?php echo $row->id_vendedor ?>" class="displayblock"><?php echo $row->nombre ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Vendedores/pestanas/<?php echo $row->id_vendedor ?>" class="displayblock"><?php echo $row->apellido ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Vendedores/pestanas/'.$row->id_vendedor ?>" class="displayblock"><?php echo $row->id_vendedor ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Vendedores/pestanas/'.$row->id_vendedor ?>" class="displayblock"><?php echo $row->nombre ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Vendedores/pestanas/'.$row->id_vendedor ?>" class="displayblock"><?php echo $row->apellido ?></a></td>
 				  		<?php $date	= date_create($row->date_add); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
 				  		<td><?php echo $row->origen?></td>
@@ -155,7 +169,10 @@
 				  		</td>
 				  		<input type="hidden" name="id_vendedor<?php echo $row->id_vendedor ?>" value="<?php echo $row->id_vendedor ?>">
 				  	</tr>
-			 		<?php }?>
+			 		<?php 
+			 			}					
+					}
+					?>
 	      		</tbody>
 	      	</table>
 	      	<input type="hidden" name="url" value="<?php echo $url ?>">
@@ -196,12 +213,15 @@
 	      			</tr>
 	      		</thead>
 	      		<tbody>
-	      			<?php foreach($productos_mensajes as $row) { ?>
+	      			<?php 
+	      			if($productos_mensajes){
+	      				foreach($productos_mensajes as $row) { 
+	      			?>
 	      			<tr>
 	      				
-				  		<td><a href="http://localhost/Durox/index.php/Productos/pestanas/<?php echo $row->id_producto ?>" class="displayblock"><?php echo $row->id_producto ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Productos/pestanas/<?php echo $row->id_producto ?>" class="displayblock"><?php echo $row->nombre ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Productos/pestanas/<?php echo $row->id_producto ?>" class="displayblock"><?php echo $row->precio ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Productos/pestanas/'.$row->id_producto ?>" class="displayblock"><?php echo $row->id_producto ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Productos/pestanas/'.$row->id_producto ?>" class="displayblock"><?php echo $row->nombre ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Productos/pestanas/'.$row->id_producto ?>" class="displayblock"><?php echo $row->precio ?></a></td>
 				  		<?php $date	= date_create($row->date_add); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
 				  		<td><?php echo $row->origen?></td>
@@ -213,7 +233,10 @@
 				  		</td>
 				  		<input type="hidden" name="id_producto<?php echo $row->id_producto ?>" value="<?php echo $row->id_producto ?>">
 				  	</tr>
-			 		<?php }?>
+			 		<?php 
+			 			}					
+					}
+					?>
 	      		</tbody>
 	      	</table>
 	      	<input type="hidden" name="url" value="<?php echo $url ?>">
@@ -256,13 +279,16 @@
 	      			</tr>
 	      		</thead>
 	      		<tbody>
-	      			<?php foreach($pedidos_mensajes as $row) { ?>
+	      			<?php
+	      			if($pedidos_mensajes){
+	      				foreach($pedidos_mensajes as $row) { 
+	      			?>
 	      			<tr>
-	      				<td><a href="http://localhost/Durox/index.php/Pedidos/pestanas/<?php echo $row->id_pedido ?>" class="displayblock"><?php echo $row->id_pedido ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Presupuestos/pestanas/<?php echo $row->id_presupuesto ?>" class="displayblock"><?php echo $row->id_presupuesto ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Visitas/carga/<?php echo $row->id_visita ?>/0" class="displayblock"><?php echo $row->id_visita ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Clientes/pestanas/<?php echo $row->id_cliente ?>" class="displayblock"><?php echo $row->razon_social ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Vendedores/pestanas/<?php echo $row->id_vendedor ?>" class="displayblock"><?php echo $row->Vapellido.', '.$row->Vnombre ?></a></td>
+	      				<td><a href="<?php echo base_url().'index.php/Pedidos/pestanas/'.$row->id_pedido ?>" class="displayblock"><?php echo $row->id_pedido ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Presupuestos/pestanas/'.$row->id_presupuesto ?>" class="displayblock"><?php echo $row->id_presupuesto ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Visitas/carga/'.$row->id_visita ?>/0" class="displayblock"><?php echo $row->id_visita ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Clientes/pestanas/'.$row->id_cliente ?>" class="displayblock"><?php echo $row->razon_social ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Vendedores/pestanas/'.$row->id_vendedor ?>" class="displayblock"><?php echo $row->Vapellido.', '.$row->Vnombre ?></a></td>
 				  		<?php $date	= date_create($row->fecha); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
 				  		<td><?php echo $row->origen?></td>
@@ -274,7 +300,10 @@
 				  		</td>
 				  		<input type="hidden" name="id_pedido<?php echo $row->id_pedido ?>" value="<?php echo $row->id_pedido ?>">
 				  	</tr>
-			 		<?php }?>
+			 		<?php 
+			 			}					
+					}
+					?>
 	      		</tbody>
 	      	</table>
 	      	<input type="hidden" name="url" value="<?php echo $url ?>">
@@ -316,12 +345,15 @@
 	      			</tr>
 	      		</thead>
 	      		<tbody>
-	      			<?php foreach($presupuestos_mensajes as $row) { ?>
+	      			<?php 
+	      			if($presupuestos_mensajes){
+	      				foreach($presupuestos_mensajes as $row) { 
+	      			?>
 	      			<tr>
-	      				<td><a href="http://localhost/Durox/index.php/Presupuestos/pestanas/<?php echo $row->id_presupuesto ?>" class="displayblock"><?php echo $row->id_presupuesto ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Visitas/carga/<?php echo $row->id_visita ?>/0" class="displayblock"><?php echo $row->id_visita ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Clientes/pestanas/<?php echo $row->id_cliente ?>" class="displayblock"><?php echo $row->razon_social ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Vendedores/pestanas/<?php echo $row->id_vendedor ?>" class="displayblock"><?php echo $row->Vapellido.', '.$row->Vnombre ?></a></td>
+	      				<td><a href="<?php echo base_url().'index.php/Presupuestos/pestanas/'.$row->id_presupuesto ?>" class="displayblock"><?php echo $row->id_presupuesto ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Visitas/carga/'.$row->id_visita ?>/0" class="displayblock"><?php echo $row->id_visita ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Clientes/pestanas/'.$row->id_cliente ?>" class="displayblock"><?php echo $row->razon_social ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Vendedores/pestanas/'.$row->id_vendedor ?>" class="displayblock"><?php echo $row->Vapellido.', '.$row->Vnombre ?></a></td>
 				  		<?php $date	= date_create($row->fecha); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
 				  		<td><?php echo $row->origen?></td>
@@ -333,7 +365,10 @@
 				  		</td>
 				  		<input type="hidden" name="id_presupuesto<?php echo $row->id_presupuesto ?>" value="<?php echo $row->id_presupuesto ?>">
 				  	</tr>
-			 		<?php }?>
+			 		<?php 
+			 			}					
+					}
+					?>
 	      		</tbody>
 	      	</table>
 	      	<input type="hidden" name="url" value="<?php echo $url ?>">

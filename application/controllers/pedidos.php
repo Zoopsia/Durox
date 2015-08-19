@@ -22,6 +22,7 @@ class Pedidos extends My_Controller {
 		$this->load->model('reglas_model');
 		$this->load->model('visitas_model');
 		$this->load->model('presupuestos_model');
+		$this->load->model('log_linea_pedidos_model');
 		
 		$this->load->model($this->_subject.'_model');	
 	}
@@ -134,9 +135,10 @@ class Pedidos extends My_Controller {
 					'total'					=> $row->total,
 					'fecha'					=> date('Y-m-d'),
 					'id_origen'				=> 2,
-					'visto'					=> 0,
 					'aprobado_back'			=> 0,
-					'aprobado_front'		=> 1	
+					'aprobado_front'		=> 0,
+					'visto_back'			=> 1,
+					'visto_front'			=> 0,
 				);
 			}
 		}
@@ -180,19 +182,19 @@ class Pedidos extends My_Controller {
 	function editarVisto($id=null){
 		if($id){
 			$arreglo = array(
-				'visto'		=> $this->input->post('visto')
+				'visto_back'		=> $this->input->post('visto')
 			);
 			$id = $this->pedidos_model->update($arreglo, $id);
 		}
 		else{	
-			$mensaje 	= $this->pedidos_model->mensajesNuevos();
+			$mensaje 	= $this->pedidos_model->pedidosNuevos();
 		
 			if($mensaje){
 				foreach($mensaje as $row) {
 					$id = $row->id_pedido; 	
 					if($row->id_pedido = $this->input->post('id_pedido'.$id)){
 						$arreglo = array(
-							'visto'		=> $this->input->post('estado'.$id)
+							'visto_back'		=> $this->input->post('estado'.$id)
 						);
 						$id = $this->pedidos_model->update($arreglo, $id);
 					}
@@ -283,8 +285,8 @@ class Pedidos extends My_Controller {
 		$mensaje .= '
 			<thead class="tabla-datos-importantes">
 				<tr>
-					<th>'.$this->lang->line('producto').'</th>
-					<th>'.$this->lang->line('cantidad').'</th>
+					<th style="width: 210px">'.$this->lang->line('producto').'</th>
+					<th style="width: 200px">'.$this->lang->line('cantidad').'</th>
 					<th>'.$this->lang->line('precio').'</th>
 					<th>'.$this->lang->line('subtotal').'</th>
 					<th class="no-print">'.$this->lang->line('estado').'</th>
@@ -307,19 +309,24 @@ class Pedidos extends My_Controller {
 								<td>'.$row->cantidad.'</td>
 								<td>$ '.$row->precio.'</td>
 								<td>$ '.$row->subtotal.'</td>
-								<td class="no-print" style="width: 269px">'.$row->estado.'</th>';
-				if($row->estado_linea != 3){				
-				$mensaje .=		'<td style="width: 50px"><a class="btn btn-danger btn-xs" onclick="sacarProducto('.$row->id_linea_producto_pedido.','.$id.')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></td>';			
-				}
-				else{
-				$mensaje .=		'<td style="width: 50px"><a class="btn btn-success btn-xs" onclick="cargarProducto('.$row->id_linea_producto_pedido.','.$id.')" role="button" data-toggle="tooltip" data-placement="bottom" title="Agregar Producto"><i class="fa fa-plus"></i></a></td>';			
-				}
-				
-				$mensaje .=		'</tr>';
+								<td class="no-print" style="width: 150px">'.$row->estado.'</th>';
+				if($row->estado == 'En Proceso')
+					$mensaje .=	 '<td style="width: 50px"><span class="display-none" style="display:none"><a class="btn btn-danger btn-xs" onclick="sacarProducto('.$row->id_linea_producto_pedido.','.$id_pedido.')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></span></td>';			
+				/*else if($row->estado == 'Aprobado')
+					$mensaje .=		'<td style="width: 200px">'.devolverEstadoPedido($row->estado).'</td>';	
+				else if($row->estado == 'Facturado')
+					$mensaje .=		'<td style="width: 200px">'.devolverEstadoPedido($row->estado).'</td>';	
+				else if($row->estado == 'Enviado')
+					$mensaje .=		'<td style="width: 200px">'.devolverEstadoPedido($row->estado).'</td>';		
+				else if($row->estado == 'Eliminado')
+					$mensaje .=		'<td style="width: 200px">'.devolverEstadoPedido($row->estado).'</td>';	*/	
+				else if($row->estado == 'Imposible de Enviar')
+					$mensaje .=	'<td style="width: 50px"><span class="display-none" style="display:none"><a class="btn btn-success btn-xs" onclick="cargarProducto('.$row->id_linea_producto_pedido.','.$id_pedido.')" role="button" data-toggle="tooltip" data-placement="bottom" title="Agregar Producto"><i class="fa fa-plus"></i></a></span></td>';	
+				$mensaje .=	'</tr>';
 			}	
 		}		
 		$mensaje .=	'<tr class="cargarLinea" style="display: none">
-					 <td style="width: 167px">
+					 <td style="width: 210px">
 						<input type="text" id="producto" name="producto" class="numeric form-control editable" autocomplete="off" pattern="^[A-Za-z0-9 ]+$" onkeyup="ajaxSearch();" placeholder="'.$this->lang->line('producto').'" required style="height: 20px">
 						<div id="suggestions">
 						    <div id="autoSuggestionsList">  
@@ -327,7 +334,7 @@ class Pedidos extends My_Controller {
 						</div>
 						<input type="text" id="id_producto" name="id_producto" autocomplete="off" pattern="[0-9]*" required hidden>
 					</td>
-					<td style="width: 157px">
+					<td style="width: 200px">
 						<input type="text" id="cantidad" name="cantidad1" class="numeric form-control editable" onkeypress="if (event.keyCode==13){cargaProducto('.$id.'); return false;}" autocomplete="off" pattern="[0-9]*" placeholder="'.$this->lang->line('cantidad').'" style="height: 20px" required>
 					</td>
 					<td></td>
@@ -395,7 +402,7 @@ class Pedidos extends My_Controller {
 		
 		if($id_linea){
 			$arreglo	= array(
-				'id_estado_producto_pedido'	=> 4 	
+				'id_estado_producto_pedido'	=> 1 	
 			);
 		}
 		
@@ -422,8 +429,10 @@ class Pedidos extends My_Controller {
 		$arreglo = array(
 			'total'					=> $total,
 			'id_estado_pedido'		=> 4,
-			'visto'					=> 0,
+			'aprobado_back'			=> 0,
 			'aprobado_front'		=> 0,
+			'visto_back'			=> 1,
+			'visto_front'			=> 0,
 			'iteracion'				=> $iteracion + 1
 		);
 		
@@ -432,6 +441,44 @@ class Pedidos extends My_Controller {
 		if($pedidos){
 			foreach($pedidos as $row){
 				if($row->estado_linea == 3){
+					$arreglo	 = array(
+						'id_estado_producto_pedido'	=> 1,
+						'eliminado'					=> 1 	
+					);
+					
+					$arreglo_log = array(
+						'id_linea'					=> $row->id_linea_producto_pedido,
+						'id_accion'					=> 3
+					);
+					
+					$id 	= $this->pedidos_model->updateLinea($arreglo,$row->id_linea_producto_pedido);
+					$id_log = $this->log_linea_pedidos_model->insert($arreglo_log);
+				}
+				else if($row->estado_linea == 4){
+					$arreglo	= array(
+						'id_estado_producto_pedido'	=> 1	
+					);
+					
+					$arreglo_log = array(
+						'id_linea'					=> $row->id_linea_producto_pedido,
+						'id_accion'					=> 4
+					);
+					
+					$id 	= $this->pedidos_model->updateLinea($arreglo,$row->id_linea_producto_pedido);
+					$id_log = $this->log_linea_pedidos_model->insert($arreglo_log);
+				}
+			}
+		}
+
+		redirect('Pedidos/pestanas/'.$id_pedido,'refresh');
+	}
+
+	function cancelarCambios(){
+		$pedidos				= $this->pedidos_model->getDetallePedido($this->input->post('pedido'));
+		
+		if($pedidos){
+			foreach($pedidos as $row){
+				if($row->estado_linea == 4 ){
 					$arreglo	= array(
 						'id_estado_producto_pedido'	=> 1,
 						'eliminado'					=> 1 	
@@ -439,9 +486,38 @@ class Pedidos extends My_Controller {
 					
 					$id 	= $this->pedidos_model->updateLinea($arreglo,$row->id_linea_producto_pedido);
 				}
+				else if($row->estado_linea == 3){
+					$arreglo	= array(
+						'id_estado_producto_pedido'	=> 1	
+					);
+					
+					$id 	= $this->pedidos_model->updateLinea($arreglo,$row->id_linea_producto_pedido);
+				
+				}
 			}
 		}
+		
+		$this->armarTabla($this->input->post('pedido'));
+	}
+	
+	function aprobarPedido($id_pedido){
+		$pedido	= $this->pedidos_model->getDetallePedido($id_pedido);
+		
+		if($pedido){
+			foreach($pedido as $row){
+				$arreglo	= array(
+					'id_estado_producto_pedido'	=> 2	
+				);
+				$id 	= $this->pedidos_model->updateLinea($arreglo,$row->id_linea_producto_pedido);
+			}
 
+			$arreglo_pedido = array(
+				'id_estado_pedido'		=>2
+			);
+			
+			$this->pedidos_model->update($arreglo_pedido, $id_pedido);
+		}
+			
 		redirect('Pedidos/pestanas/'.$id_pedido,'refresh');
 	}
 }

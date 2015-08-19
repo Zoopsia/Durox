@@ -28,6 +28,9 @@ function eliminar($id){
 	}
 }
 </script>
+<?php
+$eliminado = 0;
+?>
 <!-- Modal -->
 <div class="modal fade" id="ModalBuscar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	<div class="modal-dialog" role="document">
@@ -127,7 +130,8 @@ function eliminar($id){
 																echo '</div>';
 															}
 															else {
-																echo '<div class="col-md-4" style="color: red; text-align: center">';
+																$eliminado = 1;
+																echo '<div class="even" style="color: red; text-align: center">';
 																echo $this->lang->line('visita').' '.$this->lang->line('eliminada'); 
 																echo '</div>';
 															}
@@ -229,7 +233,8 @@ function eliminar($id){
 							} //if($visita){
 							?>
 							<?php
-	    						if($presupuesto){
+								if($eliminado!=1){
+		    						if($presupuesto){
 	    					?>		
 										<div class="row">
 									        <div class="col-md-6">
@@ -286,8 +291,8 @@ function eliminar($id){
 											</div>
 										</div>
 								<?php	
-	    							}
-									else {
+	    								}
+										else {
 								?>
 										
 									        <div class="col-sm-6 col-md-6">
@@ -311,7 +316,8 @@ function eliminar($id){
 									        </div>
 										
 								<?php
-									}	
+										}
+									}		
 								?>
 	    					
 
@@ -322,6 +328,7 @@ function eliminar($id){
 
 
 	    						<?php
+	    						if($eliminado!=1){
 	    							if($pedido){
 	    								foreach($pedido as $row){
 	    						?>		
@@ -373,9 +380,12 @@ function eliminar($id){
 									        </div>
 									     </div>
 								<?php
-									}	
+									}
+								}	
 								?>
-								
+								<?php
+								if($eliminado!=1){
+								?>
 								<div class="row">
 									<div class="col-lg-10"></div>
 									<div class="col-lg-2">
@@ -387,6 +397,9 @@ function eliminar($id){
 										?>
 									</div>
 								</div>
+								<?php
+								}
+								?>
 	    					</div>
 	    				</div><!--contenedor de cada pestaña-->
 		  			</div><!--panel body-->

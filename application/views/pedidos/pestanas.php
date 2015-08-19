@@ -2,12 +2,12 @@
 function editable(){
 	$("#btn-print").hide();
 	$("#btn-editar").hide();
+	$("#btn-aprobar").hide();
 	$(".cargarLinea").show();
 	$('.display-none').show();
 	$('#btn-guardar').show();
 	$('#btn-cancelar').show();
 	document.getElementById("producto").focus();
-	
 }
 
 function cargaProducto($id_pedido){
@@ -108,6 +108,30 @@ function cargarProducto($id_linea, $pedido){
 	 		armarTotales(pedido);
 	 	}
 	});
+}
+
+function cancelarCambios($pedido){
+	var pedido = $pedido;
+	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/Pedidos/cancelarCambios', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	data: {'pedido': pedido,},
+	 	success: function(resp) {
+	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
+	 		armarTotales(pedido);
+	 		$("#btn-print").show();
+			$("#btn-editar").show();
+			$("#btn-aprobar").show();
+			$(".cargarLinea").hide();
+			$('.display-none').hide();
+			$('#btn-guardar').hide();
+			$('#btn-cancelar').hide();
+	 	}
+	});
+}
+
+function aprobarForm() {
+	$("#aprobarForm").submit();
 }
 
 </script>
@@ -250,8 +274,8 @@ function cargarProducto($id_linea, $pedido){
 	     						?>
 								        <thead class="tabla-datos-importantes">
 								            <tr>
-								            	<th><?php echo $this->lang->line('producto'); ?></th>
-								                <th><?php echo $this->lang->line('cantidad'); ?></th>
+								            	<th style="width: 210px"><?php echo $this->lang->line('producto'); ?></th>
+								                <th style="width: 200px"><?php echo $this->lang->line('cantidad'); ?></th>
 								                <th><?php echo $this->lang->line('precio'); ?></th>
 								                <th><?php echo $this->lang->line('subtotal'); ?></th>
 								                <th class="no-print"><?php echo $this->lang->line('estado'); ?></th>
@@ -275,18 +299,25 @@ function cargarProducto($id_linea, $pedido){
 												echo '<td>'.$row->cantidad.'</td>';
 												echo '<td>$ '.$row->precio.'</td>';
 												echo '<td>$ '.$row->subtotal.'</td>';
-												echo '<td class="no-print" style="width: 269px">'.$row->estado.'</th>';	
-												if($row->estado != 'Imposible de Enviar')
+												echo '<td class="no-print" style="width: 150px">'.$row->estado.'</th>';	
+												if($row->estado == 'En Proceso')
 													echo '<td style="width: 50px"><span class="display-none" style="display:none"><a class="btn btn-danger btn-xs" onclick="sacarProducto('.$row->id_linea_producto_pedido.','.$id_pedido.')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></span></td>';			
-												else {
+												/*else if($row->estado == 'Aprobado')
+													echo 	'<td style="width: 200px">'.devolverEstadoPedido($row->estado).'</td>';	
+												else if($row->estado == 'Facturado')
+													echo 	'<td style="width: 200px">'.devolverEstadoPedido($row->estado).'</td>';	
+												else if($row->estado == 'Enviado')
+													echo 	'<td style="width: 200px">'.devolverEstadoPedido($row->estado).'</td>';		
+												else if($row->estado == 'Eliminado')
+													echo 	'<td style="width: 200px">'.devolverEstadoPedido($row->estado).'</td>';	*/	
+												else if($row->estado == 'Imposible de Enviar')
 													echo '<td style="width: 50px"><span class="display-none" style="display:none"><a class="btn btn-success btn-xs" onclick="cargarProducto('.$row->id_linea_producto_pedido.','.$id_pedido.')" role="button" data-toggle="tooltip" data-placement="bottom" title="Agregar Producto"><i class="fa fa-plus"></i></a></span></td>';	
-												}
 												echo '</tr>';
 											}	
 										}		
 										?>
 										<tr class="cargarLinea" style="display: none">
-											<td style="width: 200px">
+											<td style="width: 210px">
 												<input type="text" id="producto" name="producto" class="numeric form-control editable" autocomplete="off" pattern="^[A-Za-z0-9 ]+$" onkeyup="ajaxSearch();" placeholder="<?php echo $this->lang->line('producto'); ?>" required style="height: 20px">
 												<div id="suggestions">
 										            <div id="autoSuggestionsList">  
@@ -294,7 +325,7 @@ function cargarProducto($id_linea, $pedido){
 										        </div>
 										        <input type="text" id="id_producto" name="id_producto" autocomplete="off" pattern="[0-9]*" required hidden>
 											</td>
-											<td style="width: 189px">
+											<td style="width: 200px">
 												<input type="text" id="cantidad" name="cantidad1" class="numeric form-control editable" onkeypress="if (event.keyCode==13){cargaProducto(<?php echo $id_pedido?>); return false;}" autocomplete="off" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('cantidad'); ?>" style="height: 20px" required>
 											</td>
 											<td></td>
@@ -318,7 +349,7 @@ function cargarProducto($id_linea, $pedido){
                             </p>
                         </div><!-- /.col -->
                         <div class="col-xs-6">
-                            <p class="lead"><?php echo $this->lang->line('totales');?></p>
+                            <p class="lead"><?php echo $this->lang->line('totales')?></p>
                             <div class="table-responsive" id="table-totales">
                                 <table class="table">
                                     <tr>
@@ -345,18 +376,35 @@ function cargarProducto($id_linea, $pedido){
 									<i class="fa fa-info-circle"></i>
 								</button>
 								
-								<button id ="btn-print" class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+								<button type="button" id="btn-print" class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
 								
-								<button type="button" id="btn-editar" class="btn btn-primary btn-sm pull-right" onclick="editable()">
+								<?php
+								if($pedido){
+									foreach($pedido as $row){
+										if($row->id_estado_pedido == 1 && $row->id_estado_pedido != 2){
+								?>	
+								
+								<button type="button" id="btn-editar" class="btn btn-primary btn-sm pull-right" onclick="editable()" style=" margin-left: 5px">
 									<?php echo $this->lang->line('editar');?>
-								</button>	
-								
-								<button type="button" id="btn-cancelar" class="btn btn-danger btn-sm pull-right" onclick="" style="display: none; margin-left: 5px">
+								</button>
+									
+									
+								<button type="button" id="btn-aprobar" onclick="aprobarForm()" class="btn btn-success btn-sm pull-right">
+									<?php echo $this->lang->line('aprobar').' '.$this->lang->line('pedido');?>
+								</button>		
+								<?php
+										}
+									}
+								}
+								?>
+								<button type="button" id="btn-cancelar" class="btn btn-danger btn-sm pull-right" onclick="cancelarCambios(<?php echo $id_pedido?>)" style="display: none; margin-left: 5px">
 									<?php echo $this->lang->line('cancelar');?>
 								</button>
 								<button type="submit" id="btn-guardar" class="btn btn-primary btn-sm pull-right" style="display: none;">
 									<?php echo $this->lang->line('guardar');?>
 								</button>
+							</form>
+							<form id="aprobarForm" action="<?php echo base_url().'/index.php/Pedidos/aprobarPedido/'.$id_pedido?>" method="post">
 							</form>
                          </div>
                     </div>	
@@ -377,7 +425,7 @@ function cargarProducto($id_linea, $pedido){
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel"><?php echo $this->lang->line('informacion');?></h4>
       </div>
-      <form action="<?php echo base_url()."index.php/Pedidos/editarVisto/".$row->id_presupuesto; ?>" class="form-horizontal" method="post">
+      <form action="<?php echo base_url()."index.php/Pedidos/editarVisto/".$row->id_pedido; ?>" class="form-horizontal" method="post">
       <div class="modal-body">
       	<div class="row">
       		<table class="table table-striped">
@@ -419,7 +467,7 @@ function cargarProducto($id_linea, $pedido){
 					<div class="col-lg-8">
 						<select name="visto" class="form-control chosen-select">	
 							<?php
-							if($row->visto == 1){
+							if($row->visto_back == 1){
 								echo '<option value="1" selected>SI</option>';
 								echo '<option value="0">NO</option>';
 							}

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 18-08-2015 a las 16:01:20
+-- Tiempo de generación: 19-08-2015 a las 14:10:03
 -- Versión del servidor: 5.6.24
 -- Versión de PHP: 5.6.8
 
@@ -787,7 +787,7 @@ CREATE TABLE IF NOT EXISTS `estados_pedidos` (
   `eliminado` int(11) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `estados_pedidos`
@@ -796,7 +796,8 @@ CREATE TABLE IF NOT EXISTS `estados_pedidos` (
 INSERT INTO `estados_pedidos` (`id_estado_pedido`, `estado`, `eliminar_cliente`, `eliminar_vendedor`, `eliminar_visita`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
 (1, '<span class="label label-default">En Proceso</span>', 0, 0, 0, '2015-06-16 00:00:00', '2015-06-16 00:00:00', 0, 0, 0),
 (2, '<span class="label label-success">Enviado</span>', 0, 0, 0, '2015-06-18 00:00:00', '2015-06-18 00:00:00', 0, 0, 0),
-(3, '<span class="label label-danger">Imposible de Enviar</span>', 1, 1, 1, '2015-06-18 00:00:00', '2015-06-18 00:00:00', 0, 0, 0);
+(3, '<span class="label label-danger">Imposible de Enviar</span>', 1, 1, 1, '2015-06-18 00:00:00', '2015-06-18 00:00:00', 0, 0, 0),
+(4, '<span class="label label-warning">Editado</span>', 0, 0, 0, '2015-08-02 00:00:00', '2015-08-02 00:00:00', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -842,7 +843,7 @@ CREATE TABLE IF NOT EXISTS `estados_productos_pedidos` (
   `eliminado` tinyint(4) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `estados_productos_pedidos`
@@ -851,7 +852,8 @@ CREATE TABLE IF NOT EXISTS `estados_productos_pedidos` (
 INSERT INTO `estados_productos_pedidos` (`id_estado_producto_pedido`, `estado`, `eliminar_producto`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
 (1, 'En Proceso', 0, '2015-07-01 00:00:00', '2015-07-01 00:00:00', 0, 0, 0),
 (2, 'Enviado', 1, '2015-07-01 00:00:00', '2015-07-01 00:00:00', 0, 0, 0),
-(3, 'Imposible de Enviar', 1, '2015-07-01 00:00:00', '2015-07-01 00:00:00', 0, 0, 0);
+(3, 'Imposible de Enviar', 1, '2015-07-01 00:00:00', '2015-07-01 00:00:00', 0, 0, 0),
+(4, 'Nuevo', 0, '2015-08-01 00:00:00', '2015-08-01 00:00:00', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -948,19 +950,88 @@ CREATE TABLE IF NOT EXISTS `linea_productos_pedidos` (
   `eliminado` tinyint(4) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=76 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `linea_productos_pedidos`
 --
 
 INSERT INTO `linea_productos_pedidos` (`id_linea_producto_pedido`, `id_pedido`, `id_producto`, `precio`, `cantidad`, `subtotal`, `id_estado_producto_pedido`, `aprobado_back`, `aprobado_front`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
-(1, 1, 1, 5.25, 150, 787.5, 1, 0, 0, '2015-08-12 17:51:39', '2015-08-12 17:51:39', 0, 1, 1),
-(2, 1, 2, 4.25, 120, 510, 1, 0, 0, '2015-08-12 17:51:39', '2015-08-12 17:51:39', 0, 1, 1),
-(3, 2, 2, 4.25, 250, 1062.5, 1, 0, 0, '2015-08-12 18:20:56', '2015-08-12 18:20:56', 0, 1, 1),
-(4, 2, 7, 12.45, 120, 1494, 1, 0, 0, '2015-08-12 18:20:56', '2015-08-12 18:20:56', 0, 1, 1),
-(5, 3, 7, 12.45, 150, 1867.5, 1, 0, 0, '2015-08-18 15:02:34', '2015-08-18 15:02:34', 0, 1, 1),
-(6, 3, 3, 4.89, 20, 97.8, 1, 0, 0, '2015-08-18 15:02:34', '2015-08-18 15:02:34', 0, 1, 1);
+(1, 1, 1, 5.25, 150, 787.5, 1, 0, 0, '2015-08-12 17:51:39', '2015-08-18 21:19:25', 1, 1, 1),
+(2, 1, 2, 4.25, 120, 510, 1, 0, 0, '2015-08-12 17:51:39', '2015-08-18 21:19:25', 1, 1, 1),
+(3, 2, 2, 4.25, 250, 1062.5, 1, 0, 0, '2015-08-12 18:20:56', '2015-08-19 13:42:08', 1, 1, 1),
+(4, 2, 7, 12.45, 120, 1494, 1, 0, 0, '2015-08-12 18:20:56', '2015-08-19 13:43:09', 1, 1, 1),
+(5, 3, 7, 12.45, 150, 1867.5, 3, 0, 0, '2015-08-18 15:02:34', '2015-08-18 20:52:45', 1, 1, 1),
+(6, 3, 3, 4.89, 20, 97.8, 1, 0, 0, '2015-08-18 15:02:34', '2015-08-18 21:19:01', 1, 1, 1),
+(7, 4, 1, 5.25, 15, 78.75, 3, 0, 1, '2015-08-18 16:52:59', '2015-08-18 18:47:49', 0, 1, 1),
+(8, 4, 2, 4.25, 10, 42.5, 3, 0, 1, '2015-08-18 16:53:00', '2015-08-18 18:47:50', 0, 1, 1),
+(9, 4, 3, 4.89, 20, 97.8, 3, 0, 1, '2015-08-18 16:53:00', '2015-08-18 18:49:44', 0, 1, 1),
+(10, 4, 4, 3.6, 15, 54, 3, 0, 1, '2015-08-18 16:53:00', '2015-08-18 18:35:33', 0, 1, 1),
+(11, 4, 1, 5.25, 15, 78.75, 1, 0, 0, '2015-08-18 17:25:14', '2015-08-18 17:25:14', 0, 1, 1),
+(12, 4, 5, 4.55, 200, 910, 1, 0, 0, '2015-08-18 17:29:33', '2015-08-18 17:29:33', 0, 1, 1),
+(13, 4, 6, 5.35, 150, 802.5, 1, 0, 0, '2015-08-18 17:29:59', '2015-08-18 17:29:59', 0, 1, 1),
+(14, 4, 7, 12.45, 120, 1494, 3, 0, 0, '2015-08-18 17:30:30', '2015-08-18 18:34:07', 0, 1, 1),
+(15, 4, 2, 4.25, 15, 63.75, 1, 0, 0, '2015-08-18 17:31:06', '2015-08-18 17:31:06', 0, 1, 1),
+(16, 4, 3, 4.89, 150, 733.5, 3, 0, 0, '2015-08-18 17:31:43', '2015-08-18 18:47:52', 0, 1, 1),
+(17, 4, 4, 3.6, 1000, 3600, 3, 0, 0, '2015-08-18 17:32:02', '2015-08-18 18:36:05', 0, 1, 1),
+(18, 4, 3, 4.89, 150, 733.5, 1, 0, 0, '2015-08-18 17:32:30', '2015-08-18 17:32:30', 0, 1, 1),
+(19, 4, 3, 4.89, 150, 733.5, 1, 0, 0, '2015-08-18 17:36:11', '2015-08-18 17:36:11', 0, 1, 1),
+(20, 4, 2, 4.25, 150, 637.5, 1, 0, 0, '2015-08-18 17:36:16', '2015-08-18 17:36:16', 0, 1, 1),
+(21, 1, 3, 4.89, 120, 586.8, 1, 0, 0, '2015-08-18 17:38:12', '2015-08-18 21:20:31', 1, 1, 1),
+(22, 1, 4, 3.6, 150, 540, 1, 0, 0, '2015-08-18 17:38:20', '2015-08-18 21:20:31', 1, 1, 1),
+(23, 1, 5, 4.55, 99, 450.45, 1, 0, 0, '2015-08-18 17:38:32', '2015-08-18 21:21:42', 1, 1, 1),
+(24, 1, 3, 4.89, 33, 161.37, 1, 0, 0, '2015-08-18 17:38:42', '2015-08-18 21:21:14', 1, 1, 1),
+(25, 1, 2, 4.25, 240, 1020, 1, 0, 0, '2015-08-18 17:39:00', '2015-08-18 21:27:24', 1, 1, 1),
+(26, 1, 4, 3.6, 20, 72, 1, 0, 0, '2015-08-18 17:45:41', '2015-08-18 21:21:14', 1, 1, 1),
+(27, 1, 1, 5.25, 200, 1050, 1, 0, 0, '2015-08-18 17:45:49', '2015-08-18 21:21:14', 1, 1, 1),
+(28, 1, 3, 4.89, 150, 733.5, 1, 0, 0, '2015-08-18 17:49:19', '2015-08-18 21:22:09', 1, 1, 1),
+(29, 1, 4, 3.6, 200, 720, 1, 0, 0, '2015-08-18 18:02:12', '2015-08-18 21:22:09', 1, 1, 1),
+(30, 1, 1, 5.25, 20, 105, 1, 0, 0, '2015-08-18 18:02:29', '2015-08-18 21:22:09', 1, 1, 1),
+(31, 1, 2, 4.25, 50, 212.5, 1, 0, 0, '2015-08-18 18:02:37', '2015-08-18 21:22:09', 1, 1, 1),
+(32, 1, 3, 4.89, 150, 733.5, 1, 0, 0, '2015-08-18 18:02:44', '2015-08-18 21:22:09', 1, 1, 1),
+(33, 1, 4, 3.6, 250, 900, 1, 0, 0, '2015-08-18 18:03:03', '2015-08-18 21:22:09', 1, 1, 1),
+(34, 1, 1, 5.25, 240, 1260, 1, 0, 0, '2015-08-18 18:03:11', '2015-08-18 21:22:09', 1, 1, 1),
+(35, 1, 3, 4.89, 250, 1222.5, 1, 0, 0, '2015-08-18 18:03:19', '2015-08-18 21:22:09', 1, 1, 1),
+(36, 2, 1, 5.25, 150, 787.5, 1, 0, 0, '2015-08-18 18:04:34', '2015-08-19 13:43:09', 1, 1, 1),
+(37, 2, 3, 4.89, 15, 73.35, 1, 0, 0, '2015-08-18 18:04:56', '2015-08-19 13:43:09', 1, 1, 1),
+(38, 2, 4, 3.6, 250, 900, 1, 0, 0, '2015-08-18 18:05:17', '2015-08-19 13:43:09', 1, 1, 1),
+(39, 2, 6, 5.35, 25, 133.75, 1, 0, 0, '2015-08-18 18:05:52', '2015-08-19 13:43:09', 1, 1, 1),
+(40, 2, 5, 4.55, 25, 113.75, 1, 0, 0, '2015-08-18 18:06:32', '2015-08-19 13:43:09', 1, 1, 1),
+(41, 4, 1, 5.25, 250, 1312.5, 1, 0, 0, '2015-08-18 18:15:46', '2015-08-18 18:15:46', 0, 1, 1),
+(42, 4, 2, 4.25, 350, 1487.5, 3, 0, 0, '2015-08-18 18:25:19', '2015-08-18 18:35:37', 0, 1, 1),
+(43, 4, 3, 4.89, 150, 733.5, 3, 0, 0, '2015-08-18 18:26:16', '2015-08-18 18:36:50', 0, 1, 1),
+(44, 4, 2, 4.25, 120, 510, 1, 0, 0, '2015-08-18 18:26:25', '2015-08-18 18:26:25', 0, 1, 1),
+(45, 4, 3, 4.89, 120, 586.8, 1, 0, 0, '2015-08-18 18:46:25', '2015-08-18 18:46:25', 0, 1, 1),
+(46, 4, 4, 3.6, 120, 432, 3, 0, 0, '2015-08-18 18:47:45', '2015-08-18 18:47:47', 0, 1, 1),
+(47, 4, 8, 2.59, 120, 310.8, 3, 0, 0, '2015-08-18 18:48:45', '2015-08-18 18:49:40', 0, 1, 1),
+(48, 4, 5, 4.55, 120, 546, 1, 0, 0, '2015-08-18 18:48:56', '2015-08-18 18:48:56', 0, 1, 1),
+(49, 4, 4, 3.6, 15, 54, 1, 0, 0, '2015-08-18 18:49:18', '2015-08-18 18:49:18', 0, 1, 1),
+(50, 4, 3, 4.89, 20, 97.8, 1, 0, 0, '2015-08-18 18:49:55', '2015-08-18 18:49:55', 0, 1, 1),
+(51, 2, 4, 3.6, 150, 540, 1, 0, 0, '2015-08-18 18:54:41', '2015-08-19 13:43:09', 1, 1, 1),
+(52, 2, 4, 3.6, 20, 72, 1, 0, 0, '2015-08-18 18:55:46', '2015-08-19 13:43:09', 1, 1, 1),
+(53, 2, 7, 12.45, 20, 249, 1, 0, 0, '2015-08-18 18:56:38', '2015-08-18 20:42:20', 0, 1, 1),
+(54, 2, 4, 3.6, 150, 540, 1, 0, 0, '2015-08-18 18:57:07', '2015-08-19 13:43:09', 1, 1, 1),
+(55, 2, 2, 4.25, 20, 85, 1, 0, 0, '2015-08-18 18:57:15', '2015-08-19 13:43:09', 1, 1, 1),
+(56, 2, 3, 4.89, 25, 122.25, 1, 0, 0, '2015-08-18 19:00:32', '2015-08-19 13:43:09', 1, 1, 1),
+(57, 2, 2, 4.25, 30, 127.5, 1, 0, 0, '2015-08-18 19:00:37', '2015-08-19 13:43:09', 1, 1, 1),
+(58, 2, 4, 3.6, 150, 540, 1, 0, 0, '2015-08-18 19:00:42', '2015-08-19 13:43:09', 1, 1, 1),
+(59, 2, 3, 4.89, 150, 733.5, 1, 0, 0, '2015-08-18 20:03:42', '2015-08-19 13:43:09', 1, 1, 1),
+(60, 2, 2, 4.25, 30, 127.5, 1, 0, 0, '2015-08-18 20:03:46', '2015-08-18 20:34:38', 0, 1, 1),
+(61, 2, 4, 3.6, 150, 540, 1, 0, 0, '2015-08-18 20:07:23', '2015-08-18 20:23:20', 0, 1, 1),
+(62, 2, 3, 4.89, 150, 733.5, 1, 0, 0, '2015-08-18 20:08:53', '2015-08-19 13:43:09', 1, 1, 1),
+(63, 2, 3, 4.89, 20, 97.8, 1, 0, 0, '2015-08-18 20:09:01', '2015-08-18 20:24:20', 0, 1, 1),
+(64, 2, 2, 4.25, 510, 2167.5, 1, 0, 0, '2015-08-18 20:23:56', '2015-08-19 13:43:10', 1, 1, 1),
+(65, 2, 3, 4.89, 210, 1026.9, 1, 0, 0, '2015-08-18 20:24:42', '2015-08-19 13:43:10', 1, 1, 1),
+(66, 3, 3, 4.89, 150, 733.5, 1, 0, 0, '2015-08-18 20:52:49', '2015-08-18 20:52:49', 0, 1, 1),
+(67, 1, 3, 4.89, 150, 733.5, 1, 0, 0, '2015-08-18 21:25:09', '2015-08-18 21:38:10', 1, 1, 1),
+(68, 1, 1, 5.25, 200, 1050, 1, 0, 0, '2015-08-18 21:27:20', '2015-08-19 13:39:44', 0, 1, 0),
+(69, 1, 3, 4.89, 150, 733.5, 1, 0, 0, '2015-08-18 21:38:26', '2015-08-19 13:39:46', 1, 1, 0),
+(70, 1, 2, 4.25, 100, 425, 1, 0, 0, '2015-08-18 21:38:31', '2015-08-18 21:46:38', 1, 1, 1),
+(71, 2, 1, 5.25, 150, 787.5, 1, 0, 0, '2015-08-19 13:46:07', '2015-08-19 13:57:30', 1, 1, 1),
+(72, 2, 1, 5.25, 100, 525, 1, 0, 0, '2015-08-19 13:47:14', '2015-08-19 13:57:30', 1, 1, 1),
+(73, 2, 1, 5.25, 120, 630, 1, 0, 0, '2015-08-19 13:49:34', '2015-08-19 13:57:30', 1, 1, 1),
+(74, 2, 2, 4.25, 100, 425, 1, 0, 0, '2015-08-19 13:49:39', '2015-08-19 13:49:39', 0, 1, 1),
+(75, 2, 1, 5.25, 100, 525, 4, 0, 0, '2015-08-19 13:57:16', '2015-08-19 13:57:16', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -981,7 +1052,7 @@ CREATE TABLE IF NOT EXISTS `linea_productos_presupuestos` (
   `eliminado` tinyint(4) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `linea_productos_presupuestos`
@@ -995,7 +1066,26 @@ INSERT INTO `linea_productos_presupuestos` (`id_linea_producto_presupuesto`, `id
 (5, 3, 1, 5.25, 150, 787.5, 3, '2015-08-12 20:34:45', '2015-08-12 20:34:46', 0, 1, 1),
 (6, 3, 2, 4.25, 150, 637.5, 1, '2015-08-12 20:34:50', '2015-08-12 20:34:50', 0, 1, 1),
 (7, 4, 7, 12.45, 150, 1867.5, 2, '2015-08-13 21:56:22', '2015-08-18 15:02:34', 0, 1, 1),
-(8, 4, 3, 4.89, 20, 97.8, 2, '2015-08-13 21:56:27', '2015-08-18 15:02:34', 0, 1, 1);
+(8, 4, 3, 4.89, 20, 97.8, 2, '2015-08-13 21:56:27', '2015-08-18 15:02:34', 0, 1, 1),
+(9, 5, 1, 5.25, 15, 78.75, 2, '2015-08-18 16:41:06', '2015-08-18 16:53:00', 0, 1, 1),
+(10, 5, 2, 4.25, 10, 42.5, 2, '2015-08-18 16:41:10', '2015-08-18 16:53:00', 0, 1, 1),
+(11, 5, 3, 4.89, 20, 97.8, 2, '2015-08-18 16:41:16', '2015-08-18 16:53:00', 0, 1, 1),
+(12, 5, 4, 3.6, 15, 54, 2, '2015-08-18 16:41:54', '2015-08-18 16:53:00', 0, 1, 1),
+(13, 6, 1, 5.25, 150, 787.5, 1, '2015-08-18 18:13:52', '2015-08-18 18:13:52', 0, 1, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `log_linea_pedidos`
+--
+
+CREATE TABLE IF NOT EXISTS `log_linea_pedidos` (
+  `id_log` int(11) NOT NULL,
+  `id_linea` int(11) NOT NULL,
+  `id_accion` int(11) NOT NULL,
+  `date_add` datetime NOT NULL,
+  `user_add` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -1327,23 +1417,25 @@ CREATE TABLE IF NOT EXISTS `pedidos` (
   `id_origen` int(11) NOT NULL,
   `aprobado_back` tinyint(1) NOT NULL,
   `aprobado_front` tinyint(1) NOT NULL,
-  `visto` tinyint(4) NOT NULL,
+  `visto_back` tinyint(1) NOT NULL,
+  `visto_front` tinyint(1) NOT NULL,
   `iteracion` int(11) NOT NULL,
   `date_add` datetime NOT NULL,
   `date_upd` datetime NOT NULL,
-  `eliminado` tinyint(4) NOT NULL,
+  `eliminado` tinyint(1) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `pedidos`
 --
 
-INSERT INTO `pedidos` (`id_pedido`, `id_visita`, `id_presupuesto`, `id_cliente`, `id_vendedor`, `id_estado_pedido`, `total`, `fecha`, `id_origen`, `aprobado_back`, `aprobado_front`, `visto`, `iteracion`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
-(1, 1, 1, 1, 1, 1, 1297.5, '2015-08-12', 2, 0, 0, 1, 0, '2015-08-12 17:51:39', '2015-08-12 21:34:54', 0, 1, 1),
-(2, 4, 2, 1, 1, 1, 2556.5, '2015-08-12', 2, 0, 0, 1, 0, '2015-08-12 18:20:56', '2015-08-12 21:26:54', 0, 1, 1),
-(3, 5, 4, 2, 1, 1, 1965.3, '2015-08-18', 2, 0, 1, 0, 0, '2015-08-18 15:02:34', '2015-08-18 15:02:34', 0, 1, 1);
+INSERT INTO `pedidos` (`id_pedido`, `id_visita`, `id_presupuesto`, `id_cliente`, `id_vendedor`, `id_estado_pedido`, `total`, `fecha`, `id_origen`, `aprobado_back`, `aprobado_front`, `visto_back`, `visto_front`, `iteracion`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
+(1, 1, 1, 1, 1, 4, 1050, '2015-08-12', 2, 0, 0, 0, 0, 4, '2015-08-12 17:51:39', '2015-08-19 13:39:46', 0, 1, 0),
+(2, 4, 2, 1, 1, 4, 1964.3, '2015-08-12', 2, 0, 0, 0, 0, 3, '2015-08-12 18:20:56', '2015-08-19 13:57:30', 0, 1, 1),
+(3, 5, 4, 2, 1, 1, 1965.3, '2015-08-18', 2, 0, 1, 0, 0, 0, '2015-08-18 15:02:34', '2015-08-18 15:02:34', 0, 1, 1),
+(4, 6, 5, 2, 1, 1, 273.05, '2015-08-18', 2, 0, 1, 0, 0, 0, '2015-08-18 16:52:59', '2015-08-18 16:52:59', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1366,7 +1458,7 @@ CREATE TABLE IF NOT EXISTS `presupuestos` (
   `eliminado` tinyint(4) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `presupuestos`
@@ -1376,7 +1468,9 @@ INSERT INTO `presupuestos` (`id_presupuesto`, `id_visita`, `id_cliente`, `id_ven
 (1, 1, 1, 1, 2, 1297.5, '2015-08-12', 2, 1, '2015-08-12 17:51:24', '2015-08-13 21:17:27', 0, 1, 1),
 (2, 4, 1, 1, 2, 2556.5, '2015-08-12', 2, 1, '2015-08-12 18:20:22', '2015-08-12 21:22:08', 0, 1, 1),
 (3, 3, 1, 1, 3, 637.5, '2015-08-12', 2, 1, '2015-08-12 20:34:41', '2015-08-12 21:22:08', 0, 1, 1),
-(4, 5, 2, 1, 2, 1965.3, '2015-08-13', 2, 0, '2015-08-13 21:56:16', '2015-08-18 15:02:34', 0, 1, 1);
+(4, 5, 2, 1, 2, 1965.3, '2015-08-13', 2, 0, '2015-08-13 21:56:16', '2015-08-18 15:02:34', 0, 1, 1),
+(5, 6, 2, 1, 2, 273.05, '2015-08-18', 2, 0, '2015-08-18 16:41:00', '2015-08-18 16:52:59', 0, 1, 1),
+(6, 7, 1, 1, 1, 787.5, '2015-08-18', 2, 0, '2015-08-18 18:13:03', '2015-08-18 18:27:25', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1752,7 +1846,7 @@ CREATE TABLE IF NOT EXISTS `sin_visitas_presupuestos` (
   `eliminado` tinyint(4) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `sin_visitas_presupuestos`
@@ -1762,7 +1856,9 @@ INSERT INTO `sin_visitas_presupuestos` (`id_sin_visita_presupuesto`, `id_visita`
 (1, 1, 1, '2015-08-12 17:51:24', '2015-08-12 17:51:24', 0, 1, 1),
 (2, 4, 2, '2015-08-12 18:20:22', '2015-08-12 18:20:22', 0, 1, 1),
 (3, 3, 3, '2015-08-12 20:34:41', '2015-08-12 20:34:41', 0, 1, 1),
-(4, 5, 4, '2015-08-13 21:56:16', '2015-08-13 21:56:16', 0, 1, 1);
+(4, 5, 4, '2015-08-13 21:56:16', '2015-08-13 21:56:16', 0, 1, 1),
+(5, 6, 5, '2015-08-18 16:41:00', '2015-08-18 16:41:00', 0, 1, 1),
+(6, 7, 6, '2015-08-18 18:13:03', '2015-08-18 18:13:03', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1875,7 +1971,7 @@ CREATE TABLE IF NOT EXISTS `vendedores` (
   `id_vendedor` int(11) NOT NULL,
   `nombre` varchar(128) NOT NULL,
   `apellido` varchar(128) NOT NULL,
-  `contraseña` varchar(64) NOT NULL,
+  `pass` varchar(64) NOT NULL,
   `imagen` varchar(256) NOT NULL,
   `id_origen` int(11) NOT NULL,
   `id_db` int(11) NOT NULL,
@@ -1891,8 +1987,8 @@ CREATE TABLE IF NOT EXISTS `vendedores` (
 -- Volcado de datos para la tabla `vendedores`
 --
 
-INSERT INTO `vendedores` (`id_vendedor`, `nombre`, `apellido`, `contraseña`, `imagen`, `id_origen`, `id_db`, `visto`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
-(1, 'Juan', 'Gomez', '11155', 'http://localhost/Durox/img/vendedores/Koala.jpg', 2, 0, 1, '2015-08-12 17:49:10', '2015-08-14 16:02:04', 0, 1, 1);
+INSERT INTO `vendedores` (`id_vendedor`, `nombre`, `apellido`, `pass`, `imagen`, `id_origen`, `id_db`, `visto`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
+(1, 'Juan', 'Gomez', '1122', 'http://localhost/Durox/img/vendedores/Koala.jpg', 2, 0, 1, '2015-08-12 17:49:10', '2015-08-18 17:45:22', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1915,7 +2011,7 @@ CREATE TABLE IF NOT EXISTS `visitas` (
   `eliminado` tinyint(2) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `visitas`
@@ -1926,7 +2022,9 @@ INSERT INTO `visitas` (`id_visita`, `id_vendedor`, `id_cliente`, `descripcion`, 
 (2, 1, 1, 'Sin comentarios', 1, 3, '2015-08-12', 1, 1, '2015-08-12 17:59:25', '2015-08-12 18:34:58', 0, 1, 1),
 (3, 1, 1, '', 2, 3, '2015-08-12', 2, 1, '2015-08-12 18:10:23', '2015-08-12 18:34:58', 0, 1, 1),
 (4, 1, 1, '', 1, 3, '2015-08-12', 3, 1, '2015-08-12 18:14:42', '2015-08-12 18:34:58', 0, 1, 1),
-(5, 1, 2, '', 0, 0, '2015-08-13', 0, 0, '2015-08-13 21:56:16', '2015-08-13 21:56:16', 0, 1, 1);
+(5, 1, 2, '', 0, 0, '2015-08-13', 0, 0, '2015-08-13 21:56:16', '2015-08-13 21:56:16', 0, 1, 1),
+(6, 1, 2, '', 0, 0, '2015-08-18', 0, 0, '2015-08-18 16:40:59', '2015-08-18 16:40:59', 0, 1, 1),
+(7, 1, 1, '', 0, 0, '2015-08-18', 0, 0, '2015-08-18 18:13:03', '2015-08-18 18:13:03', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -2045,6 +2143,12 @@ ALTER TABLE `linea_productos_pedidos`
 --
 ALTER TABLE `linea_productos_presupuestos`
   ADD PRIMARY KEY (`id_linea_producto_presupuesto`);
+
+--
+-- Indices de la tabla `log_linea_pedidos`
+--
+ALTER TABLE `log_linea_pedidos`
+  ADD PRIMARY KEY (`id_log`);
 
 --
 -- Indices de la tabla `mails`
@@ -2251,7 +2355,7 @@ ALTER TABLE `epocas_visitas`
 -- AUTO_INCREMENT de la tabla `estados_pedidos`
 --
 ALTER TABLE `estados_pedidos`
-  MODIFY `id_estado_pedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id_estado_pedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `estados_presupuestos`
 --
@@ -2261,7 +2365,7 @@ ALTER TABLE `estados_presupuestos`
 -- AUTO_INCREMENT de la tabla `estados_productos_pedidos`
 --
 ALTER TABLE `estados_productos_pedidos`
-  MODIFY `id_estado_producto_pedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id_estado_producto_pedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `estados_productos_presupuestos`
 --
@@ -2281,12 +2385,17 @@ ALTER TABLE `iva`
 -- AUTO_INCREMENT de la tabla `linea_productos_pedidos`
 --
 ALTER TABLE `linea_productos_pedidos`
-  MODIFY `id_linea_producto_pedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
+  MODIFY `id_linea_producto_pedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=76;
 --
 -- AUTO_INCREMENT de la tabla `linea_productos_presupuestos`
 --
 ALTER TABLE `linea_productos_presupuestos`
-  MODIFY `id_linea_producto_presupuesto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+  MODIFY `id_linea_producto_presupuesto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=14;
+--
+-- AUTO_INCREMENT de la tabla `log_linea_pedidos`
+--
+ALTER TABLE `log_linea_pedidos`
+  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT;
 --
 -- AUTO_INCREMENT de la tabla `mails`
 --
@@ -2306,12 +2415,12 @@ ALTER TABLE `paises`
 -- AUTO_INCREMENT de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `presupuestos`
 --
 ALTER TABLE `presupuestos`
-  MODIFY `id_presupuesto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id_presupuesto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
@@ -2386,7 +2495,7 @@ ALTER TABLE `sin_vendedores_telefonos`
 -- AUTO_INCREMENT de la tabla `sin_visitas_presupuestos`
 --
 ALTER TABLE `sin_visitas_presupuestos`
-  MODIFY `id_sin_visita_presupuesto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id_sin_visita_presupuesto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT de la tabla `telefonos`
 --
@@ -2416,7 +2525,7 @@ ALTER TABLE `vendedores`
 -- AUTO_INCREMENT de la tabla `visitas`
 --
 ALTER TABLE `visitas`
-  MODIFY `id_visita` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+  MODIFY `id_visita` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT de la tabla `visto`
 --

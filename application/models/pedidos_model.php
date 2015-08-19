@@ -169,7 +169,7 @@ class Pedidos_model extends My_Model {
 				USING
 					(id_vendedor)
 				WHERE
-					pedidos.visto = 0
+					pedidos.visto_back = 0
 				AND
 					pedidos.eliminado = 0';
 		
