@@ -30,6 +30,7 @@ class Vendedores extends My_Controller {
 		$db['mails']		= $this->vendedores_model->getCruce($id,'mails');
 		$db['pedidos']		= $this->vendedores_model->getPedidos($id);
 		$db['presupuestos']	= $this->vendedores_model->getPresupuestos($id);
+		$db['visitas']		= $this->vendedores_model->getVisitas($id);
 		$db['id']			= $id;
 		
 		$db['cruce']		= $this->vendedores_model->sinCruce($id);

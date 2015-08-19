@@ -20,6 +20,8 @@ function buscar(){
 		 		$('#btn-guardar').show();
 				$('#btn-cancelar').show();
 				$('#id_tipo_documento').show();
+				$('#nombre').show();
+				$('#nombre').val('');
 		 	}
 			});
 		}
@@ -29,6 +31,8 @@ function buscar(){
 		$('#btn-guardar').hide();
 		$('#btn-cancelar').hide();
 		$('#id_tipo_documento').hide();
+		$('#nombre').hide();
+		$('#nombre').val('');
 	}
 }
 
@@ -37,6 +41,8 @@ function limpiardiv(){
 	$('#btn-guardar').hide();
 	$('#btn-cancelar').hide();
 	$('#id_tipo_documento').hide();
+	$('#nombre').hide();
+	$('#nombre').val('');
 }
 
 function validarForm(){
@@ -56,6 +62,8 @@ function validarForm(){
 		$('#btn-guardar').hide();
 		$('#btn-cancelar').hide();
 		$('#id_tipo_documento').hide();
+		$('#nombre').hide();
+		$('#nombre').val('');
 		return false;
 	}else{ 
     	return true;
@@ -118,6 +126,11 @@ function ordenarDocumentos(id_tipo_documento){
 					<div class="row">	
 						<div id="doc" class="col-md-8 col-lg-8 col-md-offset-2 col-lg-offset-2">
 							
+						</div>
+					</div>
+					<div class="row" style=" margin-top: 15px">
+						<div class="col-md-8 col-lg-8 col-md-offset-2">
+							<input type="text" id="nombre" name="nombre" class="form-control" placeholder="Nombre de Documento" maxlength="64" style="display: none">
 						</div>
 					</div>
 					<div class="row" style=" margin-top: 15px">
@@ -198,10 +211,19 @@ function ordenarDocumentos(id_tipo_documento){
 									$mensaje .=    	'<i class="fa fa-file-word-o fa-5x"></i>';
 								else if($cadena == '.xlsx' || $cadena == '.xls')
 									$mensaje .=    	'<i class="fa fa-file-excel-o fa-5x"></i>';
-						        $mensaje  	 .= '</a>
+						        /*----- MOSTRAR NOMBRE DEL DOCUMENTO O SINO EL NOMBRE DEL ARCHIVO---*/
+						        if($row->nombre != ''){
+						        	$mensaje .= '</a>
+									              	<br>
+									              	<p class="text-center">'.$row->nombre.'</p>
+									             </div>';
+						        }
+								else{
+						       		$mensaje .= '</a>
 									              	<br>
 									              	<p class="text-center">'.cortarCadena($row->documento).'</p>
 									             </div>';
+								}
 								$i ++;
 								if($i%6 == 0){
 									$mensaje .= "<br><br><br><br><br><br><br>";

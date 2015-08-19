@@ -200,7 +200,8 @@ $bandera = 0;
 					    	<li><a href="#tab3" data-toggle="tab"><?php echo $this->lang->line('perfiles'); ?></a></li>
 					    	<li><a href="#tab4" data-toggle="tab"><?php echo $this->lang->line('pedidos'); ?></a></li>
 					    	<li><a href="#tab5" data-toggle="tab"><?php echo $this->lang->line('presupuestos'); ?></a></li>
-					    	<li><a href="#tab6" data-toggle="tab"><?php echo $this->lang->line('alarmas'); ?></a></li>
+					    	<li><a href="#tab6" data-toggle="tab"><?php echo $this->lang->line('visitas'); ?></a></li>
+					    	<li><a href="#tab7" data-toggle="tab"><?php echo $this->lang->line('alarmas'); ?></a></li>
 							<?php
 										}
 									}
@@ -970,7 +971,51 @@ $bandera = 0;
 	    					</div>
 	    					
 	    					<div class="tab-pane fade" id="tab6">
-	     						<!--TAB 6 ALARMAS -->
+	     						<!--TAB 6 PANEL DE VISITAS -->
+	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
+							        <thead>
+							            <tr>
+							            	<th><?php echo $this->lang->line('visita'); ?></th>
+							            	<th><?php echo $this->lang->line('vendedor'); ?></th>
+							            	<th><?php echo $this->lang->line('date'); ?></th>
+							            	<th><?php echo $this->lang->line('valoracion'); ?></th>
+							            	<th><?php echo $this->lang->line('origen'); ?></th>
+							            </tr>
+							        </thead>
+							 
+							        <tfoot>
+							            <tr>
+							            	<th><?php echo $this->lang->line('visita'); ?></th>
+							            	<th><?php echo $this->lang->line('vendedor'); ?></th>
+							            	<th><?php echo $this->lang->line('date'); ?></th>
+							            	<th><?php echo $this->lang->line('valoracion'); ?></th>
+							            	<th><?php echo $this->lang->line('origen'); ?></th>
+							            </tr>
+							        </tfoot>
+							 
+							        <tbody>        
+			     						<?php 
+									       	if($visitas){							                
+										      	foreach ($visitas as $row) 
+										     	{
+										     		echo '<tr>';
+													echo "<td><a href='".base_url()."index.php/Visitas/carga/".$row->id_visita."/0' class='displayblock'>".$row->id_visita.'</a></td>';
+													echo "<td><a href='".base_url()."index.php/Vendedores/pestanas/".$row->id_vendedor."' class='displayblock'>".$row->apellido.', '.$row->nombre.'</a></td>';
+													$date = date_create($row -> fecha);
+													echo '<td>'.date_format($date, 'd/m/Y');
+													echo "</td>";
+													echo '<td>'.valoracion($row->valoracion).'</td>';
+													echo '<td>'.$row->origen.'</td>';
+													echo "</tr>";
+												}
+											}
+										?>
+									</tbody>
+								</table> 
+	    					</div>
+	    					
+	    					<div class="tab-pane fade" id="tab7">
+	     						<!--TAB 7 ALARMAS -->
 	     						ALARMAS
 	    					</div>
 	    					

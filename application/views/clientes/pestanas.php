@@ -888,7 +888,7 @@ $bandera = 0;
 	    					</div>
 	    					
 	    					<div class="tab-pane fade" id="tab6">
-	     						<!--TAB 4 PANEL DE VISITAS -->
+	     						<!--TAB 6 PANEL DE VISITAS -->
 	     						<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							        <thead>
 							            <tr>

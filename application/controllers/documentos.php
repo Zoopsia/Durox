@@ -29,7 +29,7 @@ class Documentos extends My_Controller {
 	}
 	
 	function guardarDocumento(){
-		
+		$id_documento = 0;
 		$documentos		= $this->documentos_model->getTodo();
 		$destino 	= 'documentos/';
 		$bandera = 0;
@@ -50,7 +50,8 @@ class Documentos extends My_Controller {
 					}
 					if($bandera != 1){
 						$arreglo = array(
-							'documento'		=> $imagen
+							'documento'		=> $imagen,
+							'nombre'		=> $this->input->post('nombre')
 						);
 						
 						$id_documento	= $this->documentos_model->insert($arreglo);
@@ -58,13 +59,14 @@ class Documentos extends My_Controller {
 				}
 				else { //----SINO LO INSERTO YA QUE ES EL PRIMER DOCUMENTO---//
 					$arreglo = array(
-						'documento'		=> $imagen
+						'documento'		=> $imagen,
+						'nombre'		=> $this->input->post('nombre')
 					);
 					$id_documento		= $this->documentos_model->insert($arreglo);
 				}
 			}
 			
-			if($id_documento){
+			if($id_documento != 0){
 				if(!empty($_POST['tipo_documento'])){
 					foreach($_POST['tipo_documento'] as $row){
 						$sin = array(

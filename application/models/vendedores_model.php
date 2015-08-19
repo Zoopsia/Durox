@@ -151,5 +151,36 @@ class Vendedores_model extends My_Model {
 			return FALSE;
 		}
 	}
+	
+	function getVisitas($id){
+			
+		$sql = "SELECT 
+					* 
+				FROM 
+					visitas
+				INNER JOIN	
+					origen USING (id_origen)
+				INNER JOIN 
+					clientes USING (id_cliente)
+				WHERE 
+					$this->_id_table = '$id'
+				AND
+					visitas.eliminado = 0";
+					
+		$query = $this->db->query($sql);
+		
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+			return $data;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
 } 
 ?>
