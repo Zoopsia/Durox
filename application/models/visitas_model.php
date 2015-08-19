@@ -110,6 +110,7 @@ class Visitas_model extends My_Model {
 		$sql = 'SELECT 
 					visitas.*,
 					origen.origen,
+					clientes.razon_social as razon_social,
 					clientes.nombre as Cnombre,
 					clientes.apellido as Capellido,
 					clientes.id_cliente as id_cliente,

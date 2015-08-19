@@ -1,3 +1,116 @@
+<script>
+function editable(){
+	$("#btn-print").hide();
+	$("#btn-editar").hide();
+	$(".cargarLinea").show();
+	$('.display-none').show();
+	$('#btn-guardar').show();
+	$('#btn-cancelar').show();
+	document.getElementById("producto").focus();
+	
+}
+
+function cargaProducto($id_pedido){
+	
+ 	var producto 	= $('input#id_producto').val(); 
+ 	var cantidad 	= $('input#cantidad').val();
+ 	var pedido	= $id_pedido;
+ 	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/Pedidos/cargaProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	data: {'producto'	: producto,
+	 		   'cantidad'	: cantidad,
+	 		   'pedido'		: pedido
+	 		   },
+	 	success: function(resp) { 
+	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias 	
+	 		$(".cargarLinea").show();
+	 		armarTotales(pedido);
+	 	}
+	});
+
+	
+}
+
+function armarTotales($id_pedido){
+	var pedido	= $id_pedido;	
+	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/Pedidos/armarTotales', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	data: {'pedido'		: pedido},
+	 	success: function(resp) { 
+	 		$('#table-totales').html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias 	
+	 	}
+	});	
+}
+
+function ajaxSearch() {
+	var producto = $('#producto').val();
+    if (producto.length === 0) {
+       	$('#suggestions').hide();
+    } 
+    else {
+       	$.ajax({
+        	type: "POST",
+            url: '<?php echo base_url(); ?>index.php/Presupuestos/buscarProducto',
+            data: {'producto': producto,},
+            success: function(data) {
+	            // return success
+	            if (data.length > 0) {
+	            	$('#suggestions').show();
+	                $('#autoSuggestionsList').addClass('auto_list');
+	                $('#autoSuggestionsList').html(data);
+	            }
+            }
+		});
+	}
+}
+
+function funcion1($id_producto){
+	
+	var nombre 		= $('#id_valor'+$id_producto).val();
+	var id_producto	= $id_producto;
+	$('#producto').val(nombre);
+	$('#id_producto').val(id_producto);
+	$('#suggestions').hide();
+	document.getElementById("cantidad").focus();
+}
+
+function sacarProducto($id_linea, $pedido){
+	var pedido = $pedido;
+ 	var id_linea	= $id_linea;
+ 	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/Pedidos/sacarProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	data: {'id_linea'	: id_linea,
+	 		   'pedido': pedido,
+	 		   },
+	 	success: function(resp) {
+	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
+	 		$(".cargarLinea").show();
+	 		armarTotales(pedido);
+	 	}
+	});
+}
+
+function cargarProducto($id_linea, $pedido){
+	var pedido = $pedido;
+ 	var id_linea	= $id_linea;
+ 	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/Pedidos/cargarProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	data: {'id_linea'	: id_linea,
+	 		   'pedido': pedido,
+	 		   },
+	 	success: function(resp) {
+	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
+	 		$(".cargarLinea").show();
+	 		armarTotales(pedido);
+	 	}
+	});
+}
+
+</script>
 <?php
 	if($pedido){
 		foreach ($pedido as $row) {
@@ -103,31 +216,38 @@
 						
 						
 						<div class="row">
-                        <div class="col-xs-12 table-responsive">
-                        	<?php echo $this->lang->line('detalle'); ?>
-                                <?php
-                                	if($pedido){
-	     								foreach($pedido as $row)
-	     								{
-	     									if($row->id_estado_pedido == 3)
-	     									{
-	     										echo '<table class="table" cellspacing="0" width="100%">';
-	     									}
-											else {
-												echo '<table class="table table-striped" cellspacing="0" width="100%">';
-											}
-	     								}
-									}	
+							<div class="col-md-1 col-lg-1">
+								<?php echo $this->lang->line('detalle'); ?>
+							</div>
+						</div>
+						<div class="row">
+                        <div class="col-xs-12 table-responsive" id="tablapedido">
+                        	<form id="formProducto" class="form-inline" method="post">
+                        		<?php
+                                		
 									$total = 0;
+									$bandera = 0;
 									if($pedidos)
 									{
 										foreach ($pedidos as $row) 
 										{
-											if($row->estado_linea != 3)
+											if($row->estado_linea != 3){
 												$total = $row->subtotal + $total;
+											}
+											else{
+												$bandera = 1;
+											}	
 										}
+									}
+									
+									if($bandera == 1)
+	     							{
+	     								echo '<table class="table" cellspacing="0" width="100%">';
+	     							}
+									else {
+										echo '<table class="table table-striped" cellspacing="0" width="100%">';
 									}	
-	     							?>
+	     						?>
 								        <thead class="tabla-datos-importantes">
 								            <tr>
 								            	<th><?php echo $this->lang->line('producto'); ?></th>
@@ -135,6 +255,7 @@
 								                <th><?php echo $this->lang->line('precio'); ?></th>
 								                <th><?php echo $this->lang->line('subtotal'); ?></th>
 								                <th class="no-print"><?php echo $this->lang->line('estado'); ?></th>
+								            	<th></th>
 								            </tr>
 								        </thead>
 								 
@@ -154,13 +275,37 @@
 												echo '<td>'.$row->cantidad.'</td>';
 												echo '<td>$ '.$row->precio.'</td>';
 												echo '<td>$ '.$row->subtotal.'</td>';
-												echo '<td class="no-print">'.$row->estado.'</th>';				
+												echo '<td class="no-print" style="width: 269px">'.$row->estado.'</th>';	
+												if($row->estado != 'Imposible de Enviar')
+													echo '<td style="width: 50px"><span class="display-none" style="display:none"><a class="btn btn-danger btn-xs" onclick="sacarProducto('.$row->id_linea_producto_pedido.','.$id_pedido.')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></span></td>';			
+												else {
+													echo '<td style="width: 50px"><span class="display-none" style="display:none"><a class="btn btn-success btn-xs" onclick="cargarProducto('.$row->id_linea_producto_pedido.','.$id_pedido.')" role="button" data-toggle="tooltip" data-placement="bottom" title="Agregar Producto"><i class="fa fa-plus"></i></a></span></td>';	
+												}
 												echo '</tr>';
 											}	
 										}		
 										?>
+										<tr class="cargarLinea" style="display: none">
+											<td style="width: 200px">
+												<input type="text" id="producto" name="producto" class="numeric form-control editable" autocomplete="off" pattern="^[A-Za-z0-9 ]+$" onkeyup="ajaxSearch();" placeholder="<?php echo $this->lang->line('producto'); ?>" required style="height: 20px">
+												<div id="suggestions">
+										            <div id="autoSuggestionsList">  
+										            </div>
+										        </div>
+										        <input type="text" id="id_producto" name="id_producto" autocomplete="off" pattern="[0-9]*" required hidden>
+											</td>
+											<td style="width: 189px">
+												<input type="text" id="cantidad" name="cantidad1" class="numeric form-control editable" onkeypress="if (event.keyCode==13){cargaProducto(<?php echo $id_pedido?>); return false;}" autocomplete="off" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('cantidad'); ?>" style="height: 20px" required>
+											</td>
+											<td></td>
+											<td></td>
+											<td class="no-print"></td>		
+											<td></td>		
+										</tr>
+										
 										</tbody>
-								    </table>              
+								    </table>  
+							</form>            
                         </div><!-- /.col -->
                     </div><!-- /.row -->
 					
@@ -174,7 +319,7 @@
                         </div><!-- /.col -->
                         <div class="col-xs-6">
                             <p class="lead"><?php echo $this->lang->line('totales');?></p>
-                            <div class="table-responsive">
+                            <div class="table-responsive" id="table-totales">
                                 <table class="table">
                                     <tr>
                                         <th style="width:50%"><?php echo $this->lang->line('subtotal');?></th>
@@ -195,12 +340,24 @@
 					
 					<div class="row no-print">
                         <div class="col-xs-12">
-                        	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#informacion">
-								<i class="fa fa-info-circle"></i>
-							</button>
-							
-							<button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+                        	<form action="<?php echo base_url().'/index.php/Pedidos/guardarPedido/'.$id_pedido?>" method="post">
+	                        	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#informacion">
+									<i class="fa fa-info-circle"></i>
+								</button>
 								
+								<button id ="btn-print" class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+								
+								<button type="button" id="btn-editar" class="btn btn-primary btn-sm pull-right" onclick="editable()">
+									<?php echo $this->lang->line('editar');?>
+								</button>	
+								
+								<button type="button" id="btn-cancelar" class="btn btn-danger btn-sm pull-right" onclick="" style="display: none; margin-left: 5px">
+									<?php echo $this->lang->line('cancelar');?>
+								</button>
+								<button type="submit" id="btn-guardar" class="btn btn-primary btn-sm pull-right" style="display: none;">
+									<?php echo $this->lang->line('guardar');?>
+								</button>
+							</form>
                          </div>
                     </div>	
                    	

@@ -522,7 +522,7 @@ class Presupuestos extends My_Controller {
         $query = $this->presupuestos_model->buscarProducto($producto);
 
         foreach ($query->result() as $row){
-        	echo '<li><a href="#" onclick="funcion1('.$row->id_producto.')">'.$row->nombre.'<input type="text" id="id_valor'.$row->id_producto.'" value="'.$row->nombre.'" hidden></a></li>';
+        	echo '<li><a onclick="funcion1('.$row->id_producto.')">'.$row->nombre.'<input type="text" id="id_valor'.$row->id_producto.'" value="'.$row->nombre.'" hidden></a></li>';
         }
     }
 

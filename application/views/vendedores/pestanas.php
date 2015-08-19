@@ -72,7 +72,7 @@ function cancelar(){
 				foreach($vendedores as $row){
 					echo "$('#nombre').val('".$row->nombre."');";
 					echo "$('#apellido').val('".$row->apellido."');";
-					echo "$('#contraseña').val('".$row->contraseña."');";											
+					echo "$('#contraseña').val('".$row->pass."');";											
 				}	
 			}
 		?>
@@ -155,7 +155,7 @@ function confirmarContraseña(){
 	<?php
 	if($vendedores){
 		foreach($vendedores as $row){
-			echo "var aux = '".$row->contraseña."';";
+			echo "var aux = '".$row->pass."';";
 		}
 	}
 	?>
@@ -255,7 +255,7 @@ $bandera = 0;
 											                echo  "</tr>";
 															echo  "<tr class='no-print'>";								                     
 											                echo  '<td class="padtop">'.$this->lang->line('contraseña').':</td>';
-											                echo  '<td class="tabla-datos-importantes"><input type="text" name="contraseña" id="contraseña" class="form-control editable cambio" pattern="^[A-Za-z0-9 ]+$" value="'.$row->contraseña.'" placeholder="'.$this->lang->line('contraseña').'" autocomplete="off" disabled required></td>';
+											                echo  '<td class="tabla-datos-importantes"><input type="text" name="contraseña" id="contraseña" class="form-control editable cambio" pattern="^[A-Za-z0-9 ]+$" value="'.$row->pass.'" placeholder="'.$this->lang->line('contraseña').'" autocomplete="off" disabled required></td>';
 											                echo  "</tr>";	
 											                echo  "<tr class='no-print'>";								                     
 											                echo  '<td class="padtop transparente" id="td_confirmar"></td>';

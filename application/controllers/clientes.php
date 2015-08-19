@@ -30,6 +30,7 @@ class Clientes extends My_Controller {
 		$db['mails']		= $this->clientes_model->getCruce($id,'mails');
 		$db['pedidos']		= $this->clientes_model->getPedidos($id);
 		$db['presupuestos']	= $this->clientes_model->getPresupuestos($id);
+		$db['visitas']		= $this->clientes_model->getVisitas($id);
 		$db['iva']			= $this->clientes_model->getTodo('iva');
 		$db['grupos']		= $this->grupos_model->getTodo();
 		$db['id']			= $id;

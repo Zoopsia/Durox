@@ -187,38 +187,12 @@ class Presupuestos_model extends My_Model {
 		return $this->db->insert_id();
 	}
 	
-	public function getProductosTodo(){	
-		$sql = "SELECT 
-					* 
-				FROM 
-					productos 
-				WHERE 
-					1
-				AND 
-					eliminado = 0";
-					
-
-		$query = $this->db->query($sql);
-		
-		if($query->num_rows() > 0)
-		{
-			foreach ($query->result() as $fila)
-			{
-				$data[] = $fila;
-			}
-			return $data;
-		}
-		else
-		{
-			return FALSE;
-		}
-	}
-	
 	function presupuestosNuevos(){
 		
 		$sql = 'SELECT 
 					presupuestos.*,
 					origen.origen,
+					clientes.razon_social as razon_social,
 					clientes.nombre as Cnombre,
 					clientes.apellido as Capellido,
 					clientes.id_cliente as id_cliente,

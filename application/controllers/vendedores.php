@@ -61,17 +61,18 @@ class Vendedores extends My_Controller {
 			
 			$crud->display_as('id_vendedor','ID')
 				 ->display_as('nombre','Nombre')
+				 ->display_as('pass','Contraseña')
 				 ->display_as('apellido','Apellido');
 				 
 			$crud->required_fields('nombre',
 							'apellido',
-							'contraseña');
+							'pass');
 			
 			$crud->set_subject('vendedor');
 			
 			$crud->fields(	'nombre',
 							'apellido',
-							'contraseña');
+							'pass');
 					
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
 			$crud->callback_delete(array($this,'delete_user'));
@@ -154,7 +155,7 @@ class Vendedores extends My_Controller {
 			$vendedor	= array(
 					'nombre'			=> $this->input->post('nombre'),
 					'apellido'			=> $this->input->post('apellido'),		
-					'contraseña' 		=> $this->input->post('contraseña'),
+					'pass' 				=> $this->input->post('contraseña'),
 					'imagen'			=> $imagen
 			);
 			
@@ -163,7 +164,7 @@ class Vendedores extends My_Controller {
 			$vendedor	= array(
 					'nombre'			=> $this->input->post('nombre'),
 					'apellido'			=> $this->input->post('apellido'),		
-					'contraseña' 		=> $this->input->post('contraseña')
+					'pass' 				=> $this->input->post('contraseña')
 			);
 		}
 			

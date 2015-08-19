@@ -29,7 +29,7 @@
 	      			<?php foreach($visitas_mensajes as $row) { ?>
 	      			<tr>
 				  		<td><a href="http://localhost/Durox/index.php/Visitas/carga/<?php echo $row->id_visita ?>/0" class="displayblock"><?php echo $row->id_visita ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Clientes/pestanas/<?php echo $row->id_cliente ?>" class="displayblock"><?php echo $row->Capellido.', '.$row->Cnombre ?></a></td>
+				  		<td><a href="http://localhost/Durox/index.php/Clientes/pestanas/<?php echo $row->id_cliente ?>" class="displayblock"><?php echo $row->razon_social ?></a></td>
 				  		<td><a href="http://localhost/Durox/index.php/Vendedores/pestanas/<?php echo $row->id_vendedor ?>" class="displayblock"><?php echo $row->Vapellido.', '.$row->Vnombre ?></a></td>
 				  		<?php $date	= date_create($row->fecha); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
@@ -74,8 +74,7 @@
 	      		<thead>
 	      			<tr>
 		      			<th><?php echo $this->lang->line('id')?></th>
-		      			<th><?php echo $this->lang->line('nombre')?></th>
-		      			<th><?php echo $this->lang->line('apellido')?></th>
+		      			<th><?php echo $this->lang->line('razon_social')?></th>
 		      			<th><?php echo $this->lang->line('date')?></th>
 		      			<th><?php echo $this->lang->line('origen')?></th>
 		      			<th><?php echo $this->lang->line('estado')?></th>
@@ -86,8 +85,7 @@
 	      			<tr>
 	      				
 				  		<td><a href="http://localhost/Durox/index.php/Clientes/pestanas/<?php echo $row->id_cliente ?>" class="displayblock"><?php echo $row->id_cliente ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Clientes/pestanas/<?php echo $row->id_cliente ?>" class="displayblock"><?php echo $row->nombre ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Clientes/pestanas/<?php echo $row->id_cliente ?>" class="displayblock"><?php echo $row->apellido ?></a></td>
+				  		<td><a href="http://localhost/Durox/index.php/Clientes/pestanas/<?php echo $row->id_cliente ?>" class="displayblock"><?php echo $row->razon_social ?></a></td>
 				  		<?php $date	= date_create($row->date_add); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
 				  		<td><?php echo $row->origen?></td>
@@ -263,7 +261,7 @@
 	      				<td><a href="http://localhost/Durox/index.php/Pedidos/pestanas/<?php echo $row->id_pedido ?>" class="displayblock"><?php echo $row->id_pedido ?></a></td>
 				  		<td><a href="http://localhost/Durox/index.php/Presupuestos/pestanas/<?php echo $row->id_presupuesto ?>" class="displayblock"><?php echo $row->id_presupuesto ?></a></td>
 				  		<td><a href="http://localhost/Durox/index.php/Visitas/carga/<?php echo $row->id_visita ?>/0" class="displayblock"><?php echo $row->id_visita ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Clientes/pestanas/<?php echo $row->id_cliente ?>" class="displayblock"><?php echo $row->Capellido.', '.$row->Cnombre ?></a></td>
+				  		<td><a href="http://localhost/Durox/index.php/Clientes/pestanas/<?php echo $row->id_cliente ?>" class="displayblock"><?php echo $row->razon_social ?></a></td>
 				  		<td><a href="http://localhost/Durox/index.php/Vendedores/pestanas/<?php echo $row->id_vendedor ?>" class="displayblock"><?php echo $row->Vapellido.', '.$row->Vnombre ?></a></td>
 				  		<?php $date	= date_create($row->fecha); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
@@ -322,7 +320,7 @@
 	      			<tr>
 	      				<td><a href="http://localhost/Durox/index.php/Presupuestos/pestanas/<?php echo $row->id_presupuesto ?>" class="displayblock"><?php echo $row->id_presupuesto ?></a></td>
 				  		<td><a href="http://localhost/Durox/index.php/Visitas/carga/<?php echo $row->id_visita ?>/0" class="displayblock"><?php echo $row->id_visita ?></a></td>
-				  		<td><a href="http://localhost/Durox/index.php/Clientes/pestanas/<?php echo $row->id_cliente ?>" class="displayblock"><?php echo $row->Capellido.', '.$row->Cnombre ?></a></td>
+				  		<td><a href="http://localhost/Durox/index.php/Clientes/pestanas/<?php echo $row->id_cliente ?>" class="displayblock"><?php echo $row->razon_social ?></a></td>
 				  		<td><a href="http://localhost/Durox/index.php/Vendedores/pestanas/<?php echo $row->id_vendedor ?>" class="displayblock"><?php echo $row->Vapellido.', '.$row->Vnombre ?></a></td>
 				  		<?php $date	= date_create($row->fecha); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
