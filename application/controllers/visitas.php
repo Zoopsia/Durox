@@ -264,12 +264,12 @@ class Visitas extends My_Controller {
 		$crud->columns('id_visita',
 						'id_cliente',
 						'id_vendedor',
-						'date_upd');
+						'fecha');
 			
 		$crud->display_as('id_visita','N° Visita')
 			 ->display_as('id_cliente','Cliente')
 			 ->display_as('id_vendedor','Vendedor')
-			 ->display_as('date_upd','Fecha Visita');
+			 ->display_as('fecha','Fecha Visita');
 		
 		$crud->set_subject('Visitas');
 		
@@ -277,9 +277,9 @@ class Visitas extends My_Controller {
 						'id_cliente',
 						'id_vendedor');
 							
-		$crud->order_by('date_upd','desc');
+		$crud->order_by('fecha','desc');
 						
-		$crud->set_relation('id_cliente','clientes','{apellido} {nombre}');
+		$crud->set_relation('id_cliente','clientes','{razon_social}');
 		$crud->set_relation('id_vendedor','vendedores','{apellido} {nombre}');
 			
 		$crud->add_action('Elegir', '', '','edit_button',array($this,'volverBusqueda'));
@@ -376,7 +376,7 @@ class Visitas extends My_Controller {
 						{
 							if($key->eliminado != 1)
 							{
-								$mensaje  .= '<option value="'.$key->id_cliente.'">'.$key->apellido.', '.$key->nombre;
+								$mensaje  .= '<option value="'.$key->id_cliente.'">'.$key->razon_social;
 								$mensaje  .= '</option>';
 							}
 						}

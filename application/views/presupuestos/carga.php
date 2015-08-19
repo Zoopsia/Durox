@@ -109,7 +109,7 @@ $('#formPresupuesto').submit(function(event){
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
 		  				<?php echo $this->lang->line('nuevo').' '.$this->lang->line('presupuesto'); ?>
-		  				<li id="volver" class="pull-right desactive"><a href="#" data-toggle="tab"  onclick="resetear()">Resetear Formulario</a></li>
+		  				<li id="volver" class="pull-right desactive" style="display: block"><a href="#" data-toggle="tab"  onclick="resetear()">Resetear Formulario</a></li>
 		  			</div>
 		  			
 		  			<div class="panel-body">

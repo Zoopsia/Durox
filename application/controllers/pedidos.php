@@ -311,7 +311,9 @@ class Pedidos extends My_Controller {
 								<td>$ '.$row->subtotal.'</td>
 								<td class="no-print" style="width: 150px">'.$row->estado.'</th>';
 				if($row->estado == 'En Proceso')
-					$mensaje .=	 '<td style="width: 50px"><span class="display-none" style="display:none"><a class="btn btn-danger btn-xs" onclick="sacarProducto('.$row->id_linea_producto_pedido.','.$id_pedido.')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></span></td>';			
+					$mensaje .=	 '<td style="width: 50px"><span class="display-none"><a class="btn btn-danger btn-xs" onclick="sacarProducto('.$row->id_linea_producto_pedido.','.$id.')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></span></td>';
+				else if($row->estado == 'Nuevo')
+					$mensaje .=	 '<td style="width: 50px"></td>';				
 				/*else if($row->estado == 'Aprobado')
 					$mensaje .=		'<td style="width: 200px">'.devolverEstadoPedido($row->estado).'</td>';	
 				else if($row->estado == 'Facturado')
@@ -321,7 +323,9 @@ class Pedidos extends My_Controller {
 				else if($row->estado == 'Eliminado')
 					$mensaje .=		'<td style="width: 200px">'.devolverEstadoPedido($row->estado).'</td>';	*/	
 				else if($row->estado == 'Imposible de Enviar')
-					$mensaje .=	'<td style="width: 50px"><span class="display-none" style="display:none"><a class="btn btn-success btn-xs" onclick="cargarProducto('.$row->id_linea_producto_pedido.','.$id_pedido.')" role="button" data-toggle="tooltip" data-placement="bottom" title="Agregar Producto"><i class="fa fa-plus"></i></a></span></td>';	
+					$mensaje .=	'<td style="width: 50px"><span class="display-none"><a class="btn btn-success btn-xs" onclick="cargarProducto('.$row->id_linea_producto_pedido.','.$id.')" role="button" data-toggle="tooltip" data-placement="bottom" title="Agregar Producto"><i class="fa fa-plus"></i></a></span></td>';	
+				else
+					$mensaje .=	 '<td style="width: 50px"></td>';
 				$mensaje .=	'</tr>';
 			}	
 		}		
@@ -512,7 +516,8 @@ class Pedidos extends My_Controller {
 			}
 
 			$arreglo_pedido = array(
-				'id_estado_pedido'		=>2
+				'id_estado_pedido'		=> 2,
+				'aprobado_back'			=> 1
 			);
 			
 			$this->pedidos_model->update($arreglo_pedido, $id_pedido);

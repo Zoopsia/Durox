@@ -134,6 +134,11 @@ function aprobarForm() {
 	$("#aprobarForm").submit();
 }
 
+
+function imprimirConLogo(){
+	$('#imagen-durox').show();
+	setTimeout(function(){ $('#imagen-durox').hide(); }, 100);
+}
 </script>
 <?php
 	if($pedido){
@@ -302,6 +307,8 @@ function aprobarForm() {
 												echo '<td class="no-print" style="width: 150px">'.$row->estado.'</th>';	
 												if($row->estado == 'En Proceso')
 													echo '<td style="width: 50px"><span class="display-none" style="display:none"><a class="btn btn-danger btn-xs" onclick="sacarProducto('.$row->id_linea_producto_pedido.','.$id_pedido.')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></span></td>';			
+												else if($row->estado == 'Nuevo')
+													echo '<td style="width: 50px"></td>';
 												/*else if($row->estado == 'Aprobado')
 													echo 	'<td style="width: 200px">'.devolverEstadoPedido($row->estado).'</td>';	
 												else if($row->estado == 'Facturado')
@@ -312,6 +319,8 @@ function aprobarForm() {
 													echo 	'<td style="width: 200px">'.devolverEstadoPedido($row->estado).'</td>';	*/	
 												else if($row->estado == 'Imposible de Enviar')
 													echo '<td style="width: 50px"><span class="display-none" style="display:none"><a class="btn btn-success btn-xs" onclick="cargarProducto('.$row->id_linea_producto_pedido.','.$id_pedido.')" role="button" data-toggle="tooltip" data-placement="bottom" title="Agregar Producto"><i class="fa fa-plus"></i></a></span></td>';	
+												else
+													echo '<td style="width: 50px"></td>';
 												echo '</tr>';
 											}	
 										}		
@@ -376,23 +385,43 @@ function aprobarForm() {
 									<i class="fa fa-info-circle"></i>
 								</button>
 								
-								<button type="button" id="btn-print" class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+								<button type="button" id="btn-print" class="btn btn-default" onclick="imprimirConLogo();window.print();"><i class="fa fa-print"></i> Print</button>
 								
 								<?php
 								if($pedido){
 									foreach($pedido as $row){
-										if($row->id_estado_pedido == 1 && $row->id_estado_pedido != 2){
+										if($row->id_estado_pedido == 1){
+								
 								?>	
 								
 								<button type="button" id="btn-editar" class="btn btn-primary btn-sm pull-right" onclick="editable()" style=" margin-left: 5px">
 									<?php echo $this->lang->line('editar');?>
 								</button>
-									
-									
 								<button type="button" id="btn-aprobar" onclick="aprobarForm()" class="btn btn-success btn-sm pull-right">
 									<?php echo $this->lang->line('aprobar').' '.$this->lang->line('pedido');?>
 								</button>		
 								<?php
+											
+										}
+									}
+								}
+								?>
+								
+								<?php
+								if($pedido){
+									foreach($pedido as $row){
+										if($row->id_estado_pedido == 4 && $row->id_origen == 2){
+								
+								?>	
+								
+								<button type="button" id="btn-editar" class="btn btn-primary btn-sm pull-right" onclick="editable()" style=" margin-left: 5px">
+									<?php echo $this->lang->line('editar');?>
+								</button>
+								<button type="button" id="btn-aprobar" onclick="aprobarForm()" class="btn btn-success btn-sm pull-right">
+									<?php echo $this->lang->line('aprobar').' '.$this->lang->line('pedido');?>
+								</button>		
+								<?php
+											
 										}
 									}
 								}

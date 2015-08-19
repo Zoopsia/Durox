@@ -229,5 +229,30 @@ class Presupuestos_model extends My_Model {
 			return FALSE;
 		}							
 	}
+	
+	function getVisitas(){
+			
+		$sql = 'SELECT 
+					*
+				FROM
+					visitas 
+				LEFT JOIN
+					pedidos
+				USING
+					(id_visita)
+				WHERE 
+					id_pedido IS NULL';
+		
+		$query = $this->db->query($sql);
+						
+		if($query->num_rows() > 0){
+			foreach ($query->result() as $fila){
+				$data[] = $fila;
+			}
+			return $data;
+		}else{
+			return FALSE;
+		}
+	}
 } 
 ?>

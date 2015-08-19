@@ -120,7 +120,7 @@ class Presupuestos extends My_Controller {
 		$db['clientes']		= $this->clientes_model->getTodo();
 		$db['vendedores']	= $this->vendedores_model->getTodo();
 		$db['productos']	= $this->presupuestos_model->getProductosTodo();
-		$db['visitas']		= $this->visitas_model->getTodo();
+		$db['visitas']		= $this->presupuestos_model->getVisitas();
 		$db['estados']		= $this->presupuestos_model->getTodo('estados_presupuestos');
 		
 		if($id_visita)
@@ -247,7 +247,7 @@ class Presupuestos extends My_Controller {
 		
 		foreach ($cliente as $key) {
 			if($key->eliminado != 1){
-				$mensaje  = '<option value="'.$key->id_cliente.'" selected>'.$key->nombre.', '.$key->apellido;
+				$mensaje  = '<option value="'.$key->id_cliente.'" selected>'.$key->razon_social;
 				$mensaje .= '</option>';
 			}
 			else{
@@ -619,7 +619,7 @@ class Presupuestos extends My_Controller {
 				$cliente 		= $this->clientes_model->getRegistro($row->id_cliente);	
 				foreach ($cliente as $key) {
 					if($key->eliminado !=1){
-						$mensaje  .= '<option value="'.$key->id_cliente.'">'.$key->apellido.', '.$key->nombre;
+						$mensaje  .= '<option value="'.$key->id_cliente.'">'.$key->razon_social;
 						$mensaje  .= '</option>';
 					}
 				}

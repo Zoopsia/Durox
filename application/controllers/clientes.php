@@ -52,14 +52,16 @@ class Clientes extends My_Controller {
 			
 			$crud->set_table('clientes');
 			
-			$crud->columns(	'id_cliente',
+			$crud->columns(	//'id_cliente',
 							'razon_social',
-							'cuit',
-							'nombre',
-							'apellido'
+							//'cuit',
+							//'nombre',
+							//'apellido',
+							'fecha'
 							);
 							
 			$crud->callback_column('cuit',array($this,'_callback_cuit'));
+			$crud->callback_column('fecha',array($this,'_callback_visita'));
 			
 			$crud->display_as('id_cliente','ID')
 				 ->display_as('nombre','Nombre Contacto')
@@ -105,6 +107,23 @@ class Clientes extends My_Controller {
 
 	public function _callback_cuit($value, $row){
 		return cuit($value);
+	}
+	
+	public function _callback_visita($value, $row){
+		$fecha = $this->clientes_model->traerUltimaVisita($row->id_cliente);
+		
+		if($fecha){
+			foreach($fecha as $row){
+				if($row->fecha != NULL){
+					$date = date_create($row->fecha);
+					return date_format($date, 'd/m/Y');
+				}
+				else {
+					return 'Sin Visita';	
+				}
+			}
+			
+		}
 	}
 	
 	function insertDatos($post_array, $primary_key)
