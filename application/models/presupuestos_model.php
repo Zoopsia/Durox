@@ -214,7 +214,7 @@ class Presupuestos_model extends My_Model {
 				USING
 					(id_vendedor)
 				WHERE
-					presupuestos.visto = 0
+					presupuestos.visto_back = 0
 				AND
 					presupuestos.eliminado = 0';
 		

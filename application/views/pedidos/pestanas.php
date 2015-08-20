@@ -1,4 +1,7 @@
 <script>
+
+var aux = 0;
+
 function editable(){
 	$("#btn-print").hide();
 	$("#btn-editar").hide();
@@ -11,33 +14,39 @@ function editable(){
 }
 
 function cargaProducto($id_pedido){
-	
- 	var producto 	= $('input#id_producto').val(); 
+	var producto 	= $('input#id_producto').val(); 
  	var cantidad 	= $('input#cantidad').val();
- 	var pedido	= $id_pedido;
- 	$.ajax({
+ 	var pedido		= $id_pedido;
+	$.ajax({
 	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/Pedidos/cargaProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	url: '<?php echo base_url(); ?>index.php/Pedidos/traerProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
 	 	data: {'producto'	: producto,
 	 		   'cantidad'	: cantidad,
-	 		   'pedido'		: pedido
+	 		   'pedido'		: pedido,
+	 		   'aux'		: aux
 	 		   },
 	 	success: function(resp) { 
-	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias 	
-	 		$(".cargarLinea").show();
+	 		$("#tablapedido > tbody").append(resp);
+	 		aux = aux+1;
 	 		armarTotales(pedido);
+	 		document.formProducto.reset(); 
+			document.getElementById("producto").focus();
 	 	}
 	});
-
-	
 }
 
 function armarTotales($id_pedido){
-	var pedido	= $id_pedido;	
+	var pedido	= $id_pedido;
+	var x = 0;
+	for(i = 0; i < aux; i++){
+		x += parseFloat($('#subtotal'+i).val());
+	}		
 	$.ajax({
 	 	type: 'POST',
 	 	url: '<?php echo base_url(); ?>index.php/Pedidos/armarTotales', //Realizaremos la petición al metodo prueba del controlador direcciones
-	 	data: {'pedido'		: pedido},
+	 	data: {	'pedido'		: pedido,
+	 			'subtotal'		: x
+	 			},
 	 	success: function(resp) { 
 	 		$('#table-totales').html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias 	
 	 	}
@@ -65,9 +74,8 @@ function ajaxSearch() {
 		});
 	}
 }
-
+//-----FUNCION PARA SELECCIONAR UN PRODUCTO Y ESCONDER EL AUTOCOMPLETAR---//
 function funcion1($id_producto){
-	
 	var nombre 		= $('#id_valor'+$id_producto).val();
 	var id_producto	= $id_producto;
 	$('#producto').val(nombre);
@@ -77,6 +85,19 @@ function funcion1($id_producto){
 }
 
 function sacarProducto($id_linea, $pedido){
+	var producto = [];
+	var cantidad = [];
+	var precio = [];
+	var subtotal = [];
+	var nombre = [];
+	for(i = 0; i < aux; i++){
+		producto[i] 	= $('#id_producto'+i).val();
+		cantidad[i] 	= $('#cant'+i).val();
+		precio[i] 		= $('#precio'+i).val();
+		subtotal[i] 	= $('#subtotal'+i).val();
+		nombre[i]		= $('#nomb'+i).val();
+		
+	}	
 	var pedido = $pedido;
  	var id_linea	= $id_linea;
  	$.ajax({
@@ -87,6 +108,18 @@ function sacarProducto($id_linea, $pedido){
 	 		   },
 	 	success: function(resp) {
 	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
+	 		for(i = 0; i < aux; i++){
+	 			$("#tablapedido > tbody").append('<tr>'+
+										 			'<td><input type="text" id="id_producto'+i+'" autocomplete="off" required hidden value="'+producto[i]+'">'+nombre[i]+
+										 				'<input type="text" id="nomb'+i+'" autocomplete="off" required hidden value="'+nombre[i]+'">'+
+										 			'</td>'+
+										 			'<td><input type="text" id="cant'+i+'" autocomplete="off" required hidden value="'+cantidad[i]+'">'+cantidad[i]+'</td>'+
+										 			'<td><input type="text" id="precio'+i+'" autocomplete="off" required hidden value="'+precio[i]+'">$ '+precio[i]+'</td>'+
+										 			'<td><input type="text" id="subtotal'+i+'" autocomplete="off" required hidden value="'+subtotal[i]+'">$ '+subtotal[i]+'</td>'+
+										 			'<td>Nuevo</td>'+
+										 			'<td></td>'+
+										 		'</tr>');
+			}	
 	 		$(".cargarLinea").show();
 	 		armarTotales(pedido);
 	 	}
@@ -94,6 +127,19 @@ function sacarProducto($id_linea, $pedido){
 }
 
 function cargarProducto($id_linea, $pedido){
+	var producto = [];
+	var cantidad = [];
+	var precio = [];
+	var subtotal = [];
+	var nombre = [];
+	for(i = 0; i < aux; i++){
+		producto[i] 	= $('#id_producto'+i).val();
+		cantidad[i] 	= $('#cant'+i).val();
+		precio[i] 		= $('#precio'+i).val();
+		subtotal[i] 	= $('#subtotal'+i).val();
+		nombre[i]		= $('#nomb'+i).val();
+		
+	}	
 	var pedido = $pedido;
  	var id_linea	= $id_linea;
  	$.ajax({
@@ -104,6 +150,18 @@ function cargarProducto($id_linea, $pedido){
 	 		   },
 	 	success: function(resp) {
 	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
+	 		for(i = 0; i < aux; i++){
+	 			$("#tablapedido > tbody").append('<tr>'+
+										 			'<td><input type="text" id="id_producto'+i+'" autocomplete="off" required hidden value="'+producto[i]+'">'+nombre[i]+
+										 				'<input type="text" id="nomb'+i+'" autocomplete="off" required hidden value="'+nombre[i]+'">'+
+										 			'</td>'+
+										 			'<td><input type="text" id="cant'+i+'" autocomplete="off" required hidden value="'+cantidad[i]+'">'+cantidad[i]+'</td>'+
+										 			'<td><input type="text" id="precio'+i+'" autocomplete="off" required hidden value="'+precio[i]+'">$ '+precio[i]+'</td>'+
+										 			'<td><input type="text" id="subtotal'+i+'" autocomplete="off" required hidden value="'+subtotal[i]+'">$ '+subtotal[i]+'</td>'+
+										 			'<td>Nuevo</td>'+
+										 			'<td></td>'+
+										 		'</tr>');
+			}	
 	 		$(".cargarLinea").show();
 	 		armarTotales(pedido);
 	 	}
@@ -126,6 +184,7 @@ function cancelarCambios($pedido){
 			$('.display-none').hide();
 			$('#btn-guardar').hide();
 			$('#btn-cancelar').hide();
+			aux = 0;
 	 	}
 	});
 }
@@ -138,6 +197,31 @@ function aprobarForm() {
 function imprimirConLogo(){
 	$('#imagen-durox').show();
 	setTimeout(function(){ $('#imagen-durox').hide(); }, 100);
+}
+
+function guardarLineasNuevas($pedido){
+	var pedido = $pedido;
+	for(i = 0; i < aux; i++){
+		var producto 	= $('#id_producto'+i).val();
+		var cantidad 	= $('#cant'+i).val();
+		var precio 		= $('#precio'+i).val();
+		var subtotal 	= $('#subtotal'+i).val();
+		$.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/Pedidos/cargaProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
+		 	data: {'producto'	: producto,
+		 		   'cantidad'	: cantidad,
+		 		   'precio'		: precio,
+		 		   'subtotal'	: subtotal,
+		 		   'pedido'		: pedido
+		 		   },
+		 	success: function(resp) { 
+		 		
+		 	},
+		 	async: false
+		});
+	}
+	return true;
 }
 </script>
 <?php
@@ -250,8 +334,8 @@ function imprimirConLogo(){
 							</div>
 						</div>
 						<div class="row">
-                        <div class="col-xs-12 table-responsive" id="tablapedido">
-                        	<form id="formProducto" class="form-inline" method="post">
+							<form id="formProducto" name="formProducto" class="form-inline" method="post">
+                        		<div class="col-xs-12 table-responsive" id="tablapedido">
                         		<?php
                                 		
 									$total = 0;
@@ -271,10 +355,10 @@ function imprimirConLogo(){
 									
 									if($bandera == 1)
 	     							{
-	     								echo '<table class="table" cellspacing="0" width="100%">';
+	     								echo '<table class="table" cellspacing="0" width="100%" id="tablapedido">';
 	     							}
 									else {
-										echo '<table class="table table-striped" cellspacing="0" width="100%">';
+										echo '<table class="table table-striped" cellspacing="0" width="100%" id="tablapedido">';
 									}	
 	     						?>
 								        <thead class="tabla-datos-importantes">
@@ -325,28 +409,30 @@ function imprimirConLogo(){
 											}	
 										}		
 										?>
-										<tr class="cargarLinea" style="display: none">
-											<td style="width: 210px">
-												<input type="text" id="producto" name="producto" class="numeric form-control editable" autocomplete="off" pattern="^[A-Za-z0-9 ]+$" onkeyup="ajaxSearch();" placeholder="<?php echo $this->lang->line('producto'); ?>" required style="height: 20px">
-												<div id="suggestions">
-										            <div id="autoSuggestionsList">  
-										            </div>
-										        </div>
-										        <input type="text" id="id_producto" name="id_producto" autocomplete="off" pattern="[0-9]*" required hidden>
-											</td>
-											<td style="width: 200px">
-												<input type="text" id="cantidad" name="cantidad1" class="numeric form-control editable" onkeypress="if (event.keyCode==13){cargaProducto(<?php echo $id_pedido?>); return false;}" autocomplete="off" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('cantidad'); ?>" style="height: 20px" required>
-											</td>
-											<td></td>
-											<td></td>
-											<td class="no-print"></td>		
-											<td></td>		
-										</tr>
-										
 										</tbody>
-								    </table>  
-							</form>            
-                        </div><!-- /.col -->
+										<tfoot>
+											<tr class="cargarLinea" style="display: none">
+												<td style="width: 210px">
+													<input type="text" id="producto" name="producto" class="numeric form-control editable" autocomplete="off" pattern="^[A-Za-z0-9 ]+$" onkeyup="ajaxSearch();" placeholder="<?php echo $this->lang->line('producto'); ?>" required style="height: 20px">
+													<div id="suggestions">
+											            <div id="autoSuggestionsList">  
+											            </div>
+											        </div>
+											        <input type="text" id="id_producto" name="id_producto" autocomplete="off" pattern="[0-9]*" required hidden>
+												</td>
+												<td style="width: 200px">
+													<input type="text" id="cantidad" name="cantidad1" class="numeric form-control editable" onkeypress="if (event.keyCode==13){cargaProducto(<?php echo $id_pedido?>); return false;}" autocomplete="off" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('cantidad'); ?>" style="height: 20px" required>
+												</td>
+												<td></td>
+												<td></td>
+												<td class="no-print"></td>		
+												<td></td>		
+											</tr>
+										
+										</tfoot>
+								    </table> 
+                        	</div><!-- /.col -->
+                    	</form> 
                     </div><!-- /.row -->
 					
 						<div class="row">
@@ -380,7 +466,7 @@ function imprimirConLogo(){
 					
 					<div class="row no-print">
                         <div class="col-xs-12">
-                        	<form action="<?php echo base_url().'/index.php/Pedidos/guardarPedido/'.$id_pedido?>" method="post">
+                        	<form action="<?php echo base_url().'/index.php/Pedidos/guardarPedido/'.$id_pedido?>" onsubmit="return guardarLineasNuevas(<?php echo $id_pedido?>)" method="post">
 	                        	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#informacion">
 									<i class="fa fa-info-circle"></i>
 								</button>

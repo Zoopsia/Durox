@@ -207,52 +207,17 @@ class Pedidos extends My_Controller {
 	
 	public function cargaProducto(){
 		
-		$pedido				= $this->input->post('pedido');
-		$pedi				= $this->pedidos_model->getRegistro($pedido);
+		$arreglo	= array(
+			'id_pedido'						=> $this->input->post('pedido'),
+			'id_producto' 					=> $this->input->post('producto'), 
+			'cantidad' 						=> $this->input->post('cantidad'),
+			'id_estado_producto_pedido'		=> 4,
+			'precio'						=> $this->input->post('precio'),
+			'subtotal'						=> $this->input->post('subtotal'),	
+		);
+
+		$linea				= $this->pedidos_model->insertLinea($arreglo);
 		
-		foreach($pedi as $row){
-			$cliente			= $this->clientes_model->getCliente($row->id_cliente);
-		}
-		
-		if($this->input->post('producto')){
-			if($this->input->post('cantidad')){
-
-				$producto			= $this->input->post('producto');
-				$cantidad			= $this->input->post('cantidad');
-
-				$productos			= $this->pedidos_model->getProductosTodo();
-				
-				foreach ($productos as $row) {
-					if($row->id_producto == $producto){
-						$precio 	= $row->precio;
-					}
-				}
-				
-				foreach($cliente as $row){
-					
-					$descuento = ($precio * $row->valor)/100;
-					if($row->aumento_descuento == 1){
-						$preciofinal = $precio - $descuento;
-					}
-					else {
-						$preciofinal = $precio + $descuento;
-					}
-				}
-				
-				$arreglo	= array(
-					'id_pedido'						=> $this->input->post('pedido'),
-					'id_producto' 					=> $this->input->post('producto'), 
-					'cantidad' 						=> $cantidad,
-					'id_estado_producto_pedido'		=> 4,
-					'precio'						=> round($preciofinal, 2),
-					'subtotal'						=> round($preciofinal, 2)*$cantidad,	
-				);
-
-				$linea				= $this->pedidos_model->insertLinea($arreglo);
-			}
-		}
-	
-		$this->armarTabla($pedido);	
 	}
 
 	function armarTabla($id){
@@ -276,10 +241,10 @@ class Pedidos extends My_Controller {
 									
 		if($bandera == 1)
 	    {
-	    	echo '<table class="table" cellspacing="0" width="100%">';
+	    	echo '<table class="table" cellspacing="0" width="100%" id="tablapedido">';
 	    }
 		else {
-			echo '<table class="table table-striped" cellspacing="0" width="100%">';
+			echo '<table class="table table-striped" cellspacing="0" width="100%" id="tablapedido">';
 		}	
 		
 		$mensaje .= '
@@ -328,7 +293,8 @@ class Pedidos extends My_Controller {
 					$mensaje .=	 '<td style="width: 50px"></td>';
 				$mensaje .=	'</tr>';
 			}	
-		}		
+		}
+		$mensaje .= '</tbody><tfoot>';
 		$mensaje .=	'<tr class="cargarLinea" style="display: none">
 					 <td style="width: 210px">
 						<input type="text" id="producto" name="producto" class="numeric form-control editable" autocomplete="off" pattern="^[A-Za-z0-9 ]+$" onkeyup="ajaxSearch();" placeholder="'.$this->lang->line('producto').'" required style="height: 20px">
@@ -346,7 +312,7 @@ class Pedidos extends My_Controller {
 					<td></td>	
 					<td></td>			
 				</tr>
-			</tbody>
+				</tfoot>
 			</table>';  
 			
 		echo $mensaje; 
@@ -364,6 +330,7 @@ class Pedidos extends My_Controller {
 					$total = $row->subtotal + $total;
 			}
 		}
+		$total = $total + $this->input->post('subtotal');
 		
 		$mensaje = '<table class="table">
 				        <tr>
@@ -524,5 +491,54 @@ class Pedidos extends My_Controller {
 		}
 			
 		redirect('Pedidos/pestanas/'.$id_pedido,'refresh');
+	}
+	
+	function traerProducto(){
+		$producto	= $this->productos_model->getRegistro($this->input->post('producto'));
+		
+		$pedi		= $this->pedidos_model->getRegistro($this->input->post('pedido'));
+		
+		foreach($pedi as $row){
+			$cliente			= $this->clientes_model->getCliente($row->id_cliente);
+		}
+		
+		if($this->input->post('producto')){
+			if($this->input->post('cantidad')){
+				$cantidad		= $this->input->post('cantidad');
+				$producto		= $this->productos_model->getRegistro($this->input->post('producto'));
+				
+				if($producto){
+					foreach ($producto as $row) {
+						$precio 	= $row->precio;
+						$nombre		= $row->nombre;
+					}
+				}
+				
+				foreach($cliente as $row){
+					$descuento = ($precio * $row->valor)/100;
+					if($row->aumento_descuento == 1){
+						$preciofinal = $precio - $descuento;
+					}
+					else {
+						$preciofinal = $precio + $descuento;
+					}
+				}
+				
+				$preciototal	= round($preciofinal, 2);
+				$subtotal 		= round($preciofinal, 2)*$cantidad;	
+				
+				echo 	'<tr>
+							<td><input type="text" id="id_producto'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$this->input->post('producto').'">'.$nombre.'
+								<input type="text" id="nomb'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$nombre.'">
+							</td>
+							<td><input type="text" id="cant'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$this->input->post('cantidad').'">'.$cantidad.'</td>
+							<td><input type="text" id="precio'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$preciototal.'">$ '.$preciototal.'</td>
+							<td><input type="text" id="subtotal'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$subtotal.'">$ '.$subtotal.'</td>
+							<td>Nuevo</td>
+							<td></td>
+						</tr>'; 
+		
+			}
+		}
 	}
 }

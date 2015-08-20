@@ -310,7 +310,7 @@ $aux2 = 0;
 					<div class="col-lg-8">
 						<select name="visto" class="form-control chosen-select">	
 							<?php
-							if($row->visto == 1){
+							if($row->visto_back == 1){
 								echo '<option value="1" selected>SI</option>';
 								echo '<option value="0">NO</option>';
 							}

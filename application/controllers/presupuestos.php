@@ -149,7 +149,7 @@ class Presupuestos extends My_Controller {
 				'id_vendedor' 			=> $this->input->post('id_vendedor'),
 				'fecha'					=> $fecha,
 				'id_origen'				=> 2,
-				'visto'					=> 0
+				'visto_back'			=> 0
 			);
 	
 			$id_presupuesto 	= $this->presupuestos_model->insert($presupuesto);
@@ -180,7 +180,7 @@ class Presupuestos extends My_Controller {
 				'id_vendedor' 			=> $this->input->post('id_vendedor'),
 				'fecha'					=> $fecha,
 				'id_origen'				=> 2,
-				'visto'					=> 0
+				'visto_back'			=> 0
 			);
 	
 			$id_presupuesto 	= $this->presupuestos_model->insert($presupuesto);
@@ -631,7 +631,7 @@ class Presupuestos extends My_Controller {
 	function editarVisto($id=null){
 		if($id){
 			$arreglo = array(
-				'visto'		=> $this->input->post('visto')
+				'visto_back'	=> $this->input->post('visto')
 			);
 			$id = $this->presupuestos_model->update($arreglo, $id);
 		}
@@ -643,7 +643,7 @@ class Presupuestos extends My_Controller {
 					$id = $row->id_presupuesto; 	
 					if($row->id_presupuesto = $this->input->post('id_presupuesto'.$id)){
 						$arreglo = array(
-							'visto'		=> $this->input->post('estado'.$id)
+							'visto_back'	=> $this->input->post('estado'.$id)
 						);
 						$id = $this->presupuestos_model->update($arreglo, $id);
 					}

@@ -50,11 +50,11 @@ class Grupos extends My_Controller {
 	
 			//Armo tabla con el resultado
 			
-			$table =	'<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
+			$table =	'<table class="table table-striped table-bordered" cellspacing="0" width="100%">
 							<thead>
 								<tr>
+									<th>'.$this->lang->line('grupo').'</th>
 									<th>'.$this->lang->line('regla').'</th>
-									<th>'.$this->lang->line('nombre').'</th>
 									<th>'.$this->lang->line('tipo').'</th>
 									<th>'.$this->lang->line('valor').'</th>
 								</tr>
@@ -62,8 +62,8 @@ class Grupos extends My_Controller {
 										 
 							<tfoot>
 								<tr>
+									<th>'.$this->lang->line('grupo').'</th>
 									<th>'.$this->lang->line('regla').'</th>
-									<th>'.$this->lang->line('nombre').'</th>
 									<th>'.$this->lang->line('tipo').'</th>
 									<th>'.$this->lang->line('valor').'</th>
 								</tr>
@@ -114,16 +114,14 @@ class Grupos extends My_Controller {
 			$table =	'<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							<thead>
 								<tr>
-									<th>'.$this->lang->line('nombre').'</th>
-									<th>'.$this->lang->line('apellido').'</th>
+									<th>'.$this->lang->line('razon_social').'</th>
 									<th>'.$this->lang->line('cuit').'</th>
 								</tr>
 							</thead>
 										 
 							<tfoot>
 								<tr>
-									<th>'.$this->lang->line('nombre').'</th>
-									<th>'.$this->lang->line('apellido').'</th>
+									<th>'.$this->lang->line('razon_social').'</th>
 									<th>'.$this->lang->line('cuit').'</th>
 								</tr>
 							</tfoot>
@@ -131,9 +129,7 @@ class Grupos extends My_Controller {
 			if($clientes){
 				foreach ($clientes as $key) {
 					$table .= "<tr><td>";
-					$table .= $key->nombre;
-					$table .= "</td><td>";
-					$table .= $key->apellido;
+					$table .= $key->razon_social;
 					$table .= "</td><td>";
 					$table .= cuit($key->cuit);
 					$table .= "</td></tr>";
@@ -258,8 +254,7 @@ class Grupos extends My_Controller {
 		$table =	'<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							<thead>
 								<tr>
-									<th>'.$this->lang->line('nombre').'</th>
-									<th>'.$this->lang->line('apellido').'</th>
+									<th>'.$this->lang->line('razon_social').'</th>
 									<th>'.$this->lang->line('cuit').'</th>
 									<th></th>
 								</tr>
@@ -267,8 +262,7 @@ class Grupos extends My_Controller {
 										 
 							<tfoot>
 								<tr>
-									<th>'.$this->lang->line('nombre').'</th>
-									<th>'.$this->lang->line('apellido').'</th>
+									<th>'.$this->lang->line('razon_social').'</th>
 									<th>'.$this->lang->line('cuit').'</th>
 									<th></th>
 								</tr>
@@ -286,9 +280,7 @@ class Grupos extends My_Controller {
 					}
 					if($bandera == 0){
 							$table .= "<tr><td>";
-							$table .= $row->nombre;
-							$table .= "</td><td>";
-							$table .= $row->apellido;
+							$table .= $row->razon_social;
 							$table .= "</td><td>";
 							$table .= cuit($row->cuit);
 							$table .= '</td><td style="text-align: center">';
@@ -316,8 +308,7 @@ class Grupos extends My_Controller {
 		$table =	'<table class="table table-striped table-bordered prueba" cellspacing="0" width="100%">
 							<thead>
 								<tr>
-									<th>'.$this->lang->line('nombre').'</th>
-									<th>'.$this->lang->line('apellido').'</th>
+									<th>'.$this->lang->line('razon_social').'</th>
 									<th>'.$this->lang->line('cuit').'</th>
 									<th></th>
 								</tr>
@@ -325,8 +316,7 @@ class Grupos extends My_Controller {
 										 
 							<tfoot>
 								<tr>
-									<th>'.$this->lang->line('nombre').'</th>
-									<th>'.$this->lang->line('apellido').'</th>
+									<th>'.$this->lang->line('razon_social').'</th>
 									<th>'.$this->lang->line('cuit').'</th>
 									<th></th>
 								</tr>
@@ -336,9 +326,7 @@ class Grupos extends My_Controller {
 			if($grupos_clientes){
 				foreach ($grupos_clientes as $row) {
 					$table .= "<tr><td>";
-					$table .= $row->nombre;
-					$table .= "</td><td>";
-					$table .= $row->apellido;
+					$table .= $row->razon_social;
 					$table .= "</td><td>";
 					$table .= cuit($row->cuit);
 					$table .= '</td><td style="text-align: center">';

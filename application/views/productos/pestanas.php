@@ -91,7 +91,8 @@ $bandera = 0;
 			<form id="formulario" action="<?php echo base_url()."index.php/Productos/editarProducto/$row->id_producto"?>" class="form-horizontal" method="post" enctype="multipart/form-data"> 
 			<?php } ?>
 			<div class="row">
-				<div class="col-md-5 col-lg-5 " align="center"> 
+				<div class="col-md-5 col-lg-5 " align="center">
+					<a class="no-print" href="<?php echo base_url().'index.php/productos/producto_imagen/'.$id ?>"> 
 					<?php
 						if($imagenes)
 						{
@@ -110,6 +111,7 @@ $bandera = 0;
 								
 						?>
 					</div>
+					</a>
 					<nav class="no-print">
 						<a id="bb-nav-first" href="#"><button class="btn-mover-fotos"><i class="fa fa-angle-double-left fa-2x"></i></button></a>
 						<a id="bb-nav-prev" href="#"><button class="btn-mover-fotos"><i class="fa fa-angle-left fa-2x"></i></button></a>
