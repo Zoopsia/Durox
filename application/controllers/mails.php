@@ -221,4 +221,24 @@ class Mails extends My_Controller {
 		echo $mensaje;
 	}
 		
+	public function editarMailsClientes(){
+		
+		$db['config_mail']	= $this->mails_model->getConfigMails();
+		
+		$this->cargar_vista($db, 'mail_clientes');
+	}
+	
+	public function modificarMail(){
+		$arreglo = array(
+			'cuerpo'		=> $this->input->post('cuerpo'),
+			'asunto'		=> $this->input->post('titulo')
+		);
+		
+		$this->mails_model->updateMail($arreglo, 1);
+		
+		$db['config_mail']	= $this->mails_model->getConfigMails();
+		
+		$this->cargar_vista($db, 'mail_clientes');
+		
+	}
 }

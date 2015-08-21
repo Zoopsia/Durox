@@ -43,21 +43,23 @@ function cargaProducto($presupuesto){
  	var producto 	= $('input#id_producto').val(); 
  	var cantidad 	= $('input#cantidad').val();
  	var presupuesto	= $presupuesto;
- 	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/Presupuestos/cargaProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
-	 	data: {'producto'	: producto,
-	 		   'cantidad'	: cantidad,
-	 		   'presupuesto': presupuesto,
-	 		   },
-	 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-	 		//Activar y Rellenar el select de provincias
-	 		$('#table').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
-	 		$('#btn-guardar').show();
-	 		document.getElementById("formProducto").reset();
-	 		$("#producto").focus();
-	 	}
-	});
+ 	if(producto && cantidad){
+	 	$.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/Presupuestos/cargaProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
+		 	data: {'producto'	: producto,
+		 		   'cantidad'	: cantidad,
+		 		   'presupuesto': presupuesto,
+		 		   },
+		 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+		 		//Activar y Rellenar el select de provincias
+		 		$('#table').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
+		 		$('#btn-guardar').show();
+		 		document.getElementById("formProducto").reset();
+		 		$("#producto").focus();
+		 	}
+		});
+	}
 }
 
 function sacarProducto($id_linea, $presupuesto){

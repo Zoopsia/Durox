@@ -13,6 +13,7 @@ class Pedidos extends My_Controller {
 		);
 
 		$this->load->library('grocery_CRUD');
+		$this->load->library('email');
 		
 		$this->load->model('empresas_model');
 		$this->load->model('clientes_model');
@@ -23,6 +24,7 @@ class Pedidos extends My_Controller {
 		$this->load->model('visitas_model');
 		$this->load->model('presupuestos_model');
 		$this->load->model('log_linea_pedidos_model');
+		$this->load->model('mails_model');
 		
 		$this->load->model($this->_subject.'_model');	
 	}
@@ -35,8 +37,16 @@ class Pedidos extends My_Controller {
 		
 		if($pedido){
 			foreach($pedido as $row) {
-				$db['clientes']		= $this->clientes_model->getRegistro($row->id_cliente);
+				$clientes			= $this->clientes_model->getRegistro($row->id_cliente);
+				$db['clientes']		= $clientes;
 				$db['vendedores']	= $this->vendedores_model->getRegistro($row->id_vendedor);
+			}
+		}
+
+		if($clientes){
+			foreach($clientes as $clientes){
+				$db['mails']		= $this->clientes_model->getCruce($clientes->id_cliente,'mails');
+				$db['config_mail']	= $this->mails_model->getConfigMails();
 			}
 		}
 		$db['iva']				= $this->clientes_model->getTodo('iva');		
@@ -472,6 +482,17 @@ class Pedidos extends My_Controller {
 	}
 	
 	function aprobarPedido($id_pedido){
+		
+		$mails = $this->input->post('mail');
+		
+		if($mails){
+			foreach($mails as $row){
+				$cuerpo = $this->armarCuerpo($this->input->post('cuerpo'),$id_pedido);
+				echo $cuerpo;
+				//mail($row, $this->input->post('titulo'), $cuerpo, $this->input->post('cabecera'));
+			}
+		}
+		
 		$pedido	= $this->pedidos_model->getDetallePedido($id_pedido);
 		
 		if($pedido){
@@ -490,7 +511,7 @@ class Pedidos extends My_Controller {
 			$this->pedidos_model->update($arreglo_pedido, $id_pedido);
 		}
 			
-		redirect('Pedidos/pestanas/'.$id_pedido,'refresh');
+		//redirect('Pedidos/pestanas/'.$id_pedido,'refresh');
 	}
 	
 	function traerProducto(){
@@ -540,5 +561,60 @@ class Pedidos extends My_Controller {
 		
 			}
 		}
+	}
+
+	function armarCuerpo($cuerpo,$id_pedido){
+		
+		$pedido 				= $this->pedidos_model->getRegistro($id_pedido);
+		
+		if($pedido){
+			foreach($pedido as $row){
+				$id_cliente 	= $row->id_cliente;
+				$id_vendedor 	= $row->id_vendedor;
+				$id_visita		= $row->id_visita;
+			}
+		}
+		$cuerpo = str_replace("#pedido#", $row->id_pedido, $cuerpo);
+		$cuerpo = str_replace("#total#", $row->total, $cuerpo);
+		$date	 = date_create($row->fecha);
+		$cuerpo = str_replace("#fecha#", strftime("%A %d de %B del %Y"), $cuerpo);
+		$date2	 = date_create($row->date_upd);
+		$cuerpo = str_replace("#fecha_aprobado#", date_format($date2, 'l j F Y'), $cuerpo);
+		$cuerpo = str_replace("#visita#", $row->id_visita, $cuerpo);
+		$cuerpo = str_replace("#presupuesto#", $row->id_presupuesto, $cuerpo);
+		
+		$cliente				= $this->clientes_model->getCliente($id_cliente);	
+		//$telefonos_cliente		= $this->clientes_model->getCruce($id_cliente,'telefonos');
+		//$direcciones_cliente	= $this->clientes_model->getCruce($id_cliente,'direcciones');
+		//$mails_cliente			= $this->clientes_model->getCruce($id_cliente,'mails');
+		
+		if($cliente){
+			foreach($cliente as $cliente){
+				$cuerpo = str_replace("#razon_social_cliente#", $cliente->razon_social, $cuerpo); 
+				$cuerpo = str_replace("#nombre_cliente#", $cliente->nombre, $cuerpo); 
+				$cuerpo = str_replace("#apellido_cliente#", $cliente->apellido, $cuerpo); 
+				$cuerpo = str_replace("#cuit_cliente#", cuit($cliente->cuit), $cuerpo); 
+				$cuerpo = str_replace("#iva_cliente#", $cliente->iva, $cuerpo); 
+				$cuerpo = str_replace("#grupo_cliente#", $cliente->grupo_nombre, $cuerpo); 
+				//$cuerpo = str_replace("#valor_cliente#", $cliente->nombre, $cuerpo); 
+			}
+		}
+		
+		$vendedor				= $this->vendedores_model->getRegistro($id_vendedor);
+		/*
+		$telefonos_vendedor		= $this->vendedores_model->getCruce($id_vendedor,'telefonos');
+		$direcciones_vendedor	= $this->vendedores_model->getCruce($id_vendedor,'direcciones');
+		$mails_vendedor			= $this->vendedores_model->getCruce($id_vendedor,'mails');
+		*/
+		
+		if($vendedor){
+			foreach($vendedor as $vendedor){
+				$cuerpo = str_replace("#nombre_vendedor#", $vendedor->nombre, $cuerpo);
+				$cuerpo = str_replace("#apellido_vendedor#", $vendedor->apellido, $cuerpo);
+			}
+		}
+		
+		return $cuerpo;	
+	
 	}
 }

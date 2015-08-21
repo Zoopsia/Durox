@@ -1,5 +1,8 @@
 <script>
-
+function aprobarForm() {
+ 	$("#aprobarForm").submit();
+}
+ 
 var aux = 0;
 
 function editable(){
@@ -189,11 +192,6 @@ function cancelarCambios($pedido){
 	});
 }
 
-function aprobarForm() {
-	$("#aprobarForm").submit();
-}
-
-
 function imprimirConLogo(){
 	$('#imagen-durox').show();
 	setTimeout(function(){ $('#imagen-durox').hide(); }, 100);
@@ -223,7 +221,19 @@ function guardarLineasNuevas($pedido){
 	}
 	return true;
 }
+
+function pegarEtiqueta(){
+	var caretPos 		= document.getElementById("txt").selectionStart;
+    var textAreaTxt 	= $('#txt').val();
+    var txtToAdd 		=  $( "#btn-tag" ).val();
+	$("#txt").val(textAreaTxt.substring(caretPos) + txtToAdd);
+}
+
+function insertInputTag(){
+	$("#btn-tag" ).val($( "#etiquetas" ).val());
+}
 </script>
+
 <?php
 	if($pedido){
 		foreach ($pedido as $row) {
@@ -472,46 +482,38 @@ function guardarLineasNuevas($pedido){
 								</button>
 								
 								<button type="button" id="btn-print" class="btn btn-default" onclick="imprimirConLogo();window.print();"><i class="fa fa-print"></i> Print</button>
-								
+								<?php if($config_mail){ foreach($config_mail as $mail){?>
+								<!-- COMPRUEBO EL ESTADO -->
 								<?php
 								if($pedido){
 									foreach($pedido as $row){
 										if($row->id_estado_pedido == 1){
 								
 								?>	
-								
 								<button type="button" id="btn-editar" class="btn btn-primary btn-sm pull-right" onclick="editable()" style=" margin-left: 5px">
 									<?php echo $this->lang->line('editar');?>
 								</button>
-								<button type="button" id="btn-aprobar" onclick="aprobarForm()" class="btn btn-success btn-sm pull-right">
+								<button type="button" id="btn-aprobar" <?php if($mail->enviar_auto == 0){echo 'data-toggle="modal" data-target="#mandar-mail"';}else{echo 'onclick="aprobarForm()"';}?> class="btn btn-success btn-sm pull-right">
 									<?php echo $this->lang->line('aprobar').' '.$this->lang->line('pedido');?>
-								</button>		
+								</button>
+								<!-- COMPRUEBO EL ESTADO Y EL ORIGEN -->		
+								<?php	
+										}
+										else if($row->id_estado_pedido == 4 && $row->id_origen == 2){
+								?>
+								<button type="button" id="btn-editar" class="btn btn-primary btn-sm pull-right" onclick="editable()" style=" margin-left: 5px">
+									<?php echo $this->lang->line('editar');?>
+								</button>
+								<button type="button" id="btn-aprobar" <?php if($mail->enviar_auto == 0){echo 'data-toggle="modal" data-target="#mandar-mail"';}else{echo 'onclick="aprobarForm()"';}?> class="btn btn-success btn-sm pull-right">
+									<?php echo $this->lang->line('aprobar').' '.$this->lang->line('pedido');?>
+								</button>	
 								<?php
 											
 										}
 									}
 								}
 								?>
-								
-								<?php
-								if($pedido){
-									foreach($pedido as $row){
-										if($row->id_estado_pedido == 4 && $row->id_origen == 2){
-								
-								?>	
-								
-								<button type="button" id="btn-editar" class="btn btn-primary btn-sm pull-right" onclick="editable()" style=" margin-left: 5px">
-									<?php echo $this->lang->line('editar');?>
-								</button>
-								<button type="button" id="btn-aprobar" onclick="aprobarForm()" class="btn btn-success btn-sm pull-right">
-									<?php echo $this->lang->line('aprobar').' '.$this->lang->line('pedido');?>
-								</button>		
-								<?php
-											
-										}
-									}
-								}
-								?>
+								<?php } } ?>
 								<button type="button" id="btn-cancelar" class="btn btn-danger btn-sm pull-right" onclick="cancelarCambios(<?php echo $id_pedido?>)" style="display: none; margin-left: 5px">
 									<?php echo $this->lang->line('cancelar');?>
 								</button>
@@ -519,8 +521,10 @@ function guardarLineasNuevas($pedido){
 									<?php echo $this->lang->line('guardar');?>
 								</button>
 							</form>
+							<!--
 							<form id="aprobarForm" action="<?php echo base_url().'/index.php/Pedidos/aprobarPedido/'.$id_pedido?>" method="post">
 							</form>
+							-->
                          </div>
                     </div>	
                    	
@@ -531,7 +535,7 @@ function guardarLineasNuevas($pedido){
  
 		
 		
-		<!-- Modal -->
+		<!-- Modal INFO-->
 <?php if($pedido){ foreach($pedido as $row){ ?>
 <div class="modal fade" id="informacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document">
@@ -608,3 +612,73 @@ function guardarLineasNuevas($pedido){
   </div>
 </div>
 <?php } } ?>
+
+<!-- Modal Mandar Mail-->
+<div class="modal fade" id="mandar-mail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width: 800px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Enviar aviso</h4>
+      </div>
+      <form id="aprobarForm" action="<?php echo base_url().'/index.php/Pedidos/aprobarPedido/'.$id_pedido?>" method="post">
+      <div class="modal-body">
+      	<div class="row">
+      		<div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1">
+	      		<div class="form-group">
+	      			<select name="mail[]" class="form-control chosen-select" multiple  data-placeholder="Enviar a: ">
+						<?php 
+						$i=0;
+						if($mails){
+							foreach($mails as $row){
+								if($i == 0) 
+									echo '<option selected>'.$row->mail.'</option>';
+								else
+									echo '<option>'.$row->mail.'</option>';
+								$i++;
+							}
+						}
+						?>
+	            	</select> 
+	            </div>
+	            <?php if($config_mail){ foreach($config_mail as $mail){?>
+	            <div class="form-group">
+	            	<input type="text" class="form-control" name="titulo" placeholder="Titulo" required value="<?php echo $mail->asunto?>">
+	            </div>
+	            <div class="form-group">
+	            	<textarea id="txt" class="texteditor" name="cuerpo" rows="10" cols="80">
+						<?php echo $mail->cuerpo?>
+					</textarea>
+		        </div>
+	            <div class="form-group">
+	            	<textarea id="editor1" name="cabecera" rows="10" cols="80" style="display:none;">
+	            		<?php echo $mail->cabecera?>
+	            	</textarea>
+	            </div>
+	            <?php } }?>
+	            <?php $tags = traerTags();?>
+	            <div class="form-group">
+	            	<div class="col-md-8">
+		            	<select id="etiquetas" onchange="insertInputTag()" class="form-control" data-placeholder="Seleccione un tipo...">
+		            		<option disabled selected>Etiquetas...</option>
+		            		<?php foreach($tags as $key => $value){
+		            				echo '<option value="'.$value.'">'.$key.'</option>';
+		            		}
+							?>
+		            	</select>
+	            	</div>
+	            	<div class="col-md-4">
+	            		<input type="button" id="btn-tag" value="" onclick="pegarEtiqueta()" class="btn btn-default form-control">
+	            	</div>
+	            </div>
+			</div>
+		</div>	
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->lang->line('cerrar');?></button>
+      	<button type="submit" class="btn btn-primary">Enviar</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
