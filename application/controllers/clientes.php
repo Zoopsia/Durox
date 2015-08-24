@@ -33,6 +33,7 @@ class Clientes extends My_Controller {
 		$db['visitas']		= $this->clientes_model->getVisitas($id);
 		$db['iva']			= $this->clientes_model->getTodo('iva');
 		$db['grupos']		= $this->grupos_model->getTodo();
+		$db['alarmas']		= $this->clientes_model->getAlarmas($id);
 		$db['id']			= $id;
 		
 		
@@ -68,6 +69,7 @@ class Clientes extends My_Controller {
 				 ->display_as('apellido','Apellido Contacto')
 				 ->display_as('razon_social','Razon Social')
 				 ->display_as('id_grupo_cliente','Grupo')
+				 ->display_as('fecha','Fecha Ultima Visita')
 				 ->display_as('id_iva','Situacion IVA');
 				 
 			$crud->required_fields('nombre',

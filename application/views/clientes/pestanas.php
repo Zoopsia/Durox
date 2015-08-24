@@ -142,6 +142,24 @@ function imprimir(){
 	if(!$("input#alias").val()){
 		$("#no-alias").addClass("no-print");
 	}
+}
+
+function saveAlarm($id){
+	if($('#mensaje').val()){
+		$.ajax({
+			type: 'POST',
+			url: '<?php echo base_url(); ?>index.php/Alarmas/insertAlarma', 
+			data: { 'tipo' 		: $('#tipo').val(),
+			 		'mensaje'	: $('#mensaje').val(),
+			 		'id'		: $id, 
+			 		'cruce'		: 'clientes'
+			}, 
+			success: function(resp) { 
+				$('#box-alarmas').append(resp);
+				$('#formAlarma').trigger("reset");
+			}
+		});
+	}
 }			
 </script>
 <?php
@@ -933,9 +951,60 @@ $bandera = 0;
 	    					
 	    					<div class="tab-pane fade" id="tab7">
 	     						<!--TAB 7 ALARMAS -->
-	     						ALARMAS
+	     						<div class="col-md-6">
+	     							<div class="box box-primary">
+		                                <div class="box-header">
+		                                    <h3 class="box-title"><?php echo $this->lang->line('alarmas')?></h3>
+		                                </div><!-- /.box-header -->
+		                               
+		                                <div class="box-body" id="box-alarmas">
+		                                <?php
+					     					if($alarmas){
+												foreach($alarmas as $row){
+													$arreglo	= array(
+														'id_tipo'	=> $row->id_tipo_alarma,
+														'tipo'		=> $row->tipo_alarma,
+														'mensaje'	=> $row->mensaje
+													);
+													echo armarAlarma($arreglo);
+												}
+											}
+										?>
+		                            	</div><!-- /.box-body -->
+		                            </div>
+								</div>
+								<form id="formAlarma">
+								<div class="col-md-6">
+									<div class="box box-info">
+		                                <div class="box-header ui-sortable-handle" style="cursor: move;">
+		                                    <i class="fa fa-envelope"></i>
+		                                    <h3 class="box-title"><?php echo $this->lang->line('nueva')?></h3>
+		                                    <!-- tools box -->
+		                                    <!--
+		                                    <div class="pull-right box-tools">
+		                                        <button class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>
+		                                    </div> 
+		                                    -->
+		                                </div>
+		                                <div class="box-body">
+		                                <div class="form-group">
+		                                	<select class="form-control" id="tipo" name="tipo_alarma" style="font-family: 'FontAwesome', Helvetica;">
+												<option value="1">&#xf087;<?php echo ' '.$this->lang->line('exito')?></option>
+												<option value="2">&#xf129;<?php echo ' '.$this->lang->line('informacion')?></option>
+		                                		<option value="3">&#xf071;<?php echo ' '.$this->lang->line('alerta')?></option>
+		                            		</select> 
+		                                </div>
+		                                <div class="form-group">
+		                                    <textarea id="mensaje" name="mensaje" style="resize: none; width: 100%; height: 150px"></textarea>
+		                                </div>
+		                                </div>
+		                                <div class="box-footer clearfix">
+		                                    <button type="button" class="pull-right btn btn-primary btn-sm" onclick="saveAlarm(<?php echo $id?>);"><?php echo $this->lang->line('guardar')?></button>
+		                                </div>
+	                           		</div>
+	                           </div>
+	                           </form>
 	    					</div>
-	    					
 	    				</div><!--contenedor de cada pestaña-->	
 		  			</div><!--panel body-->
 				</div><!--panel-->

@@ -229,9 +229,17 @@ class Mails extends My_Controller {
 	}
 	
 	public function modificarMail(){
+		if (null!==  $this->input->post('enviar_auto')) {	
+			$enviar_auto	= 1;		
+		}
+		else {
+			$enviar_auto = 0;
+		}
+		
 		$arreglo = array(
 			'cuerpo'		=> $this->input->post('cuerpo'),
-			'asunto'		=> $this->input->post('titulo')
+			'asunto'		=> $this->input->post('titulo'),
+			'enviar_auto'	=> $enviar_auto
 		);
 		
 		$this->mails_model->updateMail($arreglo, 1);

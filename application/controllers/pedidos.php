@@ -419,9 +419,10 @@ class Pedidos extends My_Controller {
 		
 		$this->pedidos_model->update($arreglo, $id_pedido);
 		
+		//----- CARGO ACCION A UN REGISTRO LOG---//
 		if($pedidos){
 			foreach($pedidos as $row){
-				if($row->estado_linea == 3){
+				if($row->estado_linea == 3){//--- Imposible de enviar ---//
 					$arreglo	 = array(
 						'id_estado_producto_pedido'	=> 1,
 						'eliminado'					=> 1 	
@@ -435,7 +436,7 @@ class Pedidos extends My_Controller {
 					$id 	= $this->pedidos_model->updateLinea($arreglo,$row->id_linea_producto_pedido);
 					$id_log = $this->log_linea_pedidos_model->insert($arreglo_log);
 				}
-				else if($row->estado_linea == 4){
+				else if($row->estado_linea == 4){//--- Nuevo ---//
 					$arreglo	= array(
 						'id_estado_producto_pedido'	=> 1	
 					);
@@ -484,16 +485,14 @@ class Pedidos extends My_Controller {
 	function aprobarPedido($id_pedido){
 		
 		$mails = $this->input->post('mail');
+		$pedido	= $this->pedidos_model->getDetallePedido($id_pedido);
 		
 		if($mails){
 			foreach($mails as $row){
 				$cuerpo = $this->armarCuerpo($this->input->post('cuerpo'),$id_pedido);
-				echo $cuerpo;
-				//mail($row, $this->input->post('titulo'), $cuerpo, $this->input->post('cabecera'));
+				mail($row, $this->input->post('titulo'), $cuerpo, $this->input->post('cabecera'));
 			}
 		}
-		
-		$pedido	= $this->pedidos_model->getDetallePedido($id_pedido);
 		
 		if($pedido){
 			foreach($pedido as $row){
@@ -504,14 +503,14 @@ class Pedidos extends My_Controller {
 			}
 
 			$arreglo_pedido = array(
-				'id_estado_pedido'		=> 1,
+				'id_estado_pedido'		=> 2,
 				'aprobado_back'			=> 1
 			);
 			
 			$this->pedidos_model->update($arreglo_pedido, $id_pedido);
 		}
 			
-		//redirect('Pedidos/pestanas/'.$id_pedido,'refresh');
+		redirect('Pedidos/pestanas/'.$id_pedido,'refresh');
 	}
 	
 	function traerProducto(){
@@ -577,9 +576,9 @@ class Pedidos extends My_Controller {
 		$cuerpo = str_replace("#pedido#", $row->id_pedido, $cuerpo);
 		$cuerpo = str_replace("#total#", $row->total, $cuerpo);
 		$date	 = date_create($row->fecha);
-		$cuerpo = str_replace("#fecha#", fechaEspañol(date_format($date, 'l j F Y')), $cuerpo);
+		$cuerpo = str_replace("#fecha#", fechaEspañol(date_format($date, 'l j F, Y')), $cuerpo);
 		$date2	 = date_create($row->date_upd);
-		$cuerpo = str_replace("#fecha_aprobado#", fechaEspañol(date_format($date2, 'l j F Y')), $cuerpo);
+		$cuerpo = str_replace("#fecha_aprobado#", fechaEspañol(date_format($date2, 'l j F')), $cuerpo);
 		$cuerpo = str_replace("#visita#", $row->id_visita, $cuerpo);
 		$cuerpo = str_replace("#presupuesto#", $row->id_presupuesto, $cuerpo);
 		

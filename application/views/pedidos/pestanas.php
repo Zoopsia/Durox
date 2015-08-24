@@ -1,4 +1,5 @@
 <script>
+   
 function aprobarForm() {
  	$("#aprobarForm").submit();
 }
@@ -223,10 +224,10 @@ function guardarLineasNuevas($pedido){
 }
 
 function pegarEtiqueta(){
-	var caretPos 		= document.getElementById("txt").selectionStart;
+	//var caretPos 		= document.getElementById("txt").selectionEnd;
     var textAreaTxt 	= $('#txt').val();
     var txtToAdd 		=  $( "#btn-tag" ).val();
-	$("#txt").val(textAreaTxt.substring(caretPos) + txtToAdd);
+	$("#txt").val(textAreaTxt + txtToAdd);
 }
 
 function insertInputTag(){
@@ -238,6 +239,8 @@ function insertInputTag(){
 	if($pedido){
 		foreach ($pedido as $row) {
 ?>	
+
+       
 <div class="col-md-12">
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
@@ -646,8 +649,43 @@ function insertInputTag(){
 	            	<input type="text" class="form-control" name="titulo" placeholder="Titulo" required value="<?php echo $mail->asunto?>">
 	            </div>
 	            <div class="form-group">
-	            	<textarea id="txt" class="texteditor" name="cuerpo" rows="10" cols="80">
+	            	<textarea id="txt" class="texteditor" name="cuerpo" style="resize: none;">
 						<?php echo $mail->cuerpo?>
+						<table class="table table-striped" cellspacing="0" width="60%" border="1"> 
+							<thead class="tabla-datos-importantes">
+								<tr>
+									<th><?php echo $this->lang->line('producto'); ?></th>
+								    <th><?php echo $this->lang->line('cantidad'); ?></th>
+								    <th><?php echo $this->lang->line('precio'); ?></th>
+								    <th><?php echo $this->lang->line('subtotal'); ?></th>
+								</tr>
+							</thead>
+								 
+							<tbody>
+							<?php	
+							if($pedidos)
+							{
+								foreach ($pedidos as $row) 
+								{
+									echo '<tr>';
+									echo '<td style="text-align: center;">'.$row->nombre.'</td>';
+									echo '<td style="text-align: center;">'.$row->cantidad.'</td>';
+									echo '<td style="text-align: center;">$ '.$row->precio.'</td>';
+									echo '<td style="text-align: center;">$ '.$row->subtotal.'</td>';
+									echo '</tr>';
+								}	
+							}		
+							?>
+							</tbody>
+							<tfoot>
+								<tr>
+									<td></td>
+									<td></td>
+									<th><?php echo $this->lang->line('total'); ?></th>
+									<td style="text-align: center;"><u>$ <?php echo round($total,2);?></u></td>
+								</tr>
+							</tfoot>
+						</table> 
 					</textarea>
 		        </div>
 	            <div class="form-group">
