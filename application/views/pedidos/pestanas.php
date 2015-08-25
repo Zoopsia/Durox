@@ -251,9 +251,11 @@ function insertInputTag(){
 		                   	<div id="imagen-durox" class="col-lg-3 col-lg-offset-2" align="center" style="display: none">
 		                   		<img alt="DUROX" src="<?php echo base_url().'/img/durox.png'?>">
                    			</div>
+                   			<!--
                    			<div class="col-lg-2 col-md-2 col-lg-offset-8 col-md-offset-8 no-print">
-                   				<i class="fa fa-exclamation-triangle fa-2x"></i>
+                   				<i class="fa fa-exclamation-circle fa-2x"></i>
                    			</div>
+                   			-->
                    		</div>
                    	</div>
 		  			<div class="panel-body">
