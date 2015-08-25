@@ -18,6 +18,7 @@ function editable(){
 	$(".cambio").removeClass("editable");
 	$('#btn-guardar').show();
 	$('#btn-cancelar').show();
+	$('#divcargaimg').show();
 	$('#btn-editar').hide();
 	$('#btn-eliminar').hide();
 	$('#btn-print').hide();
@@ -26,8 +27,7 @@ function editable(){
 	$('#ficha_tecnica').attr('type', 'file');
 	$("#ficha_tecnica").removeClass("web");
 	$("#ficha_tecnica").addClass("editable2");
-	$('#textarea').html('<textarea id="editor1" name="editor1" rows="10" cols="80">'+descripcion+'</textarea>');
-	CKEDITOR.replace('editor1');
+	$('#textarea').html('<textarea class="texteditor" name="editor1" rows="10" cols="88" style="resize: none;">'+descripcion+'</textarea>');
 }
 
 function eliminar($id){
@@ -44,6 +44,7 @@ function cancelar(){
 		$(".cambio").addClass("editable");
 		$('#btn-guardar').hide();
 		$('#btn-cancelar').hide();
+		$('#divcargaimg').hide();
 		$('#btn-eliminar').show();
 		$('#btn-editar').show();
 		$('#btn-print').show();
@@ -92,7 +93,7 @@ $bandera = 0;
 			<?php } ?>
 			<div class="row">
 				<div class="col-md-5 col-lg-5 " align="center">
-					<a class="no-print" href="<?php echo base_url().'index.php/productos/producto_imagen/'.$id ?>"> 
+					
 					<?php
 						if($imagenes)
 						{
@@ -111,13 +112,19 @@ $bandera = 0;
 								
 						?>
 					</div>
-					</a>
+					
 					<nav class="no-print">
 						<a id="bb-nav-first" href="#"><button class="btn-mover-fotos"><i class="fa fa-angle-double-left fa-2x"></i></button></a>
 						<a id="bb-nav-prev" href="#"><button class="btn-mover-fotos"><i class="fa fa-angle-left fa-2x"></i></button></a>
 						<a id="bb-nav-next" href="#"><button class="btn-mover-fotos"><i class="fa fa-angle-right fa-2x"></i></button></a>
 						<a id="bb-nav-last" href="#"><button class="btn-mover-fotos"><i class="fa fa-angle-double-right fa-2x"></i></button></a>
 					</nav>
+					
+					<div id="divcargaimg" style="margin-top: 20px; display: none">
+						<a class="no-print" href="<?php echo base_url().'index.php/productos/producto_imagen/'.$id ?>">
+						<button type="button" class="btn btn-primary"><?php echo $this->lang->line('imagen')?></button>
+						</a>
+					</div>
 					<?php
 						}
 						else{

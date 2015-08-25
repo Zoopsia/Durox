@@ -37,6 +37,9 @@ class Alarmas_model extends My_Model {
 		else if($cruce == 'visitas'){
 			$arreglo['id_visita']		= $id_usuario;
 		}
+		else if($cruce == 'vendedores'){
+			$arreglo['id_vendedor']		= $id_usuario;
+		}
 		
 		$session_data = $this->session->userdata('logged_in');
 		

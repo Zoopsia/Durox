@@ -31,6 +31,8 @@ class Vendedores extends My_Controller {
 		$db['pedidos']		= $this->vendedores_model->getPedidos($id);
 		$db['presupuestos']	= $this->vendedores_model->getPresupuestos($id);
 		$db['visitas']		= $this->vendedores_model->getVisitas($id);
+		$db['alarmas']		= $this->vendedores_model->getAlarmas($id);
+		$db['tipos_alarmas']= $this->vendedores_model->getTodo('tipos_alarmas');
 		$db['id']			= $id;
 		
 		$db['cruce']		= $this->vendedores_model->sinCruce($id);
@@ -268,6 +270,16 @@ class Vendedores extends My_Controller {
 			}
 		}
 		redirect($this->input->post('url'),'refresh');
+	}
+	
+	public function getAlarmas(){
+		$alarmas = $this->vendedores_model->getAlarmas($this->input->post('id'));
+		if($alarmas){
+			echo count($alarmas);
+		}
+		else {
+			echo 0;
+		}
 	}
 	
 }
