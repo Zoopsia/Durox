@@ -34,6 +34,7 @@ class Clientes extends My_Controller {
 		$db['iva']			= $this->clientes_model->getTodo('iva');
 		$db['grupos']		= $this->grupos_model->getTodo();
 		$db['alarmas']		= $this->clientes_model->getAlarmas($id);
+		$db['tipos_alarmas']= $this->clientes_model->getTodo('tipos_alarmas');
 		$db['id']			= $id;
 		
 		
@@ -246,6 +247,16 @@ class Clientes extends My_Controller {
 			}
 		}
 		redirect($this->input->post('url'),'refresh');
+	}
+
+	public function getAlarmas(){
+		$alarmas = $this->clientes_model->getAlarmas($this->input->post('id'));
+		if($alarmas){
+			echo count($alarmas);
+		}
+		else {
+			echo 0;
+		}
 	}
 
 }

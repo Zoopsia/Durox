@@ -7,8 +7,11 @@ if($clientes){
 }
 ?>
 
-function editable(){
-	
+$( document ).ready(function() {
+    getAlarmas(<?php echo $id?>);
+});
+
+function editable(){	
 	$(".cambio").removeAttr("disabled");
 	$(".cambio").removeClass("editable");
 	$('#btn-guardar').show();
@@ -157,9 +160,37 @@ function saveAlarm($id){
 			success: function(resp) { 
 				$('#box-alarmas').append(resp);
 				$('#formAlarma').trigger("reset");
+				getAlarmas($id);
+				$('#mensaje').removeClass();
 			}
 		});
 	}
+}
+
+function getAlarmas($id){
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo base_url(); ?>index.php/Clientes/getAlarmas', 
+		data: { 'id'		: $id,
+				}, 
+		success: function(resp) {
+			$('#llenarAlarmas').html(resp);
+		}
+	});
+}
+
+function cambiarSelect(){
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo base_url(); ?>index.php/Alarmas/tipoAlarma', 
+		data: { 'tipo' 		: $('#tipo').val(),
+				}, 
+		success: function(resp) { 
+			$('#mensaje').removeClass();
+			//$('#tipo').addClass('form-control alert-'+resp);
+			$('#mensaje').addClass('alert-'+resp);
+		}
+	});
 }			
 </script>
 <?php
@@ -186,7 +217,15 @@ $bandera = 0;
 					    	<li><a href="#tab4" data-toggle="tab"><?php echo $this->lang->line('pedidos'); ?></a></li>
 					    	<li><a href="#tab5" data-toggle="tab"><?php echo $this->lang->line('presupuestos'); ?></a></li>
 					    	<li><a href="#tab6" data-toggle="tab"><?php echo $this->lang->line('visitas'); ?></a></li>
-						 	<li><a href="#tab7" data-toggle="tab"><?php echo $this->lang->line('alarmas'); ?></a></li>
+						 	<li>
+						 		<a href="#tab7" data-toggle="tab"><?php echo $this->lang->line('alarmas'); ?>
+						 			<span class="badge">
+						 				<div id="llenarAlarmas">
+						 					
+						 				</div>
+						 			</span>
+						 		</a>
+						 	</li>
 						 	<?php
 										}
 									}
@@ -964,7 +1003,9 @@ $bandera = 0;
 													$arreglo	= array(
 														'id_tipo'	=> $row->id_tipo_alarma,
 														'tipo'		=> $row->tipo_alarma,
-														'mensaje'	=> $row->mensaje
+														'mensaje'	=> $row->mensaje,
+														'nombre'	=> $row->nombre,
+														'color'		=> $row->color
 													);
 													echo armarAlarma($arreglo);
 												}
@@ -979,26 +1020,26 @@ $bandera = 0;
 		                                <div class="box-header ui-sortable-handle" style="cursor: move;">
 		                                    <i class="fa fa-envelope"></i>
 		                                    <h3 class="box-title"><?php echo $this->lang->line('nueva')?></h3>
-		                                    <!-- tools box -->
-		                                    <!--
-		                                    <div class="pull-right box-tools">
-		                                        <button class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>
-		                                    </div> 
-		                                    -->
 		                                </div>
 		                                <div class="box-body">
-		                                <div class="form-group">
-		                                	<select class="form-control" id="tipo" name="tipo_alarma" style="font-family: 'FontAwesome', Helvetica;">
-												<option value="1">&#xf087;<?php echo ' '.$this->lang->line('exito')?></option>
-												<option value="2">&#xf129;<?php echo ' '.$this->lang->line('informacion')?></option>
-		                                		<option value="3">&#xf071;<?php echo ' '.$this->lang->line('alerta')?></option>
-		                            		</select> 
-		                                </div>
-		                                <div class="form-group">
-		                                    <textarea id="mensaje" name="mensaje" style="resize: none; width: 100%; height: 150px"></textarea>
-		                                </div>
+			                                <div class="form-group">
+			                                	<select class="form-control" id="tipo" name="tipo_alarma" style="font-family: 'FontAwesome', Helvetica;" onchange="cambiarSelect()">
+				                                	<option disabled selected>Seleccione un Icono...</option>
+				                                <?php
+								     				if($tipos_alarmas){
+														foreach($tipos_alarmas as $row){
+															echo '<option value="'.$row->id_tipo_alarma.'">'.unicodeIcono($row->tipo_alarma).' '.$row->nombre.'</option>';
+														}
+													}
+												?>
+												</select>
+			                                </div>
+			                                <div class="form-group">
+			                                    <textarea id="mensaje" name="mensaje" style="resize: none; width: 100%; height: 150px"></textarea>
+			                                </div>
 		                                </div>
 		                                <div class="box-footer clearfix">
+		                                	<button type="button" class="pull-right btn btn-danger btn-sm" onclick="location.reload();" style="margin-left: 5px"><?php echo $this->lang->line('cancelar');?></button>
 		                                    <button type="button" class="pull-right btn btn-primary btn-sm" onclick="saveAlarm(<?php echo $id?>);"><?php echo $this->lang->line('guardar')?></button>
 		                                </div>
 	                           		</div>

@@ -504,3 +504,10 @@ input.web:hover{
 a[href].sinhref:after {
     content: none !important;
 }
+
+textarea.no-textarea{
+	border: 0;
+    width: 100%;
+    overflow: hidden;
+    resize: none;
+}

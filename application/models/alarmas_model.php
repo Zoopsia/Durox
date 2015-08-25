@@ -63,5 +63,59 @@ class Alarmas_model extends My_Model {
 		$this->db->insert($tabla, $arreglo);
 	}
 		
+	function insertTipo($alarma){
+				
+		$session_data = $this->session->userdata('logged_in');
+		
+		if($this->db->field_exists('date_add', 'tipos_alarmas'))
+		{
+			$alarma['date_add'] = date('Y-m-d H:i:s'); 
+		}
+		
+		if($this->db->field_exists('date_upd', 'tipos_alarmas'))
+		{
+			$alarma['date_upd'] = date('Y-m-d H:i:s'); 
+		}
+		
+		if($this->db->field_exists('user_add', 'tipos_alarmas'))
+		{
+			$alarma['user_add'] = $session_data['id_usuario']; 
+		}
+		
+		if($this->db->field_exists('user_upd', 'tipos_alarmas'))
+		{
+			$alarma['user_upd'] = $session_data['id_usuario']; 
+		}
+			
+		$this->db->insert('tipos_alarmas', $alarma);
+		
+		return $this->db->insert_id();
+	}
+	
+	function getTipoAlarma($id){
+			
+		$sql = "SELECT 
+					* 
+				FROM 
+					tipos_alarmas 
+				WHERE 
+					id_tipo_alarma = '$id'";
+					
+
+		$query = $this->db->query($sql);
+		
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+			return $data;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
 } 
 ?>

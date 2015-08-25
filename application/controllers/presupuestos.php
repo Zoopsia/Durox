@@ -636,7 +636,7 @@ class Presupuestos extends My_Controller {
 			$id = $this->presupuestos_model->update($arreglo, $id);
 		}
 		else{
-			$mensaje 	= $this->presupuestos_model->mensajesNuevos();
+			$mensaje 	= $this->presupuestos_model->presupuestosNuevos();
 		
 			if($mensaje){
 				foreach($mensaje as $row) {
