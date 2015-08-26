@@ -1,4 +1,5 @@
 <script>
+
 $( document ).ready(function() {
     getAlarmas(<?php echo $id?>);
 });
@@ -133,6 +134,7 @@ function cambiarSelect(){
 		}
 	});
 }
+
 </script>
 <?php
 $bandera = 0;
@@ -395,7 +397,7 @@ $bandera = 0;
 		                    <div class="box-footer" align="center">
 		                    	<nav>
 								  <ul class="pagination">
-								    <?php 
+								  	<?php 
 								    	for($i=0 ; $i< $cantidad_paginas; $i++){
 								    		if($i == 0)
 								    			echo '<li class="active"><a href="#body'.($i+1).'" data-toggle="tab">'.($i+1).'</a></li>';

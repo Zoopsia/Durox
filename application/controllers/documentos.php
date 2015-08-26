@@ -29,6 +29,7 @@ class Documentos extends My_Controller {
 	}
 	
 	function guardarDocumento(){
+		
 		$id_documento = 0;
 		$documentos		= $this->documentos_model->getTodo();
 		$destino 	= 'documentos/';
@@ -37,7 +38,7 @@ class Documentos extends My_Controller {
 		{
 			if($_FILES['documento']['type'] == "application/pdf" || $_FILES['documento']['type'] == "application/octet-stream"){
 				$origen 	= $_FILES['documento']['tmp_name'];
-				$url		= $destino.$_FILES['documento']['name'];
+				$url		= cambiarTexto($destino.$_FILES['documento']['name']);
 				$imagen		= base_url().$url;
 				if(!empty($_FILES['documento']['tmp_name'])){
 					copy($origen, $url);	
