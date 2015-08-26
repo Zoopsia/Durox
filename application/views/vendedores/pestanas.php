@@ -180,7 +180,13 @@ function confirmarContraseña(){
 }
 
 function saveAlarm($id){
-	alert($id);
+	<?php
+	$cantidad_paginas = 0;
+	if($alarmas){
+		$cantidad_paginas = ceil(count($alarmas)/5);
+	}
+	echo 'var cant_pag = '.$cantidad_paginas.';';
+	?>
 	if($('#mensaje').val()){
 		$.ajax({
 			type: 'POST',
@@ -191,7 +197,7 @@ function saveAlarm($id){
 			 		'cruce'		: 'vendedores'
 			}, 
 			success: function(resp) { 
-				$('#box-alarmas').append(resp);
+				$('#box-alarmas'+cant_pag).append(resp);
 				$('#formAlarma').trigger("reset");
 				getAlarmas($id);
 				$('#mensaje').removeClass();
@@ -1076,27 +1082,72 @@ $bandera = 0;
 	     						<!--TAB 7 ALARMAS -->
 	     						<div class="col-md-6">
 	     							<div class="box box-primary">
-		                                <div class="box-header">
-		                                    <h3 class="box-title"><?php echo $this->lang->line('alarmas')?></h3>
-		                                </div><!-- /.box-header -->
-		                               
-		                                <div class="box-body" id="box-alarmas">
-		                                <?php
-					     					if($alarmas){
+					            	    <div class="box-header">
+					                	    <h3 class="box-title"><?php echo $this->lang->line('alarmas')?></h3>
+					                    </div><!-- /.box-header -->
+					                    <?php
+					                    	$cantidad_paginas = 0;
+								     		if($alarmas){
+								     			$cantidad_paginas = ceil(count($alarmas)/5);
 												foreach($alarmas as $row){
-													$arreglo	= array(
+													$arreglo[]	= array(
 														'id_tipo'	=> $row->id_tipo_alarma,
 														'tipo'		=> $row->tipo_alarma,
 														'mensaje'	=> $row->mensaje,
 														'nombre'	=> $row->nombre,
 														'color'		=> $row->color
 													);
-													echo armarAlarma($arreglo);
 												}
 											}
-										?>
-		                            	</div><!-- /.box-body -->
-		                            </div>
+										?>     
+					                    <div class="tab-content">
+					                    	<?php
+					                    	$k=0;
+					                    	for($i=0; $i<$cantidad_paginas; $i++){
+					                    		if($i == 0)
+													echo	'<div class="tab-pane fade in active" id="body'.($i+1).'">';  
+												else 
+													echo	'<div class="tab-pane fade in" id="body'.($i+1).'">';
+						                    	echo			'<div class="box-body" id="box-alarmas'.($i+1).'">';
+												for($j=$k; $j<count($alarmas); $j++){
+						                   			echo 		armarAlarma($arreglo[$j]);
+													$k++;
+													if($k%5==0)
+														break;
+												}
+						                   		echo 			'</div>';
+					                    		echo 		'</div>';
+												
+											}
+											
+											if($cantidad_paginas == 0){
+												echo	'<div class="tab-pane fade in active" id="body'.$cantidad_paginas.'">';
+												echo		'<div class="box-body" id="box-alarmas'.$cantidad_paginas.'">';
+												echo 		'</div>';
+						                    	echo 	'</div>';
+											}
+					                    	?>
+					                    </div>
+					                    
+					                    <div class="box-footer" align="center">
+					                    	<nav>
+											  <ul class="pagination">
+											    <?php 
+											    	for($i=0 ; $i< $cantidad_paginas; $i++){
+											    		if($i == 0)
+											    			echo '<li class="active"><a href="#body'.($i+1).'" data-toggle="tab">'.($i+1).'</a></li>';
+														else
+															echo '<li><a href="#body'.($i+1).'" data-toggle="tab">'.($i+1).'</a></li>';
+													}
+
+													if($cantidad_paginas == 0){
+														echo '<li class="active"><a href="#body'.$cantidad_paginas.'" data-toggle="tab">'.$cantidad_paginas.'</a></li>';
+													}
+												?>
+											  </ul>
+											</nav>
+					                    </div>
+									</div>
 								</div>
 								<form id="formAlarma">
 								<div class="col-md-6">
