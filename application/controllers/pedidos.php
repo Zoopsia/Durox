@@ -52,6 +52,8 @@ class Pedidos extends My_Controller {
 		$db['iva']				= $this->clientes_model->getTodo('iva');		
 		$db['pedidos']			= $this->pedidos_model->getDetallePedido($id);
 		$db['estados']			= $this->pedidos_model->getTodo('estados_pedidos');
+		$db['alarmas']			= $this->pedidos_model->getAlarmas($id);
+		$db['tipos_alarmas']	= $this->pedidos_model->getTodo('tipos_alarmas');
 		$db['id_pedido']		= $id;
 		
 		$this->cargar_vista($db, 'pestanas');	
@@ -615,5 +617,15 @@ class Pedidos extends My_Controller {
 		
 		return $cuerpo;	
 	
+	}
+
+	public function getAlarmas(){
+		$alarmas = $this->pedidos_model->getAlarmas($this->input->post('id'));
+		if($alarmas){
+			echo count($alarmas);
+		}
+		else {
+			echo 0;
+		}
 	}
 }

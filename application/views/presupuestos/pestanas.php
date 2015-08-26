@@ -1,119 +1,193 @@
+<script>
+$( document ).ready(function() {
+    getAlarmas(<?php echo $id_presupuesto?>);
+});
+
+function saveAlarm($id){
+	if($('#mensaje').val()){
+		$.ajax({
+			type: 'POST',
+			url: '<?php echo base_url(); ?>index.php/Alarmas/insertAlarma', 
+			data: { 'tipo' 		: $('#tipo').val(),
+			 		'mensaje'	: $('#mensaje').val(),
+			 		'id'		: $id, 
+			 		'cruce'		: 'presupuestos'
+			}, 
+			success: function(resp) { 
+				$('#box-alarmas').append(resp);
+				$('#formAlarma').trigger("reset");
+				getAlarmas($id);
+				$('#mensaje').removeClass();
+			}
+		});
+	}
+}
+
+function getAlarmas($id){
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo base_url(); ?>index.php/Presupuestos/getAlarmas', 
+		data: { 'id'		: $id,
+				}, 
+		success: function(resp) {
+			$('#llenarAlarmas').html(resp);
+		}
+	});
+}
+
+function cambiarSelect(){
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo base_url(); ?>index.php/Alarmas/tipoAlarma', 
+		data: { 'tipo' 		: $('#tipo').val(),
+				}, 
+		success: function(resp) { 
+			$('#mensaje').removeClass();
+			//$('#tipo').addClass('form-control alert-'+resp);
+			$('#mensaje').addClass('alert-'+resp);
+		}
+	});
+}
+
+function imprimirConLogo(){
+	$('#imagen-durox').show();
+	setTimeout(function(){ $('#imagen-durox').hide(); }, 100);
+}
+</script>
+
 <?php
 $aux  = 0;
 $aux2 = 0;
 ?>
 <div class="col-md-12">
-				<div class="panel panel-default">
-		  			<div class="panel-heading">
-		  				<i class="fa fa-book"></i> <?php echo $this->lang->line('presupuesto'); ?>
-                   	</div>
-		  			<div class="panel-body">
-		  				<?php
-							if($id_presupuesto){
-								if($tipo!=1){?>
-									<div class="row">
-										<div class="col-md-10 col-md-offset-1 no-print">
-											<div class="alert alert-success alert-dismissible" role="alert">
-						  						<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  						El Presupuesto <a href="#"><?php echo $id_presupuesto; ?></a> fué insertado con exito
-											</div>	
-										</div>
-									</div>
-						<?php 	} 
-							}
-						?>
-		  				
-	    					<!--INFO GRAL DEL PRESUPUESTO-->	
-	    						<?php
-									if($presupuesto){
-										foreach ($presupuesto as $row) {
-								?>	
-								 <div class="row invoice-info">
-                        			<div class="col-sm-4 invoice-col">
-                        				<b><?php echo $this->lang->line('vendedor');?></b>
-                           			<address>
-		                                <?php
-		                                if($vendedores){
-											foreach ($vendedores as $key) 
-											{
-												echo '<a class="sinhref" href="'.base_url().'index.php/vendedores/pestanas/'.$key->id_vendedor.'">';
-												echo $key->apellido.', '.$key->nombre;
-												echo '</a>';
+	<div class="panel panel-default">
+		<div id="imagen-durox" class="col-lg-3 col-lg-offset-2" align="center" style="display: none; margin-top: 20px">
+	    	<p style="position: absolute; left: 15px;"><?php echo $this->lang->line('presupuesto'); ?></p>
+	    	<img alt="DUROX" src="<?php echo base_url().'/img/durox.png'?>">
+	      	<hr>
+	    </div>
+		<div class="panel-heading no-print">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab1" data-toggle="tab">
+					<i class="fa fa-book"></i> <?php echo $this->lang->line('presupuesto'); ?>
+				</a></li>
+				<li style="position: absolute; right: 30px">
+					<a href="#tab2" data-toggle="tab"><?php echo $this -> lang -> line('alarmas'); ?>
+						<span class="badge">
+							<div id="llenarAlarmas">
+							 					
+							</div>
+						</span>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<div class="panel-body">
+			<div class="tab-content">
+				<div class="tab-pane fade in active" id="tab1"> 
+		  		<?php
+					if($id_presupuesto){
+						if($tipo!=1){?>
+							<div class="row">
+								<div class="col-md-10 col-md-offset-1 no-print">
+									<div class="alert alert-success alert-dismissible" role="alert">
+										<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						  				El Presupuesto <a href="#"><?php echo $id_presupuesto; ?></a> fué insertado con exito
+									</div>	
+								</div>
+							</div>
+				<?php 	} 
+					}
+				?>
+		  		<!--INFO GRAL DEL PRESUPUESTO-->	
+	    		<?php
+					if($presupuesto){
+						foreach ($presupuesto as $row) {
+				?>	
+					<div class="row invoice-info">
+                        <div class="col-sm-4 invoice-col">
+                        	<b><?php echo $this->lang->line('vendedor');?></b>
+                           	<address>
+		                    <?php
+		                    	if($vendedores){
+									foreach ($vendedores as $key) 
+									{
+										echo '<a class="sinhref" href="'.base_url().'index.php/vendedores/pestanas/'.$key->id_vendedor.'">';
+										echo $key->apellido.', '.$key->nombre;
+										echo '</a>';
+										echo "<br>";
+										echo "<div class='no-print'>";
+										echo $this->lang->line('id').': '.$key->id_vendedor;
+										echo "</div>";
+										echo "<br>";
+										if($key->eliminado == 0)
+											$aux2 = 1;
+									}
+								}
+							?>
+							</address>
+						</div><!-- /.col -->
+			            <div class="col-sm-4 invoice-col">
+		                	<b><?php echo $this->lang->line('cliente');?></b>
+		                    <address>
+		                    <?php
+		                    	if($clientes){
+									foreach ($clientes as $key) 
+									{
+										echo '<a class="sinhref" href="'.base_url().'index.php/clientes/pestanas/'.$key->id_cliente.'">';
+										echo $key->razon_social;
+										echo '</a>';
+										echo "<br>";
+										echo $this->lang->line('cuit').': '.cuit($key->cuit);
+										echo "<br>";
+										foreach ($iva as $value) {
+											if($value->id_iva == $key->id_iva){	
+												echo $value->iva;
 												echo "<br>";
-												echo "<div class='no-print'>";
-												echo $this->lang->line('id').': '.$key->id_vendedor;
-												echo "</div>";
-												echo "<br>";
-												if($key->eliminado == 0)
-													$aux2 = 1;
 											}
 										}
-										?>
-									</address>
-			                        </div><!-- /.col -->
-			                        <div class="col-sm-4 invoice-col">
-		                            	<b><?php echo $this->lang->line('cliente');?></b>
-		                            <address>
-		                                <?php
-		                                if($clientes){
-											foreach ($clientes as $key) 
-											{
-												echo '<a class="sinhref" href="'.base_url().'index.php/clientes/pestanas/'.$key->id_cliente.'">';
-												echo $key->razon_social;
-												echo '</a>';
-												echo "<br>";
-												echo $this->lang->line('cuit').': '.cuit($key->cuit);
-												echo "<br>";
-												foreach ($iva as $value) {
-													if($value->id_iva == $key->id_iva){	
-														echo $value->iva;
-														echo "<br>";
-													}
-												}
-												echo "<div class='no-print'>";
-												echo $this->lang->line('id').': '.$key->id_cliente;
-												echo "</div>";
-												echo "<br>";
-												if($key->eliminado == 0)
-													$aux = 1;
-											}
-										}
-										?>
-		                            </address>
+										echo "<div class='no-print'>";
+										echo $this->lang->line('id').': '.$key->id_cliente;
+										echo "</div>";
+										echo "<br>";
+										if($key->eliminado == 0)
+											$aux = 1;
+									}
+								}
+							?>
+		                    </address>
                         </div><!-- /.col -->
                         <div class="col-sm-4 invoice-col">
                         	<b><?php echo $this->lang->line('presupuesto');?></b>
                             <?php
-												echo '<div class="odd">';
-												echo $this->lang->line('id').' '.$this->lang->line('presupuesto').': '.'<a class="sinhref" href="#">'.$row->id_presupuesto.'</a>';
-												echo "</div>";
-												echo '<div class="even">';
-												echo $this->lang->line('id').' '.$this->lang->line('visita').': '.'<a class="sinhref" href="'.base_url().'index.php/Visitas/carga/'.$row->id_visita.'/0">'.$row->id_visita.'</a>';
-												echo "</div>";
-												echo '<div class="odd">';
-												$date	= date_create($row->fecha);
-												echo $this->lang->line('fecha').': '.date_format($date, 'd/m/Y');
-												echo "</div>";
-												foreach($estados as $key){
-													if($key->id_estado_presupuesto == $row->id_estado_presupuesto){
-														echo '<div class="even no-print">';	
-														echo $this->lang->line('estado').': '.$key->estado;
-														echo "</div>";
-													}
-												}
-												echo '<div class="odd">';
-												echo $this->lang->line('total').' '.$this->lang->line('presupuesto').': $ '.$row->total;
-												echo "</div>";
-												echo "<br>";							
+								echo '<div class="odd">';
+								echo $this->lang->line('id').' '.$this->lang->line('presupuesto').': '.'<a class="sinhref" href="#">'.$row->id_presupuesto.'</a>';
+								echo "</div>";
+								echo '<div class="even">';
+								echo $this->lang->line('id').' '.$this->lang->line('visita').': '.'<a class="sinhref" href="'.base_url().'index.php/Visitas/carga/'.$row->id_visita.'/0">'.$row->id_visita.'</a>';
+								echo "</div>";
+								echo '<div class="odd">';
+								$date	= date_create($row->fecha);
+								echo $this->lang->line('fecha').': '.date_format($date, 'd/m/Y');
+								echo "</div>";
+								foreach($estados as $key){
+									if($key->id_estado_presupuesto == $row->id_estado_presupuesto){
+										echo '<div class="even no-print">';	
+										echo $this->lang->line('estado').': '.$key->estado;
+										echo "</div>";
+									}
 								}
+								echo '<div class="odd">';
+								echo $this->lang->line('total').' '.$this->lang->line('presupuesto').': $ '.$row->total;
+								echo "</div>";
+								echo "<br>";							
+							}
 							}
 							?>
 						</div>
-						</div>
-						
-						
-						<div class="row">
-                        <div class="col-xs-12 table-responsive">
+					</div>
+					<div class="row">
+                    	<div class="col-xs-12 table-responsive">
                         	<?php echo $this->lang->line('detalle'); ?>
                                 <?php
                                 	if($presupuesto){
@@ -176,9 +250,8 @@ $aux2 = 0;
 								    </table>              
                         </div><!-- /.col -->
                     </div><!-- /.row -->
-					
-						<div class="row">
-                        <!-- accepted payments column -->
+					<div class="row">
+                    <!-- accepted payments column -->
                         <div class="col-xs-6">
                             <p class="lead no-print"><?php echo $this->lang->line('notas');?></p>
                             <p class="text-muted well well-sm no-shadow no-print" style="margin-top: 10px;">
@@ -212,7 +285,7 @@ $aux2 = 0;
 								<i class="fa fa-info-circle"></i>
 							</button>
                             
-                            <button class="btn btn-default" onclick="window.print();"><i class="fa fa-print"></i> Print</button>
+                            <button class="btn btn-default" onclick="imprimirConLogo();window.print();"><i class="fa fa-print"></i> Print</button>
                             
                             <?php
                             	$tengopedido = 0;
@@ -251,9 +324,67 @@ $aux2 = 0;
 							?>		
                          </div>
                     </div>	
-                   	
-			  		</div>
-			  		
+            	</div>
+            	<div class="tab-pane fade" id="tab2">
+	     			<!--TAB 2 ALARMAS -->
+	     			<div class="col-md-6">
+	     				<div class="box box-primary">
+		            	    <div class="box-header">
+		                	    <h3 class="box-title"><?php echo $this->lang->line('alarmas')?></h3>
+		                    </div><!-- /.box-header -->
+		                               
+		                    <div class="box-body" id="box-alarmas">
+		                    <?php
+					     		if($alarmas){
+									foreach($alarmas as $row){
+										$arreglo	= array(
+											'id_tipo'	=> $row->id_tipo_alarma,
+											'tipo'		=> $row->tipo_alarma,
+											'mensaje'	=> $row->mensaje,
+											'nombre'	=> $row->nombre,
+											'color'		=> $row->color
+										);
+										echo armarAlarma($arreglo);
+									}
+								}
+							?>
+		                    </div><!-- /.box-body -->
+						</div>
+					</div>
+					<form id="formAlarma">
+					<div class="col-md-6">
+						<div class="box box-info">
+		                	<div class="box-header ui-sortable-handle" style="cursor: move;">
+		                    	<i class="fa fa-envelope"></i>
+		                        <h3 class="box-title"><?php echo $this->lang->line('nueva')?></h3>
+		                    </div>
+		                    <div class="box-body">
+			                	<div class="form-group">
+			                    	<select class="form-control" id="tipo" name="tipo_alarma" style="font-family: 'FontAwesome', Helvetica;" onchange="cambiarSelect()">
+				                    	<option disabled selected>Seleccione un Icono...</option>
+				                        <?php
+								     		if($tipos_alarmas){
+												foreach($tipos_alarmas as $row){
+													echo '<option value="'.$row->id_tipo_alarma.'">'.unicodeIcono($row->tipo_alarma).' '.$row->nombre.'</option>';
+												}
+											}
+										?>
+									</select>
+								</div>
+			                    <div class="form-group">
+			                    	<textarea id="mensaje" name="mensaje" style="resize: none; width: 100%; height: 150px"></textarea>
+			                    </div>
+							</div>
+		                    <div class="box-footer clearfix">
+		                    	<button type="button" class="pull-right btn btn-danger btn-sm" onclick="location.reload();" style="margin-left: 5px"><?php echo $this->lang->line('cancelar');?></button>
+		                    	<button type="button" class="pull-right btn btn-primary btn-sm" onclick="saveAlarm(<?php echo $id_presupuesto?>);"><?php echo $this->lang->line('guardar')?></button>
+		                    </div>
+						</div>
+					</div>
+	                </form>		
+				</div>
+        	</div>
+		</div>	  		
 	</div>
 </div>
  

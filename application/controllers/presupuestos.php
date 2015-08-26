@@ -42,6 +42,8 @@ class Presupuestos extends My_Controller {
 		$db['iva']				= $this->clientes_model->getTodo('iva');		
 		$db['presupuestos']		= $this->presupuestos_model->getDetallePresupuesto($id);
 		$db['estados']			= $this->presupuestos_model->getTodo('estados_presupuestos');
+		$db['alarmas']			= $this->presupuestos_model->getAlarmas($id);
+		$db['tipos_alarmas']	= $this->presupuestos_model->getTodo('tipos_alarmas');
 		$db['id_presupuesto']	= $id;
 		$db['tipo']				= $tipo;
 		
@@ -652,5 +654,15 @@ class Presupuestos extends My_Controller {
 		}
 		
 		redirect($this->input->post('url'),'refresh');
+	}
+	
+	public function getAlarmas(){
+		$alarmas = $this->presupuestos_model->getAlarmas($this->input->post('id'));
+		if($alarmas){
+			echo count($alarmas);
+		}
+		else {
+			echo 0;
+		}
 	}
 }

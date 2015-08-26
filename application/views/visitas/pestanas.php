@@ -1,4 +1,9 @@
 <script>
+
+$( document ).ready(function() {
+    getAlarmas(<?php echo $visita?>);
+});
+
 function modal($id_presupuesto){
 	var id_presupuesto  = $id_presupuesto;
 	var url				= '<?php echo base_url(); ?>index.php/Presupuestos/pestanas/'+id_presupuesto;
@@ -27,6 +32,52 @@ function eliminar($id){
 		window.location.assign("/Durox/index.php/Visitas/delete_user/"+$id);
 	}
 }
+
+function saveAlarm($id){
+	if($('#mensaje').val()){
+		$.ajax({
+			type: 'POST',
+			url: '<?php echo base_url(); ?>index.php/Alarmas/insertAlarma', 
+			data: { 'tipo' 		: $('#tipo').val(),
+			 		'mensaje'	: $('#mensaje').val(),
+			 		'id'		: $id, 
+			 		'cruce'		: 'visitas'
+			}, 
+			success: function(resp) { 
+				$('#box-alarmas').append(resp);
+				$('#formAlarma').trigger("reset");
+				getAlarmas($id);
+				$('#mensaje').removeClass();
+			}
+		});
+	}
+}
+
+function getAlarmas($id){
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo base_url(); ?>index.php/Visitas/getAlarmas', 
+		data: { 'id'		: $id,
+				}, 
+		success: function(resp) {
+			$('#llenarAlarmas').html(resp);
+		}
+	});
+}
+
+function cambiarSelect(){
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo base_url(); ?>index.php/Alarmas/tipoAlarma', 
+		data: { 'tipo' 		: $('#tipo').val(),
+				}, 
+		success: function(resp) { 
+			$('#mensaje').removeClass();
+			//$('#tipo').addClass('form-control alert-'+resp);
+			$('#mensaje').addClass('alert-'+resp);
+		}
+	});
+}
 </script>
 <?php
 $eliminado = 0;
@@ -52,42 +103,56 @@ $eliminado = 0;
 	</div>
 </div>
 
-
-
-	    <div class="row">
-			<div class="col-md-12">
-				<div class="panel panel-default">
-		  			<div class="panel-body">
+<div class="col-md-12">
+	<div class="panel panel-default">
+		<div class="panel-heading no-print">
+			<ul class="nav nav-tabs">
+				<li class="active"><a href="#tab1" data-toggle="tab">
+					<i class="fa fa-car"></i> <?php echo $this->lang->line('visitas'); ?>
+				</a></li>
+				<li style="position: absolute; right: 30px">
+					<a href="#tab2" data-toggle="tab"><?php echo $this -> lang -> line('alarmas'); ?>
+						<span class="badge">
+							<div id="llenarAlarmas">
+							 					
+							</div>
+						</span>
+					</a>
+				</li>
+			</ul>
+        </div>
+		<div class="panel-body">
+			<div class="tab-content">
+				<div class="tab-pane fade in active" id="tab1"> 	
+				<?php
+					if($visita)
+					{
+						if($tipo!=0)
+						{?>
+							<div class="row">
+								<div class="col-md-10 col-md-offset-1">
+									<div class="alert alert-success alert-dismissable">
+                                   		<i class="fa fa-check"></i>
+                                   		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+                                        <?php echo $this->lang->line('el_registro'); ?>
+										<a href="<?php echo base_url().'index.php/Visitas/editar/'.$visita; ?>"><?php echo $visita; ?></a>
+										<?php echo $this->lang->line('insert_ok'); ?>
+                                    </div> 
+								</div>
+							</div>
+				<?php 	} 
+					}
+				?>
+					<div class="tab-content">
+						<div class="tab-pane fade in active" id="visita">
 						<?php
-							if($visita)
-							{
-								if($tipo!=0)
-								{?>
-									<div class="row">
-										<div class="col-md-10 col-md-offset-1">
-											<div class="alert alert-success alert-dismissable">
-                                        		<i class="fa fa-check"></i>
-                                        		<button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
-                                        			<?php echo $this->lang->line('el_registro'); ?>
-													<a href="<?php echo base_url().'index.php/Visitas/editar/'.$visita; ?>"><?php echo $visita; ?></a>
-													<?php echo $this->lang->line('insert_ok'); ?>
-                                    		</div> 
-										</div>
-									</div>
-						<?php 	} 
-							}
-						?>
-						
-						<div class="tab-content">
-							<div class="tab-pane fade in active" id="visita">
-								<?php
-									if($visita){
-										if($visitas){
-											foreach ($visitas as $row) {
-								?>	
-												<div class="panel-body">
-						  							<div class="row">
-						  							<div class="col-md-4">
+							if($visita){
+								if($visitas){
+									foreach ($visitas as $row) {
+						?>	
+										<div class="panel-body">
+						  					<div class="row">
+						  						<div class="col-md-4">
 						  							<div class="box box-primary">
 						                                <div class="box-header" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('datos').' '.$this->lang->line('visita'); ?>">
 						                                    <h3 class="box-title"><?php echo $this->lang->line('visita'); ?></h3>
@@ -97,7 +162,7 @@ $eliminado = 0;
 						                                    </div>
 						                                </div>
 						                                <div class="box-body">
-						                                   <?php
+						                                <?php
 															echo '<div class="odd">';
 															echo $this->lang->line('id').': ';
 															echo '<a role="button" href="'.base_url().'index.php/Visitas/editar/'.$row->id_visita.'">'.$row->id_visita.'</a>';
@@ -135,13 +200,12 @@ $eliminado = 0;
 																echo $this->lang->line('visita').' '.$this->lang->line('eliminada'); 
 																echo '</div>';
 															}
-															?>
+														?>
 														</div><!-- /.box-footer-->
 						                            </div>
-						                            </div>
+												</div>
 						                            
-						                            
-						                            <div class="col-md-4">
+						                        <div class="col-md-4">
 						  							<div class="box box-success">
 						                                <div class="box-header" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('datos').' '.$this->lang->line('vendedor'); ?>">
 						                                    <h3 class="box-title"><?php echo $this->lang->line('vendedor'); ?></h3>
@@ -176,11 +240,9 @@ $eliminado = 0;
 															</div>
 						                                </div><!-- /.box-body -->
 						                            </div>
-						                            </div>
+												</div>
 						                            
-						                            
-						                            
-						                            <div class="col-md-4">
+						                        <div class="col-md-4">
 						  							<div class="box box-info">
 						                                <div class="box-header" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('datos').' '.$this->lang->line('cliente'); ?>">
 						                                    <h3 class="box-title"><?php echo $this->lang->line('cliente'); ?></h3>
@@ -222,30 +284,30 @@ $eliminado = 0;
 															</div>
 						                                </div><!-- /.box-body -->
 						                            </div>
-						                            </div>
-						  							</div>
 												</div>
-										</div>	
-									</div>	
-							<?php
+						  					</div>
+										</div>
+						</div>	
+					</div>	
+						<?php
 									}//foreach ($visitas as $row)
 								}  //if($visitas){
 							} //if($visita){
-							?>
-							<?php
-								if($eliminado!=1){
-		    						if($presupuesto){
-	    					?>		
-										<div class="row">
-									        <div class="col-md-6">
-									        	<div class="box box-default">
-						                                <div class="box-header" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('datos').' '.$this->lang->line('presupuestos'); ?>">
-						                                    <h3 class="box-title"><?php echo $this->lang->line('presupuestos').' de la '.$this->lang->line('visita'); ?></h3>
-						                                    <div class="box-tools pull-right">
-						                                        <button class="btn btn-default btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
-						                                        <button class="btn btn-default btn-xs" data-widget="remove"><i class="fa fa-times"></i></button>
-						                                    </div>
-						                                </div>
+						?>
+						<?php
+							if($eliminado!=1){
+		    					if($presupuesto){
+	    				?>		
+									<div class="row">
+										<div class="col-md-6">
+									       	<div class="box box-default">
+						                    	<div class="box-header" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('datos').' '.$this->lang->line('presupuestos'); ?>">
+						                        	<h3 class="box-title"><?php echo $this->lang->line('presupuestos').' de la '.$this->lang->line('visita'); ?></h3>
+						                            <div class="box-tools pull-right">
+						                            	<button class="btn btn-default btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+						                                <button class="btn btn-default btn-xs" data-widget="remove"><i class="fa fa-times"></i></button>
+						                            </div>
+						                        </div>
 						                        <div class="box-body">
 										            <table class="table table-striped table-bordered" cellspacing="0" width="100%">
 												        <thead>
@@ -291,42 +353,33 @@ $eliminado = 0;
 											</div>
 										</div>
 								<?php	
-	    								}
-										else {
+	    							}
+									else {
 								?>
-										
-									        <div class="col-sm-6 col-md-6">
-									        	<div class="box box-default">
-						                                <div class="box-header" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('datos').' '.$this->lang->line('presupuestos'); ?>">
-						                                    <h3 class="box-title"><?php echo $this->lang->line('presupuestos').' de la '.$this->lang->line('visita'); ?></h3>
-						                                    <div class="box-tools pull-right">
-						                                        <button class="btn btn-default btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
-						                                        <button class="btn btn-default btn-xs" data-widget="remove"><i class="fa fa-times"></i></button>
-						                                    </div>
-						                                </div>
-						                        <div class="box-body">
-									            <div class="alert-message alert-message-danger">
-									                <h4>NO HAY PRESUPUESTO RELACIONADO CON LA VISITA</h4>
-									                <p>
-									                    <a class="btn btn-default" href="<?php echo base_url().'index.php/Presupuestos/carga/'.$visita; ?>"><?php echo $this->lang->line('agregar').' '.$this->lang->line('presupuesto'); ?></a>
-													</p>
-									            </div>
-									            </div>
-									        	</div>
-									        </div>
-										
+										<div class="col-sm-6 col-md-6">
+									    	<div class="box box-default">
+						                    	<div class="box-header" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('datos').' '.$this->lang->line('presupuestos'); ?>">
+						                        	<h3 class="box-title"><?php echo $this->lang->line('presupuestos').' de la '.$this->lang->line('visita'); ?></h3>
+						                            <div class="box-tools pull-right">
+						                            	<button class="btn btn-default btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+						                                <button class="btn btn-default btn-xs" data-widget="remove"><i class="fa fa-times"></i></button>
+						                        	</div>
+						                    	</div>
+							                    <div class="box-body">
+										            <div class="alert-message alert-message-danger">
+										                <h4>NO HAY PRESUPUESTO RELACIONADO CON LA VISITA</h4>
+										                <p>
+										                    <a class="btn btn-default" href="<?php echo base_url().'index.php/Presupuestos/carga/'.$visita; ?>"><?php echo $this->lang->line('agregar').' '.$this->lang->line('presupuesto'); ?></a>
+														</p>
+										            </div>
+										        </div>
+										   	</div>
+										</div>		
 								<?php
 										}
 									}		
 								?>
-	    					
-
-
-
-
-
-
-
+								
 	    						<?php
 	    						if($eliminado!=1){
 	    							if($pedido){
@@ -360,22 +413,22 @@ $eliminado = 0;
 									else 
 									{
 								?>
-											<div class="col-sm-6 col-md-6">
-									        	<div class="box box-default">
-						                                <div class="box-header" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('datos').' '.$this->lang->line('pedidos'); ?>">
-						                                    <h3 class="box-title"><?php echo $this->lang->line('pedidos').' de la '.$this->lang->line('visita'); ?></h3>
-						                                    <div class="box-tools pull-right">
-						                                        <button class="btn btn-default btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
-						                                        <button class="btn btn-default btn-xs" data-widget="remove"><i class="fa fa-times"></i></button>
-						                                    </div>
-						                                </div>
+										<div class="col-sm-6 col-md-6">
+									       <div class="box box-default">
+						                   		<div class="box-header" data-toggle="tooltip" title="" data-original-title="<?php echo $this->lang->line('datos').' '.$this->lang->line('pedidos'); ?>">
+						                        	<h3 class="box-title"><?php echo $this->lang->line('pedidos').' de la '.$this->lang->line('visita'); ?></h3>
+						                            <div class="box-tools pull-right">
+						                            	<button class="btn btn-default btn-xs" data-widget="collapse"><i class="fa fa-minus"></i></button>
+						                                <button class="btn btn-default btn-xs" data-widget="remove"><i class="fa fa-times"></i></button>
+						                            </div>
+						                        </div>
 						                        <div class="box-body">
 									            <div class="alert-message alert-message-danger">
-									                <h4>NO HAY PEDIDO RELACIONADO CON LA VISITA</h4>
-									                <p>
-									                   <!--<a class="btn btn-default" href="<?php echo base_url().'index.php/Pedidos/carga/'; ?>"><?php echo $this->lang->line('agregar').' '.$this->lang->line('pedido'); ?></a>-->
-													</p>
-									            </div>
+										                <h4>NO HAY PEDIDO RELACIONADO CON LA VISITA</h4>
+										                <p>
+										                   <!--<a class="btn btn-default" href="<?php echo base_url().'index.php/Pedidos/carga/'; ?>"><?php echo $this->lang->line('agregar').' '.$this->lang->line('pedido'); ?></a>-->
+														</p>
+										            </div>
 									            </div>
 									        </div>
 									     </div>
@@ -401,8 +454,68 @@ $eliminado = 0;
 								}
 								?>
 	    					</div>
-	    				</div><!--contenedor de cada pestaña-->
-		  			</div><!--panel body-->
-				</div><!--panel-->
-			</div><!--contenedor-->
-		</div>    
+	    		</div><!--contenedor de cada pestaña-->
+	    		<div class="tab-pane fade" id="tab2">
+	     			<!--TAB 2 ALARMAS -->
+	     			<div class="col-md-6">
+	     				<div class="box box-primary">
+		            	    <div class="box-header">
+		                	    <h3 class="box-title"><?php echo $this->lang->line('alarmas')?></h3>
+		                    </div><!-- /.box-header -->
+		                               
+		                    <div class="box-body" id="box-alarmas">
+		                    <?php
+					     		if($alarmas){
+									foreach($alarmas as $row){
+										$arreglo	= array(
+											'id_tipo'	=> $row->id_tipo_alarma,
+											'tipo'		=> $row->tipo_alarma,
+											'mensaje'	=> $row->mensaje,
+											'nombre'	=> $row->nombre,
+											'color'		=> $row->color
+										);
+										echo armarAlarma($arreglo);
+									}
+								}
+							?>
+		                    </div><!-- /.box-body -->
+						</div>
+					</div>
+					<form id="formAlarma">
+					<div class="col-md-6">
+						<div class="box box-info">
+		                	<div class="box-header ui-sortable-handle" style="cursor: move;">
+		                    	<i class="fa fa-envelope"></i>
+		                        <h3 class="box-title"><?php echo $this->lang->line('nueva')?></h3>
+		                    </div>
+		                    <div class="box-body">
+			                	<div class="form-group">
+			                    	<select class="form-control" id="tipo" name="tipo_alarma" style="font-family: 'FontAwesome', Helvetica;" onchange="cambiarSelect()">
+				                    	<option disabled selected>Seleccione un Icono...</option>
+				                        <?php
+								     		if($tipos_alarmas){
+												foreach($tipos_alarmas as $row){
+													echo '<option value="'.$row->id_tipo_alarma.'">'.unicodeIcono($row->tipo_alarma).' '.$row->nombre.'</option>';
+												}
+											}
+										?>
+									</select>
+								</div>
+			                    <div class="form-group">
+			                    	<textarea id="mensaje" name="mensaje" style="resize: none; width: 100%; height: 150px"></textarea>
+			                    </div>
+							</div>
+		                    <div class="box-footer clearfix">
+		                    	<button type="button" class="pull-right btn btn-danger btn-sm" onclick="location.reload();" style="margin-left: 5px"><?php echo $this->lang->line('cancelar');?></button>
+		                    	<button type="button" class="pull-right btn btn-primary btn-sm" onclick="saveAlarm(<?php echo $visita?>);"><?php echo $this->lang->line('guardar')?></button>
+		                    </div>
+						</div>
+					</div>
+	                </form>		
+				</div>
+		  	</div><!--panel body-->
+		</div>
+	</div>
+</div>
+			
+  

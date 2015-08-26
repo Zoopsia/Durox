@@ -26,19 +26,21 @@ class Visitas extends My_Controller {
 	
 	public function carga($id_visita=null, $tipo=1)
 	{
-		$db['clientes']		= $this->clientes_model->getTodo();
-		$db['vendedores']	= $this->vendedores_model->getTodo();
-		$db['iva']			= $this->clientes_model->getTodo('iva');
-		$db['estados']		= $this->presupuestos_model->getTodo('estados_presupuestos');
-		$db['epocas']		= $this->visitas_model->getEpocas();
-		$db['tipo']			= $tipo;
-		$db['visitas']		= $this->visitas_model->getRegistro($id_visita);
+		$db['clientes']			= $this->clientes_model->getTodo();
+		$db['vendedores']		= $this->vendedores_model->getTodo();
+		$db['iva']				= $this->clientes_model->getTodo('iva');
+		$db['estados']			= $this->presupuestos_model->getTodo('estados_presupuestos');
+		$db['epocas']			= $this->visitas_model->getEpocas();
+		$db['tipo']				= $tipo;
+		$db['visitas']			= $this->visitas_model->getRegistro($id_visita);
 		
 		if($id_visita)
 		{
 			$db['visita']		= $id_visita;
 			$db['presupuesto']	= $this->presupuestos_model->getPresupuesto($id_visita);
 			$db['pedido']		= $this->pedidos_model->getPedido($id_visita);
+			$db['alarmas']			= $this->visitas_model->getAlarmas($id_visita);
+			$db['tipos_alarmas']	= $this->visitas_model->getTodo('tipos_alarmas');
 		}
 		
 		if($id_visita)
@@ -404,5 +406,15 @@ class Visitas extends My_Controller {
 		}
 		
 		redirect($this->input->post('url'),'refresh');
+	}
+	
+	public function getAlarmas(){
+		$alarmas = $this->visitas_model->getAlarmas($this->input->post('id'));
+		if($alarmas){
+			echo count($alarmas);
+		}
+		else {
+			echo 0;
+		}
 	}
 }

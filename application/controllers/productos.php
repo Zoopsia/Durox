@@ -22,10 +22,12 @@ class Productos extends My_Controller {
 
 	public function pestanas($id)
 	{
-		$db['id']			= $id;
-		$db['productos'] 	= $this->productos_model->getRegistro($id);
-		$db['imagenes'] 	= $this->productos_model->getImagenes($id);
-		$db['precios'] 		= $this->productos_model->getPrecios();
+		$db['id']				= $id;
+		$db['productos'] 		= $this->productos_model->getRegistro($id);
+		$db['imagenes'] 		= $this->productos_model->getImagenes($id);
+		$db['precios'] 			= $this->productos_model->getPrecios();
+		$db['alarmas']			= $this->productos_model->getAlarmas($id);
+		$db['tipos_alarmas']	= $this->productos_model->getTodo('tipos_alarmas');
 
 		$this->cargar_vista($db, 'pestanas');			
 	}
@@ -221,5 +223,15 @@ class Productos extends My_Controller {
 			}
 		}
 		redirect($this->input->post('url'),'refresh');
+	}
+	
+	public function getAlarmas(){
+		$alarmas = $this->productos_model->getAlarmas($this->input->post('id'));
+		if($alarmas){
+			echo count($alarmas);
+		}
+		else {
+			echo 0;
+		}
 	}
 }
