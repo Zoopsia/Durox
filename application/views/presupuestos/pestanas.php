@@ -1,6 +1,8 @@
 <script>
 $( document ).ready(function() {
     getAlarmas(<?php echo $id_presupuesto?>);
+    if(location.hash == "#tab2")
+    	$('.nav-pills a:last').tab('show');
 });
 
 function saveAlarm($id){
@@ -74,7 +76,7 @@ $aux2 = 0;
 	      	<hr>
 	    </div>
 		<div class="panel-heading no-print">
-			<ul class="nav nav-tabs">
+			<ul class="nav nav-pills">
 				<li class="active"><a href="#tab1" data-toggle="tab">
 					<i class="fa fa-book"></i> <?php echo $this->lang->line('presupuesto'); ?>
 				</a></li>
@@ -395,7 +397,7 @@ $aux2 = 0;
 										}
 										
 										if($cantidad_paginas == 0){
-											echo '<li class="active"><a href="#body'.$cantidad_paginas.'" data-toggle="tab">'.$cantidad_paginas.'</a></li>';
+											/*--- No mostrar nada por ahora ----*/
 										}
 									?>
 								  </ul>

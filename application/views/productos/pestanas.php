@@ -2,6 +2,8 @@
 
 $( document ).ready(function() {
     getAlarmas(<?php echo $id?>);
+    if(location.hash == "#tab2")
+    	$('.nav-pills a:last').tab('show');
 });
 
 $(function() {		
@@ -142,7 +144,7 @@ $bandera = 0;
 <div class="col-md-12">
 	<div class="panel panel-default">
 		<div class="panel-heading no-print">
-			<ul class="nav nav-tabs">
+			<ul class="nav nav-pills">
 				<li class="active"><a href="#tab1" data-toggle="tab">
 					<i class="fa fa-archive"></i> <?php echo $this->lang->line('producto'); ?>
 				</a></li>
@@ -405,7 +407,7 @@ $bandera = 0;
 												echo '<li><a href="#body'.($i+1).'" data-toggle="tab">'.($i+1).'</a></li>';
 										}
 										if($cantidad_paginas == 0){
-											echo '<li class="active"><a href="#body'.$cantidad_paginas.'" data-toggle="tab">'.$cantidad_paginas.'</a></li>';
+											/*--- No mostrar nada por ahora ----*/
 										}
 									?>
 								  </ul>

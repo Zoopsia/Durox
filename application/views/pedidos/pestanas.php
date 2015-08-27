@@ -6,6 +6,8 @@ function aprobarForm() {
 
 $( document ).ready(function() {
     getAlarmas(<?php echo $id_pedido?>);
+    if(location.hash == "#tab2")
+    	$('.nav-pills a:last').tab('show');
 });
  
 var aux = 0;
@@ -295,7 +297,7 @@ function cambiarSelect(){
 	      	<hr>
 	    </div>
 		<div class="panel-heading no-print">
-			<ul class="nav nav-tabs">
+			<ul class="nav nav-pills">
 				<li class="active"><a href="#tab1" data-toggle="tab">
 					<i class="fa fa-shopping-cart"></i> <?php echo $this -> lang -> line('pedido') . ' N° ' . $row -> id_pedido; ?>
 				</a></li>
@@ -645,7 +647,7 @@ function cambiarSelect(){
 										}
 									
 										if($cantidad_paginas == 0){
-											echo '<li class="active"><a href="#body'.$cantidad_paginas.'" data-toggle="tab">'.$cantidad_paginas.'</a></li>';
+											/*--- No mostrar nada por ahora ----*/
 										}
 									?>
 									</ul>

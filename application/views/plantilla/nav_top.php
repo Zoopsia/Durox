@@ -1,5 +1,22 @@
+<script>
+function redirectAlarm($alarma){
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo base_url(); ?>index.php/alarmas/buscarAlarma', 
+		data: { 'alarma' 	: $alarma, 
+	 			}, 
+	 	success: function(resp) { 
+			window.location.assign(resp);
+		},	
+	});
+}
+</script>
+
+
 <?php 	
 	$mensajes = 0;
+	$cont_alarmas = 0;
+	
 	if($visitas_mensajes)
 		$mensajes += count($visitas_mensajes);
 	if($clientes_mensajes)
@@ -12,6 +29,12 @@
 		$mensajes += count($pedidos_mensajes);
 	if($presupuestos_mensajes)
 		$mensajes += count($presupuestos_mensajes);
+	
+	if($alarmas_mensajes){
+    	foreach($alarmas_mensajes as $alarmas){
+			$cont_alarmas++;
+		}
+	}
 	
 ?>
     <body class="skin-blue">
@@ -44,77 +67,64 @@
                         <li class="dropdown messages-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-envelope"></i>
-                                <span class="label label-success">4</span>
+                                <?php if($cont_alarmas > 0){ ?>
+                                <span class="label label-success"><?php echo $cont_alarmas?></span>
+                            	<?php } ?>
                             </a>
+                            <?php if($cont_alarmas > 0){ ?>
                             <ul class="dropdown-menu">
-                                <li class="header">4 Nuevas alarmas</li>
+                            	<li class="header"><?php echo $cont_alarmas.' ';?>Nuevas alarmas</li>
+								
                                 <li>
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu">
-                                        <li><!-- start message -->
-                                            <a href="#">
+                                    	<?php if($alarmas_mensajes) { foreach($alarmas_mensajes as $alarmas) { if($alarmas->id_origen == 2) { ?>	<!-- Admin ---->
+										<li><!-- start message -->
+                                            <a href="#" onclick="redirectAlarm(<?php echo $alarmas->id_alarma?>)">
                                                 <div class="pull-left">
-                                                    <img src="<?php echo base_url()?>libraries/plantilla/img/avatar3.png" class="img-circle" alt="User Image"/>
+                                                    <img src="<?php echo $alarmas->Uimagen; ?>" class="img-circle" alt="User Image"/>
                                                 </div>
                                                 <h4>
-                                                    Vendedor X
-                                                    <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                                                  	<?php echo $alarmas->usuario ?>
+                                                    <small><i class="fa fa-clock-o"></i><?php $date	= date_create($alarmas->date_add); echo ' '.date_format($date, 'd/m H:i:s'); ?></small>
                                                 </h4>
-                                                <p>Proceso finalizado</p>
+                                                <p>
+                                                <?php 
+                                                	if(strlen($alarmas->mensaje) > 30)
+                                                		echo substr( $alarmas->mensaje, 0 , 30).'...'; 
+                                                	else
+                                                		echo $alarmas->mensaje;
+                                                ?>
+                                                </p>
                                             </a>
                                         </li><!-- end message -->
-                                        <li>
-                                            <a href="#">
+										<?php } else { ?> <!-- Vendedor ---->
+										<li><!-- start message -->
+                                            <a href="#" onclick="redirectAlarm(<?php echo $alarmas->id_alarma?>)">
                                                 <div class="pull-left">
-                                                    <img src="<?php echo base_url()?>libraries/plantilla/img/avatar2.png" class="img-circle" alt="user image"/>
+                                                    <img src="<?php echo $alarmas->Vimagen; ?>" class="img-circle" alt="User Image"/>
                                                 </div>
                                                 <h4>
-                                                    Vendedor T
-                                                    <small><i class="fa fa-clock-o"></i> 2 horas</small>
+                                                  	<?php echo $alarmas->nombre.' '.$alarmas->apellido; ?>
+                                                    <small><i class="fa fa-clock-o"></i><?php $date	= date_create($alarmas->date_add); echo ' '.date_format($date, 'd/m H:i:s'); ?></small>
                                                 </h4>
-                                                <p>Producto nuevo</p>
+                                                <p>
+                                                <?php 
+                                                	if(strlen($alarmas->mensaje) > 30)
+                                                		echo substr( $alarmas->mensaje, 0 , 30).'...'; 
+                                                	else
+                                                		echo $alarmas->mensaje;
+                                                ?>
+                                                </p>
                                             </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="pull-left">
-                                                    <img src="<?php echo base_url()?>libraries/plantilla/img/avatar.png" class="img-circle" alt="user image"/>
-                                                </div>
-                                                <h4>
-                                                    Vendedor Y
-                                                    <small><i class="fa fa-clock-o"></i> 2 horas</small>
-                                                </h4>
-                                                <p>Nuevo cliente</p>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="pull-left">
-                                                    <img src="<?php echo base_url()?>libraries/plantilla/img/avatar2.png" class="img-circle" alt="user image"/>
-                                                </div>
-                                                <h4>
-                                                    Vendedor T
-                                                    <small><i class="fa fa-clock-o"></i> 1 día</small>
-                                                </h4>
-                                                <p>Productos en mal estado</p>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#">
-                                                <div class="pull-left">
-                                                    <img src="<?php echo base_url()?>libraries/plantilla/img/avatar.png" class="img-circle" alt="user image"/>
-                                                </div>
-                                                <h4>
-                                                    Vendedor Y
-                                                    <small><i class="fa fa-clock-o"></i> 2 days</small>
-                                                </h4>
-                                                <p>Controlar descuentos</p>
-                                            </a>
-                                        </li>
+                                        </li><!-- end message -->
+										<?php }	} } ?>
                                     </ul>
                                 </li>
                                 <li class="footer"><a href="#">Ver todas las alarmas</a></li>
                             </ul>
+                            
+                            <?php } ?>
                         </li>
                         <!-- Notifications: style can be found in dropdown.less -->
                         <li class="dropdown notifications-menu">
@@ -124,9 +134,7 @@
                                 <span class="label label-success"><?php echo $mensajes ?></span>
                                 <?php } ?>
                             </a>
-                            <?php
-                            if($mensajes>0){
-                            ?>	
+                            <?php if($mensajes>0) { ?>	
                             <ul class="dropdown-menu">
                                 <li class="header"><?php echo ' '.$mensajes.' '.$this->lang->line('registros').' '.$this->lang->line('nuevos')?></li>
                                 <li>
@@ -185,9 +193,7 @@
                                                 <i class="fa fa-book bg-maroon"></i><?php echo ' '.count($presupuestos_mensajes).' '.$this->lang->line('presupuestos').' '.$this->lang->line('nuevos');?>
                                             </a>
                                         </li>
-                                        <?php 
-                                        }
-                                        ?>
+                                        <?php } ?>
                                     </ul>
                                 </li>
                                 <li class="footer"><a href="#">Ver todos</a></li>

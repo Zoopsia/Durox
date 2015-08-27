@@ -9,6 +9,8 @@ if($clientes){
 
 $( document ).ready(function() {
     getAlarmas(<?php echo $id?>);
+    if(location.hash == "#tab7")
+    	$('.nav-tabs a:last').tab('show');
 });
 
 function editable(){	
@@ -1057,7 +1059,7 @@ $bandera = 0;
 													}
 													
 													if($cantidad_paginas == 0){
-														echo '<li class="active"><a href="#body'.$cantidad_paginas.'" data-toggle="tab">'.$cantidad_paginas.'</a></li>';
+														/*--- No mostrar nada por ahora ----*/
 													}
 												?>
 											  </ul>

@@ -24,7 +24,10 @@ class Direcciones_model extends My_Model {
 					* 
 				FROM 
 					paises 
-				WHERE eliminado = 0";
+				WHERE 
+					eliminado = 0
+				ORDER BY
+					nombre_pais";
 				
 		$query = $this->db->query($sql);
 						
@@ -49,7 +52,9 @@ class Direcciones_model extends My_Model {
 				WHERE 
 					id_pais = $id_pais
 				AND
-					provincias.eliminado = 0";
+					provincias.eliminado = 0
+				ORDER BY
+					nombre_provincia";
 				
 		$query = $this->db->query($sql);
 						
@@ -74,7 +79,9 @@ class Direcciones_model extends My_Model {
 				WHERE 
 					id_provincia = $id_provincia
 				AND
-					departamentos.eliminado = 0";
+					departamentos.eliminado = 0
+				ORDER BY
+					nombre_departamento";
 				
 		$query = $this->db->query($sql);
 						

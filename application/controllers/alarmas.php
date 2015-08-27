@@ -32,12 +32,16 @@ class Alarmas extends My_Controller {
 	}
 	
 	public function insertAlarma(){
+		$session_data = $this->session->userdata('logged_in');
+		
 		$alarma	= array(
 			'id_tipo_alarma'	=> $this->input->post('tipo'),
 			'mensaje'			=> $this->input->post('mensaje'),
 			'visto_back'		=> 0,
 			'visto_front'		=> 0,
-			'eliminado'			=> 0
+			'eliminado'			=> 0,
+			'id_origen'			=> 2,
+			'id_creador'		=> $session_data['id_usuario']
 		);
 		
 		$id_alarma 			= $this->alarmas_model->insert($alarma);
@@ -46,7 +50,7 @@ class Alarmas extends My_Controller {
 		
 		$tipo_alarma 		= $this->alarmas_model->getTipoAlarma($this->input->post('tipo'));
 		
-		if($tipo_alarma){
+		if($tipo_alarma || $this->input->post('mensaje')){
 			foreach($tipo_alarma as $row){
 				$arreglo	= array(
 					'id_tipo'	=> $row->id_tipo_alarma,
@@ -82,5 +86,50 @@ class Alarmas extends My_Controller {
 				echo $row->color;
 			}
 		}
+	}
+	
+	public function buscarAlarma(){
+		$alarma =  $this->input->post('alarma');
+		
+		if($alarma){
+			if($this->alarmas_model->buscarAlarma($alarma, "clientes")){
+				$datos 		= $this->alarmas_model->buscarAlarma($alarma, "clientes");
+				foreach($datos as $row){
+					$url 	= base_url()."index.php/clientes/pestanas/".$row->id_cliente."#tab7";
+				}
+			}
+			else if($this->alarmas_model->buscarAlarma($alarma, "vendedores")){
+				$datos 		= $this->alarmas_model->buscarAlarma($alarma, "vendedores");
+				foreach($datos as $row){
+					$url 	= base_url()."index.php/vendedores/pestanas/".$row->id_vendedor."#tab7";
+				}
+			}
+			else if($this->alarmas_model->buscarAlarma($alarma, "pedidos")){
+				$datos 		= $this->alarmas_model->buscarAlarma($alarma, "pedidos");
+				foreach($datos as $row){
+					$url 	= base_url()."index.php/pedidos/pestanas/".$row->id_pedido."#tab2";
+				}
+			}
+			else if($this->alarmas_model->buscarAlarma($alarma, "presupuestos")){
+				$datos 		= $this->alarmas_model->buscarAlarma($alarma, "presupuestos");
+				foreach($datos as $row){
+					$url 	= base_url()."index.php/presupuestos/pestanas/".$row->id_presupuesto."#tab2";
+				}
+			}
+			else if($this->alarmas_model->buscarAlarma($alarma, "visitas")){
+				$datos 		= $this->alarmas_model->buscarAlarma($alarma, "visitas");
+				foreach($datos as $row){
+					$url 	= base_url()."index.php/visitas/carga/".$row->id_visita."/0#tab2";
+				}
+			}
+			else if($this->alarmas_model->buscarAlarma($alarma, "productos")){
+				$datos 		= $this->alarmas_model->buscarAlarma($alarma, "productos");
+				foreach($datos as $row){
+					$url 	= base_url()."index.php/productos/pestanas/".$row->id_producto."#tab2";
+				}
+			}
+		}
+		
+		echo $url;
 	}
 }
