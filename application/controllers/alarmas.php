@@ -95,7 +95,7 @@ class Alarmas extends My_Controller {
 			if($this->alarmas_model->buscarAlarma($alarma, "clientes")){
 				$datos 		= $this->alarmas_model->buscarAlarma($alarma, "clientes");
 				foreach($datos as $row){
-					$url 	= base_url()."index.php/clientes/pestanas/".$row->id_cliente."#tab7";
+					$url 	= base_url("index.php/clientes/pestanas/".$row->id_cliente."#tab7");
 				}
 			}
 			else if($this->alarmas_model->buscarAlarma($alarma, "vendedores")){

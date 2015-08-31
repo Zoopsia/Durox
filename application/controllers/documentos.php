@@ -34,53 +34,56 @@ class Documentos extends My_Controller {
 		$documentos		= $this->documentos_model->getTodo();
 		$destino 	= 'documentos/';
 		$bandera = 0;
+		
+		if(devolverDir($destino)){
 		if(isset($_FILES['documento']['tmp_name']))
-		{
-			if($_FILES['documento']['type'] == "application/pdf" || $_FILES['documento']['type'] == "application/octet-stream"){
-				$origen 	= $_FILES['documento']['tmp_name'];
-				$url		= cambiarTexto($destino.$_FILES['documento']['name']);
-				$imagen		= base_url().$url;
-				if(!empty($_FILES['documento']['tmp_name'])){
-					copy($origen, $url);	
-				}
-				//----COMPRUEBO QUE EL ARCHIVO NO EXISTA---//
-				if($documentos){
-					foreach($documentos as $row){
-						if($row->documento == $imagen)
-							$bandera = 1;
+			{
+				if($_FILES['documento']['type'] == "application/pdf" || $_FILES['documento']['type'] == "application/octet-stream"){
+					$origen 	= $_FILES['documento']['tmp_name'];
+					$url		= cambiarTexto($destino.$_FILES['documento']['name']);
+					$imagen		= base_url().$url;
+					if(!empty($_FILES['documento']['tmp_name'])){
+						copy($origen, $url);	
 					}
-					if($bandera != 1){
+					//----COMPRUEBO QUE EL ARCHIVO NO EXISTA---//
+					if($documentos){
+						foreach($documentos as $row){
+							if($row->documento == $imagen)
+								$bandera = 1;
+						}
+						if($bandera != 1){
+							$arreglo = array(
+								'documento'		=> $imagen,
+								'nombre'		=> $this->input->post('nombre')
+							);
+							
+							$id_documento	= $this->documentos_model->insert($arreglo);
+						}
+					}
+					else { //----SINO LO INSERTO YA QUE ES EL PRIMER DOCUMENTO---//
 						$arreglo = array(
 							'documento'		=> $imagen,
 							'nombre'		=> $this->input->post('nombre')
 						);
-						
-						$id_documento	= $this->documentos_model->insert($arreglo);
+						$id_documento		= $this->documentos_model->insert($arreglo);
 					}
 				}
-				else { //----SINO LO INSERTO YA QUE ES EL PRIMER DOCUMENTO---//
-					$arreglo = array(
-						'documento'		=> $imagen,
-						'nombre'		=> $this->input->post('nombre')
-					);
-					$id_documento		= $this->documentos_model->insert($arreglo);
-				}
-			}
-			
-			if($id_documento != 0){
-				if(!empty($_POST['tipo_documento'])){
-					foreach($_POST['tipo_documento'] as $row){
-						$sin = array(
-							'id_tipo_documento'		=> $row,
-							'id_documento'			=> $id_documento
-						);
-						
-						$id_sin		= $this->documentos_model->insertTipo($sin);
+				
+				if($id_documento != 0){
+					if(!empty($_POST['tipo_documento'])){
+						foreach($_POST['tipo_documento'] as $row){
+							$sin = array(
+								'id_tipo_documento'		=> $row,
+								'id_documento'			=> $id_documento
+							);
+							
+							$id_sin		= $this->documentos_model->insertTipo($sin);
+						}
 					}
 				}
-			}
-		}	
-		
+			}	
+		}
+
 		redirect($this->_subject.'/documentos_abm/','refresh');
 	}
 	

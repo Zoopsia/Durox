@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 25-08-2015 a las 21:47:36
+-- Tiempo de generación: 27-08-2015 a las 22:25:11
 -- Versión del servidor: 5.6.24
 -- Versión de PHP: 5.6.8
 
@@ -30,6 +30,8 @@ CREATE TABLE IF NOT EXISTS `alarmas` (
   `id_alarma` int(11) NOT NULL,
   `id_tipo_alarma` int(11) NOT NULL,
   `mensaje` text NOT NULL,
+  `id_creador` int(11) NOT NULL,
+  `id_origen` int(11) NOT NULL,
   `visto_back` tinyint(1) NOT NULL,
   `visto_front` tinyint(1) NOT NULL,
   `date_add` datetime NOT NULL,
@@ -37,23 +39,22 @@ CREATE TABLE IF NOT EXISTS `alarmas` (
   `eliminado` tinyint(1) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `alarmas`
 --
 
-INSERT INTO `alarmas` (`id_alarma`, `id_tipo_alarma`, `mensaje`, `visto_back`, `visto_front`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
-(1, 1, 'Buen cliente', 0, 0, '2015-08-25 17:59:06', '2015-08-25 17:59:06', 0, 1, 1),
-(2, 2, 'Volver los viernes por la mañana.', 0, 0, '2015-08-25 17:59:21', '2015-08-25 17:59:21', 0, 1, 1),
-(3, 3, 'No volver hasta fin de mes.', 0, 0, '2015-08-25 18:29:12', '2015-08-25 18:29:12', 0, 1, 1),
-(4, 4, 'Tal vez compre en otro lado.', 0, 0, '2015-08-25 18:32:40', '2015-08-25 18:32:40', 0, 1, 1),
-(5, 2, 'Volver miércoles por la mañana.', 0, 0, '2015-08-25 18:33:25', '2015-08-25 18:33:25', 0, 1, 1),
-(6, 2, 'No tiene alarmas', 0, 0, '2015-08-25 18:34:35', '2015-08-25 18:34:35', 0, 1, 1),
-(7, 4, 'No volver los sábados. ', 0, 0, '2015-08-25 18:47:04', '2015-08-25 18:47:04', 0, 1, 1),
-(8, 1, 'Excelente vendedor', 0, 0, '2015-08-25 20:45:49', '2015-08-25 20:45:49', 0, 1, 1),
-(9, 2, 'Prueba', 0, 0, '2015-08-25 20:48:23', '2015-08-25 20:48:23', 0, 1, 1),
-(10, 3, 'Prueba', 0, 0, '2015-08-25 20:49:29', '2015-08-25 20:49:29', 0, 1, 1);
+INSERT INTO `alarmas` (`id_alarma`, `id_tipo_alarma`, `mensaje`, `id_creador`, `id_origen`, `visto_back`, `visto_front`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
+(1, 1, 'Prueba exitosa', 1, 2, 0, 0, '2015-08-27 18:18:37', '2015-08-27 18:18:37', 0, 1, 1),
+(2, 3, 'Soy el vendedor', 1, 1, 0, 0, '2015-08-27 18:26:18', '2015-08-27 18:26:18', 0, 1, 1),
+(3, 4, 'Prueba', 1, 2, 0, 0, '2015-08-27 20:01:51', '2015-08-27 20:01:51', 0, 1, 1),
+(4, 1, 'Otra prueba', 1, 2, 0, 0, '2015-08-27 20:03:15', '2015-08-27 20:03:15', 0, 1, 1),
+(5, 2, 'Pedido', 1, 2, 0, 0, '2015-08-27 20:11:03', '2015-08-27 20:11:03', 0, 1, 1),
+(6, 2, 'Presupuesto', 1, 2, 0, 0, '2015-08-27 20:11:15', '2015-08-27 20:11:15', 0, 1, 1),
+(7, 3, 'Visita', 1, 2, 0, 0, '2015-08-27 20:12:26', '2015-08-27 20:12:26', 0, 1, 1),
+(8, 4, 'Productos', 1, 2, 0, 0, '2015-08-27 20:14:34', '2015-08-27 20:14:34', 0, 1, 1),
+(9, 3, 'Prueba Cliente', 1, 2, 0, 0, '2015-08-27 21:42:46', '2015-08-27 21:42:46', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -105,7 +106,7 @@ CREATE TABLE IF NOT EXISTS `clientes` (
 --
 
 INSERT INTO `clientes` (`id_cliente`, `razon_social`, `nombre`, `apellido`, `cuit`, `id_grupo_cliente`, `id_iva`, `imagen`, `nombre_fantasia`, `web`, `id_origen`, `id_db`, `visto`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
-(1, 'Bodega SRL', 'Cristian', 'Nieto', 20320299579, 1, 2, 'http://localhost/Durox/img/clientes/User1.jpg', '', 'www.google.com', 2, 0, 1, '2015-08-12 17:39:26', '2015-08-25 18:50:22', 0, 1, 1),
+(1, 'Bodega SRL', 'Cristian', 'Nieto', 20320299579, 2, 2, 'http://localhost/Durox/img/clientes/User1.jpg', '', 'www.google.com', 2, 0, 1, '2015-08-12 17:39:26', '2015-08-27 21:42:56', 0, 1, 1),
 (2, 'GO BAR', 'Alejandro', 'Weber', 21256458457, 1, 1, 'http://localhost/Durox/img/clientes/Desert.jpg', '', '', 2, 0, 1, '2015-08-12 18:21:59', '2015-08-14 16:02:24', 0, 1, 1),
 (3, 'Prentice Hall', 'Diego', 'Nieto', 20315689477, 1, 1, '', '', '', 2, 0, 1, '2015-08-14 16:36:24', '2015-08-25 18:50:22', 0, 1, 1),
 (4, 'TMS Group SRL', 'Alejandro', 'Weber', 21546879459, 2, 1, '', '', '', 2, 0, 1, '2015-08-14 16:37:03', '2015-08-25 18:50:22', 0, 1, 1),
@@ -773,24 +774,14 @@ CREATE TABLE IF NOT EXISTS `documentos` (
   `eliminado` tinyint(1) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `documentos`
 --
 
 INSERT INTO `documentos` (`id_documento`, `nombre`, `documento`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
-(2, '', 'http://localhost/Durox/documentos/0310.pdf', '2015-08-14 18:47:37', '2015-08-14 18:47:37', 0, 1, 1),
-(3, 'Un documento', 'http://localhost/Durox/documentos/0406.pdf', '2015-08-19 22:02:30', '2015-08-19 22:02:30', 0, 1, 1),
-(4, '', 'http://localhost/Durox/documentos/0407 it 20156-20157-20158-20159.pdf', '2015-08-19 22:07:20', '2015-08-19 22:07:20', 0, 1, 1),
-(5, '', 'http://localhost/Durox/documentos/0311.pdf', '2015-08-19 22:09:40', '2015-08-19 22:09:40', 0, 1, 1),
-(6, '', 'http://localhost/Durox/documentos/0503.pdf', '2015-08-19 22:09:46', '2015-08-19 22:09:46', 0, 1, 1),
-(7, '', 'http://localhost/Durox/documentos/0506 it 20059-20061.pdf', '2015-08-19 22:09:52', '2015-08-19 22:09:52', 0, 1, 1),
-(8, '', 'http://localhost/Durox/documentos/0510.pdf', '2015-08-19 22:09:59', '2015-08-19 22:09:59', 0, 1, 1),
-(9, '', 'http://localhost/Durox/documentos/prueba.pdf', '2015-08-19 22:10:28', '2015-08-19 22:10:28', 0, 1, 1),
-(10, '', 'http://localhost/Durox/documentos/0704.pdf', '2015-08-19 22:10:40', '2015-08-19 22:10:40', 0, 1, 1),
-(11, '', 'http://localhost/Durox/documentos/FINALES 1-12.xlsx', '2015-08-19 22:11:09', '2015-08-19 22:11:09', 0, 1, 1),
-(12, '', 'http://localhost/Durox/documentos/Documento sin título (1).docx', '2015-08-19 22:11:50', '2015-08-19 22:11:50', 0, 1, 1);
+(3, 'nuevo', 'http://192.168.1.219/durox/documentos/Constancia_Cuil_Cristian_Nieto.pdf', '2015-08-26 22:23:09', '2015-08-26 22:23:09', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1022,7 +1013,7 @@ CREATE TABLE IF NOT EXISTS `linea_productos_pedidos` (
   `eliminado` tinyint(4) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=96 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `linea_productos_pedidos`
@@ -1117,10 +1108,13 @@ INSERT INTO `linea_productos_pedidos` (`id_linea_producto_pedido`, `id_pedido`, 
 (86, 4, 1, 4.99, 100, 499, 1, 0, 0, '2015-08-20 18:19:27', '2015-08-20 18:28:17', 1, 1, 1),
 (87, 4, 2, 4.04, 200, 808, 1, 0, 0, '2015-08-20 18:19:27', '2015-08-20 18:28:17', 1, 1, 1),
 (88, 4, 3, 4.65, 300, 1395, 1, 0, 0, '2015-08-20 18:19:28', '2015-08-20 18:28:18', 1, 1, 1),
-(89, 4, 4, 3.42, 133, 454.86, 2, 0, 0, '2015-08-20 18:28:16', '2015-08-24 17:13:42', 0, 1, 1),
-(90, 4, 2, 4.04, 133, 537.32, 2, 0, 0, '2015-08-20 18:28:16', '2015-08-24 17:13:42', 0, 1, 1),
-(91, 4, 3, 4.65, 133, 618.45, 2, 0, 0, '2015-08-20 18:28:17', '2015-08-24 17:13:42', 0, 1, 1),
-(92, 4, 1, 4.99, 133, 663.67, 2, 0, 0, '2015-08-20 18:28:17', '2015-08-24 17:13:41', 0, 1, 1);
+(89, 4, 4, 3.42, 133, 454.86, 2, 0, 0, '2015-08-20 18:28:16', '2015-08-27 22:21:33', 0, 1, 1),
+(90, 4, 2, 4.04, 133, 537.32, 2, 0, 0, '2015-08-20 18:28:16', '2015-08-27 22:21:33', 0, 1, 1),
+(91, 4, 3, 4.65, 133, 618.45, 2, 0, 0, '2015-08-20 18:28:17', '2015-08-27 22:21:33', 0, 1, 1),
+(92, 4, 1, 4.99, 133, 663.67, 2, 0, 0, '2015-08-20 18:28:17', '2015-08-27 22:21:32', 0, 1, 1),
+(93, 5, 4, 3.42, 150, 513, 1, 0, 1, '2015-08-26 15:20:21', '2015-08-26 15:20:21', 0, 1, 1),
+(94, 5, 2, 4.04, 200, 808, 1, 0, 1, '2015-08-26 15:20:21', '2015-08-26 15:20:21', 0, 1, 1),
+(95, 5, 5, 4.32, 100, 432, 1, 0, 0, '2015-08-26 15:25:39', '2015-08-26 15:25:40', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1141,7 +1135,7 @@ CREATE TABLE IF NOT EXISTS `linea_productos_presupuestos` (
   `eliminado` tinyint(4) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `linea_productos_presupuestos`
@@ -1155,7 +1149,9 @@ INSERT INTO `linea_productos_presupuestos` (`id_linea_producto_presupuesto`, `id
 (5, 2, 2, 4.25, 250, 1062.5, 2, '2015-08-20 17:34:13', '2015-08-20 17:34:17', 0, 1, 1),
 (6, 3, 2, 4.04, 200, 808, 2, '2015-08-20 17:42:29', '2015-08-20 17:42:33', 0, 1, 1),
 (7, 4, 4, 3.42, 150, 513, 2, '2015-08-20 18:08:54', '2015-08-20 18:09:18', 0, 1, 1),
-(8, 4, 2, 4.04, 150, 606, 2, '2015-08-20 18:08:58', '2015-08-20 18:09:19', 0, 1, 1);
+(8, 4, 2, 4.04, 150, 606, 2, '2015-08-20 18:08:58', '2015-08-20 18:09:19', 0, 1, 1),
+(9, 5, 4, 3.42, 150, 513, 2, '2015-08-26 15:20:13', '2015-08-26 15:20:21', 0, 1, 1),
+(10, 5, 2, 4.04, 200, 808, 2, '2015-08-26 15:20:15', '2015-08-26 15:20:21', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1169,7 +1165,7 @@ CREATE TABLE IF NOT EXISTS `log_linea_pedidos` (
   `id_accion` int(11) NOT NULL,
   `date_add` datetime NOT NULL,
   `user_add` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=138 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `log_linea_pedidos`
@@ -1311,7 +1307,8 @@ INSERT INTO `log_linea_pedidos` (`id_log`, `id_linea`, `id_accion`, `date_add`, 
 (133, 90, 4, '2015-08-20 18:28:17', 1),
 (134, 88, 3, '2015-08-20 18:28:18', 1),
 (135, 91, 4, '2015-08-20 18:28:18', 1),
-(136, 89, 4, '2015-08-20 18:28:18', 1);
+(136, 89, 4, '2015-08-20 18:28:18', 1),
+(137, 95, 4, '2015-08-26 15:25:40', 1);
 
 -- --------------------------------------------------------
 
@@ -1655,7 +1652,7 @@ CREATE TABLE IF NOT EXISTS `pedidos` (
   `eliminado` tinyint(1) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `pedidos`
@@ -1665,7 +1662,8 @@ INSERT INTO `pedidos` (`id_pedido`, `id_visita`, `id_presupuesto`, `id_cliente`,
 (1, 1, 1, 1, 1, 2, 4770.5, '2015-08-20', 2, 1, 0, 1, 0, 7, '2015-08-20 14:16:27', '2015-08-20 22:17:37', 0, 1, 1),
 (2, 2, 2, 2, 1, 2, 4954.5, '2015-08-20', 2, 1, 0, 1, 0, 2, '2015-08-20 17:34:16', '2015-08-20 17:41:59', 0, 1, 1),
 (3, 3, 3, 4, 1, 2, 4553.4, '2015-08-20', 2, 1, 0, 1, 0, 11, '2015-08-20 17:42:33', '2015-08-20 20:49:35', 0, 1, 1),
-(4, 4, 4, 5, 1, 1, 2274.3, '2015-08-20', 2, 1, 0, 1, 0, 8, '2015-08-20 18:09:16', '2015-08-24 17:13:42', 0, 1, 1);
+(4, 4, 4, 5, 1, 2, 2274.3, '2015-08-20', 2, 1, 0, 1, 0, 8, '2015-08-20 18:09:16', '2015-08-27 22:21:33', 0, 1, 1),
+(5, 5, 5, 4, 1, 4, 1753, '2015-08-26', 2, 0, 0, 1, 0, 1, '2015-08-26 15:20:20', '2015-08-26 15:25:40', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1691,7 +1689,7 @@ CREATE TABLE IF NOT EXISTS `presupuestos` (
   `eliminado` tinyint(4) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `presupuestos`
@@ -1701,7 +1699,8 @@ INSERT INTO `presupuestos` (`id_presupuesto`, `id_visita`, `id_cliente`, `id_ven
 (1, 1, 1, 1, 2, 2403, '2015-08-01', 2, 1, 0, 0, 0, '2015-08-20 14:16:08', '2015-08-20 16:33:32', 0, 1, 1),
 (2, 2, 2, 1, 2, 3337.5, '2015-08-06', 1, 1, 0, 0, 0, '2015-08-20 17:34:06', '2015-08-25 18:50:17', 0, 1, 1),
 (3, 3, 4, 1, 2, 808, '2015-08-11', 2, 1, 0, 0, 0, '2015-08-20 17:42:25', '2015-08-25 18:50:17', 0, 1, 1),
-(4, 4, 5, 1, 2, 1119, '2015-08-12', 2, 1, 0, 0, 0, '2015-08-20 18:08:50', '2015-08-25 18:50:17', 0, 1, 1);
+(4, 4, 5, 1, 2, 1119, '2015-08-12', 2, 1, 0, 0, 0, '2015-08-20 18:08:50', '2015-08-25 18:50:17', 0, 1, 1),
+(5, 5, 4, 1, 2, 1321, '2015-08-20', 2, 1, 0, 0, 0, '2015-08-26 15:20:07', '2015-08-27 16:34:28', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1869,20 +1868,17 @@ CREATE TABLE IF NOT EXISTS `sin_alarmas_clientes` (
   `eliminado` tinyint(1) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `sin_alarmas_clientes`
 --
 
 INSERT INTO `sin_alarmas_clientes` (`id_sin_alarma_cliente`, `id_alarma`, `id_cliente`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
-(1, 1, 1, '2015-08-25 17:59:06', '2015-08-25 17:59:06', 0, 1, 1),
-(2, 2, 1, '2015-08-25 17:59:21', '2015-08-25 17:59:21', 0, 1, 1),
-(3, 3, 1, '2015-08-25 18:29:13', '2015-08-25 18:29:13', 0, 1, 1),
-(4, 4, 1, '2015-08-25 18:32:40', '2015-08-25 18:32:40', 0, 1, 1),
-(5, 5, 1, '2015-08-25 18:33:25', '2015-08-25 18:33:25', 0, 1, 1),
-(6, 6, 2, '2015-08-25 18:34:35', '2015-08-25 18:34:35', 0, 1, 1),
-(7, 7, 3, '2015-08-25 18:47:04', '2015-08-25 18:47:04', 0, 1, 1);
+(1, 1, 1, '2015-08-27 18:18:37', '2015-08-27 18:18:37', 0, 1, 1),
+(2, 2, 1, '2015-08-27 18:26:18', '2015-08-27 18:26:18', 0, 1, 1),
+(3, 3, 1, '2015-08-27 20:01:51', '2015-08-27 20:01:51', 0, 1, 1),
+(4, 9, 1, '2015-08-27 21:42:46', '2015-08-27 21:42:46', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1899,7 +1895,14 @@ CREATE TABLE IF NOT EXISTS `sin_alarmas_pedidos` (
   `eliminado` tinyint(1) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `sin_alarmas_pedidos`
+--
+
+INSERT INTO `sin_alarmas_pedidos` (`id_sin_alarma_pedido`, `id_alarma`, `id_pedido`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
+(1, 5, 1, '2015-08-27 20:11:03', '2015-08-27 20:11:03', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1916,7 +1919,14 @@ CREATE TABLE IF NOT EXISTS `sin_alarmas_presupuestos` (
   `eliminado` tinyint(1) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `sin_alarmas_presupuestos`
+--
+
+INSERT INTO `sin_alarmas_presupuestos` (`id_sin_alarma_presupuesto`, `id_alarma`, `id_presupuesto`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
+(1, 6, 1, '2015-08-27 20:11:15', '2015-08-27 20:11:15', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1933,7 +1943,14 @@ CREATE TABLE IF NOT EXISTS `sin_alarmas_productos` (
   `eliminado` tinyint(1) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `sin_alarmas_productos`
+--
+
+INSERT INTO `sin_alarmas_productos` (`id_sin_alarma_producto`, `id_alarma`, `id_producto`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
+(1, 8, 1, '2015-08-27 20:14:34', '2015-08-27 20:14:34', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1950,16 +1967,14 @@ CREATE TABLE IF NOT EXISTS `sin_alarmas_vendedores` (
   `eliminado` tinyint(1) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `sin_alarmas_vendedores`
 --
 
 INSERT INTO `sin_alarmas_vendedores` (`id_sin_alarma_vendedor`, `id_alarma`, `id_vendedor`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
-(1, 8, 1, '2015-08-25 20:45:49', '2015-08-25 20:45:49', 0, 1, 1),
-(2, 9, 1, '2015-08-25 20:48:23', '2015-08-25 20:48:23', 0, 1, 1),
-(3, 10, 1, '2015-08-25 20:49:29', '2015-08-25 20:49:29', 0, 1, 1);
+(1, 4, 1, '2015-08-27 20:03:15', '2015-08-27 20:03:15', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -1976,7 +1991,14 @@ CREATE TABLE IF NOT EXISTS `sin_alarmas_visitas` (
   `eliminado` tinyint(1) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+
+--
+-- Volcado de datos para la tabla `sin_alarmas_visitas`
+--
+
+INSERT INTO `sin_alarmas_visitas` (`id_sin_alarma_visita`, `id_alarma`, `id_visita`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
+(1, 7, 6, '2015-08-27 20:12:26', '2015-08-27 20:12:26', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -2103,7 +2125,7 @@ CREATE TABLE IF NOT EXISTS `sin_tipos_documentos` (
   `eliminado` tinyint(4) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `sin_tipos_documentos`
@@ -2114,7 +2136,10 @@ INSERT INTO `sin_tipos_documentos` (`id_sin_tipo_documento`, `id_documento`, `id
 (2, 2, 2, '2015-08-10 22:13:22', '2015-08-10 22:13:22', 0, 0, 0),
 (3, 1, 1, '2015-08-14 18:38:32', '2015-08-14 18:38:32', 0, 1, 1),
 (4, 3, 2, '2015-08-19 22:02:30', '2015-08-19 22:02:30', 0, 1, 1),
-(5, 9, 1, '2015-08-19 22:10:29', '2015-08-19 22:10:29', 0, 1, 1);
+(5, 9, 1, '2015-08-19 22:10:29', '2015-08-19 22:10:29', 0, 1, 1),
+(6, 1, 4, '2015-08-26 20:37:55', '2015-08-26 20:37:55', 0, 1, 1),
+(7, 2, 2, '2015-08-26 20:39:29', '2015-08-26 20:39:29', 0, 1, 1),
+(8, 3, 2, '2015-08-26 22:23:10', '2015-08-26 22:23:10', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -2217,7 +2242,7 @@ CREATE TABLE IF NOT EXISTS `sin_visitas_presupuestos` (
   `eliminado` tinyint(4) NOT NULL,
   `user_add` int(11) NOT NULL,
   `user_upd` int(11) NOT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 --
 -- Volcado de datos para la tabla `sin_visitas_presupuestos`
@@ -2227,7 +2252,8 @@ INSERT INTO `sin_visitas_presupuestos` (`id_sin_visita_presupuesto`, `id_visita`
 (1, 1, 1, '2015-08-20 14:16:08', '2015-08-20 14:16:08', 0, 1, 1),
 (2, 2, 2, '2015-08-20 17:34:06', '2015-08-20 17:34:06', 0, 1, 1),
 (3, 3, 3, '2015-08-20 17:42:25', '2015-08-20 17:42:25', 0, 1, 1),
-(4, 4, 4, '2015-08-20 18:08:51', '2015-08-20 18:08:51', 0, 1, 1);
+(4, 4, 4, '2015-08-20 18:08:51', '2015-08-20 18:08:51', 0, 1, 1),
+(5, 5, 5, '2015-08-26 15:20:07', '2015-08-26 15:20:07', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -2346,6 +2372,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   `id_usuario` int(11) NOT NULL,
   `usuario` varchar(32) NOT NULL,
   `pass` varchar(128) NOT NULL,
+  `imagen` varchar(256) NOT NULL,
   `date_add` datetime NOT NULL,
   `date_upd` datetime NOT NULL,
   `eliminado` int(11) NOT NULL DEFAULT '1',
@@ -2357,8 +2384,8 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
 -- Volcado de datos para la tabla `usuarios`
 --
 
-INSERT INTO `usuarios` (`id_usuario`, `usuario`, `pass`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
-(1, 'Admin', '405e28906322882c5be9b4b27f4c35fd', '2015-07-01 00:00:00', '2015-07-01 00:00:00', 0, 1, 1);
+INSERT INTO `usuarios` (`id_usuario`, `usuario`, `pass`, `imagen`, `date_add`, `date_upd`, `eliminado`, `user_add`, `user_upd`) VALUES
+(1, 'Admin', '405e28906322882c5be9b4b27f4c35fd', 'http://localhost/Durox/libraries/plantilla/img/avatar3.png', '2015-07-01 00:00:00', '2015-07-01 00:00:00', 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -2772,7 +2799,7 @@ ALTER TABLE `visto`
 -- AUTO_INCREMENT de la tabla `alarmas`
 --
 ALTER TABLE `alarmas`
-  MODIFY `id_alarma` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
+  MODIFY `id_alarma` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=10;
 --
 -- AUTO_INCREMENT de la tabla `categorias`
 --
@@ -2802,7 +2829,7 @@ ALTER TABLE `direcciones`
 -- AUTO_INCREMENT de la tabla `documentos`
 --
 ALTER TABLE `documentos`
-  MODIFY `id_documento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=13;
+  MODIFY `id_documento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT de la tabla `empresas`
 --
@@ -2847,17 +2874,17 @@ ALTER TABLE `iva`
 -- AUTO_INCREMENT de la tabla `linea_productos_pedidos`
 --
 ALTER TABLE `linea_productos_pedidos`
-  MODIFY `id_linea_producto_pedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=93;
+  MODIFY `id_linea_producto_pedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=96;
 --
 -- AUTO_INCREMENT de la tabla `linea_productos_presupuestos`
 --
 ALTER TABLE `linea_productos_presupuestos`
-  MODIFY `id_linea_producto_presupuesto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
+  MODIFY `id_linea_producto_presupuesto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT de la tabla `log_linea_pedidos`
 --
 ALTER TABLE `log_linea_pedidos`
-  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=137;
+  MODIFY `id_log` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=138;
 --
 -- AUTO_INCREMENT de la tabla `mails`
 --
@@ -2877,12 +2904,12 @@ ALTER TABLE `paises`
 -- AUTO_INCREMENT de la tabla `pedidos`
 --
 ALTER TABLE `pedidos`
-  MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `presupuestos`
 --
 ALTER TABLE `presupuestos`
-  MODIFY `id_presupuesto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id_presupuesto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `productos`
 --
@@ -2907,32 +2934,32 @@ ALTER TABLE `reglas`
 -- AUTO_INCREMENT de la tabla `sin_alarmas_clientes`
 --
 ALTER TABLE `sin_alarmas_clientes`
-  MODIFY `id_sin_alarma_cliente` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=8;
+  MODIFY `id_sin_alarma_cliente` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT de la tabla `sin_alarmas_pedidos`
 --
 ALTER TABLE `sin_alarmas_pedidos`
-  MODIFY `id_sin_alarma_pedido` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_sin_alarma_pedido` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `sin_alarmas_presupuestos`
 --
 ALTER TABLE `sin_alarmas_presupuestos`
-  MODIFY `id_sin_alarma_presupuesto` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_sin_alarma_presupuesto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `sin_alarmas_productos`
 --
 ALTER TABLE `sin_alarmas_productos`
-  MODIFY `id_sin_alarma_producto` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_sin_alarma_producto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `sin_alarmas_vendedores`
 --
 ALTER TABLE `sin_alarmas_vendedores`
-  MODIFY `id_sin_alarma_vendedor` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=4;
+  MODIFY `id_sin_alarma_vendedor` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `sin_alarmas_visitas`
 --
 ALTER TABLE `sin_alarmas_visitas`
-  MODIFY `id_sin_alarma_visita` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_sin_alarma_visita` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT de la tabla `sin_clientes_direcciones`
 --
@@ -2962,7 +2989,7 @@ ALTER TABLE `sin_reglas_categorias`
 -- AUTO_INCREMENT de la tabla `sin_tipos_documentos`
 --
 ALTER TABLE `sin_tipos_documentos`
-  MODIFY `id_sin_tipo_documento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
+  MODIFY `id_sin_tipo_documento` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT de la tabla `sin_vendedores_clientes`
 --
@@ -2987,7 +3014,7 @@ ALTER TABLE `sin_vendedores_telefonos`
 -- AUTO_INCREMENT de la tabla `sin_visitas_presupuestos`
 --
 ALTER TABLE `sin_visitas_presupuestos`
-  MODIFY `id_sin_visita_presupuesto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=5;
+  MODIFY `id_sin_visita_presupuesto` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT de la tabla `telefonos`
 --

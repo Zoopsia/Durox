@@ -13,6 +13,8 @@ class Productos extends My_Controller {
 		);
 
 		$this->load->library('grocery_CRUD');
+		$this->load->library('pdf');
+
 		$this->load->library('image_CRUD');
 		
 		$this->load->model('empresas_model');
@@ -164,39 +166,41 @@ class Productos extends My_Controller {
 		$registro	= $this->productos_model->getRegistro($id_producto);
 		$destino 	= 'img/productos/documentos/';
 		
-		if(isset($_FILES['ficha_tecnica']['tmp_name']))
-		{
-			$origen 		= $_FILES['ficha_tecnica']['tmp_name'];
-			$url			= $destino.$_FILES['ficha_tecnica']['name'];
-			$ficha_tecnica	= $_FILES['ficha_tecnica']['name'];
-			if(!empty($_FILES['ficha_tecnica']['tmp_name'])){
-				copy($origen, $url);	
-			}
-			else {
-				foreach ($registro as $key) {
-					$ficha_tecnica = $key->ficha_tecnica;
+		if(devolverDir($destino)){
+			if(isset($_FILES['ficha_tecnica']['tmp_name']))
+			{
+				$origen 		= $_FILES['ficha_tecnica']['tmp_name'];
+				$url			= $destino.$_FILES['ficha_tecnica']['name'];
+				$ficha_tecnica	= $_FILES['ficha_tecnica']['name'];
+				if(!empty($_FILES['ficha_tecnica']['tmp_name'])){
+					copy($origen, $url);	
 				}
-			}			
-			
-			$producto	= array(
-					'nombre'			=> $this->input->post('nombre'),
-					'precio'			=> $this->input->post('precio'),		
-					'codigo' 			=> $this->input->post('codigo'),
-					'descripcion'		=> $this->input->post('editor1'),
-					'ficha_tecnica'		=> $ficha_tecnica
-			);
+				else {
+					foreach ($registro as $key) {
+						$ficha_tecnica = $key->ficha_tecnica;
+					}
+				}			
+				
+				$producto	= array(
+						'nombre'			=> $this->input->post('nombre'),
+						'precio'			=> $this->input->post('precio'),		
+						'codigo' 			=> $this->input->post('codigo'),
+						'descripcion'		=> $this->input->post('editor1'),
+						'ficha_tecnica'		=> $ficha_tecnica
+				);
+			}
+			else{
+				$producto	= array(
+						'nombre'			=> $this->input->post('nombre'),
+						'precio'			=> $this->input->post('precio'),		
+						'codigo' 			=> $this->input->post('codigo'),
+						'descripcion'		=> $this->input->post('editor1')
+				);
+			}
+				
+			$id = $this->productos_model->update($producto, $id_producto);	
 		}
-		else{
-			$producto	= array(
-					'nombre'			=> $this->input->post('nombre'),
-					'precio'			=> $this->input->post('precio'),		
-					'codigo' 			=> $this->input->post('codigo'),
-					'descripcion'		=> $this->input->post('editor1')
-			);
-		}
-			
-		$id = $this->productos_model->update($producto, $id_producto);	
-		
+
 		redirect('productos/pestanas/'.$id_producto,'refresh');
 	}
 
@@ -233,5 +237,28 @@ class Productos extends My_Controller {
 		else {
 			echo 0;
 		}
+	}
+
+	public function armarListaPrecios(){
+			
+		$destino 	= 'documentos/';
+		
+		if(devolverDir($destino)){
+			
+	    	//require('libraries/fpdf/fpdf.php');
+			$this->pdf = new PDF();
+			$this->pdf->AddPage();
+			$this->pdf->AliasNbPages();
+			
+			$productos = $this->productos_model->getListaPrecios();
+			
+			// Carga de Titulos
+			$header = array('Producto', 'Precio');
+			// Carga de datos
+
+			$this->pdf->ListaPreciosTable($header,$productos);
+			ob_end_clean();
+			$this->pdf->Output();
+        }
 	}
 }

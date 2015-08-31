@@ -1070,7 +1070,7 @@ $bandera = 0;
 								<form id="formAlarma">
 								<div class="col-md-6">
 									<div class="box box-info">
-		                                <div class="box-header ui-sortable-handle" style="cursor: move;">
+		                                <div class="box-header">
 		                                    <i class="fa fa-envelope"></i>
 		                                    <h3 class="box-title"><?php echo $this->lang->line('nueva')?></h3>
 		                                </div>

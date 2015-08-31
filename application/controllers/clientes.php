@@ -177,50 +177,51 @@ class Clientes extends My_Controller {
 		
 		$destino 	= 'img/clientes/';
 		
-		if(isset($_FILES['imagen']['tmp_name']))
-		{
-			
-			$origen 	= $_FILES['imagen']['tmp_name'];
-			$url		= $destino.$_FILES['imagen']['name'];
-			$imagen		= base_url().$url;
-			if(!empty($_FILES['imagen']['tmp_name'])){
-				copy($origen, $url);	
-			}
-			else {
-				foreach ($registro as $key) {
-					$imagen = $key->imagen;
+		if(devolverDir($destino)){
+			if(isset($_FILES['imagen']['tmp_name']))
+			{
+				
+				$origen 	= $_FILES['imagen']['tmp_name'];
+				$url		= $destino.$_FILES['imagen']['name'];
+				$imagen		= base_url().$url;
+				if(!empty($_FILES['imagen']['tmp_name'])){
+					copy($origen, $url);	
 				}
+				else {
+					foreach ($registro as $key) {
+						$imagen = $key->imagen;
+					}
+				}
+				
+				$cliente	= array(
+						'nombre'			=> $this->input->post('nombre'),
+						'apellido'			=> $this->input->post('apellido'),
+						'razon_social'		=> $this->input->post('razon_social'),
+						'cuit'				=> $this->input->post('cuit'),		
+						'nombre_fantasia'	=> $this->input->post('alias'),
+						'web'				=> $this->input->post('web'),
+						'id_grupo_cliente'	=> $this->input->post('id_grupo_cliente'),
+						'id_iva'			=> $this->input->post('id_iva'),
+						'imagen'			=> $imagen
+				);
+				
 			}
-			
-			$cliente	= array(
-					'nombre'			=> $this->input->post('nombre'),
-					'apellido'			=> $this->input->post('apellido'),
-					'razon_social'		=> $this->input->post('razon_social'),
-					'cuit'				=> $this->input->post('cuit'),		
-					'nombre_fantasia'	=> $this->input->post('alias'),
-					'web'				=> $this->input->post('web'),
-					'id_grupo_cliente'	=> $this->input->post('id_grupo_cliente'),
-					'id_iva'			=> $this->input->post('id_iva'),
-					'imagen'			=> $imagen
-			);
-			
+			else{
+				
+				$cliente	= array(
+						'nombre'			=> $this->input->post('nombre'),
+						'apellido'			=> $this->input->post('apellido'),
+						'razon_social'		=> $this->input->post('razon_social'),
+						'cuit'				=> $this->input->post('cuit'),		
+						'nombre_fantasia'	=> $this->input->post('alias'),
+						'web'				=> $this->input->post('web'),
+						'id_grupo_cliente'	=> $this->input->post('id_grupo_cliente'),
+						'id_iva'			=> $this->input->post('id_iva')
+				);
+			}
+				
+			$id = $this->clientes_model->update($cliente, $id_cliente);	
 		}
-		else{
-			
-			$cliente	= array(
-					'nombre'			=> $this->input->post('nombre'),
-					'apellido'			=> $this->input->post('apellido'),
-					'razon_social'		=> $this->input->post('razon_social'),
-					'cuit'				=> $this->input->post('cuit'),		
-					'nombre_fantasia'	=> $this->input->post('alias'),
-					'web'				=> $this->input->post('web'),
-					'id_grupo_cliente'	=> $this->input->post('id_grupo_cliente'),
-					'id_iva'			=> $this->input->post('id_iva')
-			);
-		}
-			
-		$id = $this->clientes_model->update($cliente, $id_cliente);	
-		
 		redirect('clientes/pestanas/'.$id_cliente,'refresh');
 	}
 	

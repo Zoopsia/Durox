@@ -140,39 +140,40 @@ class Vendedores extends My_Controller {
 		
 		$destino 	= 'img/vendedores/';
 		
-		if(isset($_FILES['imagen']['tmp_name']))
-		{
-			
-			$origen 	= $_FILES['imagen']['tmp_name'];
-			$url		= $destino.$_FILES['imagen']['name'];
-			$imagen		= base_url().$url;
-			if(!empty($_FILES['imagen']['tmp_name'])){
-				copy($origen, $url);	
+		if(devolverDir($destino)){
+			if(isset($_FILES['imagen']['tmp_name']))
+			{
+				
+				$origen 	= $_FILES['imagen']['tmp_name'];
+				$url		= $destino.$_FILES['imagen']['name'];
+				$imagen		= base_url().$url;
+				if(!empty($_FILES['imagen']['tmp_name'])){
+					copy($origen, $url);	
+				}
+				else {
+					foreach ($registro as $key) {
+						$imagen = $key->imagen;
+					}
+				}
+				
+				$vendedor	= array(
+						'nombre'			=> $this->input->post('nombre'),
+						'apellido'			=> $this->input->post('apellido'),		
+						'pass' 				=> $this->input->post('contraseña'),
+						'imagen'			=> $imagen
+				);
+				
 			}
 			else {
-				foreach ($registro as $key) {
-					$imagen = $key->imagen;
-				}
+				$vendedor	= array(
+						'nombre'			=> $this->input->post('nombre'),
+						'apellido'			=> $this->input->post('apellido'),		
+						'pass' 				=> $this->input->post('contraseña')
+				);
 			}
-			
-			$vendedor	= array(
-					'nombre'			=> $this->input->post('nombre'),
-					'apellido'			=> $this->input->post('apellido'),		
-					'pass' 				=> $this->input->post('contraseña'),
-					'imagen'			=> $imagen
-			);
-			
+				
+			$id = $this->vendedores_model->update($vendedor, $id_vendedor);	
 		}
-		else {
-			$vendedor	= array(
-					'nombre'			=> $this->input->post('nombre'),
-					'apellido'			=> $this->input->post('apellido'),		
-					'pass' 				=> $this->input->post('contraseña')
-			);
-		}
-			
-		$id = $this->vendedores_model->update($vendedor, $id_vendedor);	
-		
 		redirect('vendedores/pestanas/'.$id_vendedor,'refresh');
 		
 	}

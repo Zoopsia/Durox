@@ -34,7 +34,19 @@ foreach($css_files as $file): ?>
 		  			</div><!--panel body-->
 				</div><!--panel-->
 			</div><!--contenedor-->
-		</div>    
+		</div>  
+		
+		<div class="row">
+			<div class="col-md-12 col-lg-12">
+				<div class="panel panel-default">
+					<div class="panel-body">
+						<form action="<?php echo base_url()."index.php/Productos/armarListaPrecios";?>" method="POST">
+							<button type="submit" class="pull-right btn btn-default btn-sm">Generar Lista Precio</button>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>  
 		<!--
 	</div>
 </nav>
