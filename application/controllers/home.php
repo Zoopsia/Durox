@@ -22,10 +22,11 @@ class Home extends My_Controller {
 
 	public function index()
 	{
-		$db['clientes_cantidad'] = $this->clientes_model->getCantidad();
-		$db['productos_cantidad'] = $this->productos_model->getCantidad();
-		$db['pedidos_cantidad'] = $this->pedidos_model->getCantidad();
-		$db['visitas_cantidad'] = $this->visitas_model->getCantidad();
+		$db['clientes_cantidad'] 	= $this->clientes_model->getCantidad();
+		$db['productos_cantidad'] 	= $this->productos_model->getCantidad();
+		$db['pedidos_cantidad'] 	= $this->pedidos_model->getCantidad();
+		$db['visitas_cantidad'] 	= $this->visitas_model->getCantidad();
+		$db['vendedores'] 			= $this->vendedores_model->getTodo();
 		
 		$this->cargar_vista($db, 'inicio');
 	}

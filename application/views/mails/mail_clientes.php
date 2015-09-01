@@ -92,10 +92,21 @@ function insertInputTag(){
 									<?php }else{ ?>
 									<fieldset>
     									<legend>Opciones:</legend>
-										<div class="col-md-6 col-lg-6">
-											<label class="col-md-10 control-label">Enviar Mail Automáticamente: </label>
-											<div class="col-md-2">
-												<input type="checkbox" name="enviar_auto" value="0">
+    									<div class="row">
+    										<div class="col-md-6 col-lg-6">
+												<blockquote>
+													<em>
+														<p style="font-size: 14.5px">
+															"Si selecciona esta opción un correo se enviará de forma automática cada vez que se apruebe un pedido.-"
+														</p>
+													</em>
+												</blockquote>
+											</div>
+											<div class="col-md-6 col-lg-6">
+												<label class="col-md-10 control-label">Enviar Mail Automáticamente: </label>
+												<div class="col-md-2">
+													<input type="checkbox" name="enviar_auto" value="0">
+												</div>
 											</div>
 										</div>
 									</fieldset>

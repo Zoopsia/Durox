@@ -43,14 +43,7 @@
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
         <script src="<?php echo base_url()?>libraries/plantilla/js/AdminLTE/dashboard.js" type="text/javascript"></script>        
 
-
-
-
-
-
-
-
-	    <div class="row">
+		<div class="row">
 			<div class="col-md-12">
 				
 		  			<section class="content">
@@ -226,7 +219,8 @@
                              <!-- Chat box -->
                             <div class="box box-success">
                                 <div class="box-header">
-                                    <h3 class="box-title"><i class="fa fa-envelope"></i> Alarmas</h3>
+                                	<i class="fa fa-envelope"></i>
+                                    <h3 class="box-title"><?php echo $this->lang->line('mensajes'); ?></h3>
                                 </div>
                                 <div class="box-body chat" id="chat-box">
                                     <!-- chat item -->
@@ -279,27 +273,36 @@
                             <div class="box box-info">
                                 <div class="box-header">
                                     <i class="fa fa-envelope"></i>
-                                    <h3 class="box-title"><?php echo $this->lang->line('alarmas'); ?></h3>
+                                    <h3 class="box-title"><?php echo $this->lang->line('mensaje').' '.$this->lang->line('nuevo'); ?></h3>
                                     <!-- tools box -->
                                     <div class="pull-right box-tools">
                                         <button class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="Remove"><i class="fa fa-times"></i></button>
                                     </div><!-- /. tools -->
                                 </div>
                                 <div class="box-body">
-                                    <form action="#" method="post">
+                                    <form id="mensajeria" action="<?php echo base_url()."index.php/Mensajes/nuevoMensaje" ?>" method="post">
                                         <div class="form-group">
-                                            <input type="email" class="form-control" name="para" placeholder="Email to:"/>
+                                        	<select name="para[]" class="form-control chosen-select" multiple  data-placeholder="Enviar a: " required>
+                                        		<?php
+                                        		if($vendedores){
+                                        			foreach($vendedores as $vendedor){
+                                        				echo '<option value="'.$vendedor->id_vendedor.'">'.$vendedor->apellido.', '.$vendedor->nombre.'</option>';
+                                        			}
+                                        		}
+												?>
+                                        		<option value="0">Todos</option>
+                                        	</select>
                                         </div>
                                         <div class="form-group">
-                                            <input type="text" class="form-control" name="de" placeholder="Subject"/>
+                                            <input type="text" class="form-control" name="asunto" placeholder="Asunto "/ required>
                                         </div>
                                         <div>
-                                            <textarea class="textarea" placeholder="Mensaje" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
+                                            <textarea class="textarea" name="mensaje" placeholder="Mensaje" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required></textarea>
                                         </div>
                                     </form>
                                 </div>
                                 <div class="box-footer clearfix">
-                                    <button class="pull-right btn btn-default" id="sendEmail">Crear <i class="fa fa-arrow-circle-right"></i></button>
+                                    <button type="submit" form="mensajeria" class="pull-right btn btn-default" id="sendEmail">Crear <i class="fa fa-arrow-circle-right"></i></button>
                                 </div>
                             </div>
                             

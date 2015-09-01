@@ -106,5 +106,3 @@ $('#btn-cancelar').click(function() {
 	$(this).addClass("slideDown");
 });	
 
-
-

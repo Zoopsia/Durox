@@ -14,8 +14,9 @@ function redirectAlarm($alarma){
 
 
 <?php 	
-	$mensajes = 0;
-	$cont_alarmas = 0;
+	$mensajes 		= 0;
+	$cont_alarmas 	= 0;
+	$cont_mensajes 	= 0;
 	
 	if($visitas_mensajes)
 		$mensajes += count($visitas_mensajes);
@@ -63,10 +64,10 @@ function redirectAlarm($alarma){
                 </a>
                 <div class="navbar-right">
                     <ul class="nav navbar-nav">
-                        <!-- Messages: style can be found in dropdown.less-->
+                        <!-- ALARMAS -->
                         <li class="dropdown messages-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                <i class="fa fa-envelope"></i>
+                                <i class="fa fa-warning"></i>
                                 <?php if($cont_alarmas > 0){ ?>
                                 <span class="label label-success"><?php echo $cont_alarmas?></span>
                             	<?php } ?>
@@ -74,8 +75,7 @@ function redirectAlarm($alarma){
                             <?php if($cont_alarmas > 0){ ?>
                             <ul class="dropdown-menu">
                             	<li class="header"><?php echo $cont_alarmas.' ';?>Nuevas alarmas</li>
-								
-                                <li>
+								<li>
                                     <!-- inner menu: contains the actual data -->
                                     <ul class="menu">
                                     	<?php if($alarmas_mensajes) { foreach($alarmas_mensajes as $alarmas) { if($alarmas->id_origen == 2) { ?>	<!-- Admin ---->
@@ -126,7 +126,16 @@ function redirectAlarm($alarma){
                             
                             <?php } ?>
                         </li>
-                        <!-- Notifications: style can be found in dropdown.less -->
+                        <!-- MENSAJES --->
+                        <li class="dropdown messages-menu">
+                            <a href="<?php echo base_url()."index.php/Mensajes/verMensajes"?>">
+                                <i class="fa fa-envelope"></i>
+                                <?php if($cont_mensajes > 0){ ?>
+                                <span class="label label-success"><?php echo $cont_mensajes?></span>
+                            	<?php } ?>
+                            </a>
+                        </li>
+                        <!-- NUEVOS-->
                         <li class="dropdown notifications-menu">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-plus-square"></i>
