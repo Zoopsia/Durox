@@ -184,10 +184,19 @@ class Documentos extends My_Controller {
 					$mensaje .=    	'<i class="fa fa-file-word-o fa-5x"></i>';
 				else if($cadena == '.xlsx' || $cadena == '.xls')
 					$mensaje .=    	'<i class="fa fa-file-excel-o fa-5x"></i>';
-				$mensaje .=    '</a>
-						        <br>
-						       	<p class="text-center">'.cortarCadena($row->documento).'</p>
-						    </div>';
+				/*----- MOSTRAR NOMBRE DEL DOCUMENTO O SINO EL NOMBRE DEL ARCHIVO---*/
+				if($row->nombre != ''){
+				   	$mensaje .= '</a>
+					              	<br>
+					              	<p class="text-center">'.$row->nombre.'</p>
+						        </div>';
+				}
+				else{
+					$mensaje .=    '</a>
+							        <br>
+							       	<p class="text-center">'.cortarCadena($row->documento).'</p>
+						    	</div>';
+				}
 				$i ++;
 				if($i%6 == 0){
 					$mensaje .= "<br><br><br><br><br><br><br>";

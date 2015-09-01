@@ -89,7 +89,13 @@ class Alarmas extends My_Controller {
 	}
 	
 	public function buscarAlarma(){
-		$alarma =  $this->input->post('alarma');
+		$alarma 	= $this->input->post('alarma');
+		
+		$arreglo 	= array(
+			'visto_back'	=> 1
+		);
+		
+		$this->alarmas_model->update($arreglo, $alarma);
 		
 		if($alarma){
 			if($this->alarmas_model->buscarAlarma($alarma, "clientes")){
