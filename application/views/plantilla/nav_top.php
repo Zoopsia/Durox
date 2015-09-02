@@ -37,6 +37,13 @@ function redirectAlarm($alarma){
 		}
 	}
 	
+	if($mensajeria){
+		foreach($mensajeria as $mensajeria){
+			if($mensajeria->visto == 0)
+				$cont_mensajes++;
+		}
+	}
+	
 ?>
     <body class="skin-blue">
         <!-- header logo: style can be found in header.less -->

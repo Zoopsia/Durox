@@ -1,11 +1,3 @@
-<script>
-function colorSelect(){
-	var color = $('#color').val();
-	$('#color').removeClass();
-	$('#color').addClass('form-control alert-'+color);
-}
-
-</script>
 <div class="row">
 	<div class="col-md-12">
 		<div class="panel panel-default">
@@ -92,3 +84,5 @@ function colorSelect(){
 		</div><!--panel-->
 	</div><!--contenedor-->
 </div>  
+
+<script src=<?php echo base_url().'libraries/main/views/alarmas/js/tabla.js'?>></script>

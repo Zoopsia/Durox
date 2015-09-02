@@ -19,7 +19,7 @@ class Mensajes extends My_Controller {
 	
 	public function verMensajes(){
 		
-		$db['alarmas']	= $this->alarmas_model->getTodo();
+		$db['recibidos']	= $this->mensajes_model->mensajesNuevos();
 		
 		$this->cargar_vista($db, 'tabla');
 	}
@@ -59,5 +59,47 @@ class Mensajes extends My_Controller {
 		}
 		
 		redirect('Home','refresh');
+	}
+
+	public function verDetalle(){
+		$mail = $this->mensajes_model->mensajesNuevos($this->input->post('id'));
+		
+		if($mail){
+			foreach($mail as $row){
+				$mensaje = '<div class="col-md-12 col-sm-10">
+							<h3>
+								'.$row->asunto.'
+							</h3>
+					</div>';
+			}
+		}
+		
+		if($mail){
+			foreach($mail as $mail){
+		$mensaje .= '<div class="col-md-12 col-sm-10">
+						<hr style="margin-top: 0px">
+						<div >
+											
+								<a href="#" class="name pull-right">
+									'.$mail->nombre.' '.$mail->apellido.'
+								</a>
+								<br>
+								<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
+								<img src="'.$mail->imagen.'" alt="user image" class="img-perfil-sm img-responsive ">
+								
+						</div>
+					</div>
+					<div class="col-md-12 col-sm-10">
+						<hr style="margin-top: 0px">
+						<div>      
+							<p class="message">
+								'.$mail->mensaje.'
+							</p>
+						</div>
+					</div>';
+			}
+		}
+		
+		echo $mensaje;
 	}
 }

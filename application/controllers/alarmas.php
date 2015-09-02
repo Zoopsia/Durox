@@ -41,7 +41,7 @@ class Alarmas extends My_Controller {
 			'visto_front'		=> 0,
 			'eliminado'			=> 0,
 			'id_origen'			=> 2,
-			'id_creador'		=> $session_data['id_usuario']
+			'id_creador'		=> $session_data['id_usuario'],
 		);
 		
 		$id_alarma 			= $this->alarmas_model->insert($alarma);

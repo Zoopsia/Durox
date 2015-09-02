@@ -1,17 +1,5 @@
-<?php
-foreach($css_files as $file): 
-?>
-	<link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
-<?php endforeach; ?>
-<?php foreach($js_files as $file): ?>
-	<script src="<?php echo $file; ?>"></script>
-<?php endforeach; ?>
-
 <?php $array_n = pestañaActiva($this->uri->segment(3));?>
-<!--
-<nav class="navbar" role="navigation">
-	<div class="container">
-	-->
+
 	    <div class="row">
 			<div class="col-md-12">
 				<div class="panel panel-default">
@@ -38,7 +26,12 @@ foreach($css_files as $file):
 				</div><!--panel-->
 			</div><!--contenedor-->
 		</div>  
-		<!--  
-	</div>
-</nav>
--->
+
+<?php
+foreach($css_files as $file): 
+?>
+	<link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
+<?php endforeach; ?>
+<?php foreach($js_files as $file): ?>
+	<script src="<?php echo $file; ?>"></script>
+<?php endforeach; ?>

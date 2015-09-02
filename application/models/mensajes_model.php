@@ -49,18 +49,60 @@ class Mensajes_model extends My_Model {
 		$this->db->insert('sin_mensajes_vendedores', $arreglo);
 	}
 	
-	function mensajesNuevos(){
-		/*
+	function mensajesNuevos($id = null){
+		
 		$session_data = $this->session->userdata('logged_in');
 		
-		$sql = "SELECT 
-					* 
-				FROM 
-					$this->_tablename 
-				WHERE 
-					1";
-					
-
+		if($id){
+			$sql = "SELECT
+						mensajes.*,
+						sin_mensajes_vendedores.*,
+						vendedores.nombre,
+						vendedores.apellido,
+						vendedores.imagen
+					FROM 
+						$this->_tablename
+					INNER JOIN
+						sin_mensajes_vendedores
+					USING
+						($this->_id_table)
+					INNER JOIN
+						vendedores
+					ON
+						sin_mensajes_vendedores.id_emisor = vendedores.id_vendedor
+					WHERE 
+						mensajes.id_origen = 1
+					AND
+						id_receptor = ".$session_data['id_usuario']."
+					AND
+						sin_mensajes_vendedores.eliminado = 0
+					AND
+						id_sin_mensaje_vendedor = $id";
+		}
+		else {
+			$sql = "SELECT
+						mensajes.*,
+						sin_mensajes_vendedores.*,
+						vendedores.nombre,
+						vendedores.apellido
+					FROM 
+						$this->_tablename
+					INNER JOIN
+						sin_mensajes_vendedores
+					USING
+						($this->_id_table)
+					INNER JOIN
+						vendedores
+					ON
+						sin_mensajes_vendedores.id_emisor = vendedores.id_vendedor
+					WHERE 
+						mensajes.id_origen = 1
+					AND
+						id_receptor = ".$session_data['id_usuario']."
+					AND
+						sin_mensajes_vendedores.eliminado = 0";
+		}
+		
 		$query = $this->db->query($sql);
 		
 		if($query->num_rows() > 0)
@@ -75,7 +117,7 @@ class Mensajes_model extends My_Model {
 		{
 			return FALSE;
 		}
-		*/
+		
 	}
 } 
 ?>

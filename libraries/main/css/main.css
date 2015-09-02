@@ -406,8 +406,8 @@ input#cantidad{
 
 .img-perfil-sm
 {
-	width: 100px; 
-	height: 100px !important;
+	width: 80px; 
+	height: 80px !important;
 }
 
 .img_div
@@ -510,4 +510,15 @@ textarea.no-textarea{
     width: 100%;
     overflow: hidden;
     resize: none;
+}
+
+div.mensajeria{
+	box-shadow: 0px 1px 1px 0px;
+	border-radius: 5px 5px
+}
+
+.img-cuadrada{
+	width: 50px;
+	/*height: 10%; */
+	display: block;
 }

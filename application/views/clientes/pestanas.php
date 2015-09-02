@@ -1,207 +1,3 @@
-<script>
-<?php
-if($clientes){
-	foreach($clientes as $row){
-		echo "var cuit =".$row->cuit.";";
-	}
-}
-?>
-
-$( document ).ready(function() {
-    getAlarmas(<?php echo $id?>);
-    if(location.hash == "#tab7")
-    	$('.nav-tabs a:last').tab('show');
-});
-
-function editable(){	
-	$(".cambio").removeAttr("disabled");
-	$(".cambio").removeClass("editable");
-	$('#btn-guardar').show();
-	$('#btn-cancelar').show();
-	$('#btn-editar').hide();
-	$('#btn-eliminar').hide();
-	$('#btn-print').hide();
-	$("input#web").removeClass("web");
-	$("input#web").removeAttr("onclick");
-	$("input#web").removeAttr("readonly");
-	$('#cuit').val(cuit);
-	$('#span').show();
-	$('#grupo').show();
-	$('#input-grupo').hide();
-	$('#iva').show();
-	$('#input-iva').hide();
-}
-
-function cancelar(){
-	var r = confirm("¿Esta seguro que quiere cancelar los cambios?");
-    if (r == true) {
-		$(".cambio").attr("disabled", true);
-		$(".cambio").addClass("editable");
-		$('#btn-guardar').hide();
-		$('#btn-cancelar').hide();
-		$('#btn-eliminar').show();
-		$('#btn-editar').show();
-		$('#btn-print').show();
-		$("input#web").addClass("web");
-		$('#grupo').hide();
-		$('#input-grupo').show();
-		$('#iva').hide();
-		$('#input-iva').show();
-		<?php
-			if($clientes){
-				foreach($clientes as $row){
-					if($row->web){
-						echo "$('input#web').attr('onClick',\"window.open('https://".$row->web."/')\");";
-						echo '$("input#web").attr("readonly", true);';
-						echo '$("input#web").attr("disabled", false);';
-						echo "$('#web').val('".$row->web."');";
-					}
-					
-					echo "$('#nombre').val('".$row->nombre."');";
-					echo "$('#apellido').val('".$row->apellido."');";
-					echo "$('#razon_social').val('".$row->razon_social."');";
-					echo "$('#alias').val('".$row->nombre_fantasia."');";
-					echo "$('#cuit').val('".cuit($row->cuit)."');";
-															
-				}	
-			}
-		?>
-	}
-}
-
-function eliminar($id){
-	var r = confirm("¿Esta seguro que quiere eliminar el registro?");
-    if (r == true) {
-		window.location.assign("/Durox/index.php/Clientes/delete_user/"+$id);
-	}
-}
-
-function eliminarDireccion($id_direccion, $id_cliente, $tipo){
-	var direccion	= $id_direccion;
-	var usuario 	= $id_cliente;
-	var tipo		= $tipo;
-    var r = confirm("¿Esta seguro que quiere eliminar este registro?");
-    if (r == true) {
-        $.ajax({
-		 	type: 'POST',
-		 	url: '<?php echo base_url(); ?>index.php/direcciones/eliminarDireccion', 
-		 	data: { 'direccion' 	: direccion,
-	 				'usuario'		: usuario,
-	 				'tipo'			: tipo, 
-		 	}, 
-		 	success: function(resp) { 
-		 		$('.tablaDirecciones').attr('disabled',false).html(resp);
-		 		
-		 	}
-		});
-    }
-}		
-
-function eliminarTelefono($id_telefono, $id_cliente, $tipo){
-	var telefono	= $id_telefono;
-	var usuario 	= $id_cliente;
-	var tipo		= $tipo;
-    var r = confirm("¿Esta seguro que quiere eliminar este registro?");
-    if (r == true) {
-        $.ajax({
-		 	type: 'POST',
-		 	url: '<?php echo base_url(); ?>index.php/telefonos/eliminarTelefono', 
-		 	data: { 'telefono' 		: telefono,
-	 				'usuario'		: usuario,
-	 				'tipo'			: tipo, 
-		 	}, 
-		 	success: function(resp) { 
-		 		$('.tablaTelefonos').attr('disabled',false).html(resp);
-		 		
-		 	}
-		});
-    }
-}
-
-function eliminarCorreo($id_mail, $id_cliente, $tipo){
-	var correo		= $id_mail;
-	var usuario 	= $id_cliente;
-	var tipo		= $tipo;
-    var r = confirm("¿Esta seguro que quiere eliminar este registro?");
-    if (r == true) {
-        $.ajax({
-		 	type: 'POST',
-		 	url: '<?php echo base_url(); ?>index.php/mails/eliminarCorreo', 
-		 	data: { 'correo' 		: correo,
-	 				'usuario'		: usuario,
-	 				'tipo'			: tipo, 
-		 	}, 
-		 	success: function(resp) { 
-		 		$('.tablaCorreos').attr('disabled',false).html(resp);
-		 		
-		 	}
-		});
-    }
-}	
-
-function imprimir(){
-	if(!$("input#web").val()){
-		$("#no-web").addClass("no-print");
-	}
-	
-	if(!$("input#alias").val()){
-		$("#no-alias").addClass("no-print");
-	}
-}
-
-function saveAlarm($id){
-	<?php
-	$cantidad_paginas = 0;
-	if($alarmas){
-		$cantidad_paginas = ceil(count($alarmas)/5);
-	}
-	echo 'var cant_pag = '.$cantidad_paginas.';';
-	?>
-	if($('#mensaje').val()){
-		$.ajax({
-			type: 'POST',
-			url: '<?php echo base_url(); ?>index.php/Alarmas/insertAlarma', 
-			data: { 'tipo' 		: $('#tipo').val(),
-			 		'mensaje'	: $('#mensaje').val(),
-			 		'id'		: $id, 
-			 		'cruce'		: 'clientes'
-			}, 
-			success: function(resp) { 
-				$('#box-alarmas'+cant_pag).append(resp);
-				$('#formAlarma').trigger("reset");
-				getAlarmas($id);
-				$('#mensaje').removeClass();
-			}
-		});
-	}
-}
-
-function getAlarmas($id){
-	$.ajax({
-		type: 'POST',
-		url: '<?php echo base_url(); ?>index.php/Clientes/getAlarmas', 
-		data: { 'id'		: $id,
-				}, 
-		success: function(resp) {
-			$('#llenarAlarmas').html(resp);
-		}
-	});
-}
-
-function cambiarSelect(){
-	$.ajax({
-		type: 'POST',
-		url: '<?php echo base_url(); ?>index.php/Alarmas/tipoAlarma', 
-		data: { 'tipo' 		: $('#tipo').val(),
-				}, 
-		success: function(resp) { 
-			$('#mensaje').removeClass();
-			//$('#tipo').addClass('form-control alert-'+resp);
-			$('#mensaje').addClass('alert-'+resp);
-		}
-	});
-}			
-</script>
 <?php
 $bandera = 0;
 ?>
@@ -1187,3 +983,208 @@ $bandera = 0;
   </div>
 </div>
 <?php } } ?>
+
+<script>
+<?php
+if($clientes){
+	foreach($clientes as $row){
+		echo "var cuit =".$row->cuit.";";
+	}
+}
+?>
+
+$( document ).ready(function() {
+    getAlarmas(<?php echo $id?>);
+    if(location.hash == "#tab7")
+    	$('.nav-tabs a:last').tab('show');
+});		
+
+function editable(){	
+	$(".cambio").removeAttr("disabled");
+	$(".cambio").removeClass("editable");
+	$('#btn-guardar').show();
+	$('#btn-cancelar').show();
+	$('#btn-editar').hide();
+	$('#btn-eliminar').hide();
+	$('#btn-print').hide();
+	$("input#web").removeClass("web");
+	$("input#web").removeAttr("onclick");
+	$("input#web").removeAttr("readonly");
+	$('#cuit').val(cuit);
+	$('#span').show();
+	$('#grupo').show();
+	$('#input-grupo').hide();
+	$('#iva').show();
+	$('#input-iva').hide();
+}
+
+function cancelar(){
+	var r = confirm("¿Esta seguro que quiere cancelar los cambios?");
+    if (r == true) {
+		$(".cambio").attr("disabled", true);
+		$(".cambio").addClass("editable");
+		$('#btn-guardar').hide();
+		$('#btn-cancelar').hide();
+		$('#btn-eliminar').show();
+		$('#btn-editar').show();
+		$('#btn-print').show();
+		$("input#web").addClass("web");
+		$('#grupo').hide();
+		$('#input-grupo').show();
+		$('#iva').hide();
+		$('#input-iva').show();
+		<?php
+			if($clientes){
+				foreach($clientes as $row){
+					if($row->web){
+						echo "$('input#web').attr('onClick',\"window.open('https://".$row->web."/')\");";
+						echo '$("input#web").attr("readonly", true);';
+						echo '$("input#web").attr("disabled", false);';
+						echo "$('#web').val('".$row->web."');";
+					}
+					
+					echo "$('#nombre').val('".$row->nombre."');";
+					echo "$('#apellido').val('".$row->apellido."');";
+					echo "$('#razon_social').val('".$row->razon_social."');";
+					echo "$('#alias').val('".$row->nombre_fantasia."');";
+					echo "$('#cuit').val('".cuit($row->cuit)."');";
+															
+				}	
+			}
+		?>
+	}
+}
+
+function eliminar($id){
+	var r = confirm("¿Esta seguro que quiere eliminar el registro?");
+    if (r == true) {
+		window.location.assign("/Durox/index.php/Clientes/delete_user/"+$id);
+	}
+}
+
+function eliminarDireccion($id_direccion, $id_cliente, $tipo){
+	var direccion	= $id_direccion;
+	var usuario 	= $id_cliente;
+	var tipo		= $tipo;
+    var r = confirm("¿Esta seguro que quiere eliminar este registro?");
+    if (r == true) {
+        $.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/direcciones/eliminarDireccion', 
+		 	data: { 'direccion' 	: direccion,
+	 				'usuario'		: usuario,
+	 				'tipo'			: tipo, 
+		 	}, 
+		 	success: function(resp) { 
+		 		$('.tablaDirecciones').attr('disabled',false).html(resp);
+		 		
+		 	}
+		});
+    }
+}		
+
+function eliminarTelefono($id_telefono, $id_cliente, $tipo){
+	var telefono	= $id_telefono;
+	var usuario 	= $id_cliente;
+	var tipo		= $tipo;
+    var r = confirm("¿Esta seguro que quiere eliminar este registro?");
+    if (r == true) {
+        $.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/telefonos/eliminarTelefono', 
+		 	data: { 'telefono' 		: telefono,
+	 				'usuario'		: usuario,
+	 				'tipo'			: tipo, 
+		 	}, 
+		 	success: function(resp) { 
+		 		$('.tablaTelefonos').attr('disabled',false).html(resp);
+		 		
+		 	}
+		});
+    }
+}
+
+function eliminarCorreo($id_mail, $id_cliente, $tipo){
+	var correo		= $id_mail;
+	var usuario 	= $id_cliente;
+	var tipo		= $tipo;
+    var r = confirm("¿Esta seguro que quiere eliminar este registro?");
+    if (r == true) {
+        $.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/mails/eliminarCorreo', 
+		 	data: { 'correo' 		: correo,
+	 				'usuario'		: usuario,
+	 				'tipo'			: tipo, 
+		 	}, 
+		 	success: function(resp) { 
+		 		$('.tablaCorreos').attr('disabled',false).html(resp);
+		 		
+		 	}
+		});
+    }
+}	
+
+function imprimir(){
+	if(!$("input#web").val()){
+		$("#no-web").addClass("no-print");
+	}
+	
+	if(!$("input#alias").val()){
+		$("#no-alias").addClass("no-print");
+	}
+}
+
+function saveAlarm($id){
+	<?php
+	$cantidad_paginas = 0;
+	if($alarmas){
+		$cantidad_paginas = ceil(count($alarmas)/5);
+	}
+	echo 'var cant_pag = '.$cantidad_paginas.';';
+	?>
+	if($('#mensaje').val()){
+		$.ajax({
+			type: 'POST',
+			url: '<?php echo base_url(); ?>index.php/Alarmas/insertAlarma', 
+			data: { 'tipo' 		: $('#tipo').val(),
+			 		'mensaje'	: $('#mensaje').val(),
+			 		'id'		: $id, 
+			 		'cruce'		: 'clientes'
+			}, 
+			success: function(resp) { 
+				$('#box-alarmas'+cant_pag).append(resp);
+				$('#formAlarma').trigger("reset");
+				getAlarmas($id);
+				$('#mensaje').removeClass();
+			}
+		});
+	}
+}
+
+function getAlarmas($id){
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo base_url(); ?>index.php/Clientes/getAlarmas', 
+		data: { 'id'		: $id,
+				}, 
+		success: function(resp) {
+			$('#llenarAlarmas').html(resp);
+		}
+	});
+}
+
+function cambiarSelect(){
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo base_url(); ?>index.php/Alarmas/tipoAlarma', 
+		data: { 'tipo' 		: $('#tipo').val(),
+				}, 
+		success: function(resp) { 
+			$('#mensaje').removeClass();
+			//$('#tipo').addClass('form-control alert-'+resp);
+			$('#mensaje').addClass('alert-'+resp);
+		}
+	});
+}	
+</script>
