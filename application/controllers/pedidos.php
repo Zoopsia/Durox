@@ -95,7 +95,7 @@ class Pedidos extends My_Controller {
 			
 			
 							
-			$crud->order_by('date_add','asc');
+			$crud->order_by('id_pedido','asc');
 							
 			$crud->set_relation('id_cliente','clientes','{razon_social}');
 			$crud->set_relation('id_vendedor','vendedores','{apellido} {nombre}');
@@ -403,7 +403,7 @@ class Pedidos extends My_Controller {
 		$this->armarTabla($pedido);
 	}  
 
-	function guardarPedido($id_pedido){
+	function guardarPedido($id_pedido,$nuevo=null){
 		$pedidos				= $this->pedidos_model->getDetallePedido($id_pedido);
 		$total = 0;
 		
@@ -417,17 +417,29 @@ class Pedidos extends My_Controller {
 				$iteracion = $row->iteracion;
 			}
 		}
-		
-		$arreglo = array(
-			'total'					=> $total,
-			'id_estado_pedido'		=> 4,
-			'aprobado_back'			=> 0,
-			'aprobado_front'		=> 0,
-			'visto_back'			=> 1,
-			'visto_front'			=> 0,
-			'iteracion'				=> $iteracion + 1
-		);
-		
+		if($nuevo){
+			$arreglo = array(
+				'total'					=> $total,
+				'id_estado_pedido'		=> 1,
+				'aprobado_back'			=> 0,
+				'aprobado_front'		=> 0,
+				'visto_back'			=> 0,
+				'visto_front'			=> 0,
+				'iteracion'				=> 0
+			);
+		}
+		else{
+			$arreglo = array(
+				'total'					=> $total,
+				'id_estado_pedido'		=> 4,
+				'aprobado_back'			=> 0,
+				'aprobado_front'		=> 0,
+				'visto_back'			=> 1,
+				'visto_front'			=> 0,
+				'iteracion'				=> $iteracion + 1
+			);
+		}
+
 		$this->pedidos_model->update($arreglo, $id_pedido);
 		
 		//----- CARGO ACCION A UN REGISTRO LOG---//
@@ -573,6 +585,55 @@ class Pedidos extends My_Controller {
 		}
 	}
 
+	function traerProducto2(){
+		$producto	= $this->productos_model->getRegistro($this->input->post('producto'));
+		
+		$pedi		= $this->pedidos_model->getRegistro($this->input->post('pedido'));
+		
+		foreach($pedi as $row){
+			$cliente			= $this->clientes_model->getCliente($row->id_cliente);
+		}
+		
+		if($this->input->post('producto')){
+			if($this->input->post('cantidad')){
+				$cantidad		= $this->input->post('cantidad');
+				$producto		= $this->productos_model->getRegistro($this->input->post('producto'));
+				
+				if($producto){
+					foreach ($producto as $row) {
+						$precio 	= $row->precio;
+						$nombre		= $row->nombre;
+					}
+				}
+				
+				foreach($cliente as $row){
+					$descuento = ($precio * $row->valor)/100;
+					if($row->aumento_descuento == 1){
+						$preciofinal = $precio - $descuento;
+					}
+					else {
+						$preciofinal = $precio + $descuento;
+					}
+				}
+				
+				$preciototal	= round($preciofinal, 2);
+				$subtotal 		= round($preciofinal, 2)*$cantidad;	
+				
+				echo 	'<tr>
+							<td><input type="text" id="id_producto'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$this->input->post('producto').'">'.$nombre.'
+								<input type="text" id="nomb'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$nombre.'">
+							</td>
+							<td><input type="text" id="cant'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$this->input->post('cantidad').'">'.$cantidad.'</td>
+							<td><input type="text" id="precio'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$preciototal.'">$ '.$preciototal.'</td>
+							<td><input type="text" id="subtotal'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$subtotal.'">$ '.$subtotal.'</td>
+							<td>Nuevo</td>
+							<td><a class="btn btn-danger btn-xs" onclick="deleteRow(this,'.$this->input->post('pedido').')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></td>
+						</tr>'; 
+		
+			}																
+		}
+	}
+
 	function armarCuerpo($cuerpo,$id_pedido){
 		
 		$pedido 				= $this->pedidos_model->getRegistro($id_pedido);
@@ -703,6 +764,24 @@ class Pedidos extends My_Controller {
 	
 		$id_pedido 		= $this->pedidos_model->insert($pedido);
 		
-		echo $id_pedido;
+		
+		if($id_pedido){
+			$pedido					= $this->pedidos_model->getRegistro($id_pedido);
+			$db['pedido']			= $pedido;
+			
+			if($pedido){
+				foreach($pedido as $row) {
+					$db['clientes']		= $this->clientes_model->getRegistro($row->id_cliente);
+					$db['vendedores']	= $this->vendedores_model->getRegistro($row->id_vendedor);
+				}
+			}
+			
+			$db['iva']				= $this->clientes_model->getTodo('iva');		
+			$db['pedidos']			= $this->pedidos_model->getDetallePedido($id_pedido);
+			$db['estados']			= $this->pedidos_model->getTodo('estados_pedidos');
+			$db['id_pedido']		= $id_pedido;
+			
+			$this->cargar_vista($db, 'carga_pedido');
+		}
 	}
 }

@@ -78,7 +78,7 @@ function busqueda2(){
 					<div class="form-group even">
 						<label class="col-sm-2 control-label"></label>
 						<div class="col-sm-8">
-							<button type="submit" class="btn btn-primary" id="button-submit" onclick="prueba()"><?php echo $this->lang->line('guardar'); ?></button>
+							<button type="submit" class="btn btn-primary" id="button-submit"><?php echo $this->lang->line('guardar'); ?></button>
 							<input type="button" value="<?php echo $this->lang->line('cancelar'); ?>" class="btn btn-danger" onclick="confirmarPresupuesto()">
 						</div>
 					</div>
