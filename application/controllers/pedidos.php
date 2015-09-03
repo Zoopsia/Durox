@@ -129,6 +129,15 @@ class Pedidos extends My_Controller {
 	    return site_url($this->_subject.'/pestanas').'/'.$row->id_pedido;
 	}
 	
+	public function carga()
+	{
+		$db['clientes']		= $this->clientes_model->getTodo();
+		$db['vendedores']	= $this->vendedores_model->getTodo();
+		
+		$this->cargar_vista($db, 'carga');
+				
+	}
+	
 	public function generarNuevoPedido($id_presupuesto)
 	{
 		$presupuesto	= $this->presupuestos_model->getRegistro($id_presupuesto);
@@ -627,5 +636,73 @@ class Pedidos extends My_Controller {
 		else {
 			echo 0;
 		}
+	}
+	
+	public function getClientes()
+	{
+		$id_vendedor	= $this->input->post('id_vendedor');
+		
+		$cruce			= $this->vendedores_model->sinCruce($id_vendedor);
+		
+		$mensaje = '';
+		foreach ($cruce as $row) {
+			if($row->eliminado!=1){
+				$cliente 		= $this->clientes_model->getRegistro($row->id_cliente);	
+				foreach ($cliente as $key) {
+					if($key->eliminado !=1){
+						$mensaje  .= '<option value="'.$key->id_cliente.'">'.$key->razon_social;
+						$mensaje  .= '</option>';
+					}
+				}
+			}
+		}		
+		echo $mensaje;
+	}
+	
+	public function nuevoPedido(){
+		
+		$fecha = formato_fecha($this->input->post('fecha'));
+			
+		$visita			= array(
+			'id_cliente' 		=> $this->input->post('id_cliente'), 
+			'id_vendedor' 		=> $this->input->post('id_vendedor'),
+			'fecha'				=> $fecha		
+		);
+
+		$id_visita = $this->visitas_model->insert($visita);
+			
+		$presupuesto	= array(
+				'id_visita'				=> $id_visita,
+				'id_cliente' 			=> $this->input->post('id_cliente'), 
+				'id_vendedor' 			=> $this->input->post('id_vendedor'),
+				'fecha'					=> $fecha,
+				'id_origen'				=> 2,
+				'visto_back'			=> 1,
+				'id_estado_presupuesto'	=> 2
+		);
+	
+		$id_presupuesto 	= $this->presupuestos_model->insert($presupuesto);
+			
+		$arreglo_cruce	= array(
+				'id_visita'				=> $id_visita,
+				'id_presupuesto'		=> $id_presupuesto, 
+		);
+			
+		$this->presupuestos_model->insertCruceVisita($arreglo_cruce);
+		
+		$pedido			= array(
+				'id_visita'				=> $id_visita,
+				'id_presupuesto'		=> $id_presupuesto,
+				'id_cliente' 			=> $this->input->post('id_cliente'), 
+				'id_vendedor' 			=> $this->input->post('id_vendedor'),
+				'fecha'					=> $fecha,
+				'id_origen'				=> 2,
+				'visto_back'			=> 0,
+				'id_estado_pedido'		=> 1
+		);
+	
+		$id_pedido 		= $this->pedidos_model->insert($pedido);
+		
+		echo $id_pedido;
 	}
 }

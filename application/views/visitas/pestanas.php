@@ -320,7 +320,10 @@ $eliminado = 0;
 														echo '<td>' . $key -> estado . '</td>';
 													}
 												echo '<td>$ ' . $row -> total . '</td>';
-												echo '<td style="text-align: center"><button type="button" class="btn btn-primary btn-xs" onclick="modal(' . $row -> id_presupuesto . '); tablaPresupuesto(' . $row -> id_presupuesto . ')" id="btn-ver" name="btn-ver" value="">' . $this -> lang -> line('ver') . '</button></td>';
+												if($row -> total != 0)
+													echo '<td style="text-align: center"><button type="button" class="btn btn-primary btn-xs" onclick="modal(' . $row -> id_presupuesto . '); tablaPresupuesto(' . $row -> id_presupuesto . ')" id="btn-ver" name="btn-ver" value="">' . $this -> lang -> line('ver') . '</button></td>';
+												else 
+													echo '<td></td>';
 												echo "</tr>";
 										}
 										?>

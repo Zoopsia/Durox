@@ -522,3 +522,8 @@ div.mensajeria{
 	/*height: 10%; */
 	display: block;
 }
+
+.img-mensajeria{
+	position: absolute;
+    top: 5px;
+}

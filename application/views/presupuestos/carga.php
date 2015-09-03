@@ -194,7 +194,7 @@ $('#formPresupuesto').submit(function(event){
 		    							<div class="form-group even">
 											<label class="col-sm-2 control-label"><?php echo $this->lang->line('fecha').'*:'; ?></label>
 												<div class="col-sm-8">
-													<input type="text" name="fecha" class="form-control datepicker" value="<?php echo date('d/m/Y', strtotime($row->fecha));?>" required>	 
+													<input type="text" name="fecha" class="form-control datepicker" value="<?php echo date('d/m/Y', strtotime($row->fecha));?>" required autocomplete="off">	 
 												</div>
 										</div>
 										
@@ -270,7 +270,7 @@ $('#formPresupuesto').submit(function(event){
 		    							<div class="form-group even">
 											<label class="col-sm-2 control-label"><?php echo $this->lang->line('fecha').'*:'; ?></label>
 												<div class="col-sm-8" id="date_add">
-													<input type="text" name="fecha" class="form-control datepicker" value="" required>	 
+													<input type="text" name="fecha" class="form-control datepicker" value="" required autocomplete="off">	 
 												</div>
 										</div>
 																		    

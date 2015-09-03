@@ -82,7 +82,7 @@ $array_activo = moduloActivo($this->uri->segment(1));
                             </a>  
 							<ul class="treeview-menu" style="display: none;">
 					            <li><a href="<?php echo base_url().'index.php/Pedidos/pedidos_abm/tab1'?>"><?php echo $this->lang->line('listado_de').' '.$this->lang->line('pedidos'); ?></a></li>
-					        <!--<li><a href="<?php echo base_url().'index.php/Pedidos/pedidos_abm/tab1/add'?>"><?php echo $this->lang->line('nuevo').' '.$this->lang->line('pedido'); ?></a></li>-->
+					        	<li><a href="<?php echo base_url().'index.php/Pedidos/carga'?>"><?php echo $this->lang->line('nuevo').' '.$this->lang->line('pedido'); ?></a></li>
 					            <li class="divider"></li>
 					            <li><a href="<?php echo base_url().'index.php/Pedidos/pedidos_abm/tab2'?>"><?php echo $this->lang->line('busqueda_avanzada'); ?></a></li>
 				          	</ul>

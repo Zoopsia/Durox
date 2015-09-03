@@ -267,7 +267,7 @@ class Presupuestos extends My_Controller {
 		$visita				= $this->visitas_model->getRegistro($id_visita);
 		
 		foreach ($visita as $row) {
-			echo '<input type="text" name="fecha" class="form-control datepicker" value="'.date('d/m/Y', strtotime($row->fecha)).'" required>';
+			echo '<input type="text" name="fecha" class="form-control datepicker" value="'.date('d/m/Y', strtotime($row->fecha)).'" required autocomplete="off">';
 		}
 		
 	}

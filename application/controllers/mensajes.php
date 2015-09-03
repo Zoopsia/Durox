@@ -20,6 +20,7 @@ class Mensajes extends My_Controller {
 	public function verMensajes(){
 		
 		$db['recibidos']	= $this->mensajes_model->mensajesNuevos();
+		$db['enviados']		= $this->mensajes_model->mensajesEnviados();
 		
 		$this->cargar_vista($db, 'tabla');
 	}
@@ -64,42 +65,44 @@ class Mensajes extends My_Controller {
 	public function verDetalle(){
 		$mail = $this->mensajes_model->mensajesNuevos($this->input->post('id'));
 		
+		$this->mensajes_model->updateMensaje($this->input->post('id'));
 		if($mail){
 			foreach($mail as $row){
-				$mensaje = '<div class="col-md-12 col-sm-10">
+		$mensaje = '<div class="col-md-12 col-sm-10">
 							<h3>
 								'.$row->asunto.'
 							</h3>
 					</div>';
 			}
 		}
-		
+
 		if($mail){
-			foreach($mail as $mail){
+			foreach($mail as $row){ 
+		$date	= date_create($row->date_add);
 		$mensaje .= '<div class="col-md-12 col-sm-10">
 						<hr style="margin-top: 0px">
-						<div >
-											
-								<a href="#" class="name pull-right">
-									'.$mail->nombre.' '.$mail->apellido.'
-								</a>
-								<br>
-								<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
-								<img src="'.$mail->imagen.'" alt="user image" class="img-perfil-sm img-responsive ">
-								
-						</div>
+						<a href="#" class="name pull-right">
+							'.$row->nombre.' '.$row->apellido.'
+						</a>
+						<br>
+						<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> '.date_format($date, 'd/m/y H:m:s').'</small>
+						<img src="'.$row->imagen.'" alt="user image" class="img-perfil-sm img-responsive img-mensajeria">
 					</div>
 					<div class="col-md-12 col-sm-10">
-						<hr style="margin-top: 0px">
+						<hr style="margin-top: 30px">
 						<div>      
 							<p class="message">
-								'.$mail->mensaje.'
+								'.$row->mensaje.'
 							</p>
 						</div>
 					</div>';
 			}
-		}
-		
+		}		
 		echo $mensaje;
+	}
+	
+	public function verDetalle2(){
+			
+		
 	}
 }

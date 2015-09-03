@@ -80,7 +80,7 @@ function busqueda(){
 		    							<div class="form-group even">
 											<label class="col-sm-2 control-label"><?php echo $this->lang->line('fecha').'*:'; ?></label>
 												<div class="col-sm-8">
-													<input type="text" name="date_add" class="form-control datepicker" value="" required>	 
+													<input type="text" name="date_add" class="form-control datepicker" value="" required autocomplete="off">	 
 												</div>
 										</div>
 										

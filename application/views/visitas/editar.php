@@ -78,7 +78,7 @@
 		    							<div class="form-group even">
 											<label class="col-sm-2 control-label"><?php echo $this->lang->line('fecha').'*: '; ?></label>
 												<div class="col-sm-8">
-													<input type="text" name="date_upd" class="form-control datepicker" value="<?php echo date('d/m/Y', strtotime( $value->date_upd));?>">	 
+													<input type="text" name="date_upd" class="form-control datepicker" value="<?php echo date('d/m/Y', strtotime( $value->date_upd));?>" autocomplete="off">	 
 												</div>
 										</div>
 										
