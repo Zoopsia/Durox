@@ -17,12 +17,12 @@
                     	<div class="col-md-3 col-sm-4">
                         	<a class="btn btn-block btn-primary" data-toggle="modal" data-target="#compose-modal"><i class="fa fa-pencil"></i><?php echo ' '.$this->lang->line('redactar').' '.$this->lang->line('mensaje');?></a>
                             <!-- Navigation - folders-->
-                            <div style="margin-top: 15px;">
+                            <div style="margin-top: 15px;" id="div-prueba">
 	                            <ul class="nav nav-pills nav-stacked">
 		                            <li class="header"><?php echo $this->lang->line('carpetas');?></li>
-		                            <li class="active in"><a href="#mail1" data-toggle="tab"><i class="fa fa-inbox"></i> <?php echo $this->lang->line('recibidos').' ('.$cont_mensajes.')';?></a></li>
-		                            <li><a href="#mail2" data-toggle="tab"><i class="fa fa-mail-forward"></i> <?php echo $this->lang->line('enviados');?></a></li>
-		                            <li><a href="#mail3" data-toggle="tab"><i class="fa fa-trash-o"></i> <?php echo $this->lang->line('papelera');?> </a></li>
+		                            <li class="active in"><a href="#mail1" data-toggle="tab" onclick="$('input').iCheck('uncheck');"><i class="fa fa-inbox"></i> <?php echo $this->lang->line('recibidos').' ('.$cont_mensajes.')';?></a></li>
+		                            <li><a href="#mail2" data-toggle="tab" onclick="$('input').iCheck('uncheck');"><i class="fa fa-mail-forward"></i> <?php echo $this->lang->line('enviados');?></a></li>
+		                            <li><a href="#mail3" data-toggle="tab" onclick="$('input').iCheck('uncheck');"><i class="fa fa-trash-o"></i> <?php echo $this->lang->line('papelera');?> </a></li>
 	                            </ul>
                             </div>
 						</div><!-- /.col (LEFT) -->
@@ -33,7 +33,7 @@
                             		<div class="row pad">
                                     	<div class="col-sm-6">
                                         	<label style="margin-right: 10px;" class="">
-                                            	<div class="icheckbox_minimal-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" id="check-all" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div>
+                                            	<div class="icheckbox_minimal-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" id="check-all-recibidos" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div>
                                             </label>
                                             <!-- Action button -->
                                         	<div class="btn-group">
@@ -41,7 +41,7 @@
                                                 	Action <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu" role="menu">
-	                                                <li><a href="#">Marcar como leido</a></li>
+	                                                <li><a href="#" onclick="funcionNoLeido()">Marcar como leido</a></li>
 	                                                <li><a href="#">Marcar como no leido</a></li>
 	                                                <li class="divider"></li>
 	                                                <li><a href="#">Mover a papelera</a></li>
@@ -67,7 +67,7 @@
 	                                	<table class="table table-mailbox">
 	                                		<?php if($recibidos) { foreach($recibidos as $row) { if($row->visto == 0) { ?>
 											<tr class="unread">
-	                                        	<td class="small-col"><input type="checkbox" /></td>
+	                                        	<td class="small-col"><input type="checkbox" class="input-recibidos" value="<?php echo $row->id_sin_mensaje_vendedor;?>"/></td>
 	                                            <td class="small-col"><i class="fa fa-star"></i></td>
 	                                            <td class="name"><a href="#mail4" data-toggle="tab" class="displayblock" onclick="mostrarMensaje(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->nombre.' '.$row->apellido; ?></a></td>
 	                                            <td class="subject"><a href="#mail4" data-toggle="tab" class="displayblock" onclick="mostrarMensaje(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->asunto;?></a></td>
@@ -75,7 +75,7 @@
 	                                        </tr>
 											<?php } else { ?>
 											<tr>
-	                                            <td class="small-col"><input type="checkbox" /></td>
+	                                            <td class="small-col"><input type="checkbox" class="input-recibidos" value="<?php echo $row->id_sin_mensaje_vendedor;?>"/></td>
 	                                            <td class="small-col"><i class="fa fa-star-o"></i></td>
 	                                            <td class="name"><a href="#mail4" data-toggle="tab" class="displayblock" onclick="mostrarMensaje(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->nombre.' '.$row->apellido; ?></a></td>
 	                                            <td class="subject"><a href="#mail4" data-toggle="tab" class="displayblock" onclick="mostrarMensaje(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->asunto;?></a></td>
@@ -98,7 +98,7 @@
                             		<div class="row pad">
                                     	<div class="col-sm-6">
                                         	<label style="margin-right: 10px;" class="">
-                                            	<div class="icheckbox_minimal-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" id="check-all" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div>
+                                            	<div class="icheckbox_minimal-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" id="check-all-enviados" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div>
                                             </label>
                                             <!-- Action button -->
                                         	<div class="btn-group">
@@ -106,9 +106,6 @@
                                                 	Action <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu" role="menu">
-	                                                <li><a href="#">Marcar como leido</a></li>
-	                                                <li><a href="#">Marcar como no leido</a></li>
-	                                                <li class="divider"></li>
 	                                                <li><a href="#">Mover a papelera</a></li>
 	                                                <li class="divider"></li>
 	                                                <li><a href="#">Eliminar</a></li>
@@ -132,18 +129,18 @@
 	                                	<table class="table table-mailbox">
 	                                		<?php if($enviados) { foreach($enviados as $row) { if($row->visto == 0) { ?>
 											<tr class="unread">
-	                                        	<td class="small-col"><input type="checkbox" /></td>
+	                                        	<td class="small-col"><input type="checkbox" class="input-enviados" value="<?php echo $row->id_mensaje;?>"/></td>
 	                                            <td class="small-col"><i class="fa fa-star"></i></td>
-	                                            <td class="name"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->nombre.' '.$row->apellido; ?></a></td>
-	                                            <td class="subject"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->asunto;?></a></td>
+	                                            <td class="name"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_mensaje;?>)"><?php echo $row->nombre.' '.$row->apellido; ?></a></td>
+	                                            <td class="subject"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_mensaje;?>)"><?php echo $row->asunto;?></a></td>
 	                                            <td class="time"><?php $date	= date_create($row->date_add); echo ' '.date_format($date, 'd/m/Y');?></td>
 	                                        </tr>
 											<?php } else { ?>
 											<tr>
-	                                            <td class="small-col"><input type="checkbox" /></td>
+	                                            <td class="small-col"><input type="checkbox" class="input-enviados" value="<?php echo $row->id_mensaje;?>"/></td>
 	                                            <td class="small-col"><i class="fa fa-star-o"></i></td>
-	                                            <td class="name"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->nombre.' '.$row->apellido; ?></a></td>
-	                                            <td class="subject"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->asunto;?></a></td>
+	                                            <td class="name"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_mensaje;?>)"><?php echo $row->nombre.' '.$row->apellido; ?></a></td>
+	                                            <td class="subject"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_mensaje;?>)"><?php echo $row->asunto;?></a></td>
 	                                            <td class="time"><?php $date	= date_create($row->date_add); echo ' '.date_format($date, 'd/m/Y');?></td>
 	                                        </tr>
 											<?php } } } else { ?>   
@@ -170,20 +167,31 @@
 							</div>
 							<div class="tab-pane fade" id="mail4">
 							<!-- /TAB4 -->
-								<div id="mostrarMensajes" class="col-md-9 col-sm-8">
-									
-								</div>
 								<div class="col-md-9 col-sm-8">
-									<a class="btn btn-default btn-sm pull-right" href="#mail1" data-toggle="tab"> volver</a>
+									<form id="formResponder" action="<?php echo base_url().'index.php/Mensajes/responderMensaje/'?>" method="post">
+										<div id="mostrarMensajes">
+											
+										</div>
+										<div class="col-md-12" id="armarTextBox" style="margin-bottom: 15px">
+											
+										</div>
+										<div id="div-botones">
+											<button type="button" class="btn btn-default btn-sm" onclick="armarRespuesta()"> Responder</button>
+											<a class="btn btn-default btn-sm pull-right" href="#mail1" data-toggle="tab" onclick="location.reload();"> volver</a>
+										</div>
+									</form>
 								</div>
+								
 							</div>
 							<div class="tab-pane fade" id="mail5">
 							<!-- /TAB5 -->
-								<div id="mostrarMensajes2" class="col-md-9 col-sm-8">
-									
-								</div>
 								<div class="col-md-9 col-sm-8">
-									<a class="btn btn-default btn-sm pull-right" href="#mail2" data-toggle="tab"> volver</a>
+									<div id="mostrarMensajes2">
+										
+									</div>
+									<div>
+										<a class="btn btn-default btn-sm pull-right" href="#mail2" data-toggle="tab"> volver</a>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -202,6 +210,8 @@ function mostrarMensaje($id){
 		data: { 'id' 	: $id, 
 	 			}, 
 	 	success: function(resp) { 
+	 		$("#div-prueba").load(location.href + " #div-prueba");
+			$("#div-mensajeria").load(location.href + " #div-mensajeria");
 	 		$('#mostrarMensajes').attr('disabled',false).html(resp);
 		},	
 	});
@@ -209,12 +219,45 @@ function mostrarMensaje($id){
 function mostrarMensaje2($id){
 	$.ajax({
 		type: 'POST',
-		url: '<?php echo base_url(); ?>index.php/Mensajes/verDetalle', 
+		url: '<?php echo base_url(); ?>index.php/Mensajes/verDetalle2', 
 		data: { 'id' 	: $id, 
 	 			}, 
 	 	success: function(resp) { 
 	 		$('#mostrarMensajes2').attr('disabled',false).html(resp);
 		},	
 	});
+}
+
+function armarRespuesta(){
+	$('#armarTextBox').html('<textarea class="texteditor" id="editor" name="editor" rows="3" cols="109" style="resize: none;" placeholder="Respuesta..."></textarea>');
+	$('#editor').focus();
+	$('#div-botones').html('<button type="button" class="btn btn-primary btn-sm" onclick="responderMensaje()"> Enviar</button><a class="btn btn-default btn-sm pull-right" href="#mail1" data-toggle="tab" onclick="location.reload();"> volver</a>');
+}
+
+function responderMensaje(){
+	$('#formResponder').submit();
+}
+
+
+$('#check-all-recibidos').on('ifChecked', function(event){
+	$('.input-recibidos').iCheck('check');
+});
+
+$('#check-all-recibidos').on('ifUnchecked', function(event){
+	$('.input-recibidos').iCheck('uncheck');
+});
+
+$('#check-all-enviados').on('ifChecked', function(event){
+	$('.input-enviados').iCheck('check');
+});
+
+$('#check-all-enviados').on('ifUnchecked', function(event){
+	$('.input-enviados').iCheck('uncheck');
+});
+
+function funcionNoLeido(){
+	//alert($('.input-recibidos').iCheck('check').length);
+  
+	//alert($('.input-recibidos').length);
 }
 </script> 

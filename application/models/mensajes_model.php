@@ -17,15 +17,26 @@ class Mensajes_model extends My_Model {
 		);
 	}
 	
-	function insertCruceMensaje($id_mensaje, $id){
+	function insertCruceMensaje($id_mensaje, $id, $padre=null){
 		$session_data = $this->session->userdata('logged_in');
 		
-		$arreglo = array(
-			'id_mensaje'	=> $id_mensaje,
-			'id_receptor'	=> $id,
-			'id_emisor'		=> $session_data['id_usuario'],
-			'visto'			=> 1
-		);
+		if($padre){
+			$arreglo = array(
+				'id_mensaje'		=> $id_mensaje,
+				'id_receptor'		=> $id,
+				'id_emisor'			=> $session_data['id_usuario'],
+				'visto'				=> 1,
+				'id_mensaje_padre'	=> $padre
+			);
+		}
+		else{
+			$arreglo = array(
+				'id_mensaje'	=> $id_mensaje,
+				'id_receptor'	=> $id,
+				'id_emisor'		=> $session_data['id_usuario'],
+				'visto'			=> 1
+			);
+		}
 		
 		if($this->db->field_exists('date_add', 'sin_mensajes_vendedores'))
 		{
@@ -146,9 +157,11 @@ class Mensajes_model extends My_Model {
 					WHERE 
 						mensajes.id_origen = 2
 					AND
-						id_emisor = 1
+						id_emisor = ".$session_data['id_usuario']."
 					AND
-						sin_mensajes_vendedores.eliminado = 0";
+						sin_mensajes_vendedores.eliminado = 0
+					AND
+						sin_mensajes_vendedores.id_mensaje = $id";
 					
 		}else{
 			$sql = "SELECT
@@ -178,6 +191,7 @@ class Mensajes_model extends My_Model {
 						sin_mensajes_vendedores.date_add DESC";
 			
 		}
+		
 		$query = $this->db->query($sql);
 		
 		if($query->num_rows() > 0)
@@ -214,6 +228,38 @@ class Mensajes_model extends My_Model {
 		$this->db->update('sin_mensajes_vendedores', $arreglo_campos);
 		
 		return $this->db->insert_id();
+	}
+	
+	function getMensaje($id){
+		$sql 	= "SELECT
+						*
+					FROM 
+						$this->_tablename
+					INNER JOIN
+						sin_mensajes_vendedores
+					USING
+						($this->_id_table)
+					WHERE 
+						id_sin_mensaje_vendedor = $id
+					AND
+						sin_mensajes_vendedores.eliminado = 0
+					AND
+						mensajes.eliminado = 0";
+		
+		$query = $this->db->query($sql);
+		
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+			return $data;
+		}
+		else
+		{
+			return FALSE;
+		}
 	}
 } 
 ?>

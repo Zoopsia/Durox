@@ -69,7 +69,7 @@ function redirectAlarm($alarma){
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </a>
-                <div class="navbar-right">
+                <div class="navbar-right" id="div-mensajeria">
                     <ul class="nav navbar-nav">
                         <!-- ALARMAS -->
                         <li class="dropdown messages-menu">
