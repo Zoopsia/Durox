@@ -527,3 +527,9 @@ div.mensajeria{
 	position: absolute;
     top: 5px;
 }
+
+.btn-accion-mensajes{
+	margin-top: 10px; 
+	position: absolute !important; 
+	z-index: 1000;
+}

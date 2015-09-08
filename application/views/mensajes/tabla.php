@@ -31,40 +31,38 @@
                             	<div class="col-md-9 col-sm-8">
                             		<!-- BUSQUEDA Y ACCIONES -->
                             		<div class="row pad">
-                                    	<div class="col-sm-6">
+                                    	<div class="col-sm-6 btn-accion-mensajes">
                                         	<label style="margin-right: 10px;" class="">
                                             	<div class="icheckbox_minimal-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" id="check-all-recibidos" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div>
                                             </label>
                                             <!-- Action button -->
                                         	<div class="btn-group">
                                             	<button type="button" class="btn btn-default btn-sm btn-flat dropdown-toggle" data-toggle="dropdown">
-                                                	Action <span class="caret"></span>
+                                                	<?php echo $this->lang->line('acciones')?> <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu" role="menu">
-	                                                <li><a onclick="funcionLeido()">Marcar como leido</a></li>
-	                                                <li><a onclick="funcionNoLeido()">Marcar como no leido</a></li>
+	                                                <li><a onclick="funcionLeido()"><?php echo $this->lang->line('marcar_leido')?></a></li>
+	                                                <li><a onclick="funcionNoLeido()"><?php echo $this->lang->line('marcar_noleido')?></a></li>
 	                                                <li class="divider"></li>
-	                                                <li><a onclick="funcionPapelera()">Mover a papelera</a></li>
+	                                                <li><a onclick="funcionPapelera()"><?php echo $this->lang->line('mover_papelera')?></a></li>
 	                                                <li class="divider"></li>
-	                                                <li><a href="#">Eliminar</a></li>
+	                                                <li><a href="#"><?php echo $this->lang->line('eliminar')?></a></li>
                                                 </ul>
                                             </div>
 										</div>
-                                        <div class="col-sm-6 search-form">
-	                                        <form action="#" class="text-right">
-		                                        <div class="input-group">                                                            
-			                                        <input type="text" class="form-control input-sm" placeholder="Search">
-			                                        <div class="input-group-btn">
-			                                        	<button type="submit" name="q" class="btn btn-sm btn-primary"><i class="fa fa-search"></i></button>
-			                                        </div>
-		                                        </div>                                                     
-	                                        </form>
-                                        </div>
                                     </div>
                             		
 	                            	<div class="table-responsive">
 	                                <!-- RECIBIDOS -->
-	                                	<table class="table table-mailbox">
+	                                	<table class="table table-mailbox tablas-mensajes">
+	                                		<thead>
+	                                			<td></td>
+	                                			<td></td>
+	                                			<td></td>
+	                                			<td></td>
+	                                			<td></td>
+	                                		</thead>
+	                                		<tbody>
 	                                		<?php if($recibidos) { foreach($recibidos as $row) { if($row->visto == 0) { ?>
 											<tr class="unread">
 	                                        	<td class="small-col"><input type="checkbox" class="input-recibidos" name="recibidos[]" value="<?php echo $row->id_sin_mensaje_vendedor;?>"/></td>
@@ -89,14 +87,10 @@
 	                                            <td class="subject"></td>
 	                                            <td class="time"></td>
 	                                        </tr>
-											<?php } ?>       
+	                                        <?php } ?> 
+	                                        </tbody>      
 	                                    </table>
 	                                </div><!-- /.table-responsive -->
-	                                <div class="pull-right">
-					                	<small>Showing 1-12/1,240</small>
-					                	<button class="btn btn-xs btn-primary"><i class="fa fa-caret-left"></i></button>
-					                	<button class="btn btn-xs btn-primary"><i class="fa fa-caret-right"></i></button>
-				                    </div>
 								</div><!-- /.col (RIGHT) -->
 							</div>
 							<div class="tab-pane fade" id="mail2">
@@ -111,12 +105,12 @@
                                             <!-- Action button -->
                                         	<div class="btn-group">
                                             	<button type="button" class="btn btn-default btn-sm btn-flat dropdown-toggle" data-toggle="dropdown">
-                                                	Action <span class="caret"></span>
+                                                	<?php echo $this->lang->line('acciones')?> <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu" role="menu">
-	                                                <li><a onclick="funcionPapelera2()">Mover a papelera</a></li>
+	                                                <li><a onclick="funcionPapelera2()"><?php echo $this->lang->line('mover_papelera')?></a></li>
 	                                                <li class="divider"></li>
-	                                                <li><a >Eliminar</a></li>
+	                                                <li><a ><?php echo $this->lang->line('eliminar')?></a></li>
                                                 </ul>
                                             </div>
 										</div>
@@ -181,12 +175,12 @@
                                             <!-- Action button -->
                                         	<div class="btn-group">
                                             	<button type="button" class="btn btn-default btn-sm btn-flat dropdown-toggle" data-toggle="dropdown">
-                                                	Action <span class="caret"></span>
+                                                	<?php echo $this->lang->line('acciones')?> <span class="caret"></span>
                                                 </button>
                                                 <ul class="dropdown-menu" role="menu">
-                                                	<li><a onclick="funcionRestaurar()">Restaurar Mensaje</a></li>
+                                                	<li><a onclick="funcionRestaurar()"><?php echo $this->lang->line('restaurar').' '.$this->lang->line('mensaje')?></a></li>
 	                                                <li class="divider"></li>
-	                                                <li><a href="#">Eliminar</a></li>
+	                                                <li><a href="#"><?php echo $this->lang->line('eliminar')?></a></li>
                                                 </ul>
                                             </div>
 										</div>
@@ -445,4 +439,32 @@ function funcionRestaurar(){
 		});
 	}
 }
+
+$(document).ready(function(){
+
+    $('.tablas-mensajes').DataTable({
+    	"ordering": false,
+    	"lengthChange": false,
+    	"language": {
+    		"sProcessing":     "Procesando...",
+			"sLengthMenu":     "Mostrar _MENU_ registros",
+			"sZeroRecords":    "No se encontraron resultados",
+			"sEmptyTable":     "Ningún dato disponible en esta tabla",
+			"sInfo":           "",
+			"sInfoEmpty":      "",
+			"sInfoFiltered":   "",
+			"sInfoPostFix":    "",
+			"sSearch":         "Buscar:",
+			"sUrl":            "",
+			"sInfoThousands":  ",",
+			"sLoadingRecords": "Cargando...",
+			"oPaginate": {
+				"sFirst":    "Primero",
+				"sLast":     "Último",
+				"sNext":     "Siguiente",
+				"sPrevious": "Anterior"
+			}
+		}
+    });
+});
 </script> 
