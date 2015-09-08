@@ -179,51 +179,24 @@
                                 </div>
                                 <div class="box-body chat" id="chat-box">
                                     <!-- chat item -->
+                                    <?php if($recibidos) { foreach($recibidos as $recibidos) { ?>
+                                    <?php $date	= date_create($recibidos->date_add); ?>
                                     <div class="item">
-                                        <img src="<?php echo base_url()?>libraries/plantilla/img/avatar.png" alt="user image" class="online"/>
+                                        <img src="<?php echo $recibidos->imagen ?>" alt="user image" class="offline"/>
                                         <p class="message">
                                             <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 2:15</small>
-                                                Vendedor X
+                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i><?php echo date_format($date, 'd/m H:i')?></small>
+                                              	 <?php echo $recibidos->nombre.' '.$recibidos->apellido; ?>
                                             </a>
-                                            Problemas con el producto x
-                                        </p>
-                                        <div class="attachment">
-                                            <h4>Respuesta:</h4>
-                                            <p class="filename">
-                                                Problema modificado
-                                            </p>
-                                        </div><!-- /.attachment -->
-                                    </div><!-- /.item -->
-                                    <!-- chat item -->
-                                    <div class="item">
-                                        <img src="<?php echo base_url()?>libraries/plantilla/img/avatar2.png" alt="user image" class="offline"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:15</small>
-                                              	 Vendedor Y
-                                            </a>
-                                            Aumento de precios proveedor y
+                                            <?php echo $recibidos->mensaje ?>
+                                            
                                         </p>
                                     </div><!-- /.item -->
-                                    <!-- chat item -->
-                                    <div class="item">
-                                        <img src="<?php echo base_url()?>libraries/plantilla/img/avatar3.png" alt="user image" class="offline"/>
-                                        <p class="message">
-                                            <a href="#" class="name">
-                                                <small class="text-muted pull-right"><i class="fa fa-clock-o"></i> 5:30</small>
-                                                Vendedor J
-                                            </a>
-                                            Nuevo pedido J
-                                        </p>
-                                    </div><!-- /.item -->
+                                    <?php } } ?>
                                 </div><!-- /.chat -->
                             </div><!-- /.box (chat box) -->
 
 
-                      
-                    
-                    
                      <!-- quick email widget -->
                             <div class="box box-info">
                                 <div class="box-header">

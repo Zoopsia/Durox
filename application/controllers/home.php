@@ -27,6 +27,7 @@ class Home extends My_Controller {
 		$db['pedidos_cantidad'] 	= $this->pedidos_model->getCantidad();
 		$db['visitas_cantidad'] 	= $this->visitas_model->getCantidad();
 		$db['vendedores'] 			= $this->vendedores_model->getTodo();
+		$db['recibidos']			= $this->mensajes_model->mensajesNuevosHome();
 		
 		$this->cargar_vista($db, 'inicio');
 	}

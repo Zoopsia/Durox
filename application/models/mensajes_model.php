@@ -61,6 +61,53 @@ class Mensajes_model extends My_Model {
 		$this->db->insert('sin_mensajes_vendedores', $arreglo);
 	}
 	
+	function mensajesNuevosHome(){
+		
+		$session_data = $this->session->userdata('logged_in');
+			
+		$sql = "SELECT
+					mensajes.*,
+					sin_mensajes_vendedores.*,
+					vendedores.nombre,
+					vendedores.apellido,
+					vendedores.imagen
+				FROM 
+					$this->_tablename
+				INNER JOIN
+					sin_mensajes_vendedores
+				USING
+					($this->_id_table)
+				INNER JOIN
+					vendedores
+				ON
+					sin_mensajes_vendedores.id_emisor = vendedores.id_vendedor
+				WHERE 
+					mensajes.id_origen = 1
+				AND
+					id_receptor = ".$session_data['id_usuario']."
+				AND
+					sin_mensajes_vendedores.eliminado = 0
+				ORDER BY
+					sin_mensajes_vendedores.date_add DESC
+				LIMIT
+					4";
+
+		$query = $this->db->query($sql);
+		
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+			return $data;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+	
 	function mensajesNuevos($id = null){
 		
 		$session_data = $this->session->userdata('logged_in');
