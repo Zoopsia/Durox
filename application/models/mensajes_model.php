@@ -92,19 +92,25 @@ class Mensajes_model extends My_Model {
 				LIMIT
 					4";
 
-		$query = $this->db->query($sql);
-		
-		if($query->num_rows() > 0)
-		{
-			foreach ($query->result() as $fila)
-			{
-				$data[] = $fila;
-			}
-			return $data;
+		if (!$this->db->query($sql)){	
+			$error = $this->db->error(); 
+			log_message('error', $sql);
 		}
-		else
-		{
-			return FALSE;
+		else{
+			$query = $this->db->query($sql);
+			
+			if($query->num_rows() > 0)
+			{
+				foreach ($query->result() as $fila)
+				{
+					$data[] = $fila;
+				}
+				return $data;
+			}
+			else
+			{
+				return FALSE;
+			}
 		}
 	}
 	

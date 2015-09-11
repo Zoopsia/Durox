@@ -32,7 +32,7 @@
                             		<!-- BUSQUEDA Y ACCIONES -->
                             		<div class="row pad">
                                     	<div class="col-sm-6 btn-accion-mensajes">
-                                        	<label style="margin-right: 10px;" class="">
+                                        	<label style="margin-right: 10px;">
                                             	<div class="icheckbox_minimal-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" id="check-all-recibidos" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div>
                                             </label>
                                             <!-- Action button -->
@@ -52,45 +52,47 @@
 										</div>
                                     </div>
                             		
-	                            	<div class="table-responsive">
+	                            	<div class="row">
+		                            	<div class="col-md-12 table-responsive">
 	                                <!-- RECIBIDOS -->
-	                                	<table class="table table-mailbox tablas-mensajes">
-	                                		<thead>
-	                                			<td></td>
-	                                			<td></td>
-	                                			<td></td>
-	                                			<td></td>
-	                                			<td></td>
-	                                		</thead>
-	                                		<tbody>
-	                                		<?php if($recibidos) { foreach($recibidos as $row) { if($row->visto == 0) { ?>
-											<tr class="unread">
-	                                        	<td class="small-col"><input type="checkbox" class="input-recibidos" name="recibidos[]" value="<?php echo $row->id_sin_mensaje_vendedor;?>"/></td>
-	                                            <td class="small-col"><i class="fa fa-star"></i></td>
-	                                            <td class="name"><a href="#mail4" data-toggle="tab" class="displayblock" onclick="mostrarMensaje(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->nombre.' '.$row->apellido; ?></a></td>
-	                                            <td class="subject"><a href="#mail4" data-toggle="tab" class="displayblock" onclick="mostrarMensaje(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->asunto;?></a></td>
-	                                            <td class="time"><?php $date	= date_create($row->date_add); echo ' '.date_format($date, 'd/m/Y');?></td>
-	                                        </tr>
-											<?php } else { ?>
-											<tr>
-	                                            <td class="small-col"><input type="checkbox" class="input-recibidos" name="recibidos[]" value="<?php echo $row->id_sin_mensaje_vendedor;?>"/></td>
-	                                            <td class="small-col"><i class="fa fa-star-o"></i></td>
-	                                            <td class="name"><a href="#mail4" data-toggle="tab" class="displayblock" onclick="mostrarMensaje(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->nombre.' '.$row->apellido; ?></a></td>
-	                                            <td class="subject"><a href="#mail4" data-toggle="tab" class="displayblock" onclick="mostrarMensaje(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->asunto;?></a></td>
-	                                            <td class="time"><?php $date	= date_create($row->date_add); echo ' '.date_format($date, 'd/m/Y');?></td>
-	                                        </tr>
-											<?php } } } else { ?>   
-											<tr>
-	                                            <td class="small-col" style="height: 43px"></td>
-	                                            <td class="small-col"></td>
-	                                            <td class="name"></td>
-	                                            <td class="subject"></td>
-	                                            <td class="time"></td>
-	                                        </tr>
-	                                        <?php } ?> 
-	                                        </tbody>      
-	                                    </table>
-	                                </div><!-- /.table-responsive -->
+		                                	<table class="table table-mailbox tablas-mensajes" style="width: 100% !important;">
+		                                		<thead>
+		                                			<td></td>
+		                                			<td></td>
+		                                			<td></td>
+		                                			<td></td>
+		                                			<td></td>
+		                                		</thead>
+		                                		<tbody>
+		                                		<?php if($recibidos) { foreach($recibidos as $row) { if($row->visto == 0) { ?>
+												<tr class="unread">
+		                                        	<td class="small-col"><input type="checkbox" class="input-recibidos" name="recibidos[]" value="<?php echo $row->id_sin_mensaje_vendedor;?>"/></td>
+		                                            <td class="small-col"><i class="fa fa-star"></i></td>
+		                                            <td class="name"><a href="#mail4" data-toggle="tab" class="displayblock" onclick="mostrarMensaje(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->nombre.' '.$row->apellido; ?></a></td>
+		                                            <td class="subject"><a href="#mail4" data-toggle="tab" class="displayblock" onclick="mostrarMensaje(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->asunto;?></a></td>
+		                                            <td class="time"><?php $date	= date_create($row->date_add); echo ' '.date_format($date, 'd/m/Y');?></td>
+		                                        </tr>
+												<?php } else { ?>
+												<tr>
+		                                            <td class="small-col"><input type="checkbox" class="input-recibidos" name="recibidos[]" value="<?php echo $row->id_sin_mensaje_vendedor;?>"/></td>
+		                                            <td class="small-col"><i class="fa fa-star-o"></i></td>
+		                                            <td class="name"><a href="#mail4" data-toggle="tab" class="displayblock" onclick="mostrarMensaje(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->nombre.' '.$row->apellido; ?></a></td>
+		                                            <td class="subject"><a href="#mail4" data-toggle="tab" class="displayblock" onclick="mostrarMensaje(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->asunto;?></a></td>
+		                                            <td class="time"><?php $date	= date_create($row->date_add); echo ' '.date_format($date, 'd/m/Y');?></td>
+		                                        </tr>
+												<?php } } } else { ?>   
+												<tr>
+		                                            <td class="small-col" style="height: 43px"></td>
+		                                            <td class="small-col"></td>
+		                                            <td class="name"></td>
+		                                            <td class="subject"></td>
+		                                            <td class="time"></td>
+		                                        </tr>
+		                                        <?php } ?> 
+		                                        </tbody>      
+		                                    </table>
+		                                </div><!-- /.table-responsive -->
+		                        	</div>
 								</div><!-- /.col (RIGHT) -->
 							</div>
 							<div class="tab-pane fade" id="mail2">
@@ -98,8 +100,8 @@
 								<div class="col-md-9 col-sm-8">
                             		<!-- BUSQUEDA Y ACCIONES -->
                             		<div class="row pad">
-                                    	<div class="col-sm-6">
-                                        	<label style="margin-right: 10px;" class="">
+                                    	<div class="col-sm-6 btn-accion-mensajes">
+                                        	<label style="margin-right: 10px;" >
                                             	<div class="icheckbox_minimal-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" id="check-all-enviados" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div>
                                             </label>
                                             <!-- Action button -->
@@ -114,61 +116,56 @@
                                                 </ul>
                                             </div>
 										</div>
-                                        <div class="col-sm-6 search-form">
-	                                        <form action="#" class="text-right">
-		                                        <div class="input-group">                                                            
-			                                        <input type="text" class="form-control input-sm" placeholder="Search">
-			                                        <div class="input-group-btn">
-			                                        	<button type="submit" name="q" class="btn btn-sm btn-primary"><i class="fa fa-search"></i></button>
-			                                        </div>
-		                                        </div>                                                     
-	                                        </form>
-                                        </div>
                                     </div>
-                            		
-	                            	<div class="table-responsive">
-	                                <!-- ENVIADOS-->
-	                                	<table class="table table-mailbox">
-	                                		<?php if($enviados) { foreach($enviados as $row) { if($row->visto == 0) { ?>
-											<tr class="unread">
-	                                        	<td class="small-col"><input type="checkbox" class="input-enviados" name="enviados[]" value="<?php echo $row->id_mensaje;?>"/></td>
-	                                            <td class="small-col"><i class="fa fa-star"></i></td>
-	                                            <td class="name"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_mensaje;?>)"><?php echo $row->nombre.' '.$row->apellido; ?></a></td>
-	                                            <td class="subject"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_mensaje;?>)"><?php echo $row->asunto;?></a></td>
-	                                            <td class="time"><?php $date	= date_create($row->date_add); echo ' '.date_format($date, 'd/m/Y');?></td>
-	                                        </tr>
-											<?php } else { ?>
-											<tr>
-	                                            <td class="small-col"><input type="checkbox" class="input-enviados" name="enviados[]" value="<?php echo $row->id_mensaje;?>"/></td>
-	                                            <td class="small-col"><i class="fa fa-star-o"></i></td>
-	                                            <td class="name"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_mensaje;?>)"><?php echo $row->nombre.' '.$row->apellido; ?></a></td>
-	                                            <td class="subject"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_mensaje;?>)"><?php echo $row->asunto;?></a></td>
-	                                            <td class="time"><?php $date	= date_create($row->date_add); echo ' '.date_format($date, 'd/m/Y');?></td>
-	                                        </tr>
-											<?php } } } else { ?>   
-											<tr>
-	                                            <td class="small-col" style="height: 43px"></td>
-	                                            <td class="small-col"></td>
-	                                            <td class="name"></td>
-	                                            <td class="subject"></td>
-	                                            <td class="time"></td>
-	                                        </tr>
-											<?php } ?>  
-	                                    </table>
-	                                </div><!-- /.table-responsive -->
-	                                <div class="pull-right">
-					                	<small>Showing 1-12/1,240</small>
-					                	<button class="btn btn-xs btn-primary"><i class="fa fa-caret-left"></i></button>
-					                	<button class="btn btn-xs btn-primary"><i class="fa fa-caret-right"></i></button>
-				                    </div>
+                            		<div class="row">
+		                            	<div class="col-md-12 table-responsive">
+		                                <!-- ENVIADOS-->
+		                                	<table class="table table-mailbox tablas-mensajes">
+		                                		<thead>
+		                                			<td></td>
+		                                			<td></td>
+		                                			<td></td>
+		                                			<td></td>
+		                                			<td></td>
+		                                		</thead>
+		                                		<tbody>
+		                                		<?php if($enviados) { foreach($enviados as $row) { if($row->visto == 0) { ?>
+												<tr class="unread">
+		                                        	<td class="small-col"><input type="checkbox" class="input-enviados" name="enviados[]" value="<?php echo $row->id_mensaje;?>"/></td>
+		                                            <td class="small-col"><i class="fa fa-star"></i></td>
+		                                            <td class="name"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_mensaje;?>)"><?php echo $row->nombre.' '.$row->apellido; ?></a></td>
+		                                            <td class="subject"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_mensaje;?>)"><?php echo $row->asunto;?></a></td>
+		                                            <td class="time"><?php $date	= date_create($row->date_add); echo ' '.date_format($date, 'd/m/Y');?></td>
+		                                        </tr>
+												<?php } else { ?>
+												<tr>
+		                                            <td class="small-col"><input type="checkbox" class="input-enviados" name="enviados[]" value="<?php echo $row->id_mensaje;?>"/></td>
+		                                            <td class="small-col"><i class="fa fa-star-o"></i></td>
+		                                            <td class="name"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_mensaje;?>)"><?php echo $row->nombre.' '.$row->apellido; ?></a></td>
+		                                            <td class="subject"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_mensaje;?>)"><?php echo $row->asunto;?></a></td>
+		                                            <td class="time"><?php $date	= date_create($row->date_add); echo ' '.date_format($date, 'd/m/Y');?></td>
+		                                        </tr>
+												<?php } } } else { ?>   
+												<tr>
+		                                            <td class="small-col" style="height: 43px"></td>
+		                                            <td class="small-col"></td>
+		                                            <td class="name"></td>
+		                                            <td class="subject"></td>
+		                                            <td class="time"></td>
+		                                        </tr>
+												<?php } ?> 
+												</tbody> 
+		                                    </table>
+		                                </div><!-- /.table-responsive -->
+	                                </div>
 								</div>
 							</div>
 							<div class="tab-pane fade" id="mail3">
 							<!-- /TAB3 -->
-							<div class="col-md-9 col-sm-8">
+								<div class="col-md-9 col-sm-8">
                             		<!-- BUSQUEDA Y ACCIONES -->
                             		<div class="row pad">
-                                    	<div class="col-sm-6">
+                                    	<div class="col-sm-6 btn-accion-mensajes">
                                         	<label style="margin-right: 10px;" class="">
                                             	<div class="icheckbox_minimal-blue" aria-checked="false" aria-disabled="false" style="position: relative;"><input type="checkbox" id="check-all-papelera" style="position: absolute; opacity: 0;"><ins class="iCheck-helper" style="position: absolute; top: 0%; left: 0%; display: block; width: 100%; height: 100%; margin: 0px; padding: 0px; border: 0px; opacity: 0; background: rgb(255, 255, 255);"></ins></div>
                                             </label>
@@ -184,50 +181,45 @@
                                                 </ul>
                                             </div>
 										</div>
-                                        <div class="col-sm-6 search-form">
-	                                        <form action="#" class="text-right">
-		                                        <div class="input-group">                                                            
-			                                        <input type="text" class="form-control input-sm" placeholder="Search">
-			                                        <div class="input-group-btn">
-			                                        	<button type="submit" name="q" class="btn btn-sm btn-primary"><i class="fa fa-search"></i></button>
-			                                        </div>
-		                                        </div>                                                     
-	                                        </form>
-                                        </div>
                                     </div>
                             		
-	                            	<div class="table-responsive">
-	                                <!-- PAPELERA -->
-	                                	<table class="table table-mailbox">
-	                                		<?php if($papelera) { foreach($papelera as $row) {  ?>
-											
-											<tr>
-	                                            <td class="small-col"><input type="checkbox" class="input-papelera" name="papelera[]" value="<?php echo $row->id_sin_mensaje_vendedor;?>"/></td>
-	                                            <td class="small-col"><i class="fa fa-star-o"></i></td>
-	                                            <?php if($row->id_origen == 1) { ?>
-	                                            <td class="name"><a href="#mail6" data-toggle="tab" class="displayblock" onclick="mostrarMensaje3(<?php echo $row->id_sin_mensaje_vendedor;?>)">RECIBIDO</a></td>
-	                                            <?php } else { ?>
-	                                            <td class="name"><a href="#mail6" data-toggle="tab" class="displayblock" onclick="mostrarMensaje3(<?php echo $row->id_sin_mensaje_vendedor;?>)">ENVIADO</a></td>
-	                                            <?php } ?>
-	                                            <td class="subject"><a href="#mail6" data-toggle="tab" class="displayblock" onclick="mostrarMensaje3(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->asunto;?></a></td>
-	                                            <td class="time"><?php $date	= date_create($row->date_add); echo ' '.date_format($date, 'd/m/Y');?></td>
-	                                        </tr>
-											<?php } } else { ?>   
-											<tr>
-	                                            <td class="small-col" style="height: 43px"></td>
-	                                            <td class="small-col"></td>
-	                                            <td class="name"></td>
-	                                            <td class="subject"></td>
-	                                            <td class="time"></td>
-	                                        </tr>
-											<?php } ?>       
-	                                    </table>
-	                                </div><!-- /.table-responsive -->
-	                                <div class="pull-right">
-					                	<small>Showing 1-12/1,240</small>
-					                	<button class="btn btn-xs btn-primary"><i class="fa fa-caret-left"></i></button>
-					                	<button class="btn btn-xs btn-primary"><i class="fa fa-caret-right"></i></button>
-				                    </div>
+	                            	<div class="row">
+		                            	<div class="col-md-12 table-responsive">
+	                               		<!-- PAPELERA -->
+	                                		<table class="table table-mailbox tablas-mensajes">
+		                                		<thead>
+		                                			<td></td>
+		                                			<td></td>
+		                                			<td></td>
+		                                			<td></td>
+		                                			<td></td>
+		                                		</thead>
+		                                		<tbody>
+		                                		<?php if($papelera) { foreach($papelera as $row) {  ?>
+												<tr>
+		                                            <td class="small-col"><input type="checkbox" class="input-papelera" name="papelera[]" value="<?php echo $row->id_sin_mensaje_vendedor;?>"/></td>
+		                                            <td class="small-col"><i class="fa fa-star-o"></i></td>
+		                                            <?php if($row->id_origen == 1) { ?>
+		                                            <td class="name"><a href="#mail6" data-toggle="tab" class="displayblock" onclick="mostrarMensaje3(<?php echo $row->id_sin_mensaje_vendedor;?>)">RECIBIDO</a></td>
+		                                            <?php } else { ?>
+		                                            <td class="name"><a href="#mail6" data-toggle="tab" class="displayblock" onclick="mostrarMensaje3(<?php echo $row->id_sin_mensaje_vendedor;?>)">ENVIADO</a></td>
+		                                            <?php } ?>
+		                                            <td class="subject"><a href="#mail6" data-toggle="tab" class="displayblock" onclick="mostrarMensaje3(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->asunto;?></a></td>
+		                                            <td class="time"><?php $date	= date_create($row->date_add); echo ' '.date_format($date, 'd/m/Y');?></td>
+		                                        </tr>
+												<?php } } else { ?>   
+												<tr>
+		                                            <td class="small-col" style="height: 43px"></td>
+		                                            <td class="small-col"></td>
+		                                            <td class="name"></td>
+		                                            <td class="subject"></td>
+		                                            <td class="time"></td>
+		                                        </tr>
+												<?php } ?>  
+												</tbody>     
+		                                    </table>
+		                                </div><!-- /.table-responsive -->
+	                                </div>
 								</div><!-- /.col (RIGHT) -->
 							</div>
 							<div class="tab-pane fade" id="mail4">
