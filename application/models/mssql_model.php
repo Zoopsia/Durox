@@ -151,7 +151,7 @@ class Mssql_model extends My_Model {
 					array_push($columna,$fila->COLUMN_NAME);
 				}
 			}
-			
+			/*
 			echo $select;
 			//echo "<br>";
 			
@@ -182,6 +182,8 @@ class Mssql_model extends My_Model {
 			
 			echo $sql1;
 			//$this->db->query($sql1);
+			*/
+			 
 		}
 	}
 } 
