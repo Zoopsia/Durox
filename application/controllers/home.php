@@ -32,6 +32,7 @@ class Home extends My_Controller {
 		$db['vendedores'] 			= $this->vendedores_model->getTodo();
 		$db['recibidos']			= $this->mensajes_model->mensajesNuevosHome();
 		
+		/*
 		//$db['otradb']				= $this->mssql_model->crearTablas('mssql','Prueba');
 		$nombreDB 	= 'Prueba';
 		$db		= 'mssql';
@@ -44,6 +45,8 @@ class Home extends My_Controller {
 			}
 		}
 		
+		*/
+		 
 		$this->cargar_vista($db, 'inicio');
 	}
 
