@@ -2,16 +2,22 @@
 class Mssql_model extends My_Model {
 			
 	protected $subjet 	= 'dbo';
-	protected $prefijo 	= 'bj_';		
+	protected $prefijo 	= 'bj_';
+	
+	protected $productos_columnas	= array(
+			'id_db'			=>	'art_CodGen',	
+			'nombre'		=>	'art_DescGen',
+			'descripcion'	=>	'da1_Desc'
+	);
+	
 	
 	function __construct(){
 		parent::__construct();
 	}
 	
 	function crearTablas($db, $nombreDB){
-		//Llamo la clase forge//
-		
-        //Llamo base de datos del ODBC//
+			
+		//Llamo base de datos del ODBC//
 		$db_mssql = $this->load->database($db, TRUE);
         
         //y de esta forma accedemos, no con $this->db->get,
@@ -43,7 +49,13 @@ class Mssql_model extends My_Model {
 	}
 	
 	function crearColumnas($db, $nombreDB ,$tabla){
-		
+			
+		/*
+		//Elimino la tabla existente//
+		$tabladestino = strtolower($tabla);	
+		$delete = "DROP TABLE IF EXISTS $this->prefijo$tabladestino";
+		$this->db->query($delete);
+		*/
 		$db_mssql = $this->load->database($db, TRUE);
 		
 		//-- Hago un SELECT de los nombres de las Columnas de su db 
@@ -185,7 +197,7 @@ class Mssql_model extends My_Model {
 						$sql1 = "";
 					}
 					else{
-						//log_message('debug','El registro ya existe en '.$this->prefijo.$tabladestino.' con ID '.$row[$columna[0]]);
+						log_message('error','El registro ya existe en '.$this->prefijo.$tabladestino.' con ID '.$row[$columna[0]]);
 					}
 				}
 			}		 
@@ -217,30 +229,52 @@ class Mssql_model extends My_Model {
 		}			
 	}
 	
-	function updateRegistro($db, $nombreDB ,$tabla){
-		
-		$db_mssql = $this->load->database($db, TRUE);
-		
-		if($db_mssql){
-			$fields = array();
+	function mergeTablas($tabla){
 			
-			$sql = "SELECT	
-						COLUMN_NAME
-					FROM 
-						$nombreDB.INFORMATION_SCHEMA.COLUMNS
-					WHERE 
-						TABLE_NAME = '$tabla'
-					ORDER BY 
-						ORDINAL_POSITION ASC";
-	
-			$query		 	= $db_mssql->query($sql);
+		if(preg_match("/articulos/i",$tabla)){
+				
+			$target 	= "productos";
+			$source 	= $this->prefijo.strtolower($tabla);
+			$id_target	= "id_db";
+			$id_source	= "art_CodGen";
 			
-			if($query->num_rows() > 0){
-				foreach ($query->result() as $fila){
-					
-				}
+			$sql = "INSERT INTO $target (";
+			$last = end($this->productos_columnas);
+						
+			foreach ($this->productos_columnas as $key => $value){
+				if($last == $value)
+					$sql .= $key;
+				else	
+					$sql .= $key.",";
 			}
+					
+			$sql .=	") SELECT ";
+			
+			foreach ($this->productos_columnas as $key => $value){
+				if($last == $value)
+					$sql .= $source.".".$value;
+				else	
+					$sql .= $source.".".$value.",";
+			}
+			$sql .=	" FROM $source 
+					WHERE $source.$id_source NOT IN(
+					SELECT 
+						$id_target
+					FROM
+						$target)";
+			
+			$this->db->query($sql);	
+			
+		}
+		else if(preg_match("/vendedor/i",$tabla)){
+			//echo $tabla;
+			//echo "<br>";
+		}
+		else if(preg_match("/clientes/i",$tabla)){
+			//echo $tabla;
+			//echo "<br>";
 		}
 	}
+	
 } 
 ?>

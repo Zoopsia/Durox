@@ -32,20 +32,21 @@ class Home extends My_Controller {
 		$db['vendedores'] 			= $this->vendedores_model->getTodo();
 		$db['recibidos']			= $this->mensajes_model->mensajesNuevosHome();
 		
-		/*
+		
 		//$db['otradb']				= $this->mssql_model->crearTablas('mssql','Prueba');
-		$nombreDB 	= 'Prueba';
-		$db		= 'mssql';
-		$tablas = $this->mssql_model->crearTablas($db,$nombreDB);
+		$nombreDB 			= 'Prueba';
+		$basededatos		= 'mssql';
+		$tablas 			= $this->mssql_model->crearTablas($basededatos,$nombreDB);
 		
 		if($tablas){
 			foreach ($tablas as $row) {
-				$this->mssql_model->crearColumnas($db,$nombreDB,$row->TABLE_NAME);
-				$this->mssql_model->copiarRegistros($db,$nombreDB,$row->TABLE_NAME);
+				//$this->mssql_model->crearColumnas($basededatos,$nombreDB,$row->TABLE_NAME);
+				//$this->mssql_model->copiarRegistros($basededatos,$nombreDB,$row->TABLE_NAME);
+				$this->mssql_model->mergeTablas($row->TABLE_NAME);
 			}
 		}
 		
-		*/
+		
 		 
 		$this->cargar_vista($db, 'inicio');
 	}
