@@ -4,13 +4,6 @@ class Mssql_model extends My_Model {
 	protected $subjet 	= 'dbo';
 	protected $prefijo 	= 'bj_';
 	
-	protected $productos_columnas	= array(
-			'id_db'			=>	'art_CodGen',	
-			'nombre'		=>	'art_DescGen',
-			'descripcion'	=>	'da1_Desc'
-	);
-	
-	
 	function __construct(){
 		parent::__construct();
 	}
@@ -229,50 +222,258 @@ class Mssql_model extends My_Model {
 		}			
 	}
 	
+	function getTablasSin($tabla){
+			
+		$sql = "SELECT 
+					bj_tablas.nombre_tabla AS origen,
+					tablas.nombre_tabla	AS destino
+				FROM
+					bj_sin_columnas 
+				INNER JOIN
+					bj_tablas
+				USING
+					(id_bj_tabla)
+				INNER JOIN
+					tablas
+				USING
+					(id_tabla)
+				WHERE
+					bj_tablas.nombre_tabla = '$tabla'
+				GROUP BY
+					tablas.nombre_tabla";
+		
+		$query = $this->db->query($sql);
+			
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+			return $data;
+		}
+		else
+		{
+			return FALSE;
+		}			
+	}
+	
+	function getColumnasSin($origen,$destino){
+			
+		$sql = "SELECT 
+					bj_tablas.nombre_tabla AS origen,
+					tablas.nombre_tabla	AS destino,
+					bj_sin_columnas.bj_columna,
+					bj_sin_columnas.columna
+				FROM
+					bj_sin_columnas 
+				INNER JOIN
+					bj_tablas
+				USING
+					(id_bj_tabla)
+				INNER JOIN
+					tablas
+				USING
+					(id_tabla)
+				WHERE
+					tablas.nombre_tabla = '$destino'
+				AND
+					bj_tablas.nombre_tabla = '$origen'";
+		
+		$query = $this->db->query($sql);
+			
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+			return $data;
+		}
+		else
+		{
+			return FALSE;
+		}			
+	}
+	
+	function getIdSinInsert($source, $target, $id_source, $id_target){
+			
+		$sql = "SELECT 
+					$id_source AS id_faltante
+				FROM 
+					$source 
+				WHERE 
+					$source.$id_source 
+				NOT IN( 
+					SELECT 
+						$id_target 
+					FROM 
+						$target)";
+		
+		$query = $this->db->query($sql);
+			
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+			return $data;
+		}
+		else
+		{
+			return FALSE;
+		}		
+	}
+	
 	function mergeTablas($tabla){
 			
 		if(preg_match("/articulos/i",$tabla)){
-				
-			$target 	= "productos";
 			$source 	= $this->prefijo.strtolower($tabla);
+			$target 	= "productos";
 			$id_target	= "id_db";
-			$id_source	= "art_CodGen";
+			$id_source	= "art_CodGen";//---En caso de cambiar las tablas cambiar el ID---//
 			
-			$sql = "INSERT INTO $target (";
-			$last = end($this->productos_columnas);
-						
-			foreach ($this->productos_columnas as $key => $value){
-				if($last == $value)
-					$sql .= $key;
-				else	
-					$sql .= $key.",";
-			}
-					
-			$sql .=	") SELECT ";
+			$tablasin	= $this->getTablasSin($source);
 			
-			foreach ($this->productos_columnas as $key => $value){
-				if($last == $value)
-					$sql .= $source.".".$value;
-				else	
-					$sql .= $source.".".$value.",";
-			}
-			$sql .=	" FROM $source 
-					WHERE $source.$id_source NOT IN(
-					SELECT 
-						$id_target
-					FROM
-						$target)";
-			
-			$this->db->query($sql);	
-			
+			if($tablasin){
+				foreach($tablasin as $row){
+					$columnassin 	= $this->getColumnasSin($row->origen ,$row->destino);
+					if($columnassin){
+						$id_insert		= $this->getIdSinInsert($source, $target, $id_source, $id_target);	
+						if($id_insert){
+							foreach($id_insert as $id){
+								$sql = "INSERT INTO $row->destino (";
+								
+								foreach($columnassin as $fila){
+									if ($fila === end($columnassin)) 
+								        $sql .= $fila->columna;
+									else
+										$sql .= $fila->columna.",";
+								}
+								
+								$sql .=	") SELECT ";
+									
+								foreach($columnassin as $fila){
+									if ($fila === end($columnassin)) 
+								        $sql .= $fila->bj_columna;
+									else
+										$sql .= $fila->bj_columna.",";
+								}
+								
+								$sql .=	" 	FROM 
+												$source
+											WHERE 
+												$source.$id_source = '$id->id_faltante'";	
+								
+								$this->db->query($sql);
+								echo $sql;
+								echo "<br>";
+								echo $this->db->insert_id();
+								echo "<br>";	
+							}
+						}			
+					}
+				}
+			}	
 		}
-		else if(preg_match("/vendedor/i",$tabla)){
-			//echo $tabla;
-			//echo "<br>";
+		else if(preg_match("/vendedor/i",$tabla)){	
+			$source 	= $this->prefijo.strtolower($tabla);
+			$target 	= "vendedores";
+			$id_target	= "id_db";
+			$id_source	= "ven_Cod";//---En caso de cambiar las tablas cambiar el ID---//
+			
+			$tablasin	= $this->getTablasSin($source);
+			
+			if($tablasin){
+				foreach($tablasin as $row){
+					$columnassin 	= $this->getColumnasSin($row->origen ,$row->destino);
+					if($columnassin){
+						$id_insert		= $this->getIdSinInsert($source, $target, $id_source, $id_target);	
+						if($id_insert){
+							foreach($id_insert as $id){
+								$sql = "INSERT INTO $row->destino (";
+								
+								foreach($columnassin as $fila){
+									if ($fila === end($columnassin)) 
+								        $sql .= $fila->columna;
+									else
+										$sql .= $fila->columna.",";
+								}
+								
+								$sql .=	") SELECT ";
+									
+								foreach($columnassin as $fila){
+									if ($fila === end($columnassin)) 
+								        $sql .= $fila->bj_columna;
+									else
+										$sql .= $fila->bj_columna.",";
+								}
+								
+								$sql .=	" 	FROM 
+												$source
+											WHERE 
+												$source.$id_source = '$id->id_faltante'";	
+								
+								$this->db->query($sql);
+								echo $sql;
+								echo "<br>";
+								echo $this->db->insert_id();
+								echo "<br>";	
+							}
+						}			
+					}
+				}
+			}
 		}
 		else if(preg_match("/clientes/i",$tabla)){
-			//echo $tabla;
-			//echo "<br>";
+			$source 	= $this->prefijo.strtolower($tabla);
+			$target 	= "clientes";
+			$id_target	= "id_db";
+			$id_source	= "cli_Cod";//---En caso de cambiar las tablas cambiar el ID---//
+			
+			$tablasin	= $this->getTablasSin($source);
+			
+			if($tablasin){
+				foreach($tablasin as $row){
+					$columnassin 	= $this->getColumnasSin($row->origen ,$row->destino);
+					if($columnassin){
+						$id_insert		= $this->getIdSinInsert($source, $target, $id_source, $id_target);	
+						if($id_insert){
+							foreach($id_insert as $id){
+								$sql = "INSERT INTO $row->destino (";
+								
+								foreach($columnassin as $fila){
+									if ($fila === end($columnassin)) 
+								        $sql .= $fila->columna;
+									else
+										$sql .= $fila->columna.",";
+								}
+								
+								$sql .=	") SELECT ";
+									
+								foreach($columnassin as $fila){
+									if ($fila === end($columnassin)) 
+								        $sql .= $fila->bj_columna;
+									else
+										$sql .= $fila->bj_columna.",";
+								}
+								
+								$sql .=	" 	FROM 
+												$source
+											WHERE 
+												$source.$id_source = '$id->id_faltante'";	
+								
+								$this->db->query($sql);
+								echo $sql;
+								echo "<br>";
+								echo $this->db->insert_id();
+								echo "<br>";	
+							}
+						}			
+					}
+				}
+			}
 		}
 	}
 	

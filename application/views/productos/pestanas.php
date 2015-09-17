@@ -236,7 +236,7 @@ $bandera = 0;
 												echo  '<td class="tabla-datos-importantes"><input type="text" name="codigo" id="codigo" class="form-control editable cambio" value="'.$row->codigo.'" placeholder="'.$this->lang->line('codigo').'" autocomplete="off" disabled></td>';
 												echo  "</tr>";
 												echo  "<tr class='no-print'>";
-												echo  '<td class="padtop">'.$this->lang->line('id').' '.$this->lang->line('id').':</td>';
+												echo  '<td class="padtop">'.$this->lang->line('id').' '.$this->lang->line('bejerman').':</td>';
 												echo  '<td class="tabla-datos-importantes"><input type="text" name="id_db" class="form-control editable"  value="'.$row->id_db.'" autocomplete="off" disabled style="width: 275px !important;"></td>';
 												echo  "</tr>";
 												$date	= date_create($row->date_upd);
