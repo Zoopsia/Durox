@@ -347,7 +347,8 @@ class Grupos extends My_Controller {
 		$id_cliente	=	$this->input->post('id_cliente');
 		
 		$cliente	= array(		
-				'id_grupo_cliente' 		=> $this->input->post('id_grupo_cliente')		
+				'id_grupo_cliente' 		=> $this->input->post('id_grupo_cliente'),
+				'eliminado'				=> 0		
 		);
 			
 		$id = $this->clientes_model->update($cliente, $id_cliente);	
@@ -359,7 +360,8 @@ class Grupos extends My_Controller {
 		$id_cliente	=	$this->input->post('id_cliente');
 		
 		$cliente	= array(		
-				'id_grupo_cliente' 		=> 1		
+				'id_grupo_cliente' 		=> 1,
+				'eliminado'				=> 0		
 		);
 			
 		$id = $this->clientes_model->update($cliente, $id_cliente);	
@@ -425,7 +427,6 @@ class Grupos extends My_Controller {
 	
 	public function editarGrupo(){
 		
-		
 		$id_grupo_cliente	=	$this->input->post('id_grupo_cliente');
 		
 		if($id_grupo_cliente){
@@ -443,7 +444,8 @@ class Grupos extends My_Controller {
 		}
 
 		$grupo	= array(		
-				'grupo_nombre' 		=> $this->input->post('grupo_nombre')		
+				'grupo_nombre' 		=> $this->input->post('grupo_nombre'),
+				'eliminado'			=> 0		
 		);
 		
 		$save = $this->input->post('btn-save');

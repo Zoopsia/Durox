@@ -94,7 +94,6 @@ class Mssql_model extends My_Model {
 					if($i == 0)
 						$this->dbforge->add_key($fila->COLUMN_NAME, TRUE);
 					
-					
 					$i++;
 				}
 			}
@@ -335,12 +334,12 @@ class Mssql_model extends My_Model {
 			$id_source	= "art_CodGen";//---En caso de cambiar las tablas cambiar el ID---//
 			
 			$tablasin	= $this->getTablasSin($source);
+			$id_insert	= $this->getIdSinInsert($source, $target, $id_source, $id_target);
 			
 			if($tablasin){
 				foreach($tablasin as $row){
 					$columnassin 	= $this->getColumnasSin($row->origen ,$row->destino);
 					if($columnassin){
-						$id_insert		= $this->getIdSinInsert($source, $target, $id_source, $id_target);	
 						if($id_insert){
 							foreach($id_insert as $id){
 								$sql = "INSERT INTO $row->destino (";
@@ -367,10 +366,9 @@ class Mssql_model extends My_Model {
 												$source.$id_source = '$id->id_faltante'";	
 								
 								$this->db->query($sql);
-								echo $sql;
-								echo "<br>";
-								echo $this->db->insert_id();
-								echo "<br>";	
+								
+								//echo $this->db->insert_id();
+								//echo "<br>";	
 							}
 						}			
 					}
@@ -384,12 +382,12 @@ class Mssql_model extends My_Model {
 			$id_source	= "ven_Cod";//---En caso de cambiar las tablas cambiar el ID---//
 			
 			$tablasin	= $this->getTablasSin($source);
+			$id_insert	= $this->getIdSinInsert($source, $target, $id_source, $id_target);
 			
 			if($tablasin){
 				foreach($tablasin as $row){
 					$columnassin 	= $this->getColumnasSin($row->origen ,$row->destino);
 					if($columnassin){
-						$id_insert		= $this->getIdSinInsert($source, $target, $id_source, $id_target);	
 						if($id_insert){
 							foreach($id_insert as $id){
 								$sql = "INSERT INTO $row->destino (";
@@ -416,10 +414,9 @@ class Mssql_model extends My_Model {
 												$source.$id_source = '$id->id_faltante'";	
 								
 								$this->db->query($sql);
-								echo $sql;
-								echo "<br>";
-								echo $this->db->insert_id();
-								echo "<br>";	
+								
+								//echo $this->db->insert_id();
+								//echo "<br>";		
 							}
 						}			
 					}
@@ -433,14 +430,17 @@ class Mssql_model extends My_Model {
 			$id_source	= "cli_Cod";//---En caso de cambiar las tablas cambiar el ID---//
 			
 			$tablasin	= $this->getTablasSin($source);
+			$id_insert	= $this->getIdSinInsert($source, $target, $id_source, $id_target);
 			
-			if($tablasin){
-				foreach($tablasin as $row){
-					$columnassin 	= $this->getColumnasSin($row->origen ,$row->destino);
-					if($columnassin){
-						$id_insert		= $this->getIdSinInsert($source, $target, $id_source, $id_target);	
-						if($id_insert){
-							foreach($id_insert as $id){
+			if($id_insert){
+				foreach($id_insert as $id){
+					$clientes	= array();
+					$cruce		= array();
+					if($tablasin){
+						foreach($tablasin as $row){
+							$columnassin 	= $this->getColumnasSin($row->origen ,$row->destino);
+							if($columnassin){
+								
 								$sql = "INSERT INTO $row->destino (";
 								
 								foreach($columnassin as $fila){
@@ -463,17 +463,42 @@ class Mssql_model extends My_Model {
 												$source
 											WHERE 
 												$source.$id_source = '$id->id_faltante'";	
+												
+								foreach($columnassin as $fila){
+									$sql .= " AND ".$fila->bj_columna." IS NOT NULL";
+								}
 								
 								$this->db->query($sql);
-								echo $sql;
+								
+								if($row->destino == 'clientes')
+									array_push($clientes, $this->db->insert_id());	
+								else
+									array_push($cruce, $this->db->insert_id());
+								
+								/*echo $sql;
 								echo "<br>";
 								echo $this->db->insert_id();
-								echo "<br>";	
+								echo "<br>";*/
 							}
 						}			
 					}
+					
+					if(count($clientes) > 0){
+						for ($i=0; $i < count($clientes); $i++) {
+							echo "<br>";
+							echo $clientes[$i];
+							echo "<br>";
+							for ($j=0; $j < count($cruce); $j++) { 
+								echo $cruce[$j];	
+								echo "<br>";
+							}
+						}
+					}
+					
 				}
 			}
+
+			
 		}
 	}
 	

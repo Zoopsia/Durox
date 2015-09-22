@@ -243,7 +243,8 @@ class Visitas extends My_Controller {
 			'date_upd'			=> $this->input->post('date_upd'),
 			'valoracion'		=> $this->input->post('star1'),
 			'descripcion'		=> $this->input->post('comentarios'),
-			'visto'				=> $this->input->post('visto')	
+			'visto'				=> $this->input->post('visto'),
+			'eliminado'			=> 0	
 		);
 
 		$id = $this->visitas_model->update($visita,$id_visita);
@@ -398,7 +399,8 @@ class Visitas extends My_Controller {
 				$id = $row->id_visita; 	
 				if($row->id_visita = $this->input->post('id_visita'.$id)){
 					$arreglo = array(
-						'visto'		=> $this->input->post('estado'.$id)
+						'visto'			=> $this->input->post('estado'.$id),
+						'eliminado'		=> 0
 					);
 					$id = $this->visitas_model->update($arreglo, $id);
 				}

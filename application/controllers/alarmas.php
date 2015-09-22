@@ -92,7 +92,8 @@ class Alarmas extends My_Controller {
 		$alarma 	= $this->input->post('alarma');
 		
 		$arreglo 	= array(
-			'visto_back'	=> 1
+			'visto_back'	=> 1,
+			'eliminado'		=> 0
 		);
 		
 		$this->alarmas_model->update($arreglo, $alarma);

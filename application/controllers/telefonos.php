@@ -71,7 +71,8 @@ class Telefonos extends My_Controller {
 				'cod_area' 		=> $this->input->post('cod_area'), 
 				'telefono' 		=> $this->input->post('telefono'), 
 				'id_tipo'		=> $this->input->post('id_tipo'),
-				'fax'			=> $fax,			
+				'fax'			=> $fax,	
+				'eliminado'		=> 0		
 			);
 			
 			$id_telefono = $this->telefonos_model->update($telefono, $id);

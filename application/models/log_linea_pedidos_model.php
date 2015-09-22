@@ -17,5 +17,33 @@ class Log_Linea_Pedidos_model extends My_Model {
 		);
 	}
 		
+	function insertLog(){
+			
+		$session_data = $this->session->userdata('logged_in');
+		
+		if($this->db->field_exists('date_add', $this->_tablename))
+		{
+			$arreglo['date_add'] = date('Y-m-d H:i:s'); 
+		}
+		
+		if($this->db->field_exists('date_upd', $this->_tablename))
+		{
+			$arreglo['date_upd'] = date('Y-m-d H:i:s'); 
+		}
+		
+		if($this->db->field_exists('user_add', $this->_tablename))
+		{
+			$arreglo['user_add'] = $session_data['id_usuario']; 
+		}
+		
+		if($this->db->field_exists('user_upd', $this->_tablename))
+		{
+			$arreglo['user_upd'] = $session_data['id_usuario']; 
+		}
+		
+		$this->db->insert($this->_tablename, $arreglo);
+
+		return $this->db->insert_id();
+	}
 } 
 ?>

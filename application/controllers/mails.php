@@ -72,7 +72,8 @@ class Mails extends My_Controller {
 	
 			$mail	= array(
 				'mail' 			=> $this->input->post('mail'), 
-				'id_tipo'		=> $this->input->post('id_tipo')
+				'id_tipo'		=> $this->input->post('id_tipo'),
+				'eliminado'		=> 0
 			);
 			
 			$id_mail = $this->mails_model->update($mail, $id);
@@ -243,6 +244,15 @@ class Mails extends My_Controller {
 		);
 		
 		$this->mails_model->updateMail($arreglo, 1);
+		
+		$log		= array(
+			'accion'	=> 'UPDATE',
+			'tabla'		=> 'config_mails',
+			'id_cambio'	=> 1
+		);
+		
+		$this->mails_model->logRegistros($log);
+		
 		
 		$db['config_mail']	= $this->mails_model->getConfigMails();
 		

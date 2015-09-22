@@ -97,10 +97,19 @@ class Productos extends My_Controller {
 			'id_origen'		=> 2,
 			'id_db'			=> 0,
 			'user_add'		=> $session_data['id_usuario'],
-			'user_upd'		=> $session_data['id_usuario']
+			'user_upd'		=> $session_data['id_usuario'],
+			'eliminado'		=> 0
 		);
 		
 		$id			= $this->productos_model->update($arreglo,$primary_key);
+		
+		$log		= array(
+			'accion'	=> 'INSERT',
+			'tabla'		=> 'productos',
+			'id_cambio'	=> $primary_key
+		);
+		
+		$this->productos_model->logRegistros($log);
 		
 		return true;
 	}
@@ -186,7 +195,8 @@ class Productos extends My_Controller {
 						'precio'			=> $this->input->post('precio'),		
 						'codigo' 			=> $this->input->post('codigo'),
 						'descripcion'		=> $this->input->post('editor1'),
-						'ficha_tecnica'		=> $ficha_tecnica
+						'ficha_tecnica'		=> $ficha_tecnica,
+						'eliminado'			=> 0
 				);
 			}
 			else{
@@ -194,7 +204,8 @@ class Productos extends My_Controller {
 						'nombre'			=> $this->input->post('nombre'),
 						'precio'			=> $this->input->post('precio'),		
 						'codigo' 			=> $this->input->post('codigo'),
-						'descripcion'		=> $this->input->post('editor1')
+						'descripcion'		=> $this->input->post('editor1'),
+						'eliminado'			=> 0
 				);
 			}
 				
@@ -207,7 +218,8 @@ class Productos extends My_Controller {
 	function editarVisto($id=null){
 		if($id){
 			$arreglo = array(
-				'visto'		=> $this->input->post('visto')
+				'visto'			=> $this->input->post('visto'),
+				'eliminado'		=> 0
 			);
 			$id = $this->productos_model->update($arreglo, $id);
 		}
@@ -219,7 +231,8 @@ class Productos extends My_Controller {
 					$id = $row->id_producto; 	
 					if($row->id_producto = $this->input->post('id_producto'.$id)){
 						$arreglo = array(
-							'visto'		=> $this->input->post('estado'.$id)
+							'visto'			=> $this->input->post('estado'.$id),
+							'eliminado'		=> 0
 						);
 						$id = $this->productos_model->update($arreglo, $id);
 					}

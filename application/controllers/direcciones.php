@@ -75,7 +75,8 @@ class Direcciones extends My_Controller {
 				'id_tipo'				=> $this->input->post('id_tipo'),
 				'id_pais'				=> $this->input->post('id_pais'),
 				'id_provincia'			=> $this->input->post('id_provincia'),
-				'id_departamento'		=> $this->input->post('id_departamento')		
+				'id_departamento'		=> $this->input->post('id_departamento'),
+				'eliminado'				=> 0		
 			);
 			
 			$id_direccion = $this->direcciones_model->update($direccion, $id);	

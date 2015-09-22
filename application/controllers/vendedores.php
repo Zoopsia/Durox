@@ -102,10 +102,19 @@ class Vendedores extends My_Controller {
 			'id_origen'		=> 2,
 			'id_db'			=> 0,
 			'user_add'		=> $session_data['id_usuario'],
-			'user_upd'		=> $session_data['id_usuario']
+			'user_upd'		=> $session_data['id_usuario'],
+			'eliminado'		=> 0
 		);
 		
 		$id			= $this->vendedores_model->update($arreglo,$primary_key);
+		
+		$log		= array(
+			'accion'	=> 'INSERT',
+			'tabla'		=> 'vendedores',
+			'id_cambio'	=> $primary_key
+		);
+		
+		$this->vendedores_model->logRegistros($log);
 		
 		return true;
 	}
@@ -160,7 +169,8 @@ class Vendedores extends My_Controller {
 						'nombre'			=> $this->input->post('nombre'),
 						'apellido'			=> $this->input->post('apellido'),		
 						'pass' 				=> $this->input->post('contraseña'),
-						'imagen'			=> $imagen
+						'imagen'			=> $imagen,
+						'eliminado'			=> 0
 				);
 				
 			}
@@ -168,7 +178,8 @@ class Vendedores extends My_Controller {
 				$vendedor	= array(
 						'nombre'			=> $this->input->post('nombre'),
 						'apellido'			=> $this->input->post('apellido'),		
-						'pass' 				=> $this->input->post('contraseña')
+						'pass' 				=> $this->input->post('contraseña'),
+						'eliminado'			=> 0
 				);
 			}
 				
@@ -251,7 +262,8 @@ class Vendedores extends My_Controller {
 	function editarVisto($id=null){
 		if($id){
 			$arreglo = array(
-				'visto'		=> $this->input->post('visto')
+				'visto'			=> $this->input->post('visto'),
+				'eliminado'		=> 0
 			);
 			$id = $this->vendedores_model->update($arreglo, $id);
 		}
@@ -263,7 +275,8 @@ class Vendedores extends My_Controller {
 					$id = $row->id_vendedor; 	
 					if($row->id_vendedor = $this->input->post('id_vendedor'.$id)){
 						$arreglo = array(
-							'visto'		=> $this->input->post('estado'.$id)
+							'visto'			=> $this->input->post('estado'.$id),
+							'eliminado'		=> 0
 						);
 						$id = $this->vendedores_model->update($arreglo, $id);
 					}

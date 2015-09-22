@@ -66,25 +66,25 @@ class Clientes extends My_Controller {
 			$crud->callback_column('fecha',array($this,'_callback_visita'));
 			
 			$crud->display_as('id_cliente','ID')
+				 ->display_as('razon_social','Razon Social')
 				 ->display_as('nombre','Nombre Contacto')
 				 ->display_as('apellido','Apellido Contacto')
-				 ->display_as('razon_social','Razon Social')
 				 ->display_as('id_grupo_cliente','Grupo')
 				 ->display_as('fecha','Fecha Ultima Visita')
 				 ->display_as('id_iva','Situacion IVA');
 				 
-			$crud->required_fields('nombre',
+			$crud->required_fields('razon_social',
+							'nombre',
 							'apellido',
-							'razon_social',
 							'cuit',
 							'id_grupo_cliente',
 							'id_iva');	 
 			
 			$crud->set_subject('Cliente');
 			
-			$crud->fields(	'nombre',
+			$crud->fields(	'razon_social',
+							'nombre',
 							'apellido',
-							'razon_social',
 							'cuit',
 							'id_grupo_cliente',
 							'id_iva');
@@ -139,10 +139,19 @@ class Clientes extends My_Controller {
 			'id_origen'		=> 2,
 			'id_db'			=> 0,
 			'user_add'		=> $session_data['id_usuario'],
-			'user_upd'		=> $session_data['id_usuario']
+			'user_upd'		=> $session_data['id_usuario'],
+			'eliminado'		=> 0
 		);
 		
 		$id			= $this->clientes_model->update($arreglo,$primary_key);
+		
+		$log		= array(
+			'accion'	=> 'INSERT',
+			'tabla'		=> 'clientes',
+			'id_cambio'	=> $primary_key
+		);
+		
+		$this->clientes_model->logRegistros($log);
 		
 		return true;
 	}
@@ -202,7 +211,8 @@ class Clientes extends My_Controller {
 						'web'				=> $this->input->post('web'),
 						'id_grupo_cliente'	=> $this->input->post('id_grupo_cliente'),
 						'id_iva'			=> $this->input->post('id_iva'),
-						'imagen'			=> $imagen
+						'imagen'			=> $imagen,
+						'eliminado'			=> 0
 				);
 				
 			}
@@ -216,7 +226,8 @@ class Clientes extends My_Controller {
 						'nombre_fantasia'	=> $this->input->post('alias'),
 						'web'				=> $this->input->post('web'),
 						'id_grupo_cliente'	=> $this->input->post('id_grupo_cliente'),
-						'id_iva'			=> $this->input->post('id_iva')
+						'id_iva'			=> $this->input->post('id_iva'),
+						'eliminado'			=> 0
 				);
 			}
 				
@@ -228,7 +239,8 @@ class Clientes extends My_Controller {
 	function editarVisto($id=null){
 		if($id){
 			$arreglo = array(
-				'visto'		=> $this->input->post('visto')
+				'visto'			=> $this->input->post('visto'),
+				'eliminado'		=> 0
 			);
 			$id = $this->clientes_model->update($arreglo, $id);
 		}
@@ -240,7 +252,8 @@ class Clientes extends My_Controller {
 					$id = $row->id_cliente; 	
 					if($row->id_cliente = $this->input->post('id_cliente'.$id)){
 						$arreglo = array(
-							'visto'		=> $this->input->post('estado'.$id)
+							'visto'			=> $this->input->post('estado'.$id),
+							'eliminado'		=> 0
 						);
 						$id = $this->clientes_model->update($arreglo, $id);
 					}

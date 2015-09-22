@@ -61,10 +61,19 @@ class Epocas extends My_Controller {
 		$arreglo	= array(
 			'date_add'		=> date('Y-m-d H:i:s'),
 			'user_add'		=> $session_data['id_usuario'],
-			'user_upd'		=> $session_data['id_usuario']
+			'user_upd'		=> $session_data['id_usuario'],
+			'eliminado'		=> 0
 		);
 		
 		$id			= $this->epocas_model->update($arreglo,$primary_key);
+		
+		$log		= array(
+			'accion'	=> 'INSERT',
+			'tabla'		=> 'epocas_visitas',
+			'id_cambio'	=> $primary_key
+		);
+		
+		$this->epocas_model->logRegistros($log);
 		
 		return true;
 	}
@@ -74,7 +83,8 @@ class Epocas extends My_Controller {
 		$session_data = $this->session->userdata('logged_in');
 		
 		$arreglo	= array(
-			'user_upd'		=> $session_data['id_usuario']
+			'user_upd'		=> $session_data['id_usuario'],
+			'eliminado'		=> 0
 		);
 		
 		$id			= $this->epocas_model->update($arreglo,$primary_key);

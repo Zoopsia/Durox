@@ -160,6 +160,7 @@ class Pedidos extends My_Controller {
 					'aprobado_front'		=> 0,
 					'visto_back'			=> 1,
 					'visto_front'			=> 0,
+					'eliminado'				=> 0
 				);
 			}
 		}
@@ -167,7 +168,8 @@ class Pedidos extends My_Controller {
 		$id = $this->pedidos_model->insert($arreglo);
 		if($id){
 			$estado_presupuesto = array(
-					'id_estado_presupuesto'	=> 2
+					'id_estado_presupuesto'	=> 2,
+					'eliminado'				=> 0
 			);
 			$this->presupuestos_model->update($estado_presupuesto,$id_presupuesto);
 		}
@@ -185,7 +187,8 @@ class Pedidos extends My_Controller {
 						'cantidad'							=> $row->cantidad,
 						'id_estado_producto_pedido'			=> $row->estado_linea,
 						'aprobado_back'						=> 0,
-						'aprobado_front'					=> 1
+						'aprobado_front'					=> 1,
+						'eliminado'							=> 0
 					);
 					$id_linea = $this->pedidos_model->insertLinea($arreglo_linea);
 				}
@@ -203,7 +206,8 @@ class Pedidos extends My_Controller {
 	function editarVisto($id=null){
 		if($id){
 			$arreglo = array(
-				'visto_back'		=> $this->input->post('visto')
+				'visto_back'		=> $this->input->post('visto'),
+				'eliminado'			=> 0
 			);
 			$id = $this->pedidos_model->update($arreglo, $id);
 		}
@@ -215,7 +219,8 @@ class Pedidos extends My_Controller {
 					$id = $row->id_pedido; 	
 					if($row->id_pedido = $this->input->post('id_pedido'.$id)){
 						$arreglo = array(
-							'visto_back'		=> $this->input->post('estado'.$id)
+							'visto_back'		=> $this->input->post('estado'.$id),
+							'eliminado'			=> 0
 						);
 						$id = $this->pedidos_model->update($arreglo, $id);
 					}
@@ -425,7 +430,8 @@ class Pedidos extends My_Controller {
 				'aprobado_front'		=> 0,
 				'visto_back'			=> 0,
 				'visto_front'			=> 0,
-				'iteracion'				=> 0
+				'iteracion'				=> 0,
+				'eliminado'				=> 0
 			);
 		}
 		else{
@@ -436,7 +442,8 @@ class Pedidos extends My_Controller {
 				'aprobado_front'		=> 0,
 				'visto_back'			=> 1,
 				'visto_front'			=> 0,
-				'iteracion'				=> $iteracion + 1
+				'iteracion'				=> $iteracion + 1,
+				'eliminado'				=> 0
 			);
 		}
 
@@ -457,7 +464,7 @@ class Pedidos extends My_Controller {
 					);
 					
 					$id 	= $this->pedidos_model->updateLinea($arreglo,$row->id_linea_producto_pedido);
-					$id_log = $this->log_linea_pedidos_model->insert($arreglo_log);
+					$id_log = $this->log_linea_pedidos_model->insertLog($arreglo_log);
 				}
 				else if($row->estado_linea == 4){//--- Nuevo ---//
 					$arreglo	= array(
@@ -470,7 +477,7 @@ class Pedidos extends My_Controller {
 					);
 					
 					$id 	= $this->pedidos_model->updateLinea($arreglo,$row->id_linea_producto_pedido);
-					$id_log = $this->log_linea_pedidos_model->insert($arreglo_log);
+					$id_log = $this->log_linea_pedidos_model->insertLog($arreglo_log);
 				}
 			}
 		}
@@ -527,7 +534,8 @@ class Pedidos extends My_Controller {
 
 			$arreglo_pedido = array(
 				'id_estado_pedido'		=> 2,
-				'aprobado_back'			=> 1
+				'aprobado_back'			=> 1,
+				'eliminado'				=> 0
 			);
 			
 			$this->pedidos_model->update($arreglo_pedido, $id_pedido);

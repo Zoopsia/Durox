@@ -151,7 +151,8 @@ class Presupuestos extends My_Controller {
 				'id_vendedor' 			=> $this->input->post('id_vendedor'),
 				'fecha'					=> $fecha,
 				'id_origen'				=> 2,
-				'visto_back'			=> 0
+				'visto_back'			=> 0,
+				'eliminado'				=> 0
 			);
 	
 			$id_presupuesto 	= $this->presupuestos_model->insert($presupuesto);
@@ -480,7 +481,8 @@ class Presupuestos extends My_Controller {
 			foreach($cambioEstado as $row){
 				if($visita == $row->id_visita){
 					$arreglo	= array(
-						'id_estado_presupuesto'	=> 3, 	
+						'id_estado_presupuesto'	=> 3,
+						'eliminado'				=> 0	
 					);
 					$id_presupuesto 	= $this->presupuestos_model->update($arreglo,$row->id_presupuesto);	
 				}
@@ -500,13 +502,15 @@ class Presupuestos extends My_Controller {
 			if($bandera==1){
 				$arreglo	= array(
 					'total'					=> $total,
-					'id_estado_presupuesto'	=> 3, 	
+					'id_estado_presupuesto'	=> 3,
+					'eliminado'				=> 0 	
 				);
 			}
 			else{
 				$arreglo	= array(
 					'total'					=> $total,
-					'id_estado_presupuesto'	=> 1, 	
+					'id_estado_presupuesto'	=> 1,
+					'eliminado'				=> 0 	
 				);
 			}
 	
@@ -552,7 +556,9 @@ class Presupuestos extends My_Controller {
 					'id_vendedor'			=> $row->id_vendedor,
 					'id_estado_presupuesto'	=> 1,
 					'total'					=> $row->total,
-					'fecha'					=> date('Y-m-d')	
+					'fecha'					=> date('Y-m-d'),
+					'id_origen'				=> 2,
+						
 				);
 				
 				$arreglo_cruce	= array(
@@ -633,7 +639,8 @@ class Presupuestos extends My_Controller {
 	function editarVisto($id=null){
 		if($id){
 			$arreglo = array(
-				'visto_back'	=> $this->input->post('visto')
+				'visto_back'	=> $this->input->post('visto'),
+				'eliminado'		=> 0
 			);
 			$id = $this->presupuestos_model->update($arreglo, $id);
 		}
@@ -645,7 +652,8 @@ class Presupuestos extends My_Controller {
 					$id = $row->id_presupuesto; 	
 					if($row->id_presupuesto = $this->input->post('id_presupuesto'.$id)){
 						$arreglo = array(
-							'visto_back'	=> $this->input->post('estado'.$id)
+							'visto_back'	=> $this->input->post('estado'.$id),
+							'eliminado'		=> 0
 						);
 						$id = $this->presupuestos_model->update($arreglo, $id);
 					}
