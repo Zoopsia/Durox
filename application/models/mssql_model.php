@@ -327,6 +327,8 @@ class Mssql_model extends My_Model {
 	
 	function mergeTablas($tabla){
 			
+		$session_data = $this->session->userdata('logged_in');
+		
 		if(preg_match("/articulos/i",$tabla)){
 			$source 	= $this->prefijo.strtolower($tabla);
 			$target 	= "productos";
@@ -428,6 +430,7 @@ class Mssql_model extends My_Model {
 			$target 	= "clientes";
 			$id_target	= "id_db";
 			$id_source	= "cli_Cod";//---En caso de cambiar las tablas cambiar el ID---//
+			$id_clave	= "id_cliente";
 			
 			$tablasin	= $this->getTablasSin($source);
 			$id_insert	= $this->getIdSinInsert($source, $target, $id_source, $id_target);
@@ -473,9 +476,9 @@ class Mssql_model extends My_Model {
 								if($row->destino == 'clientes')
 									array_push($clientes, $this->db->insert_id());	
 								else
-									array_push($cruce, $this->db->insert_id());
-								
-								/*echo $sql;
+									$cruce[$row->destino] = $this->db->insert_id();
+								/*
+								echo $sql;
 								echo "<br>";
 								echo $this->db->insert_id();
 								echo "<br>";*/
@@ -485,11 +488,101 @@ class Mssql_model extends My_Model {
 					
 					if(count($clientes) > 0){
 						for ($i=0; $i < count($clientes); $i++) {
-							echo "<br>";
-							echo $clientes[$i];
-							echo "<br>";
-							for ($j=0; $j < count($cruce); $j++) { 
-								echo $cruce[$j];	
+							//--- Datos que no puedo traer de su tabla ---//	
+							$datos_ext	= array(
+								'id_grupo_cliente'	=> 1,
+								'id_iva'			=> 1,
+								'id_origen'			=> 3,
+								'date_add'			=> date('Y-m-d H:i:s'),
+								'date_upd'			=> date('Y-m-d H:i:s'),
+								'eliminado'			=> 0,
+								'user_add'			=> $session_data['id_usuario'],
+								'user_upd'			=> $session_data['id_usuario']
+							);
+							
+							$this->db->where($id_clave, $clientes[$i]);
+							$this->db->update($target, $datos_ext);
+							
+							foreach($cruce as $key => $value) {
+									
+								$tabla = 'sin_clientes_'.$key;
+								
+								if($key == 'direcciones'){
+									$arreglo = array(
+										'id_cliente'	=> $clientes[$i],
+										'id_direccion'	=> $value,
+										'date_add'		=> date('Y-m-d H:i:s'),
+										'date_upd'		=> date('Y-m-d H:i:s'),
+										'eliminado'		=> 0,
+										'user_add'		=> $session_data['id_usuario'],
+										'user_upd'		=> $session_data['id_usuario']
+									);
+									
+									//--- Datos que no puedo traer de su tabla ---//	
+									$datos_perfil  = array(
+										'id_tipo'			=> 1,
+										'date_add'			=> date('Y-m-d H:i:s'),
+										'date_upd'			=> date('Y-m-d H:i:s'),
+										'eliminado'			=> 0,
+										'user_add'			=> $session_data['id_usuario'],
+										'user_upd'			=> $session_data['id_usuario']
+									);
+									
+									$this->db->where('id_direccion', $value);
+									$this->db->update($key, $datos_perfil);
+								} 
+								else if($key == 'telefonos') {
+									$arreglo = array(
+										'id_cliente'	=> $clientes[$i],
+										'id_telefono'	=> $value,
+										'date_add'		=> date('Y-m-d H:i:s'),
+										'date_upd'		=> date('Y-m-d H:i:s'),
+										'eliminado'		=> 0,
+										'user_add'		=> $session_data['id_usuario'],
+										'user_upd'		=> $session_data['id_usuario']
+									);
+									
+									//--- Datos que no puedo traer de su tabla ---//	
+									$datos_perfil	= array(
+										'id_tipo'			=> 1,
+										'date_add'			=> date('Y-m-d H:i:s'),
+										'date_upd'			=> date('Y-m-d H:i:s'),
+										'eliminado'			=> 0,
+										'user_add'			=> $session_data['id_usuario'],
+										'user_upd'			=> $session_data['id_usuario']
+									);
+									
+									$this->db->where('id_telefono', $value);
+									$this->db->update($key, $datos_perfil);
+								}
+								else if($key == 'mails') {
+									$arreglo = array(
+										'id_cliente'	=> $clientes[$i],
+										'id_mail'		=> $value,
+										'date_add'		=> date('Y-m-d H:i:s'),
+										'date_upd'		=> date('Y-m-d H:i:s'),
+										'eliminado'		=> 0,
+										'user_add'		=> $session_data['id_usuario'],
+										'user_upd'		=> $session_data['id_usuario']
+									);
+									
+									//--- Datos que no puedo traer de su tabla ---//	
+									$datos_perfil	= array(
+										'id_tipo'			=> 1,
+										'date_add'			=> date('Y-m-d H:i:s'),
+										'date_upd'			=> date('Y-m-d H:i:s'),
+										'eliminado'			=> 0,
+										'user_add'			=> $session_data['id_usuario'],
+										'user_upd'			=> $session_data['id_usuario']
+									);
+									
+									$this->db->where('id_mail', $value);
+									$this->db->update($key, $datos_perfil);
+								}
+								
+								$this->db->insert($tabla, $arreglo);
+								
+								echo $clientes[$i].' '.$key.' '.$value;	
 								echo "<br>";
 							}
 						}

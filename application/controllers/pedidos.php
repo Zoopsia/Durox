@@ -77,6 +77,8 @@ class Pedidos extends My_Controller {
 							'id_vendedor',
 							'id_estado_pedido',
 							'fecha');
+							
+			$crud->callback_column('fecha',array($this,'_callback_fecha'));
 			
 			$crud->display_as('id_pedido','N° Pedido')
 				 ->display_as('id_cliente','Cliente')
@@ -127,6 +129,11 @@ class Pedidos extends My_Controller {
 	function just_a_test($primary_key , $row)
 	{
 	    return site_url($this->_subject.'/pestanas').'/'.$row->id_pedido;
+	}
+
+	public function _callback_fecha($value, $row){
+		$date = date_create($value);
+		return  "<span style='visibility:hidden;display:none;'>".$value."</span>".date_format($date, 'd/m/Y');
 	}
 	
 	public function carga()

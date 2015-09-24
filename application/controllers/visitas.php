@@ -88,6 +88,8 @@ class Visitas extends My_Controller {
 							'id_cliente',
 							'id_vendedor',
 							'fecha');
+							
+			$crud->callback_column('fecha',array($this,'_callback_fecha'));
 			
 			$crud->display_as('id_visita','N° Visita')
 				 ->display_as('id_cliente','Cliente')
@@ -144,6 +146,11 @@ class Visitas extends My_Controller {
 	{
 		$tipo = 0;	
 	    return site_url($this->_subject.'/carga').'/'.$row->id_visita.'/'.$tipo;
+	}
+	
+	public function _callback_fecha($value, $row){
+		$date = date_create($value);
+		return  "<span style='visibility:hidden;display:none;'>".$value."</span>".date_format($date, 'd/m/Y');
 	}
 	
 	function busqueda(){

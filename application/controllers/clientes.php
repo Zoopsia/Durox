@@ -102,7 +102,7 @@ class Clientes extends My_Controller {
 			$crud->unset_read();
 			$crud->unset_edit();
 			$crud->unset_delete();
-			
+						
 			$output = $crud->render();
 			
 			$this->crud_tabla($output);
@@ -119,7 +119,7 @@ class Clientes extends My_Controller {
 			foreach($fecha as $row){
 				if($row->fecha != NULL){
 					$date = date_create($row->fecha);
-					return date_format($date, 'd/m/Y');
+					return  "<span style='visibility:hidden;display:none;'>".$row->fecha."</span>".date_format($date, 'd/m/Y');
 				}
 				else {
 					return 'Sin Visita';	

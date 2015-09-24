@@ -69,6 +69,8 @@ class Presupuestos extends My_Controller {
 							'id_estado_presupuesto',
 							'fecha');
 			
+			$crud->callback_column('fecha',array($this,'_callback_fecha'));
+			
 			$crud->display_as('id_presupuesto','N° Presupuesto')
 				 ->display_as('id_cliente','Cliente')
 				 ->display_as('id_vendedor','Vendedor')
@@ -115,6 +117,11 @@ class Presupuestos extends My_Controller {
 	function just_a_test($primary_key , $row)
 	{
 	    return site_url($this->_subject.'/pestanas').'/'.$row->id_presupuesto;
+	}
+	
+	public function _callback_fecha($value, $row){
+		$date = date_create($value);
+		return  "<span style='visibility:hidden;display:none;'>".$value."</span>".date_format($date, 'd/m/Y');
 	}
 	
 	public function carga($id_visita=null)

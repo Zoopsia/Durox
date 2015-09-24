@@ -56,7 +56,7 @@ class PDF extends FPDF {
 	    foreach($data as $row)
 	    {
 	    	$this->SetX(15);
-	        $this->Cell($w[0],6,$row->nombre,'LR',0,'C',$fill);
+	        $this->Cell($w[0],6,$row->nombre,'LR',0,'L',$fill);
 			$this->Cell($w[1],6,'$ '.$row->precio,'LR',0,'R',$fill);
 			
 	        $this->Ln();

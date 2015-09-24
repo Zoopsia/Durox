@@ -109,7 +109,9 @@ class Productos_model extends My_Model {
 				FROM 
 					$this->_tablename 
 				WHERE 
-					eliminado = 0";
+					eliminado = 0
+				ORDER BY
+					nombre";
 					
 
 		$query = $this->db->query($sql);
