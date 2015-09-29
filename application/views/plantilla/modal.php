@@ -1,10 +1,5 @@
 <?php $url = current_url();?>
 
-<!------------------------------------------------------------------------
---------------------------------------------------------------------------
-					Modal Visita
---------------------------------------------------------------------------
-------------------------------------------------------------------------->	
 <form action="<?php echo base_url()."index.php/Visitas/editarVisto/"?>" method="post">
 	<div class="modal fade" id="modal_visitas" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg" style="width: 800px">

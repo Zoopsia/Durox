@@ -76,7 +76,7 @@ function redirectAlarm($alarma){
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-warning"></i>
                                 <?php if($cont_alarmas > 0){ ?>
-                                <span class="label label-success"><?php echo $cont_alarmas?></span>
+                                <span class="label label-success info-alarm"><?php echo $cont_alarmas?></span>
                             	<?php } ?>
                             </a>
                             <?php if($cont_alarmas > 0){ ?>
@@ -138,7 +138,7 @@ function redirectAlarm($alarma){
                             <a href="<?php echo base_url()."index.php/Mensajes/verMensajes"?>">
                                 <i class="fa fa-envelope"></i>
                                 <?php if($cont_mensajes > 0){ ?>
-                                <span class="label label-success"><?php echo $cont_mensajes?></span>
+                                <span class="label label-success info-alarm"><?php echo $cont_mensajes?></span>
                             	<?php } ?>
                             </a>
                         </li>
@@ -147,7 +147,7 @@ function redirectAlarm($alarma){
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                 <i class="fa fa-plus-square"></i>
                                 <?php if($mensajes>0){?>
-                                <span class="label label-success"><?php echo $mensajes ?></span>
+                                <span class="label label-success info-alarm"><?php echo $mensajes ?></span>
                                 <?php } ?>
                             </a>
                             <?php if($mensajes>0) { ?>	
