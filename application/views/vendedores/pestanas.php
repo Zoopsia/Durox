@@ -403,8 +403,6 @@ $bandera = 0;
 										            <tr>
 										            	<th><?php echo $this->lang->line('id'); ?></th>
 										            	<th><?php echo $this->lang->line('razon_social'); ?></th>
-										                <th><?php echo $this->lang->line('nombre'); ?></th>
-										                <th><?php echo $this->lang->line('apellido'); ?></th>
 										                <th style="text-align: center"><?php echo $this->lang->line('acciones'); ?></th>
 										            </tr>
 										        </thead>
@@ -413,8 +411,6 @@ $bandera = 0;
 										            <tr>
 										            	<th><?php echo $this->lang->line('id'); ?></th>
 										            	<th><?php echo $this->lang->line('razon_social'); ?></th>
-										                <th><?php echo $this->lang->line('nombre'); ?></th>
-										                <th><?php echo $this->lang->line('apellido'); ?></th>
 										                <th style="text-align: center"><?php echo $this->lang->line('acciones'); ?></th>
 										            </tr>
 										        </tfoot>
@@ -430,8 +426,6 @@ $bandera = 0;
 																      		echo '<tr>';
 																			echo '<td>'.$row->id_cliente.'</td>';
 																			echo '<td>'.$row->razon_social.'</td>';
-																			echo '<td>'.$row->nombre.'</td>';
-																			echo "<td>".$row->apellido."</td>";
 																			echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs' style='margin : 0 5px'>";
 																			echo '<i class="fa fa-search"></i>';
 																			echo "</a>";
@@ -458,8 +452,6 @@ $bandera = 0;
 										            <tr>
 										            	<th><?php echo $this->lang->line('id'); ?></th>
 										            	<th><?php echo $this->lang->line('razon_social'); ?></th>
-										                <th><?php echo $this->lang->line('nombre'); ?></th>
-										                <th><?php echo $this->lang->line('apellido'); ?></th>
 										                <th><?php echo $this->lang->line('date'); ?></th>
 										                <th style="text-align: center"><?php echo $this->lang->line('acciones'); ?></th>
 										            </tr>
@@ -469,8 +461,6 @@ $bandera = 0;
 										            <tr>
 										            	<th><?php echo $this->lang->line('id'); ?></th>
 										            	<th><?php echo $this->lang->line('razon_social'); ?></th>
-										                <th><?php echo $this->lang->line('nombre'); ?></th>
-										                <th><?php echo $this->lang->line('apellido'); ?></th>
 										                <th><?php echo $this->lang->line('date'); ?></th>
 										                <th style="text-align: center"><?php echo $this->lang->line('acciones'); ?></th>
 										            </tr>
@@ -486,8 +476,6 @@ $bandera = 0;
 															      		echo '<tr>';
 																		echo '<td>'.$row->id_cliente.'</td>';
 																		echo '<td>'.$row->razon_social.'</td>';
-																		echo '<td>'.$row->nombre.'</td>';
-																		echo "<td>".$row->apellido."</td>";
 																		$date = date_create($key->date_upd);
 																		echo "<td><span style='visibility:hidden;display:none;'>".$key->date_upd."</span>".date_format($date, 'd/m/Y');
 																		echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs' style='margin : 0 5px'>";
@@ -516,8 +504,6 @@ $bandera = 0;
 											            <tr>
 											            	<th><?php echo $this->lang->line('id'); ?></th>
 											            	<th><?php echo $this->lang->line('razon_social'); ?></th>
-											                <th><?php echo $this->lang->line('nombre'); ?></th>
-											                <th><?php echo $this->lang->line('apellido'); ?></th>
 											                <th style="text-align: center"><?php echo $this->lang->line('acciones'); ?></th>
 											            </tr>
 											        </thead>
@@ -526,8 +512,6 @@ $bandera = 0;
 											            <tr>
 											            	<th><?php echo $this->lang->line('id'); ?></th>
 											            	<th><?php echo $this->lang->line('razon_social'); ?></th>
-											                <th><?php echo $this->lang->line('nombre'); ?></th>
-											                <th><?php echo $this->lang->line('apellido'); ?></th>
 											                <th style="text-align: center"><?php echo $this->lang->line('acciones'); ?></th>
 											            </tr>
 											        </tfoot>
@@ -553,8 +537,6 @@ $bandera = 0;
 																				echo '<tr>';
 																				echo '<td>'.$row->id_cliente.'</td>';
 																				echo '<td>'.$row->razon_social.'</td>';
-																				echo '<td>'.$row->nombre.'</td>';
-																				echo "<td>".$row->apellido."</td>";
 																				echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/cargarCliente/".$row->id_cliente."/".$value->id_vendedor."' class='btn btn-success btn-xs' role='button'>";
 																				echo '<i class="fa fa-plus"></i>';
 																				echo "</a></td>";
@@ -570,8 +552,6 @@ $bandera = 0;
 																			echo '<tr>';
 																			echo '<td>'.$row->id_cliente.'</td>';
 																			echo '<td>'.$row->razon_social.'</td>';
-																			echo '<td>'.$row->nombre.'</td>';
-																			echo "<td>".$row->apellido."</td>";
 																			echo "<td style='text-align: center;'><a href='".base_url()."index.php/Vendedores/cargarCliente/".$row->id_cliente."/".$value->id_vendedor."' class='btn btn-success btn-xs' role='button'>";
 																			echo '<i class="fa fa-plus"></i>';
 																			echo "</a></td>";

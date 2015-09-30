@@ -374,18 +374,21 @@ class Mssql_model extends My_Model {
 			$target 	= "productos";
 			$id_target	= "id_db";
 			$id_source	= "art_CodGen";//---En caso de cambiar las tablas cambiar el ID---//
+			$id_clave	= "id_producto";
 			
 			$tablasin	= $this->getTablasSin($source);
 			$id_insert	= $this->getIdSinInsert($source, $target, $id_source, $id_target);
 			
 			$cantidad_articulos = 0;
 			
-			if($tablasin){
-				foreach($tablasin as $row){
-					$columnassin 	= $this->getColumnasSin($row->origen ,$row->destino);
-					if($columnassin){
-						if($id_insert){
-							foreach($id_insert as $id){
+			if($id_insert){
+				foreach($id_insert as $id){
+					$productos	= array();
+					if($tablasin){
+						foreach($tablasin as $row){
+							$columnassin 	= $this->getColumnasSin($row->origen ,$row->destino);
+							if($columnassin){
+								
 								$sql = "INSERT INTO $row->destino (";
 								
 								foreach($columnassin as $fila){
@@ -411,10 +414,30 @@ class Mssql_model extends My_Model {
 								
 								$this->db->query($sql);
 								
-								$cantidad_articulos++;
+								if($row->destino == 'productos'){
+									array_push($productos, $this->db->insert_id());	
+									$cantidad_articulos++;
+								}
+								
 							}
 						}			
 					}
+					if(count($productos) > 0){
+						for ($i=0; $i < count($productos); $i++) {
+							//--- Datos que no puedo traer de su tabla ---//	
+							$datos_ext	= array(
+								'id_origen'			=> 3,
+								'date_add'			=> date('Y-m-d H:i:s'),
+								'date_upd'			=> date('Y-m-d H:i:s'),
+								'eliminado'			=> 0,
+								'user_add'			=> $session_data['id_usuario'],
+								'user_upd'			=> $session_data['id_usuario']
+							);
+							
+							$this->db->where($id_clave, $productos[$i]);
+							$this->db->update($target, $datos_ext);
+						}
+					}		
 				}
 			}
 			
@@ -582,8 +605,8 @@ class Mssql_model extends My_Model {
 								
 								$this->db->insert($tabla, $arreglo);
 								
-								echo $vendedores[$i].' '.$key.' '.$value;	
-								echo "<br>";
+								//echo $vendedores[$i].' '.$key.' '.$value;	
+								//echo "<br>";
 							}
 						}
 					}
@@ -756,8 +779,8 @@ class Mssql_model extends My_Model {
 								
 								$this->db->insert($tabla, $arreglo);
 								
-								echo $clientes[$i].' '.$key.' '.$value;	
-								echo "<br>";
+								//echo $clientes[$i].' '.$key.' '.$value;	
+								//echo "<br>";
 							}
 						}
 					}

@@ -114,7 +114,7 @@ body,html{
     opacity: 1;
   }
   section{
-    padding-left: 15px;
+   /* padding-left: 15px;*/
   }
   #nav{
 		display: block;
@@ -532,4 +532,11 @@ div.mensajeria{
 	margin-top: 10px; 
 	position: absolute !important; 
 	z-index: 1000;
+}
+
+div.user-panel{
+	background-color: white;
+	border-right-style: inset;
+	border-right-width: 1px;
+	border-right-color: #F1F1F1;
 }

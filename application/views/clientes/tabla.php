@@ -35,3 +35,12 @@ foreach($css_files as $file):
 <?php foreach($js_files as $file): ?>
 	<script src="<?php echo $file; ?>"></script>
 <?php endforeach; ?>
+<script>
+$(function() {
+	startTime();
+    $(".center").center();
+    $(window).resize(function() {
+    	$(".center").center();
+    });
+});
+</script>

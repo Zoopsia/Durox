@@ -86,3 +86,12 @@
 </div>  
 
 <script src=<?php echo base_url().'libraries/main/views/alarmas/js/tabla.js'?>></script>
+<script>
+$(function() {
+	startTime();
+    $(".center").center();
+    $(window).resize(function() {
+    	$(".center").center();
+    });
+});
+</script>

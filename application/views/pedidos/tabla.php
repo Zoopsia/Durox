@@ -43,3 +43,12 @@ foreach($css_files as $file): ?>
 	</div>
 </nav>
 -->
+<script>
+$(function() {
+	startTime();
+    $(".center").center();
+    $(window).resize(function() {
+    	$(".center").center();
+    });
+});
+</script>

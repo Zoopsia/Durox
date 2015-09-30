@@ -28,8 +28,8 @@ class Usuarios_model extends My_Model {
 		$sql = 
 		"SELECT 
 			id_usuario, 
-			usuario, 
-			pass 
+			usuario,
+			imagen 
 		FROM 
 			usuarios
 		WHERE

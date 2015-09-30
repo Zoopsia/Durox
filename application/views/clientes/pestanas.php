@@ -122,7 +122,7 @@ $bandera = 0;
 											                	echo  "<input type='text' name='web' id='web' class='form-control editable cambio web' pattern='^www.[a-zA-Z0.9._- ]{4,}$' value='".$row->web."' placeholder='www.sitio-web.com' autocomplete='off' readonly onclick=\"javascript:window.open('https://".$row->web."/')\">";											                
 															}
 															else{
-																echo  "<input type='text' name='web' id='web' class='form-control editable cambio web' pattern='^www.[a-zA-Z0.9._- ]{4,}$' placeholder='www.sitio-web.com' autocomplete='off' disable>";
+																echo  "<input type='text' name='web' id='web' class='form-control editable cambio web' pattern='^www.[a-zA-Z0.9._- ]{4,}$' placeholder='www.sitio-web.com' autocomplete='off' disabled>";
 															}
 											                echo  "</td>";
 											                echo  "</tr>";

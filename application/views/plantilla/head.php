@@ -20,11 +20,9 @@
 		----------------------------------------------------------------------
 		--------------------------------------------------------------------->
 		
-		<script src="<?php echo base_url().'libraries/jquery-ui/jquery-ui.js'?>"></script>
 		<link href="<?php echo base_url()?>libraries/plantilla/css/jQueryUI/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+		<script src="<?php echo base_url().'libraries/jquery-ui/jquery-ui.js'?>"></script>
 		
-
-
 		<!--------------------------------------------------------------------
 		----------------------------------------------------------------------
 								Chosen
@@ -113,4 +111,4 @@
           <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
           <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
-    </head>
+	</head>

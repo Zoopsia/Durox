@@ -662,9 +662,9 @@ class Pedidos extends My_Controller {
 		}
 		$cuerpo = str_replace("#pedido#", $row->id_pedido, $cuerpo);
 		$cuerpo = str_replace("#total#", $row->total, $cuerpo);
-		$date	 = date_create($row->fecha);
+		$date	= date_create($row->fecha);
 		$cuerpo = str_replace("#fecha#", fechaEspañol(date_format($date, 'l j F, Y')), $cuerpo);
-		$date2	 = date_create($row->date_upd);
+		$date2	= date_create($row->date_upd);
 		$cuerpo = str_replace("#fecha_aprobado#", fechaEspañol(date_format($date2, 'l j F')), $cuerpo);
 		$cuerpo = str_replace("#visita#", $row->id_visita, $cuerpo);
 		$cuerpo = str_replace("#presupuesto#", $row->id_presupuesto, $cuerpo);

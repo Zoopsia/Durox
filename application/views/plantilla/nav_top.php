@@ -230,7 +230,7 @@ function redirectAlarm($alarma){
                             <ul class="dropdown-menu">
                                 <!-- User image -->
                                 <li class="user-header bg-light-blue">
-                                    <img src="<?php echo base_url()?>libraries/plantilla/img/avatar3.png" class="img-circle" alt="User Image" />
+                                    <img src="<?php echo $session_data['imagen'] ?>" class="img-circle" alt="User Image" />
                                     <p>
                                         <?php echo $session_data['usuario'] ?>
                                         <small>Administrador</small>

@@ -41,3 +41,12 @@ if($this->uri->segment(3)!='add')
 		</div><!--panel-->
 	</div><!--contenedor-->
 </div>  
+<script>
+$(function() {
+	startTime();
+    $(".center").center();
+    $(window).resize(function() {
+    	$(".center").center();
+    });
+});
+</script>
