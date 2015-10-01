@@ -182,5 +182,57 @@ class Vendedores_model extends My_Model {
 			return FALSE;
 		}
 	}
+	
+	function traerDatosDBExterna($id){
+		
+		$tabla			= 'bj_web_vendedor';
+		$prikey_tabla	= 'ven_Cod';
+		$campos			= array();
+		
+		$sql = "SELECT 
+					id_db 
+				FROM 
+					$this->_tablename  
+				WHERE 
+					$this->_id_table = '$id'";
+						
+		$vendedor = $this->db->query($sql);
+		
+		if($vendedor->num_rows() > 0){
+			foreach ($vendedor->result_array() as $vendedor){
+			
+				$sql = "SHOW COLUMNS FROM durox.$tabla";
+				
+				$query = $this->db->query($sql);
+				
+				if($query->num_rows() > 0){
+					foreach ($query->result() as $fila){
+						$sql1= "SELECT
+									$fila->Field
+								FROM
+									$tabla
+								WHERE
+									$prikey_tabla = ".$vendedor['id_db']."";
+									
+						$query1 = $this->db->query($sql1);
+						
+						
+						if($query1->num_rows() > 0)
+						{
+							foreach ($query1->result_array() as $row)
+							{
+								$campos[$fila->Field]	= $row[$fila->Field];
+							}
+						}
+					}
+				}
+				
+				return $campos;
+			}
+		}
+		else {
+			return FALSE;
+		}
+	}
 } 
 ?>

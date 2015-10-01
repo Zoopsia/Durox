@@ -148,6 +148,9 @@ $bandera = 0;
 				<li class="active"><a href="#tab1" data-toggle="tab">
 					<i class="fa fa-archive"></i> <?php echo $this->lang->line('producto'); ?>
 				</a></li>
+				<?php if($datosDB) { ?>
+				<li><a href="#tab3" data-toggle="tab"><?php echo $this->lang->line('db').' '.$this->lang->line('externa'); ?></a></li>
+				<?php } ?>
 				<li style="position: absolute; right: 30px">
 					<a href="#tab2" data-toggle="tab"><?php echo $this -> lang -> line('alarmas'); ?>
 						<span class="badge">
@@ -447,11 +450,56 @@ $bandera = 0;
 					</div>
 	                </form>		
 				</div>
+				<div class="tab-pane fade" id="tab3">
+	    			<div class="row" style="padding: 0px 10px 0px 10px;">
+		    			<div class=" col-md-6 col-lg-6 "><!--carga info cliente-->
+							<table class="table table-striped table-user-information"> 
+							    <tbody>
+							    <?php
+							    	if($datosDB){
+							   			$cant_datos = count($datosDB);
+										$i = 0;
+							    		foreach ($datosDB as $key => $value) {
+							    			if($i > $cant_datos/2)
+												break;
+											else
+												$i++;										    								
+										    echo "<tr>";
+											echo '<td class="padtop border-right"><b>'.$key.':</b></td>';
+											echo '<td class="padtop text-center">'.$value.'</td>';
+											echo "</tr>";												
+										}
+							    	}
+							    ?>
+								</tbody>
+							</table>
+						</div>
+						<div class=" col-md-6 col-lg-6 "><!--carga info cliente-->
+							<table class="table table-striped table-user-information"> 
+					    		<tbody>
+							    <?php
+								    if($datosDB){
+									    $j = 0;
+									    foreach ($datosDB as $key => $value) {
+									    	if($j>=$i){
+												echo "<tr>";
+												echo '<td class="padtop border-right"><b>'.$key.':</b></td>';
+												echo '<td class="padtop text-center">'.$value.'</td>';
+												echo "</tr>";
+											}
+											$j++;
+										}
+								    }
+							    ?>
+								</tbody>
+							</table>
+						</div>
+					</div>
+	    		</div>
 			</div>
-		</div>  		
+		</div>
 	</div>
 </div>
- 
 		
 		
 <!-- Modal Precios -->

@@ -35,6 +35,7 @@ class Clientes extends My_Controller {
 		$db['grupos']		= $this->grupos_model->getTodo();
 		$db['alarmas']		= $this->clientes_model->getAlarmas($id);
 		$db['tipos_alarmas']= $this->clientes_model->getTodo('tipos_alarmas');
+		$db['datosDB']		= $this->clientes_model->traerDatosDBExterna($id);
 		$db['id']			= $id;
 		
 		

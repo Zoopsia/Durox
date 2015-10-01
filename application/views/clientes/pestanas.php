@@ -17,6 +17,9 @@ $bandera = 0;
 									foreach ($clientes as $row){
 										if($row->eliminado != 1){
 							?>
+							<?php if($datosDB) { ?>
+							<li><a href="#tab8" data-toggle="tab"><?php echo $this->lang->line('db').' '.$this->lang->line('externa'); ?></a></li>
+					    	<?php } ?>
 					    	<li><a href="#tab2" data-toggle="tab"><?php echo $this->lang->line('vendedores'); ?></a></li>
 					    	<li><a href="#tab3" data-toggle="tab"><?php echo $this->lang->line('perfiles'); ?></a></li>
 					    	<li><a href="#tab4" data-toggle="tab"><?php echo $this->lang->line('pedidos'); ?></a></li>
@@ -894,6 +897,53 @@ $bandera = 0;
 	                           		</div>
 	                           </div>
 	                           </form>
+	    					</div>
+	    					<div class="tab-pane fade" id="tab8">
+	    						<div class="row" style="padding: 0px 10px 0px 10px;">
+		    						<div class=" col-md-6 col-lg-6 "><!--carga info cliente-->
+							            <table class="table table-striped table-user-information"> 
+				    						<tbody>
+				    						<?php
+				    						if($datosDB){
+				    							$cant_datos = count($datosDB);
+												$i = 0;
+				    							foreach ($datosDB as $key => $value) {
+				    								if($i > $cant_datos/2)
+														break;
+													else
+														$i++;
+																    								
+				    								echo "<tr>";
+													echo '<td class="padtop border-right"><b>'.$key.':</b></td>';
+													echo '<td class="padtop text-center">'.$value.'</td>';
+													echo "</tr>";												
+												}
+				    						}
+				    						?>
+							            	</tbody>
+							        	</table>
+							        </div>
+							        <div class=" col-md-6 col-lg-6 "><!--carga info cliente-->
+							            <table class="table table-striped table-user-information"> 
+				    						<tbody>
+				    						<?php
+				    						if($datosDB){
+				    							$j = 0;
+				    							foreach ($datosDB as $key => $value) {
+				    								if($j>=$i){
+					    								echo "<tr>";
+														echo '<td class="padtop border-right"><b>'.$key.':</b></td>';
+														echo '<td class="padtop text-center">'.$value.'</td>';
+														echo "</tr>";	
+													}
+													$j++;									
+												}
+				    						}
+				    						?>
+							            	</tbody>
+							        	</table>
+							        </div>
+						        </div>
 	    					</div>
 	    				</div><!--contenedor de cada pestaña-->	
 		  			</div><!--panel body-->

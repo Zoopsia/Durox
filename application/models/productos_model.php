@@ -130,5 +130,56 @@ class Productos_model extends My_Model {
 		}
 	}
 			
+	function traerDatosDBExterna($id){
+		
+		$tabla			= 'bj_web_articulos';
+		$prikey_tabla	= 'art_CodGen';
+		$campos			= array();
+		
+		$sql = "SELECT 
+					id_db 
+				FROM 
+					$this->_tablename  
+				WHERE 
+					$this->_id_table = '$id'";
+						
+		$producto = $this->db->query($sql);
+		
+		if($producto->num_rows() > 0){
+			foreach ($producto->result_array() as $producto){
+			
+				$sql = "SHOW COLUMNS FROM durox.$tabla";
+				
+				$query = $this->db->query($sql);
+				
+				if($query->num_rows() > 0){
+					foreach ($query->result() as $fila){
+						$sql1= "SELECT
+									$fila->Field
+								FROM
+									$tabla
+								WHERE
+									$prikey_tabla = '".$producto['id_db']."'";
+									
+						$query1 = $this->db->query($sql1);
+						
+						
+						if($query1->num_rows() > 0)
+						{
+							foreach ($query1->result_array() as $row)
+							{
+								$campos[$fila->Field]	= $row[$fila->Field];
+							}
+						}
+					}
+				}
+				
+				return $campos;
+			}
+		}
+		else {
+			return FALSE;
+		}
+	}
 } 
 ?>

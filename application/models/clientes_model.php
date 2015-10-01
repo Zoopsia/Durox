@@ -174,6 +174,7 @@ class Clientes_model extends My_Model {
 	}
 	
 	function traerUltimaVisita($id){
+	
 		$sql = "SELECT 
 					MAX(fecha) AS fecha
 				FROM 
@@ -195,6 +196,58 @@ class Clientes_model extends My_Model {
 		}
 		else
 		{
+			return FALSE;
+		}
+	}
+	
+	function traerDatosDBExterna($id){
+		
+		$tabla			= 'bj_web_clientes';
+		$prikey_tabla	= 'cli_Cod';
+		$campos			= array();
+		
+		$sql = "SELECT 
+					id_db 
+				FROM 
+					$this->_tablename  
+				WHERE 
+					$this->_id_table = '$id'";
+						
+		$cliente = $this->db->query($sql);
+		
+		if($cliente->num_rows() > 0){
+			foreach ($cliente->result_array() as $cliente){
+			
+				$sql = "SHOW COLUMNS FROM durox.$tabla";
+				
+				$query = $this->db->query($sql);
+				
+				if($query->num_rows() > 0){
+					foreach ($query->result() as $fila){
+						$sql1= "SELECT
+									$fila->Field
+								FROM
+									$tabla
+								WHERE
+									$prikey_tabla = ".$cliente['id_db']."";
+									
+						$query1 = $this->db->query($sql1);
+						
+						
+						if($query1->num_rows() > 0)
+						{
+							foreach ($query1->result_array() as $row)
+							{
+								$campos[$fila->Field]	= $row[$fila->Field];
+							}
+						}
+					}
+				}
+				
+				return $campos;
+			}
+		}
+		else {
 			return FALSE;
 		}
 	}

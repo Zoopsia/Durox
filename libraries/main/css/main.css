@@ -459,6 +459,12 @@ input.web:hover{
 	height: 51px;
 }
 
+.border-right{
+	border-right: #DDDDDD;
+    border-right-style: inset;
+    border-right-width: thin;
+}
+
 .btn-file {
     position: relative;
     overflow: hidden;

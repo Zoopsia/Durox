@@ -30,6 +30,7 @@ class Productos extends My_Controller {
 		$db['precios'] 			= $this->productos_model->getPrecios();
 		$db['alarmas']			= $this->productos_model->getAlarmas($id);
 		$db['tipos_alarmas']	= $this->productos_model->getTodo('tipos_alarmas');
+		$db['datosDB']			= $this->productos_model->traerDatosDBExterna($id);
 
 		$this->cargar_vista($db, 'pestanas');			
 	}

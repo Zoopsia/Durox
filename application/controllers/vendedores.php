@@ -33,6 +33,7 @@ class Vendedores extends My_Controller {
 		$db['visitas']		= $this->vendedores_model->getVisitas($id);
 		$db['alarmas']		= $this->vendedores_model->getAlarmas($id);
 		$db['tipos_alarmas']= $this->vendedores_model->getTodo('tipos_alarmas');
+		$db['datosDB']		= $this->vendedores_model->traerDatosDBExterna($id);
 		$db['id']			= $id;
 		
 		$db['cruce']		= $this->vendedores_model->sinCruce($id);

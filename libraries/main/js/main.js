@@ -132,7 +132,7 @@ function startTime(){
     	h -= 12;
 
 	//Add time to the headline and update every 500 milliseconds
-    $('#time').html(h + ":" + m + ":" + s + " " + day_or_night);
+    $('#time').html("<i class='fa fa-clock-o'></i> " + h + ":" + m + ":" + s + " " + day_or_night);
     setTimeout(function() {
     	startTime();
     }, 500);
