@@ -234,5 +234,29 @@ class Vendedores_model extends My_Model {
 			return FALSE;
 		}
 	}
+	
+	function login($username, $password){
+		$sql = 
+		"SELECT 
+			id_vendedor, 
+			nombre, 
+			pass 
+		FROM 
+			vendedores
+		WHERE
+			nombre = '$username' AND 
+			pass = '$password'";
+		
+		$query = $this->db->query($sql);		
+		
+		if($query->num_rows() == 1)
+		{
+			return $query->result();
+		}
+		else
+		{
+			return false;
+		}
+	}
 } 
 ?>

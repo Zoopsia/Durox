@@ -15,7 +15,7 @@
 				<div class="mailbox row">
                 	<div class="col-xs-12">
                     	<div class="col-md-3 col-sm-4">
-                        	<a class="btn btn-block btn-primary" data-toggle="modal" data-target="#compose-modal"><i class="fa fa-pencil"></i><?php echo ' '.$this->lang->line('redactar').' '.$this->lang->line('mensaje');?></a>
+                        	<a class="btn btn-block btn-primary" data-toggle="modal" data-target="#modal_mensajes"><i class="fa fa-pencil"></i><?php echo ' '.$this->lang->line('redactar').' '.$this->lang->line('mensaje');?></a>
                             <!-- Navigation - folders-->
                             <div style="margin-top: 15px;" id="div-prueba">
 	                            <ul class="nav nav-pills nav-stacked">
@@ -269,6 +269,43 @@
 		</div><!--panel-->
 	</div><!--contenedor-->
 </div> 
+
+<form id="mensajeria" action="<?php echo base_url()."index.php/Mensajes/nuevoMensaje" ?>" method="post">
+	<div class="modal fade" id="modal_mensajes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog modal-lg" style="width: 800px">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	      	<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	      	<h4 class="modal-title"><i class="fa fa-envelope"></i><?php echo ' '.$this->lang->line('mensaje').' '.$this->lang->line('nuevo'); ?></h4>
+	      </div>
+	      <div class="modal-body">
+	      	<div class="form-group">
+            	<select name="para[]" class="form-control chosen-select" multiple  data-placeholder="Enviar a: " required>
+                	<?php
+                	if($vendedores){
+                		foreach($vendedores as $vendedor){
+                			echo '<option value="'.$vendedor->id_vendedor.'">'.$vendedor->nombre.' '.$vendedor->apellido.'</option>';
+                		}
+                	}
+					?>
+                	<option value="0">Todos</option>
+                </select>
+          	</div>
+            <div class="form-group">
+                <input type="text" class="form-control" name="asunto" placeholder="Asunto "/ required>
+            </div>
+            <div>
+                <textarea class="no-textarea" name="mensaje" placeholder="Mensaje" style="width: 100%; height: 125px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;" required></textarea>
+          	</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	        <button type="submit" form="mensajeria" class="pull-right btn btn-default" id="sendEmail">Crear <i class="fa fa-arrow-circle-right"></i></button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+</form>
 
 <script>
 function mostrarMensaje($id){

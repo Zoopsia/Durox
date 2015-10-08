@@ -429,7 +429,7 @@ input#cantidad{
 
 .editable{
 	padding: 0 !important;
-	cursor: text !important;
+	cursor: default !important;
 	border: transparent !important;
     background-color: transparent !important;
     width: auto !important;

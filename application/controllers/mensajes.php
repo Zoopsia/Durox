@@ -22,6 +22,7 @@ class Mensajes extends My_Controller {
 		$db['recibidos']	= $this->mensajes_model->mensajesNuevos();
 		$db['enviados']		= $this->mensajes_model->mensajesEnviados();
 		$db['papelera']		= $this->mensajes_model->mensajesBorrados();
+		$db['vendedores'] 	= $this->vendedores_model->getTodo();
 		
 		$this->cargar_vista($db, 'tabla');
 	}

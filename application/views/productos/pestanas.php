@@ -14,7 +14,7 @@ $(function() {
 if($productos){
 	foreach($productos as $row){
 		echo "var precio =".$row->precio.";";
-		echo "var descripcion ='".trim($row->descripcion)."';";
+		echo "var descripcion ='".trim(strip_tags($row->descripcion))."';";
 	}
 }
 ?>
@@ -62,8 +62,8 @@ function cancelar(){
 			if($productos){
 				foreach($productos as $row){
 					echo "$('#nombre').val('".$row->nombre."');";
-					echo "$('#precio').val('$ ".$row->precio."');";	
-					echo "$('#textarea').html('<blockquote><em>".trim($row->descripcion)."</em></blockquote>');";
+					echo "$('#precio').val('".$row->abreviatura.$row->simbolo.' '.$row->precio."');";	
+					echo "$('#textarea').html('<blockquote><em>".trim(strip_tags($row->descripcion))."</em></blockquote>');";
 					if($row->ficha_tecnica)
 						echo "$('#ficha_tecnica').val('".$row->ficha_tecnica."');";	
 					if($row->codigo)
@@ -232,7 +232,7 @@ $bandera = 0;
 												echo  "</tr>";
 												echo  "<tr>";
 												echo  '<td class="padtop">'.$this->lang->line('precio').':</td>';
-												echo  '<td class="tabla-datos-importantes"><input type="text" name="precio" id="precio" class="form-control editable cambio" pattern="[0-9]*.{1,}" value="$ '.$row->precio.'" placeholder="'.$this->lang->line('precio').'" autocomplete="off" disabled required></td>';
+												echo  '<td class="tabla-datos-importantes"><input type="text" name="precio" id="precio" class="form-control editable cambio" pattern="[0-9]*.{1,}" value="'.$row->abreviatura.$row->simbolo.' '.$row->precio.'" placeholder="'.$this->lang->line('precio').'" autocomplete="off" disabled required></td>';
 												echo  "</tr>";
 												echo  "<tr>";
 												echo  '<td class="padtop">'.$this->lang->line('codigo').':</td>';
@@ -310,6 +310,8 @@ $bandera = 0;
 												}
 											
 												$precio_base = $row->precio;
+												$simbolo	 = $row->simbolo;
+												$abreviatura = $row->abreviatura;
 											}
 										}
 									?>
@@ -529,7 +531,7 @@ $bandera = 0;
 							{
 								echo '<tr>
 									      <td>'.$this->lang->line('precio').' '.$this->lang->line('base').'</td>
-										  <td>$ '.$precio_base.'</td>
+										  <td>'.$abreviatura.$simbolo.' '.$precio_base.'</td>
 									 </tr>';		
 							}
 							else
@@ -547,7 +549,7 @@ $bandera = 0;
 									$preciofinal	= round($precio_base + $descuento, 2);
 								}		  
 										  
-								echo '<td>$ '.$preciofinal.'</td>';
+								echo '<td>'.$abreviatura.$simbolo.' '.$preciofinal.'</td>';
 								echo '</tr>';	
 							}
 						}

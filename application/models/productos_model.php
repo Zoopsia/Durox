@@ -21,6 +21,45 @@ class Productos_model extends My_Model {
 		);
 	}
 	
+/*--------------------------------------------------------------------------------	
+ --------------------------------------------------------------------------------
+ 			Función para traer registro por ID
+ --------------------------------------------------------------------------------
+ --------------------------------------------------------------------------------*/
+	
+	function getRegistro($id){
+		$sql = "SELECT 
+					$this->_tablename.*,
+					monedas.moneda,
+					monedas.abreviatura,
+					monedas.simbolo,
+					monedas.valor
+				FROM 
+					$this->_tablename 
+				LEFT JOIN 
+					monedas
+				USING
+					(id_moneda)
+				WHERE 
+					$this->_id_table = '$id'";
+		
+		$query = $this->db->query($sql);
+		
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+			return $data;
+		}
+		else
+		{
+			return FALSE;
+		}
+	}
+
+
 	function getImagenes($id){
 		$this->db->select('*');
 		$this->db->from('productos_imagenes');

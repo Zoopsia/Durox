@@ -161,11 +161,13 @@ $eliminado = 0;
 									$date = date_create($row -> fecha);
 									echo $this -> lang -> line('fecha') . ': ' . date_format($date, 'd/m/Y');
 									echo "</div>";
-									foreach ($epocas as $key) {
-										if ($key -> id_epoca_visita == $row -> id_epoca_visita) {
-											echo '<div class="odd">';
-											echo $this -> lang -> line('epoca') . ': ' . $key -> epoca;
-											echo "</div>";
+									if($epocas){
+										foreach ($epocas as $key) {
+											if ($key -> id_epoca_visita == $row -> id_epoca_visita) {
+												echo '<div class="odd">';
+												echo $this -> lang -> line('epoca') . ': ' . $key -> epoca;
+												echo "</div>";
+											}
 										}
 									}
 									if ($row -> id_epoca_visita == 0) {

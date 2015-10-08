@@ -54,17 +54,20 @@ class Productos extends My_Controller {
 			$crud->display_as('id_producto','N° Producto')
 				 ->display_as('nombre','Producto')
 				 ->display_as('ficha_tecnica','Ficha Técnica')
-				 ->display_as('descripcion','Descripción');
+				 ->display_as('descripcion','Descripción')
+				 ->display_as('id_moneda','Tipo Moneda');
 				
 			$crud->required_fields('nombre',
-							'precio');
+							'precio',
+							'id_moneda');
 			
 			$crud->set_subject('Productos');
 			
 			$crud->fields('nombre',
 						  'precio',
 						  'ficha_tecnica',
-						  'descripcion');
+						  'descripcion',
+						  'id_moneda');
 						  
 			$crud->set_field_upload('ficha_tecnica','img/productos/documentos');			  
 							
@@ -76,6 +79,8 @@ class Productos extends My_Controller {
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
 			$crud->callback_delete(array($this,'delete_user'));
 			$crud->callback_after_insert(array($this, 'insertDatos'));
+			
+			$crud->set_relation('id_moneda','monedas','moneda');
 			
 			$crud->unset_export();
 			$crud->unset_print();

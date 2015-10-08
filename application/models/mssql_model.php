@@ -12,7 +12,7 @@ class Mssql_model extends My_Model {
 	
 	function pingDB(){
 		$waitTimeoutInSeconds = 1; 
-		if($fp = fsockopen($this->host,$this->port,$errCode,$errStr,$waitTimeoutInSeconds)){
+		if($fp = @fsockopen($this->host,$this->port,$errCode,$errStr,$waitTimeoutInSeconds)){
 			$log_error = array(
 				'tipo'		=>	'INFO',
 				'mensaje'	=>	'Conectado a '.$this->host.' y el puerto'.$this->port,

@@ -219,7 +219,7 @@
                                         		<?php
                                         		if($vendedores){
                                         			foreach($vendedores as $vendedor){
-                                        				echo '<option value="'.$vendedor->id_vendedor.'">'.$vendedor->apellido.', '.$vendedor->nombre.'</option>';
+                                        				echo '<option value="'.$vendedor->id_vendedor.'">'.$vendedor->nombre.' '.$vendedor->apellido.'</option>';
                                         			}
                                         		}
 												?>
