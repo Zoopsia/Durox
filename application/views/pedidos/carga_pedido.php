@@ -179,15 +179,19 @@ function guardarLineasNuevas($pedido){
 		var cantidad 	= $('#cant'+i).val();
 		var precio 		= $('#precio'+i).val();
 		var subtotal 	= $('#subtotal'+i).val();
+		var id_moneda	= $('#id_moneda'+i).val();
+		var valor_moneda= $('#valor_moneda'+i).val();
 		if(producto){
 			$.ajax({
 			 	type: 'POST',
 			 	url: '<?php echo base_url(); ?>index.php/Pedidos/cargaProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
-			 	data: {'producto'	: producto,
-			 		   'cantidad'	: cantidad,
-			 		   'precio'		: precio,
-			 		   'subtotal'	: subtotal,
-			 		   'pedido'		: pedido
+			 	data: {'producto'		: producto,
+			 		   'cantidad'		: cantidad,
+			 		   'precio'			: precio,
+			 		   'subtotal'		: subtotal,
+			 		   'pedido'			: pedido,
+			 		   'id_moneda'		: id_moneda,
+			 		   'valor_moneda'	: valor_moneda,
 			 		   },
 			 	success: function(resp) { 
 			 		

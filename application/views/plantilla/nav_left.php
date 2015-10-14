@@ -147,12 +147,10 @@ $array_activo = moduloActivo($this->uri->segment(1));
                             </a> 
                             <ul class="treeview-menu" style="display: none;">
 				            	<li><a href="<?php echo base_url().'index.php/Grupos/adminClientes/tab1'?>"><?php echo $this->lang->line('grupos').' de '.$this->lang->line('clientes'); ?></a></li>
-				          		<li><a href="<?php echo base_url().'index.php/Tipos/tipos_abm/'?>"><?php echo $this->lang->line('tipos').' de '.$this->lang->line('perfiles'); ?></a></li>
 				          		<li><a href="<?php echo base_url().'index.php/Documentos/documentos_abm/'?>"><?php echo $this->lang->line('documentos'); ?></a></li>
-				          		<li><a href="<?php echo base_url().'index.php/Epocas/epocas_abm/'?>"><?php echo $this->lang->line('epocas').' '.$this->lang->line('visitas'); ?></a></li>
 				          		<li><a href="<?php echo base_url().'index.php/Mails/editarMailsClientes/'?>"><?php echo $this->lang->line('editar').' '.$this->lang->line('correo'); ?></a></li>
 				          		<li><a href="<?php echo base_url().'index.php/Alarmas/nuevaAlarma/'?>"><?php echo $this->lang->line('tipo').' de '.$this->lang->line('alarma'); ?></a></li>
-				          		<li><a href="<?php echo base_url().'index.php/Monedas/Monedas/'?>"><?php echo $this->lang->line('monedas'); ?></a></li>
+				          		<li><a href="<?php echo base_url().'index.php/Diccionarios/Diccionarios/'?>"><?php echo $this->lang->line('diccionarios'); ?></a></li>
 				          	</ul>
 				        </li>
                     </ul>

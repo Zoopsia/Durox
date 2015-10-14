@@ -546,3 +546,16 @@ div.user-panel{
 	border-right-width: 1px;
 	border-right-color: #F1F1F1;
 }
+
+.fa-6x {
+	font-size: 6em !important;
+}
+
+.font-notas{
+	font-size: 14.5px;
+}
+
+.link-diccionarios{
+	display: block; 
+	color: black; 
+}

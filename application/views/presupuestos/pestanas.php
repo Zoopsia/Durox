@@ -248,7 +248,7 @@ $aux2 = 0;
 												}
 												echo '<td>'.$row->nombre.'</td>';
 												echo '<td>'.$row->cantidad.'</td>';
-												echo '<td>$ '.$row->precio.'</td>';
+												echo '<td>$ '.$row->precio.'</td>'; // Aca debe ir el signo de la moneda que se esta usando
 												echo '<td>$ '.$row->subtotal.'</td>';
 												echo '<td class="no-print">'.$row->estado.'</td>';				
 												echo '</tr>';

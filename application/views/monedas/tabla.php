@@ -1,13 +1,37 @@
 <script>
+var valorInput;
 function editar($i){
 	var aux = $i;
 	$('#'+aux).removeAttr("disabled");
 	$('#'+aux).removeClass("editable");
 	$('#'+aux).focus();
+	valorInput = $('#'+aux).val();
 }
 
-function guardar($i){
-	alert($i);
+function guardar($i, $j){
+	var aux = $i;
+	var id	= $j;
+	$('#'+aux).attr("disabled", true);
+	$('#'+aux).addClass("editable");
+	if($('#'+aux).val() != valorInput){
+		var r = confirm("¿Desea guardar los cambios?");
+    	if (r == true) {
+    		$.ajax({
+			 	type: 'POST',
+			 	url: '<?php echo base_url(); ?>index.php/Monedas/editarMoneda', 
+			 	data: { 'name' 			: $('#'+aux).attr("name"),
+			 			'valor'			: $('#'+aux).val(),
+			 			'id'			: id,
+			 	}, 
+			 	success: function(resp) { 
+			 		alert(resp);
+			 	}
+			});
+    	}
+    	else{
+    		$('#'+aux).val(valorInput);
+    	}
+	}
 }
 </script>
 <div class="row">
@@ -17,7 +41,7 @@ function guardar($i){
 				<table class="table table-striped table-bordered text-center" cellspacing="0" width="100%">
 					<thead>
 						<tr>
-							<th colspan="2"><?php echo $this->lang->line('moneda'); ?></th>
+							<th><?php echo $this->lang->line('moneda'); ?></th>
 							<th><?php echo $this->lang->line('abreviatura'); ?></th>
 							<th><?php echo $this->lang->line('simbolo'); ?></th>
 							<th><?php echo $this->lang->line('valor'); ?></th>
@@ -26,7 +50,7 @@ function guardar($i){
 													 
 					<tfoot>
 						<tr>
-							<th colspan="2"><?php echo $this->lang->line('moneda'); ?></th>
+							<th><?php echo $this->lang->line('moneda'); ?></th>
 							<th><?php echo $this->lang->line('abreviatura'); ?></th>
 							<th><?php echo $this->lang->line('simbolo'); ?></th>
 							<th><?php echo $this->lang->line('valor'); ?></th>
@@ -36,16 +60,19 @@ function guardar($i){
 					<tbody>
 						<?php
 						if($monedas){
-							$i=0;
+							$i=0; $j=1;
 							foreach($monedas as $row){
 								echo "<tr>";
-								echo '<td ondblclick="editar('.$i.');"><input type="text" class="editable" id="'.$i.'" name="moneda" value="'.$row->moneda.'" autocomplete="off" disabled onblur="guardar('.$i.')"></td>';
+								echo '<td ondblclick="editar('.$i.');"><input type="text" class="editable text-center" id="'.$i.'" name="moneda" value="'.$row->moneda.'" autocomplete="off" disabled onblur="guardar('.$i.','.$j.')"></td>';
 								$i++;
-								echo '<td>'.$row->moneda.'</td>';
-								echo '<td>'.$row->abreviatura.'</td>';
-								echo '<td>'.$row->simbolo.'</td>';
-								echo '<td>'.$row->valor.'</td>';
+								echo '<td ondblclick="editar('.$i.');"><input type="text" class="editable text-center" id="'.$i.'" name="abreviatura" value="'.$row->abreviatura.'" autocomplete="off" disabled onblur="guardar('.$i.','.$j.')"></td>';
+								$i++;
+								echo '<td ondblclick="editar('.$i.');"><input type="text" class="editable text-center" id="'.$i.'" name="simbolo" value="'.$row->simbolo.'" autocomplete="off" disabled onblur="guardar('.$i.','.$j.')"></td>';
+								$i++;
+								echo '<td ondblclick="editar('.$i.');"><input type="number" class="editable text-center" id="'.$i.'" name="valor" value="'.$row->valor.'" autocomplete="off" disabled onblur="guardar('.$i.','.$j.')"></td>';
+								$i++;
 								echo "</tr>";
+								$j++;
 							}
 						}
 						?>

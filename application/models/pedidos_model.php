@@ -32,14 +32,20 @@ class Pedidos_model extends My_Model {
 					linea_productos_$this->_tablename.subtotal AS subtotal,
 					linea_productos_$this->_tablename.id_linea_producto_pedido AS id_linea_producto_pedido,
 					linea_productos_$this->_tablename.id_estado_producto_pedido AS estado_linea,
+					linea_productos_$this->_tablename.id_moneda,
+					linea_productos_$this->_tablename.valor_moneda,
 					estados_productos_$this->_tablename.estado AS estado,
-					$this->_tablename.iteracion AS iteracion
+					$this->_tablename.iteracion AS iteracion,
+					monedas.abreviatura,
+					monedas.simbolo
 				FROM 
 					$this->_tablename 
 				INNER JOIN 
 					visitas USING(id_visita)
 				INNER JOIN 
 					linea_productos_$this->_tablename USING($this->_id_table)
+				INNER JOIN
+					monedas USING (id_moneda)
 				INNER JOIN 
 					productos USING (id_producto)
 				INNER JOIN 
@@ -48,7 +54,7 @@ class Pedidos_model extends My_Model {
 					$this->_id_table = '$id'
 				AND
 					linea_productos_$this->_tablename.eliminado = 0";
-					
+
 		$query = $this->db->query($sql);
 		
 		if($query->num_rows() > 0)

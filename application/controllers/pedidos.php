@@ -247,6 +247,8 @@ class Pedidos extends My_Controller {
 			'id_estado_producto_pedido'		=> 4,
 			'precio'						=> $this->input->post('precio'),
 			'subtotal'						=> $this->input->post('subtotal'),	
+			'id_moneda'						=> $this->input->post('id_moneda'),
+			'valor_moneda'					=> $this->input->post('valor_moneda')
 		);
 
 		$linea				= $this->pedidos_model->insertLinea($arreglo);
@@ -569,6 +571,10 @@ class Pedidos extends My_Controller {
 					foreach ($producto as $row) {
 						$precio 	= $row->precio;
 						$nombre		= $row->nombre;
+						$abreviatura	= $row->abreviatura;
+						$simbolo		= $row->simbolo;
+						$valor			= $row->valor;
+						$id_moneda		= $row->id_moneda;
 					}
 				}
 				
@@ -583,14 +589,16 @@ class Pedidos extends My_Controller {
 				}
 				
 				$preciototal	= round($preciofinal, 2);
-				$subtotal 		= round($preciofinal, 2)*$cantidad;	
+				$subtotal 		= round((round($preciofinal, 2)*$cantidad)*$valor, 2);	
 				
 				echo 	'<tr>
 							<td><input type="text" id="id_producto'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$this->input->post('producto').'">'.$nombre.'
 								<input type="text" id="nomb'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$nombre.'">
+								<input type="text" id="id_moneda'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$id_moneda.'">
+								<input type="text" id="valor_moneda'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$valor.'">
 							</td>
 							<td><input type="text" id="cant'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$this->input->post('cantidad').'">'.$cantidad.'</td>
-							<td><input type="text" id="precio'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$preciototal.'">$ '.$preciototal.'</td>
+							<td><input type="text" id="precio'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$preciototal.'">'.$abreviatura.$simbolo.' '.$preciototal.'</td>
 							<td><input type="text" id="subtotal'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$subtotal.'">$ '.$subtotal.'</td>
 							<td>Nuevo</td>
 							<td></td>
@@ -616,8 +624,12 @@ class Pedidos extends My_Controller {
 				
 				if($producto){
 					foreach ($producto as $row) {
-						$precio 	= $row->precio;
-						$nombre		= $row->nombre;
+						$precio 		= $row->precio;
+						$nombre			= $row->nombre;
+						$abreviatura	= $row->abreviatura;
+						$simbolo		= $row->simbolo;
+						$valor			= $row->valor;
+						$id_moneda		= $row->id_moneda;
 					}
 				}
 				
@@ -632,14 +644,16 @@ class Pedidos extends My_Controller {
 				}
 				
 				$preciototal	= round($preciofinal, 2);
-				$subtotal 		= round($preciofinal, 2)*$cantidad;	
+				$subtotal 		= round((round($preciofinal, 2)*$cantidad)*$valor, 2);	
 				
 				echo 	'<tr>
 							<td><input type="text" id="id_producto'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$this->input->post('producto').'">'.$nombre.'
 								<input type="text" id="nomb'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$nombre.'">
+								<input type="text" id="id_moneda'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$id_moneda.'">
+								<input type="text" id="valor_moneda'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$valor.'">
 							</td>
 							<td><input type="text" id="cant'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$this->input->post('cantidad').'">'.$cantidad.'</td>
-							<td><input type="text" id="precio'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$preciototal.'">$ '.$preciototal.'</td>
+							<td><input type="text" id="precio'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$preciototal.'">'.$abreviatura.$simbolo.' '.$preciototal.'</td>
 							<td><input type="text" id="subtotal'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$subtotal.'">$ '.$subtotal.'</td>
 							<td>Nuevo</td>
 							<td><a class="btn btn-danger btn-xs" onclick="deleteRow(this,'.$this->input->post('pedido').')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></td>

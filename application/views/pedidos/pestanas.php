@@ -202,14 +202,18 @@ function guardarLineasNuevas($pedido){
 		var cantidad 	= $('#cant'+i).val();
 		var precio 		= $('#precio'+i).val();
 		var subtotal 	= $('#subtotal'+i).val();
+		var id_moneda	= $('#id_moneda'+i).val();
+		var valor_moneda= $('#valor_moneda'+i).val();
 		$.ajax({
 		 	type: 'POST',
 		 	url: '<?php echo base_url(); ?>index.php/Pedidos/cargaProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
-		 	data: {'producto'	: producto,
-		 		   'cantidad'	: cantidad,
-		 		   'precio'		: precio,
-		 		   'subtotal'	: subtotal,
-		 		   'pedido'		: pedido
+		 	data: {	'producto'		: producto,
+		 		   	'cantidad'		: cantidad,
+		 		   	'precio'		: precio,
+		 		   	'subtotal'		: subtotal,
+		 		   	'pedido'		: pedido,
+		 		   	'id_moneda'		: id_moneda,
+			 		'valor_moneda'	: valor_moneda,
 		 		   },
 		 	success: function(resp) { 
 		 		
@@ -281,6 +285,21 @@ function cambiarSelect(){
 		}
 	});
 }
+
+var cotizar_cng = 0;
+
+function cotizar(){
+	if(cotizar_cng%2 == 0){
+		$('.subtotal1').show();
+		$('.subtotal2').hide();
+		cotizar_cng ++;
+	}
+	else{
+		$('.subtotal1').hide();
+		$('.subtotal2').show();
+		cotizar_cng ++;
+	}
+}
 </script>
 
 <?php
@@ -324,7 +343,7 @@ function cambiarSelect(){
 								if ($vendedores) {
 									foreach ($vendedores as $key) {
 										echo '<a class="sinhref" href="' . base_url() . 'index.php/vendedores/pestanas/' . $key -> id_vendedor . '">';
-										echo $key -> apellido . ', ' . $key -> nombre;
+										echo $key -> nombre.' '.$key -> apellido;
 										echo '</a>';
 										echo "<br>";
 										echo "<div class='no-print'>";
@@ -437,6 +456,7 @@ function cambiarSelect(){
 								 		<tbody>
 								        <?php
 											if ($pedidos) {
+												$cotizacion = array();
 												foreach ($pedidos as $row) {
 													if ($row -> estado == 'Imposible de Enviar') {
 														echo '<tr class="no-print" style="background-color: #f56954 !important; color: #fff;">';
@@ -445,8 +465,13 @@ function cambiarSelect(){
 													}
 													echo '<td>' . $row -> nombre . '</td>';
 													echo '<td>' . $row -> cantidad . '</td>';
-													echo '<td>$ ' . $row -> precio . '</td>';
-													echo '<td>$ ' . $row -> subtotal . '</td>';
+													echo '<td>' . $row->abreviatura.$row->simbolo.' '.$row -> precio . '</td>';
+													echo '<td class="subtotal1" style="display: none">'.$row->abreviatura.$row->simbolo.' '.round($row -> precio*$row -> cantidad, 2).'</td>';
+													if(array_key_exists($row->abreviatura, $cotizacion))
+														$cotizacion[$row->abreviatura] += round($row -> precio*$row -> cantidad, 2);
+													else 
+														$cotizacion[$row->abreviatura] = round($row -> precio*$row -> cantidad, 2);
+													echo '<td class="subtotal2">$ ' . $row -> subtotal . '</td>';
 													echo '<td class="no-print" style="width: 150px">' . $row -> estado . '</th>';
 													if ($row -> estado == 'En Proceso')
 														echo '<td style="width: 50px"><span class="display-none" style="display:none"><a class="btn btn-danger btn-xs" onclick="sacarProducto(' . $row -> id_linea_producto_pedido . ',' . $id_pedido . ')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></span></td>';
@@ -502,6 +527,16 @@ function cambiarSelect(){
                                 
                             </p>
                         </div><!-- /.col -->
+                        <?php
+                        if($cotizacion){
+	                        foreach ($cotizacion as $key => $value) {
+	                        	echo count($cotizacion);
+								echo $key;
+								echo "<br>";
+								echo $value;
+							}
+						}
+						?>
                         <div class="col-xs-6">
                             <p class="lead"><?php echo $this->lang->line('totales')?></p>
                             <div class="table-responsive" id="table-totales">
@@ -531,6 +566,8 @@ function cambiarSelect(){
 								</button>
 								
 								<button type="button" id="btn-print" class="btn btn-default" onclick="imprimirConLogo();window.print();"><i class="fa fa-print"></i> Print</button>
+								
+								<button type="button" id="btn-cotizacion" class="btn btn-default" onclick="cotizar();"><i class="fa fa-usd"></i> Cotización</button>
 								<?php if($config_mail){ foreach($config_mail as $mail){?>
 								<!-- COMPRUEBO EL ESTADO -->
 								<?php
@@ -564,12 +601,7 @@ function cambiarSelect(){
 								?> class="btn btn-success btn-sm pull-right">
 									<?php echo $this -> lang -> line('aprobar') . ' ' . $this -> lang -> line('pedido'); ?>
 								</button>	
-								<?php
-
-								}
-								}
-								}
-								?>
+								<?php }	} }	?>
 								<?php } } ?>
 								<button type="button" id="btn-cancelar" class="btn btn-danger btn-sm pull-right" onclick="cancelarCambios(<?php echo $id_pedido?>)" style="display: none; margin-left: 5px">
 									<?php echo $this -> lang -> line('cancelar'); ?>

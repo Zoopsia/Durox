@@ -476,7 +476,9 @@ class Actualizaciones extends CI_Controller {
 	
 	
 	public function getPresupuestos(){
-		if(isset($_POST['id_vendedor'])){	
+		//if(isset($_POST['id_vendedor'])){	
+			$_POST['id_vendedor'] = 1;
+		
 			$db['array']		= "presupuestos";
 			$db['registros']	= $this->presupuestos_model->getActualizacion($_POST['id_vendedor']);
 			log_message('DEBUG', 'Actualización de '.$db['array'].', vendedor: '.$_POST['id_vendedor']);
@@ -552,7 +554,8 @@ class Actualizaciones extends CI_Controller {
 			
 			
 			$this->load->view($this->_subject."/getRegistrosPresupuestos.php", $db);
-		}
+		
+		//}
 	}
 	
 	
@@ -612,6 +615,8 @@ class Actualizaciones extends CI_Controller {
 	
 	public function setPresupuestos(){
 		if(isset($_POST['id_cliente'])){		
+			log_message('error', 'Total del Presupuesto'.$_POST['total']);
+		
 			$registro = array(
 				'id_front' 				=> $_POST['id_front'],
 				'id_visita' 			=> $_POST['id_visita'],
@@ -619,10 +624,10 @@ class Actualizaciones extends CI_Controller {
 				'id_vendedor'			=> $_POST['id_vendedor'],
 				'fecha'						=> date("Y-m-d"),
 				'id_estado_presupuesto' => $_POST['id_estado_presupuesto'],
-				'total'					=> $_POST['total'],
+				'total'						=> $_POST['total'],
 				'id_origen'				=> $_POST['id_origen'],
 				'aprobado_back'		=> $_POST['aprobado_back'],
-				'aprobado_front'		=> $_POST['aprobado_front'],
+				'aprobado_front'	=> $_POST['aprobado_front'],
 				'visto_back'			=> $_POST['visto_back'],
 				'visto_front'			=> $_POST['visto_front'],
 				'eliminado'				=> $_POST['eliminado'],
@@ -649,6 +654,8 @@ class Actualizaciones extends CI_Controller {
 				'id_front' 				=> $_POST['id_temporario'],		
 				'id_producto' 			=> $_POST['id_producto'],
 				'precio' 					=> $_POST['precio'],
+				'id_moneda' 			=> $_POST['id_moneda'],
+				'valor_moneda'		=> $_POST['valor_moneda'],
 				'cantidad' 				=> $_POST['cantidad'],
 				'subtotal' 				=> $_POST['subtotal'],
 				'id_estado_producto_presupuesto' 				=> $_POST['id_estado_producto_presupuesto'],

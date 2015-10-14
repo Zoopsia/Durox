@@ -24,4 +24,19 @@ class Monedas extends My_Controller {
 		$this->cargar_vista($db, 'tabla');
 	}
 	
+	public function editarMoneda(){
+		$nombre 	= $this->input->post('name');
+		$valor		= $this->input->post('valor');
+		$id_moneda	= $this->input->post('id');
+		
+		$moneda	= array(
+						$nombre			=> $valor,
+						'eliminado'		=> 0
+		);
+		
+		$this->monedas_model->update($moneda, $id_moneda);	
+		
+		echo "El registro fué modificado con exito";
+	}
+	
 }

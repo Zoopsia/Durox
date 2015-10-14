@@ -206,11 +206,11 @@ function ordenarDocumentos(id_tipo_documento){
 								              	<a href="'.$row->documento.'" style="padding: 25% 0 25% 25%" target="_blank">';
 						        $cadena		 = substr($row->documento,strrpos($row->documento,'.'));
 								if($cadena == '.pdf')
-									$mensaje .=    	'<i class="fa fa-file-pdf-o fa-5x"></i>';
+									$mensaje .=    	'<i class="fa fa-file-pdf-o fa-6x"></i>';
 								else if($cadena == '.docx' || $cadena == '.doc')
-									$mensaje .=    	'<i class="fa fa-file-word-o fa-5x"></i>';
+									$mensaje .=    	'<i class="fa fa-file-word-o fa-6x"></i>';
 								else if($cadena == '.xlsx' || $cadena == '.xls')
-									$mensaje .=    	'<i class="fa fa-file-excel-o fa-5x"></i>';
+									$mensaje .=    	'<i class="fa fa-file-excel-o fa-6x"></i>';
 						        /*----- MOSTRAR NOMBRE DEL DOCUMENTO O SINO EL NOMBRE DEL ARCHIVO---*/
 						        if($row->nombre != ''){
 						        	$mensaje .= '</a>

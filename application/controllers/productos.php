@@ -65,9 +65,9 @@ class Productos extends My_Controller {
 			
 			$crud->fields('nombre',
 						  'precio',
+						  'id_moneda',
 						  'ficha_tecnica',
-						  'descripcion',
-						  'id_moneda');
+						  'descripcion');
 						  
 			$crud->set_field_upload('ficha_tecnica','img/productos/documentos');			  
 							
