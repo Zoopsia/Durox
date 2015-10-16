@@ -27,7 +27,7 @@ class Mensajes extends My_Controller {
 		$this->cargar_vista($db, 'tabla');
 	}
 	
-	public function nuevoMensaje(){
+	public function nuevoMensaje($dir=null){
 		$todos 		= 0;
 		$para 		= $this->input->post('para');
 			
@@ -60,7 +60,10 @@ class Mensajes extends My_Controller {
 			}
 		}
 		
-		redirect('Home','refresh');
+		if($dir)
+			redirect('Mensajes/verMensajes','refresh');
+		else
+			redirect('Home','refresh');
 	}
 
 	public function verDetalle(){

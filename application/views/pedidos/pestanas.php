@@ -1,313 +1,8 @@
-<script>
-   
-function aprobarForm() {
- 	$("#aprobarForm").submit();
-}
-
-$( document ).ready(function() {
-    getAlarmas(<?php echo $id_pedido?>);
-    if(location.hash == "#tab2")
-    	$('.nav-pills a:last').tab('show');
-});
- 
-var aux = 0;
-function editable(){
-	$("#btn-print").hide();
-	$("#btn-editar").hide();
-	$("#btn-aprobar").hide();
-	$(".cargarLinea").show();
-	$('.display-none').show();
-	$('#btn-guardar').show();
-	$('#btn-cancelar').show();
-	document.getElementById("producto").focus();
-}
-function cargaProducto($id_pedido){
-	var producto 	= $('input#id_producto').val(); 
- 	var cantidad 	= $('input#cantidad').val();
- 	var pedido		= $id_pedido;
-	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/Pedidos/traerProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
-	 	data: {'producto'	: producto,
-	 		   'cantidad'	: cantidad,
-	 		   'pedido'		: pedido,
-	 		   'aux'		: aux
-	 		   },
-	 	success: function(resp) { 
-	 		$("#tablapedido > tbody").append(resp);
-	 		aux = aux+1;
-	 		armarTotales(pedido);
-	 		document.formProducto.reset(); 
-			document.getElementById("producto").focus();
-	 	}
-	});
-}
-function armarTotales($id_pedido){
-	var pedido	= $id_pedido;
-	var x = 0;
-	for(i = 0; i < aux; i++){
-		x += parseFloat($('#subtotal'+i).val());
-	}		
-	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/Pedidos/armarTotales', //Realizaremos la petición al metodo prueba del controlador direcciones
-	 	data: {	'pedido'		: pedido,
-	 			'subtotal'		: x
-	 			},
-	 	success: function(resp) { 
-	 		$('#table-totales').html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias 	
-	 	}
-	});	
-}
-function ajaxSearch() {
-	var producto = $('#producto').val();
-    if (producto.length === 0) {
-       	$('#suggestions').hide();
-    } 
-    else {
-       	$.ajax({
-        	type: "POST",
-            url: '<?php echo base_url(); ?>index.php/Presupuestos/buscarProducto',
-            data: {'producto': producto,},
-            success: function(data) {
-	            // return success
-	            if (data.length > 0) {
-	            	$('#suggestions').show();
-	                $('#autoSuggestionsList').addClass('auto_list');
-	                $('#autoSuggestionsList').html(data);
-	            }
-            }
-		});
-	}
-}
-//-----FUNCION PARA SELECCIONAR UN PRODUCTO Y ESCONDER EL AUTOCOMPLETAR---//
-function funcion1($id_producto){
-	var nombre 		= $('#id_valor'+$id_producto).val();
-	var id_producto	= $id_producto;
-	$('#producto').val(nombre);
-	$('#id_producto').val(id_producto);
-	$('#suggestions').hide();
-	document.getElementById("cantidad").focus();
-}
-function sacarProducto($id_linea, $pedido){
-	var producto = [];
-	var cantidad = [];
-	var precio = [];
-	var subtotal = [];
-	var nombre = [];
-	for(i = 0; i < aux; i++){
-		producto[i] 	= $('#id_producto'+i).val();
-		cantidad[i] 	= $('#cant'+i).val();
-		precio[i] 		= $('#precio'+i).val();
-		subtotal[i] 	= $('#subtotal'+i).val();
-		nombre[i]		= $('#nomb'+i).val();
-		
-	}	
-	var pedido = $pedido;
- 	var id_linea	= $id_linea;
- 	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/Pedidos/sacarProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
-	 	data: {'id_linea'	: id_linea,
-	 		   'pedido': pedido,
-	 		   },
-	 	success: function(resp) {
-	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
-	 		for(i = 0; i < aux; i++){
-	 			$("#tablapedido > tbody").append('<tr>'+
-										 			'<td><input type="text" id="id_producto'+i+'" autocomplete="off" required hidden value="'+producto[i]+'">'+nombre[i]+
-										 				'<input type="text" id="nomb'+i+'" autocomplete="off" required hidden value="'+nombre[i]+'">'+
-										 			'</td>'+
-										 			'<td><input type="text" id="cant'+i+'" autocomplete="off" required hidden value="'+cantidad[i]+'">'+cantidad[i]+'</td>'+
-										 			'<td><input type="text" id="precio'+i+'" autocomplete="off" required hidden value="'+precio[i]+'">$ '+precio[i]+'</td>'+
-										 			'<td><input type="text" id="subtotal'+i+'" autocomplete="off" required hidden value="'+subtotal[i]+'">$ '+subtotal[i]+'</td>'+
-										 			'<td>Nuevo</td>'+
-										 			'<td></td>'+
-										 		'</tr>');
-			}	
-	 		$(".cargarLinea").show();
-	 		armarTotales(pedido);
-	 	}
-	});
-}
-function cargarProducto($id_linea, $pedido){
-	var producto = [];
-	var cantidad = [];
-	var precio = [];
-	var subtotal = [];
-	var nombre = [];
-	for(i = 0; i < aux; i++){
-		producto[i] 	= $('#id_producto'+i).val();
-		cantidad[i] 	= $('#cant'+i).val();
-		precio[i] 		= $('#precio'+i).val();
-		subtotal[i] 	= $('#subtotal'+i).val();
-		nombre[i]		= $('#nomb'+i).val();
-		
-	}	
-	var pedido = $pedido;
- 	var id_linea	= $id_linea;
- 	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/Pedidos/cargarProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
-	 	data: {'id_linea'	: id_linea,
-	 		   'pedido': pedido,
-	 		   },
-	 	success: function(resp) {
-	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
-	 		for(i = 0; i < aux; i++){
-	 			$("#tablapedido > tbody").append('<tr>'+
-										 			'<td><input type="text" id="id_producto'+i+'" autocomplete="off" required hidden value="'+producto[i]+'">'+nombre[i]+
-										 				'<input type="text" id="nomb'+i+'" autocomplete="off" required hidden value="'+nombre[i]+'">'+
-										 			'</td>'+
-										 			'<td><input type="text" id="cant'+i+'" autocomplete="off" required hidden value="'+cantidad[i]+'">'+cantidad[i]+'</td>'+
-										 			'<td><input type="text" id="precio'+i+'" autocomplete="off" required hidden value="'+precio[i]+'">$ '+precio[i]+'</td>'+
-										 			'<td><input type="text" id="subtotal'+i+'" autocomplete="off" required hidden value="'+subtotal[i]+'">$ '+subtotal[i]+'</td>'+
-										 			'<td>Nuevo</td>'+
-										 			'<td></td>'+
-										 		'</tr>');
-			}	
-	 		$(".cargarLinea").show();
-	 		armarTotales(pedido);
-	 	}
-	});
-}
-function cancelarCambios($pedido){
-	var pedido = $pedido;
-	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/Pedidos/cancelarCambios', //Realizaremos la petición al metodo prueba del controlador direcciones
-	 	data: {'pedido': pedido,},
-	 	success: function(resp) {
-	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
-	 		armarTotales(pedido);
-	 		$("#btn-print").show();
-			$("#btn-editar").show();
-			$("#btn-aprobar").show();
-			$(".cargarLinea").hide();
-			$('.display-none').hide();
-			$('#btn-guardar').hide();
-			$('#btn-cancelar').hide();
-			aux = 0;
-	 	}
-	});
-}
-function imprimirConLogo(){
-	$('#imagen-durox').show();
-	setTimeout(function(){ $('#imagen-durox').hide(); }, 100);
-}
-function guardarLineasNuevas($pedido){
-	var pedido = $pedido;
-	for(i = 0; i < aux; i++){
-		var producto 	= $('#id_producto'+i).val();
-		var cantidad 	= $('#cant'+i).val();
-		var precio 		= $('#precio'+i).val();
-		var subtotal 	= $('#subtotal'+i).val();
-		var id_moneda	= $('#id_moneda'+i).val();
-		var valor_moneda= $('#valor_moneda'+i).val();
-		$.ajax({
-		 	type: 'POST',
-		 	url: '<?php echo base_url(); ?>index.php/Pedidos/cargaProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
-		 	data: {	'producto'		: producto,
-		 		   	'cantidad'		: cantidad,
-		 		   	'precio'		: precio,
-		 		   	'subtotal'		: subtotal,
-		 		   	'pedido'		: pedido,
-		 		   	'id_moneda'		: id_moneda,
-			 		'valor_moneda'	: valor_moneda,
-		 		   },
-		 	success: function(resp) { 
-		 		
-		 	},
-		 	async: false
-		});
-	}
-	return true;
-}
-function pegarEtiqueta(){
-	//var caretPos 		= document.getElementById("txt").selectionEnd;
-    var textAreaTxt 	= $('#txt').val();
-    var txtToAdd 		=  $( "#btn-tag" ).val();
-	$("#txt").val(textAreaTxt + txtToAdd);
-}
-function insertInputTag(){
-	$("#btn-tag" ).val($( "#etiquetas" ).val());
-}
-
-function saveAlarm($id){
-	<?php
-	$cantidad_paginas = 0;
-	if($alarmas){
-		$cantidad_paginas = ceil(count($alarmas)/5);
-	}
-	echo 'var cant_pag = '.$cantidad_paginas.';';
-	?>
-	if($('#mensaje').val()){
-		$.ajax({
-			type: 'POST',
-			url: '<?php echo base_url(); ?>index.php/Alarmas/insertAlarma', 
-			data: { 'tipo' 		: $('#tipo').val(),
-			 		'mensaje'	: $('#mensaje').val(),
-			 		'id'		: $id, 
-			 		'cruce'		: 'pedidos'
-			}, 
-			success: function(resp) { 
-				$('#box-alarmas'+cant_pag).append(resp);
-				$('#formAlarma').trigger("reset");
-				getAlarmas($id);
-				$('#mensaje').removeClass();
-			}
-		});
-	}
-}
-
-function getAlarmas($id){
-	$.ajax({
-		type: 'POST',
-		url: '<?php echo base_url(); ?>index.php/Pedidos/getAlarmas', 
-		data: { 'id'		: $id,
-				}, 
-		success: function(resp) {
-			$('#llenarAlarmas').html(resp);
-		}
-	});
-}
-
-function cambiarSelect(){
-	$.ajax({
-		type: 'POST',
-		url: '<?php echo base_url(); ?>index.php/Alarmas/tipoAlarma', 
-		data: { 'tipo' 		: $('#tipo').val(),
-				}, 
-		success: function(resp) { 
-			$('#mensaje').removeClass();
-			//$('#tipo').addClass('form-control alert-'+resp);
-			$('#mensaje').addClass('alert-'+resp);
-		}
-	});
-}
-
-var cotizar_cng = 0;
-
-function cotizar(){
-	if(cotizar_cng%2 == 0){
-		$('.subtotal1').show();
-		$('.subtotal2').hide();
-		cotizar_cng ++;
-	}
-	else{
-		$('.subtotal1').hide();
-		$('.subtotal2').show();
-		cotizar_cng ++;
-	}
-}
-</script>
-
 <?php
 	if($pedido){
 		foreach ($pedido as $row) {
 ?>	
-
-       
+   
 <div class="col-md-12">
 	<div class="panel panel-default">
 		<div id="imagen-durox" class="col-lg-3 col-lg-offset-2" align="center" style="display: none; margin-top: 20px">
@@ -455,8 +150,8 @@ function cotizar(){
 								 
 								 		<tbody>
 								        <?php
+								        	$cotizacion = array();
 											if ($pedidos) {
-												$cotizacion = array();
 												foreach ($pedidos as $row) {
 													if ($row -> estado == 'Imposible de Enviar') {
 														echo '<tr class="no-print" style="background-color: #f56954 !important; color: #fff;">';
@@ -467,10 +162,10 @@ function cotizar(){
 													echo '<td>' . $row -> cantidad . '</td>';
 													echo '<td>' . $row->abreviatura.$row->simbolo.' '.$row -> precio . '</td>';
 													echo '<td class="subtotal1" style="display: none">'.$row->abreviatura.$row->simbolo.' '.round($row -> precio*$row -> cantidad, 2).'</td>';
-													if(array_key_exists($row->abreviatura, $cotizacion))
-														$cotizacion[$row->abreviatura] += round($row -> precio*$row -> cantidad, 2);
+													if(array_key_exists($row->abreviatura.$row->simbolo, $cotizacion))
+														$cotizacion[$row->abreviatura.$row->simbolo] += round($row -> precio*$row -> cantidad, 2);
 													else 
-														$cotizacion[$row->abreviatura] = round($row -> precio*$row -> cantidad, 2);
+														$cotizacion[$row->abreviatura.$row->simbolo] = round($row -> precio*$row -> cantidad, 2);
 													echo '<td class="subtotal2">$ ' . $row -> subtotal . '</td>';
 													echo '<td class="no-print" style="width: 150px">' . $row -> estado . '</th>';
 													if ($row -> estado == 'En Proceso')
@@ -527,23 +222,14 @@ function cotizar(){
                                 
                             </p>
                         </div><!-- /.col -->
-                        <?php
-                        if($cotizacion){
-	                        foreach ($cotizacion as $key => $value) {
-	                        	echo count($cotizacion);
-								echo $key;
-								echo "<br>";
-								echo $value;
-							}
-						}
-						?>
-                        <div class="col-xs-6">
+                       
+                        <div class="col-xs-6" id="sub-pesos">
                             <p class="lead"><?php echo $this->lang->line('totales')?></p>
                             <div class="table-responsive" id="table-totales">
                                 <table class="table">
                                     <tr>
                                         <th style="width:50%"><?php echo $this -> lang -> line('subtotal'); ?></th>
-                                        <td>$ <?php echo round($total, 2); ?></td>
+                                        <td>$ <?php echo round($total, 2); ?><input type="number" id="total-ped" value="<?php echo $total?>" hidden></td>
                                     </tr>
                                     <tr>
                                         <th><?php echo $this -> lang -> line('iva'); ?></th>
@@ -556,53 +242,112 @@ function cotizar(){
                                 </table>
                             </div>
                         </div><!-- /.col -->
+                        
+                        <div class="col-xs-6" id="sub-otra-moneda" style="display: none;">
+                            <p class="lead"><?php echo $this->lang->line('totales')?></p>
+                            <div class="table-responsive" id="table-totales">
+                            	<table class="table">
+                            	<?php if($cotizacion){ foreach ($cotizacion as $key => $value) { ?>
+									<tr>
+                                        <th style="width:50%"><?php echo $this -> lang -> line('subtotal'); ?></th>
+                                        <td><?php echo $key.' '.$value; ?></td>
+                                    </tr>
+                                <?php } } ?>
+                                </table>
+                            </div>
+                        </div><!-- /.col -->
+                        
                     </div><!-- /.row -->
 					
 					<div class="row no-print">
                         <div class="col-xs-12">
-                        	<form action="<?php echo base_url().'/index.php/Pedidos/guardarPedido/'.$id_pedido?>" onsubmit="return guardarLineasNuevas(<?php echo $id_pedido?>)" method="post">
-	                        	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#informacion">
-									<i class="fa fa-info-circle"></i>
+                        	<button type="button" class="btn btn-default" data-toggle="modal" data-target="#informacion">
+								<i class="fa fa-info-circle"></i>
+							</button>
+							<?php
+							if($pedido){
+								foreach($pedido as $row){
+									if($row->id_estado_pedido != 1){
+							?>	
+							<button type="button" id="btn-print" class="btn btn-default" onclick="imprimirConLogo();window.print();"><i class="fa fa-print"></i> Print</button>
+							
+							<button type="button" id="btn-cotizacion" class="btn btn-default" onclick="cotizar();"><i class="fa fa-usd"></i> Cotización</button>
+							<?php } } } ?>
+							<?php if($config_mail){ foreach($config_mail as $mail){?>
+							<!-- COMPRUEBO EL ESTADO -->
+							<?php
+							if($pedido){
+								foreach($pedido as $row){
+									if($row->id_estado_pedido == 1  && $row->id_origen == 2){
+							?>	
+							<div class="dropdown pull-right" id="btn-editar">
+								<button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+									Acciones
+									<span class="caret"></span>
 								</button>
-								
-								<button type="button" id="btn-print" class="btn btn-default" onclick="imprimirConLogo();window.print();"><i class="fa fa-print"></i> Print</button>
-								
-								<button type="button" id="btn-cotizacion" class="btn btn-default" onclick="cotizar();"><i class="fa fa-usd"></i> Cotización</button>
-								<?php if($config_mail){ foreach($config_mail as $mail){?>
-								<!-- COMPRUEBO EL ESTADO -->
-								<?php
-								if($pedido){
-									foreach($pedido as $row){
-										if($row->id_estado_pedido == 1){
-								
-								?>	
-								<button type="button" id="btn-editar" class="btn btn-primary btn-sm pull-right" onclick="editable()" style=" margin-left: 5px">
-									<?php echo $this -> lang -> line('editar'); ?>
-								</button>
-								<button type="button" id="btn-aprobar" <?php
-									if ($mail -> enviar_auto == 0) {echo 'data-toggle="modal" data-target="#mandar-mail"';
-									} else {echo 'onclick="aprobarForm()"';
+								<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+									<li><a onclick="editable()"><?php echo $this -> lang -> line('editar'); ?></a></li>
+									<li><a <?php
+											if ($mail -> enviar_auto == 0) {echo 'data-toggle="modal" data-target="#mandar-mail"';
+											} else {echo 'onclick="aprobarForm()"';
+											} ?> 
+										><?php echo $this -> lang -> line('aprobar') . ' ' . $this -> lang -> line('pedido'); ?>
+									</a></li>
+								</ul>
+							</div>
+							<?php
 									}
-								?> class="btn btn-success btn-sm pull-right">
-									<?php echo $this -> lang -> line('aprobar') . ' ' . $this -> lang -> line('pedido'); ?>
+									else if($row->id_estado_pedido == 5 && $row->id_origen == 1){
+							?>
+							<div class="dropdown pull-right" id="btn-editar">
+								<button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+									Acciones
+									<span class="caret"></span>
 								</button>
-								<!-- COMPRUEBO EL ESTADO Y EL ORIGEN -->		
-								<?php
+								<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+									<li><a onclick="editable()"><?php echo $this -> lang -> line('editar'); ?></a></li>
+									<li><a <?php
+											if ($mail -> enviar_auto == 0) {echo 'data-toggle="modal" data-target="#mandar-mail"';
+											} else {echo 'onclick="aprobarForm()"';
+											} ?> 
+										><?php echo $this -> lang -> line('aprobar') . ' ' . $this -> lang -> line('pedido'); ?>
+									</a></li>
+								</ul>	
+							</div>
+							<?php
 									}
-									else if($row->id_estado_pedido == 4 && $row->id_origen == 2){
-								?>
-								<button type="button" id="btn-editar" class="btn btn-primary btn-sm pull-right" onclick="editable()" style=" margin-left: 5px">
-									<?php echo $this -> lang -> line('editar'); ?>
+									else if($row->id_estado_pedido == 5 && $row->id_origen == 2){
+							?>
+							<div class="dropdown pull-right" id="btn-editar">
+								<button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+									Acciones
+									<span class="caret"></span>
 								</button>
-								<button type="button" id="btn-aprobar" <?php
-									if ($mail -> enviar_auto == 0) {echo 'data-toggle="modal" data-target="#mandar-mail"';
-									} else {echo 'onclick="aprobarForm()"';
-									}
-								?> class="btn btn-success btn-sm pull-right">
-									<?php echo $this -> lang -> line('aprobar') . ' ' . $this -> lang -> line('pedido'); ?>
-								</button>	
-								<?php }	} }	?>
-								<?php } } ?>
+								<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+									<li><a <?php
+											if ($mail -> enviar_auto == 0) {echo 'data-toggle="modal" data-target="#mandar-mail"';
+											} else {echo 'onclick="aprobarForm()"';
+											} ?> 
+										><?php echo $this -> lang -> line('aprobar') . ' ' . $this -> lang -> line('pedido'); ?>
+									</a></li>
+								</ul>	
+							</div>
+							<?php }	} }	?>
+							<?php } } ?>
+							<?php
+							if($pedido){
+								foreach($pedido as $row){
+									if($row->id_estado_pedido == 1 && $row->id_origen == 2){
+							?>
+							<form action="<?php echo base_url().'/index.php/Pedidos/guardarPedido2/'.$id_pedido?>" onsubmit="return guardarLineasNuevas(<?php echo $id_pedido?>)" method="post">
+							<?php
+									}else{
+							?>
+							<form action="<?php echo base_url().'/index.php/Pedidos/guardarPedido/'.$id_pedido?>" onsubmit="return guardarLineasNuevas(<?php echo $id_pedido?>)" method="post">
+							<?php 	}
+								}
+							}
+							?>
 								<button type="button" id="btn-cancelar" class="btn btn-danger btn-sm pull-right" onclick="cancelarCambios(<?php echo $id_pedido?>)" style="display: none; margin-left: 5px">
 									<?php echo $this -> lang -> line('cancelar'); ?>
 								</button>
@@ -906,3 +651,333 @@ function cotizar(){
     </div>
   </div>
 </div>
+
+<script>
+   
+function aprobarForm() {
+ 	$("#aprobarForm").submit();
+}
+
+$( document ).ready(function() {
+    getAlarmas(<?php echo $id_pedido?>);
+    if(location.hash == "#tab2")
+    	$('.nav-pills a:last').tab('show');
+});
+ 
+var aux = 0;
+function editable(){
+	if(cotizar_cng%2 != 0){
+		$('.subtotal1').hide();
+		$('.subtotal2').show();
+		$('#sub-pesos').show("drop");
+		$('#sub-otra-moneda').hide();
+		cotizar_cng++;
+	}
+	$("#btn-print").hide();
+	$("#btn-editar").hide();
+	$("#btn-aprobar").hide();
+	$(".cargarLinea").show();
+	$('.display-none').show();
+	$('#btn-guardar').show();
+	$('#btn-cancelar').show();
+	$('#btn-cotizacion').hide();
+	document.getElementById("producto").focus();
+}
+
+function cargaProducto($id_pedido){
+	var producto 	= $('input#id_producto').val(); 
+ 	var cantidad 	= $('input#cantidad').val();
+ 	var pedido		= $id_pedido;
+	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/Pedidos/traerProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	data: {'producto'	: producto,
+	 		   'cantidad'	: cantidad,
+	 		   'pedido'		: pedido,
+	 		   'aux'		: aux
+	 		   },
+	 	success: function(resp) { 
+	 		$("#tablapedido > tbody").append(resp);
+	 		aux = aux+1;
+	 		armarTotales(pedido);
+	 		document.formProducto.reset(); 
+			document.getElementById("producto").focus();
+	 	}
+	});
+}
+function armarTotales($id_pedido){
+	var pedido	= $id_pedido;
+	var x = 0;
+	for(i = 0; i < aux; i++){
+		x += parseFloat($('#subtotal'+i).val());
+	}		
+	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/Pedidos/armarTotales', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	data: {	'pedido'		: pedido,
+	 			'subtotal'		: x
+	 			},
+	 	success: function(resp) { 
+	 		$('#table-totales').html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias 	
+	 	}
+	});	
+}
+function ajaxSearch() {
+	var producto = $('#producto').val();
+    if (producto.length === 0) {
+       	$('#suggestions').hide();
+    } 
+    else {
+       	$.ajax({
+        	type: "POST",
+            url: '<?php echo base_url(); ?>index.php/Presupuestos/buscarProducto',
+            data: {'producto': producto,},
+            success: function(data) {
+	            // return success
+	            if (data.length > 0) {
+	            	$('#suggestions').show();
+	                $('#autoSuggestionsList').addClass('auto_list');
+	                $('#autoSuggestionsList').html(data);
+	            }
+            }
+		});
+	}
+}
+//-----FUNCION PARA SELECCIONAR UN PRODUCTO Y ESCONDER EL AUTOCOMPLETAR---//
+function funcion1($id_producto){
+	var nombre 		= $('#id_valor'+$id_producto).val();
+	var id_producto	= $id_producto;
+	$('#producto').val(nombre);
+	$('#id_producto').val(id_producto);
+	$('#suggestions').hide();
+	document.getElementById("cantidad").focus();
+}
+function sacarProducto($id_linea, $pedido){
+	var producto = [];
+	var cantidad = [];
+	var precio = [];
+	var subtotal = [];
+	var nombre = [];
+	for(i = 0; i < aux; i++){
+		producto[i] 	= $('#id_producto'+i).val();
+		cantidad[i] 	= $('#cant'+i).val();
+		precio[i] 		= $('#precio'+i).val();
+		subtotal[i] 	= $('#subtotal'+i).val();
+		nombre[i]		= $('#nomb'+i).val();
+		
+	}	
+	var pedido = $pedido;
+ 	var id_linea	= $id_linea;
+ 	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/Pedidos/sacarProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	data: {'id_linea'	: id_linea,
+	 		   'pedido': pedido,
+	 		   },
+	 	success: function(resp) {
+	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
+	 		for(i = 0; i < aux; i++){
+	 			$("#tablapedido > tbody").append('<tr>'+
+										 			'<td><input type="text" id="id_producto'+i+'" autocomplete="off" required hidden value="'+producto[i]+'">'+nombre[i]+
+										 				'<input type="text" id="nomb'+i+'" autocomplete="off" required hidden value="'+nombre[i]+'">'+
+										 			'</td>'+
+										 			'<td><input type="text" id="cant'+i+'" autocomplete="off" required hidden value="'+cantidad[i]+'">'+cantidad[i]+'</td>'+
+										 			'<td><input type="text" id="precio'+i+'" autocomplete="off" required hidden value="'+precio[i]+'">$ '+precio[i]+'</td>'+
+										 			'<td><input type="text" id="subtotal'+i+'" autocomplete="off" required hidden value="'+subtotal[i]+'">$ '+subtotal[i]+'</td>'+
+										 			'<td>Nuevo</td>'+
+										 			'<td></td>'+
+										 		'</tr>');
+			}	
+	 		$(".cargarLinea").show();
+	 		armarTotales(pedido);
+	 	}
+	});
+}
+function cargarProducto($id_linea, $pedido){
+	var producto = [];
+	var cantidad = [];
+	var precio = [];
+	var subtotal = [];
+	var nombre = [];
+	for(i = 0; i < aux; i++){
+		producto[i] 	= $('#id_producto'+i).val();
+		cantidad[i] 	= $('#cant'+i).val();
+		precio[i] 		= $('#precio'+i).val();
+		subtotal[i] 	= $('#subtotal'+i).val();
+		nombre[i]		= $('#nomb'+i).val();
+		
+	}	
+	var pedido = $pedido;
+ 	var id_linea	= $id_linea;
+ 	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/Pedidos/cargarProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	data: {'id_linea'	: id_linea,
+	 		   'pedido': pedido,
+	 		   },
+	 	success: function(resp) {
+	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
+	 		for(i = 0; i < aux; i++){
+	 			$("#tablapedido > tbody").append('<tr>'+
+										 			'<td><input type="text" id="id_producto'+i+'" autocomplete="off" required hidden value="'+producto[i]+'">'+nombre[i]+
+										 				'<input type="text" id="nomb'+i+'" autocomplete="off" required hidden value="'+nombre[i]+'">'+
+										 			'</td>'+
+										 			'<td><input type="text" id="cant'+i+'" autocomplete="off" required hidden value="'+cantidad[i]+'">'+cantidad[i]+'</td>'+
+										 			'<td><input type="text" id="precio'+i+'" autocomplete="off" required hidden value="'+precio[i]+'">$ '+precio[i]+'</td>'+
+										 			'<td><input type="text" id="subtotal'+i+'" autocomplete="off" required hidden value="'+subtotal[i]+'">$ '+subtotal[i]+'</td>'+
+										 			'<td>Nuevo</td>'+
+										 			'<td></td>'+
+										 		'</tr>');
+			}	
+	 		$(".cargarLinea").show();
+	 		armarTotales(pedido);
+	 	}
+	});
+}
+function cancelarCambios($pedido){
+	var pedido = $pedido;
+	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/Pedidos/cancelarCambios', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	data: {'pedido': pedido,},
+	 	success: function(resp) {
+	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
+	 		armarTotales(pedido);
+	 		$("#btn-print").show();
+			$("#btn-editar").show();
+			$("#btn-aprobar").show();
+			$(".cargarLinea").hide();
+			$('.display-none').hide();
+			$('#btn-guardar').hide();
+			$('#btn-cancelar').hide();
+			$('#btn-cotizacion').show();
+			aux = 0;
+	 	}
+	});
+}
+function imprimirConLogo(){
+	$('#imagen-durox').show();
+	setTimeout(function(){ $('#imagen-durox').hide(); }, 100);
+}
+function guardarLineasNuevas($pedido){
+	var pedido = $pedido;
+	var total = $('#total-ped').val();
+	if(aux > 0){
+		for(i = 0; i < aux; i++){
+			var producto 	= $('#id_producto'+i).val();
+			var cantidad 	= $('#cant'+i).val();
+			var precio 		= $('#precio'+i).val();
+			var subtotal 	= $('#subtotal'+i).val();
+			var id_moneda	= $('#id_moneda'+i).val();
+			var valor_moneda= $('#valor_moneda'+i).val();
+			$.ajax({
+			 	type: 'POST',
+			 	url: '<?php echo base_url(); ?>index.php/Pedidos/cargaProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
+			 	data: {	'producto'		: producto,
+			 		   	'cantidad'		: cantidad,
+			 		   	'precio'		: precio,
+			 		   	'subtotal'		: subtotal,
+			 		   	'pedido'		: pedido,
+			 		   	'id_moneda'		: id_moneda,
+				 		'valor_moneda'	: valor_moneda,
+			 		   },
+			 	success: function(resp) { 
+			 		
+			 	},
+			 	async: false
+			});
+		}
+		return true;
+	}
+	else{
+		if(total > 0){
+			return true;
+		}
+		else{
+			alert("ERROR! - No hay lineas en el pedido!");
+			return false;
+		}
+	}
+}
+function pegarEtiqueta(){
+	//var caretPos 		= document.getElementById("txt").selectionEnd;
+    var textAreaTxt 	= $('#txt').val();
+    var txtToAdd 		=  $( "#btn-tag" ).val();
+	$("#txt").val(textAreaTxt + txtToAdd);
+}
+function insertInputTag(){
+	$("#btn-tag" ).val($( "#etiquetas" ).val());
+}
+
+function saveAlarm($id){
+	<?php
+	$cantidad_paginas = 0;
+	if($alarmas){
+		$cantidad_paginas = ceil(count($alarmas)/5);
+	}
+	echo 'var cant_pag = '.$cantidad_paginas.';';
+	?>
+	if($('#mensaje').val()){
+		$.ajax({
+			type: 'POST',
+			url: '<?php echo base_url(); ?>index.php/Alarmas/insertAlarma', 
+			data: { 'tipo' 		: $('#tipo').val(),
+			 		'mensaje'	: $('#mensaje').val(),
+			 		'id'		: $id, 
+			 		'cruce'		: 'pedidos'
+			}, 
+			success: function(resp) { 
+				$('#box-alarmas'+cant_pag).append(resp);
+				$('#formAlarma').trigger("reset");
+				getAlarmas($id);
+				$('#mensaje').removeClass();
+			}
+		});
+	}
+}
+
+function getAlarmas($id){
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo base_url(); ?>index.php/Pedidos/getAlarmas', 
+		data: { 'id'		: $id,
+				}, 
+		success: function(resp) {
+			$('#llenarAlarmas').html(resp);
+		}
+	});
+}
+
+function cambiarSelect(){
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo base_url(); ?>index.php/Alarmas/tipoAlarma', 
+		data: { 'tipo' 		: $('#tipo').val(),
+				}, 
+		success: function(resp) { 
+			$('#mensaje').removeClass();
+			//$('#tipo').addClass('form-control alert-'+resp);
+			$('#mensaje').addClass('alert-'+resp);
+		}
+	});
+}
+
+var cotizar_cng = 0;
+
+function cotizar(){
+	if(cotizar_cng%2 == 0){
+		$('.subtotal1').show();
+		$('.subtotal2').hide();
+		$('#sub-pesos').hide();
+		$('#sub-otra-moneda').show("drop");
+		cotizar_cng ++;
+	}
+	else{
+		$('.subtotal1').hide();
+		$('.subtotal2').show();
+		$('#sub-pesos').show("drop");
+		$('#sub-otra-moneda').hide();
+		cotizar_cng ++;
+	}
+}
+</script>

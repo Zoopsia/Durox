@@ -307,8 +307,9 @@ class Pedidos extends My_Controller {
 				}
 				$mensaje .=		'<td>'.$row->nombre.'</td>
 								<td>'.$row->cantidad.'</td>
-								<td>$ '.$row->precio.'</td>
-								<td>$ '.$row->subtotal.'</td>
+								<td>' . $row->abreviatura.$row->simbolo.' '.$row -> precio . '</td>
+								<td class="subtotal1" style="display: none">'.$row->abreviatura.$row->simbolo.' '.round($row -> precio*$row -> cantidad, 2).'</td>
+								<td class="subtotal2">$ ' . $row -> subtotal . '</td>
 								<td class="no-print" style="width: 150px">'.$row->estado.'</th>';
 				if($row->estado == 'En Proceso')
 					$mensaje .=	 '<td style="width: 50px"><span class="display-none"><a class="btn btn-danger btn-xs" onclick="sacarProducto('.$row->id_linea_producto_pedido.','.$id.')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></span></td>';
@@ -370,7 +371,7 @@ class Pedidos extends My_Controller {
 		$mensaje = '<table class="table">
 				        <tr>
 				        	<th style="width:50%">'.$this->lang->line('subtotal').'</th>
-				       		<td>$ '.round($total,2).'</td>
+				       		<td>$ '.round($total,2).'<input type="number" id="total-ped" value="'.$total.'" hidden></td>
 				       	</tr>
 				        <tr>
 				       		<th>'.$this->lang->line('iva').'</th>
@@ -455,6 +456,71 @@ class Pedidos extends My_Controller {
 				'eliminado'				=> 0
 			);
 		}
+
+		$this->pedidos_model->update($arreglo, $id_pedido);
+		
+		//----- CARGO ACCION A UN REGISTRO LOG---//
+		if($pedidos){
+			foreach($pedidos as $row){
+				if($row->estado_linea == 3){//--- Imposible de enviar ---//
+					$arreglo	 = array(
+						'id_estado_producto_pedido'	=> 1,
+						'eliminado'					=> 1 	
+					);
+					
+					$arreglo_log = array(
+						'id_linea'					=> $row->id_linea_producto_pedido,
+						'id_accion'					=> 3
+					);
+					
+					$id 	= $this->pedidos_model->updateLinea($arreglo,$row->id_linea_producto_pedido);
+					$id_log = $this->log_linea_pedidos_model->insertLog($arreglo_log);
+				}
+				else if($row->estado_linea == 4){//--- Nuevo ---//
+					$arreglo	= array(
+						'id_estado_producto_pedido'	=> 1	
+					);
+					
+					$arreglo_log = array(
+						'id_linea'					=> $row->id_linea_producto_pedido,
+						'id_accion'					=> 4
+					);
+					
+					$id 	= $this->pedidos_model->updateLinea($arreglo,$row->id_linea_producto_pedido);
+					$id_log = $this->log_linea_pedidos_model->insertLog($arreglo_log);
+				}
+			}
+		}
+
+		redirect('Pedidos/pestanas/'.$id_pedido,'refresh');
+	}
+
+	function guardarPedido2($id_pedido){
+		$pedidos				= $this->pedidos_model->getDetallePedido($id_pedido);
+		$total = 0;
+		
+		if($pedidos)
+		{
+			foreach ($pedidos as $row) 
+			{
+				if($row->estado_linea != 3)
+					$total = $row->subtotal + $total;
+				
+				$iteracion = $row->iteracion;
+			}
+		}
+		
+		$arreglo = array(
+			'total'					=> $total,
+			'id_estado_pedido'		=> 1,
+			'aprobado_back'			=> 0,
+			'aprobado_front'		=> 0,
+			'visto_back'			=> 1,
+			'visto_front'			=> 0,
+			'iteracion'				=> $iteracion + 1,
+			'eliminado'				=> 0
+		);
+		
 
 		$this->pedidos_model->update($arreglo, $id_pedido);
 		
@@ -756,7 +822,10 @@ class Pedidos extends My_Controller {
 		$visita			= array(
 			'id_cliente' 		=> $this->input->post('id_cliente'), 
 			'id_vendedor' 		=> $this->input->post('id_vendedor'),
-			'fecha'				=> $fecha		
+			'fecha'				=> $fecha,
+			'id_origen_visita'	=> 2,
+			'id_origen'			=> 2
+					
 		);
 
 		$id_visita = $this->visitas_model->insert($visita);

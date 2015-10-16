@@ -296,7 +296,7 @@ $eliminado = 0;
 												<th><?php echo $this -> lang -> line('date'); ?></th>
 												<th><?php echo $this -> lang -> line('estado'); ?></th>
 												<th><?php echo $this -> lang -> line('total'); ?></th>
-												<th></th>
+												<th class="mostrar-col"></th>
 											</tr>
 										</thead>
 									
@@ -306,12 +306,13 @@ $eliminado = 0;
 												<th><?php echo $this -> lang -> line('date'); ?></th>
 												<th><?php echo $this -> lang -> line('estado'); ?></th>
 												<th><?php echo $this -> lang -> line('total'); ?></th>
-												<th></th>
+												<th class="mostrar-col"></th>
 											</tr>
 										</tfoot>
 									
 										<tbody>
 										<?php
+											$mostrar_col = 0;
 											foreach ($presupuesto as $row) {
 												echo '<tr>';
 												echo '<td>' . $row -> id_presupuesto . '</td>';
@@ -322,12 +323,18 @@ $eliminado = 0;
 														echo '<td>' . $key -> estado . '</td>';
 													}
 												echo '<td>$ ' . $row -> total . '</td>';
-												if($row -> total != 0)
+												if($row -> total != 0){
 													echo '<td style="text-align: center"><button type="button" class="btn btn-primary btn-xs" onclick="modal(' . $row -> id_presupuesto . '); tablaPresupuesto(' . $row -> id_presupuesto . ')" id="btn-ver" name="btn-ver" value="">' . $this -> lang -> line('ver') . '</button></td>';
+													$mostrar_col++;
+												}
 												else 
-													echo '<td></td>';
+													echo '<td class="mostrar-col"></td>';
 												echo "</tr>";
-										}
+											}
+											
+											if($mostrar_col == 0){
+												echo '<script>$(".mostrar-col").hide();</script>';
+											}
 										?>
 										</tbody>
 									</table>

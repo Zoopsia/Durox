@@ -1,5 +1,9 @@
 <script>
-   
+
+$( document ).ready(function() {
+	$('#producto').focus();
+});
+
 function aprobarForm() {
  	$("#aprobarForm").submit();
 }
@@ -174,33 +178,39 @@ function cancelarCambios($pedido){
 
 function guardarLineasNuevas($pedido){
 	var pedido = $pedido;
-	for(i = 0; i < aux; i++){
-		var producto 	= $('#id_producto'+i).val();
-		var cantidad 	= $('#cant'+i).val();
-		var precio 		= $('#precio'+i).val();
-		var subtotal 	= $('#subtotal'+i).val();
-		var id_moneda	= $('#id_moneda'+i).val();
-		var valor_moneda= $('#valor_moneda'+i).val();
-		if(producto){
-			$.ajax({
-			 	type: 'POST',
-			 	url: '<?php echo base_url(); ?>index.php/Pedidos/cargaProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
-			 	data: {'producto'		: producto,
-			 		   'cantidad'		: cantidad,
-			 		   'precio'			: precio,
-			 		   'subtotal'		: subtotal,
-			 		   'pedido'			: pedido,
-			 		   'id_moneda'		: id_moneda,
-			 		   'valor_moneda'	: valor_moneda,
-			 		   },
-			 	success: function(resp) { 
-			 		
-			 	},
-			 	async: false
-			});
+	if(aux > 0){
+		for(i = 0; i < aux; i++){
+			var producto 	= $('#id_producto'+i).val();
+			var cantidad 	= $('#cant'+i).val();
+			var precio 		= $('#precio'+i).val();
+			var subtotal 	= $('#subtotal'+i).val();
+			var id_moneda	= $('#id_moneda'+i).val();
+			var valor_moneda= $('#valor_moneda'+i).val();
+			if(producto){
+				$.ajax({
+				 	type: 'POST',
+				 	url: '<?php echo base_url(); ?>index.php/Pedidos/cargaProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
+				 	data: {'producto'		: producto,
+				 		   'cantidad'		: cantidad,
+				 		   'precio'			: precio,
+				 		   'subtotal'		: subtotal,
+				 		   'pedido'			: pedido,
+				 		   'id_moneda'		: id_moneda,
+				 		   'valor_moneda'	: valor_moneda,
+				 		   },
+				 	success: function(resp) { 
+				 		
+				 	},
+				 	async: false
+				});
+			}
 		}
+		return true;
 	}
-	return true;
+	else{
+		alert("ERROR! - No hay lineas en el pedido!");
+		return false;
+	}
 }
 
 function deleteRow(r, $pedi) {

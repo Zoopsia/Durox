@@ -26,8 +26,8 @@ class Condiciones_pago extends My_Controller {
 	
 	public function editar(){
 		
-		$nombre 	= $this->input->post('condicion');
-		$dias		= $this->input->post('dias');
+		$nombre 		= $this->input->post('nombre');
+		$dias			= $this->input->post('value');
 		$id_condicion	= $this->input->post('id');
 		
 		$condicion	= array(
@@ -54,6 +54,31 @@ class Condiciones_pago extends My_Controller {
 		$this->condiciones_pago_model->insert($condicion);	
 		
 		redirect($this->_subject.'/Condiciones_pago/','refresh');
+		
+	}
+	
+	public function eliminarCondicion(){
+		
+		if($this->input->post('eliminar')){	
+			foreach($this->input->post('eliminar') as $row){
+				if($this->condiciones_pago_model->deleteCondicionPresupuesto($row)){
+					if($this->condiciones_pago_model->deleteCondicionPedido($row)){
+						$arreglo = array(
+							'eliminado'		=> 1
+						);
+									
+						$this->condiciones_pago_model->update($arreglo,$row);
+					}
+					else {
+						echo "resp";
+					}
+				}
+				else {
+					echo "resp";
+				}
+			}
+		}
+		
 		
 	}
 	

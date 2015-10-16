@@ -61,13 +61,11 @@
 		                                			<td></td>
 		                                			<td></td>
 		                                			<td></td>
-		                                			<td></td>
 		                                		</thead>
 		                                		<tbody>
 		                                		<?php if($recibidos) { foreach($recibidos as $row) { if($row->visto == 0) { ?>
 												<tr class="unread">
 		                                        	<td class="small-col"><input type="checkbox" class="input-recibidos" name="recibidos[]" value="<?php echo $row->id_sin_mensaje_vendedor;?>"/></td>
-		                                            <td class="small-col"><i class="fa fa-star"></i></td>
 		                                            <td class="name"><a href="#mail4" data-toggle="tab" class="displayblock" onclick="mostrarMensaje(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->nombre.' '.$row->apellido; ?></a></td>
 		                                            <td class="subject"><a href="#mail4" data-toggle="tab" class="displayblock" onclick="mostrarMensaje(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->asunto;?></a></td>
 		                                            <td class="time"><?php $date	= date_create($row->date_add); echo ' '.date_format($date, 'd/m/Y');?></td>
@@ -75,7 +73,6 @@
 												<?php } else { ?>
 												<tr>
 		                                            <td class="small-col"><input type="checkbox" class="input-recibidos" name="recibidos[]" value="<?php echo $row->id_sin_mensaje_vendedor;?>"/></td>
-		                                            <td class="small-col"><i class="fa fa-star-o"></i></td>
 		                                            <td class="name"><a href="#mail4" data-toggle="tab" class="displayblock" onclick="mostrarMensaje(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->nombre.' '.$row->apellido; ?></a></td>
 		                                            <td class="subject"><a href="#mail4" data-toggle="tab" class="displayblock" onclick="mostrarMensaje(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->asunto;?></a></td>
 		                                            <td class="time"><?php $date	= date_create($row->date_add); echo ' '.date_format($date, 'd/m/Y');?></td>
@@ -83,7 +80,6 @@
 												<?php } } } else { ?>   
 												<tr>
 		                                            <td class="small-col" style="height: 43px"></td>
-		                                            <td class="small-col"></td>
 		                                            <td class="name"></td>
 		                                            <td class="subject"></td>
 		                                            <td class="time"></td>
@@ -126,13 +122,11 @@
 		                                			<td></td>
 		                                			<td></td>
 		                                			<td></td>
-		                                			<td></td>
 		                                		</thead>
 		                                		<tbody>
 		                                		<?php if($enviados) { foreach($enviados as $row) { if($row->visto == 0) { ?>
 												<tr class="unread">
 		                                        	<td class="small-col"><input type="checkbox" class="input-enviados" name="enviados[]" value="<?php echo $row->id_mensaje;?>"/></td>
-		                                            <td class="small-col"><i class="fa fa-star"></i></td>
 		                                            <td class="name"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_mensaje;?>)"><?php echo $row->nombre.' '.$row->apellido; ?></a></td>
 		                                            <td class="subject"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_mensaje;?>)"><?php echo $row->asunto;?></a></td>
 		                                            <td class="time"><?php $date	= date_create($row->date_add); echo ' '.date_format($date, 'd/m/Y');?></td>
@@ -140,7 +134,6 @@
 												<?php } else { ?>
 												<tr>
 		                                            <td class="small-col"><input type="checkbox" class="input-enviados" name="enviados[]" value="<?php echo $row->id_mensaje;?>"/></td>
-		                                            <td class="small-col"><i class="fa fa-star-o"></i></td>
 		                                            <td class="name"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_mensaje;?>)"><?php echo $row->nombre.' '.$row->apellido; ?></a></td>
 		                                            <td class="subject"><a href="#mail5" data-toggle="tab" class="displayblock" onclick="mostrarMensaje2(<?php echo $row->id_mensaje;?>)"><?php echo $row->asunto;?></a></td>
 		                                            <td class="time"><?php $date	= date_create($row->date_add); echo ' '.date_format($date, 'd/m/Y');?></td>
@@ -148,7 +141,6 @@
 												<?php } } } else { ?>   
 												<tr>
 		                                            <td class="small-col" style="height: 43px"></td>
-		                                            <td class="small-col"></td>
 		                                            <td class="name"></td>
 		                                            <td class="subject"></td>
 		                                            <td class="time"></td>
@@ -192,13 +184,11 @@
 		                                			<td></td>
 		                                			<td></td>
 		                                			<td></td>
-		                                			<td></td>
 		                                		</thead>
 		                                		<tbody>
 		                                		<?php if($papelera) { foreach($papelera as $row) {  ?>
 												<tr>
 		                                            <td class="small-col"><input type="checkbox" class="input-papelera" name="papelera[]" value="<?php echo $row->id_sin_mensaje_vendedor;?>"/></td>
-		                                            <td class="small-col"><i class="fa fa-star-o"></i></td>
 		                                            <?php if($row->id_origen == 1) { ?>
 		                                            <td class="name"><a href="#mail6" data-toggle="tab" class="displayblock" onclick="mostrarMensaje3(<?php echo $row->id_sin_mensaje_vendedor;?>)">RECIBIDO</a></td>
 		                                            <?php } else { ?>
@@ -210,7 +200,6 @@
 												<?php } } else { ?>   
 												<tr>
 		                                            <td class="small-col" style="height: 43px"></td>
-		                                            <td class="small-col"></td>
 		                                            <td class="name"></td>
 		                                            <td class="subject"></td>
 		                                            <td class="time"></td>
@@ -270,7 +259,7 @@
 	</div><!--contenedor-->
 </div> 
 
-<form id="mensajeria" action="<?php echo base_url()."index.php/Mensajes/nuevoMensaje" ?>" method="post">
+<form id="mensajeria" action="<?php echo base_url()."index.php/Mensajes/nuevoMensaje/1" ?>" method="post">
 	<div class="modal fade" id="modal_mensajes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-dialog modal-lg" style="width: 800px">
 	    <div class="modal-content">
@@ -382,7 +371,6 @@ function funcionNoLeido(){
 	var aux =  $( ".input-recibidos:checked" ).length;
 
 	if(aux>0){
-		console.log($('.input-recibidos' ).serializeArray());
 		var Datos = $('.input-recibidos' ).serializeArray();
 		$.ajax({
 			type: 'POST',
@@ -402,7 +390,6 @@ function funcionLeido(){
 	var aux =  $( ".input-recibidos:checked" ).length;
 
 	if(aux>0){
-		console.log($('.input-recibidos' ).serializeArray());
 		var Datos = $('.input-recibidos' ).serializeArray();
 		$.ajax({
 			type: 'POST',
@@ -419,7 +406,6 @@ function funcionPapelera(){
 	var aux =  $( ".input-recibidos:checked" ).length;
 
 	if(aux>0){
-		console.log($('.input-recibidos' ).serializeArray());
 		var Datos = $('.input-recibidos' ).serializeArray();
 		$.ajax({
 			type: 'POST',
@@ -437,7 +423,6 @@ function funcionPapelera2(){
 	var aux =  $( ".input-enviados:checked" ).length;
 
 	if(aux>0){
-		console.log($('.input-enviados' ).serializeArray());
 		var Datos = $('.input-enviados' ).serializeArray();
 		$.ajax({
 			type: 'POST',
@@ -455,7 +440,6 @@ function funcionRestaurar(){
 	var aux =  $( ".input-papelera:checked" ).length;
 
 	if(aux>0){
-		console.log($('.input-papelera' ).serializeArray());
 		var Datos = $('.input-papelera' ).serializeArray();
 		$.ajax({
 			type: 'POST',

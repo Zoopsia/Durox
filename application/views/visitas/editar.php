@@ -41,10 +41,10 @@
 														<?php
 															foreach($clientes as $row){
 																if($row->id_cliente == $value->id_cliente){
-																	echo '<option value="'.$row->id_cliente.'" selected>'.$row->nombre.', '.$row->apellido.'</option>';
+																	echo '<option value="'.$row->id_cliente.'" selected>'.$row->razon_social.'</option>';
 																}
 																else {
-																	echo '<option value="'.$row->id_cliente.'">'.$row->nombre.', '.$row->apellido.'</option>';
+																	echo '<option value="'.$row->id_cliente.'">'.$row->razon_social.'</option>';
 																}
 															}
 														?>

@@ -17,6 +17,54 @@ class Condiciones_pago_model extends My_Model {
 				$_array_cruze	= $this->_array_cruze
 		);
 	}
+	
+	function deleteCondicionPresupuesto($id){
+		
+		$sql = "SELECT
+					*
+				FROM
+					presupuestos
+				INNER JOIN
+					$this->_tablename USING ($this->_id_table)
+				WHERE
+					$this->_tablename.$this->_id_table = $id
+				AND
+					presupuestos.eliminado = 0";
+		
+		$query = $this->db->query($sql);
+		
+		if($query->num_rows() > 0)
+		{
+			return FALSE;
+		}
+		else {
+			return TRUE;
+		}
+	}
+	
+	function deleteCondicionPedido($id){
+			
+		$sql = "SELECT
+					*
+				FROM
+					pedidos
+				INNER JOIN
+					$this->_tablename USING ($this->_id_table)
+				WHERE
+					$this->_tablename.$this->_id_table = $id
+				AND
+					pedidos.eliminado = 0";
+		
+		$query = $this->db->query($sql);
+		
+		if($query->num_rows() > 0)
+		{
+			return FALSE;
+		}
+		else {
+			return TRUE;
+		}
+	}
 
 } 
 ?>

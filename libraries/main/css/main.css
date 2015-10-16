@@ -559,3 +559,7 @@ div.user-panel{
 	display: block; 
 	color: black; 
 }
+
+.col-eliminar{
+	width: 50px;
+}
