@@ -464,7 +464,7 @@ class Grupos extends My_Controller {
 				$mensaje2 = get_mensaje($arreglo_mensaje);
 				$this->adminClientes($this->input->post('id_grupo'));
 			}
-		}
-				
+		}		
 	}
+
 }

@@ -244,11 +244,12 @@ class Pedidos extends My_Controller {
 			'id_pedido'						=> $this->input->post('pedido'),
 			'id_producto' 					=> $this->input->post('producto'), 
 			'cantidad' 						=> $this->input->post('cantidad'),
-			'id_estado_producto_pedido'		=> 4,
+			'id_estado_producto_pedido'		=> 1,
 			'precio'						=> $this->input->post('precio'),
 			'subtotal'						=> $this->input->post('subtotal'),	
 			'id_moneda'						=> $this->input->post('id_moneda'),
-			'valor_moneda'					=> $this->input->post('valor_moneda')
+			'valor_moneda'					=> $this->input->post('valor_moneda'),
+			'eliminado'						=> 0
 		);
 
 		$linea				= $this->pedidos_model->insertLinea($arreglo);
@@ -664,7 +665,9 @@ class Pedidos extends My_Controller {
 								<input type="text" id="valor_moneda'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$valor.'">
 							</td>
 							<td><input type="text" id="cant'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$this->input->post('cantidad').'">'.$cantidad.'</td>
-							<td><input type="text" id="precio'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$preciototal.'">'.$abreviatura.$simbolo.' '.$preciototal.'</td>
+							<td><input type="text" id="precio'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$preciototal.'">'.$abreviatura.$simbolo.' '.$preciototal.'
+								<input type="text" id="simbolo'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$abreviatura.$simbolo.'">
+							</td>
 							<td><input type="text" id="subtotal'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$subtotal.'">$ '.$subtotal.'</td>
 							<td>Nuevo</td>
 							<td></td>
@@ -677,12 +680,8 @@ class Pedidos extends My_Controller {
 	function traerProducto2(){
 		$producto	= $this->productos_model->getRegistro($this->input->post('producto'));
 		
-		$pedi		= $this->pedidos_model->getRegistro($this->input->post('pedido'));
-		
-		foreach($pedi as $row){
-			$cliente			= $this->clientes_model->getCliente($row->id_cliente);
-		}
-		
+		$cliente			= $this->clientes_model->getCliente($this->input->post('cliente'));
+				
 		if($this->input->post('producto')){
 			if($this->input->post('cantidad')){
 				$cantidad		= $this->input->post('cantidad');
@@ -719,10 +718,12 @@ class Pedidos extends My_Controller {
 								<input type="text" id="valor_moneda'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$valor.'">
 							</td>
 							<td><input type="text" id="cant'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$this->input->post('cantidad').'">'.$cantidad.'</td>
-							<td><input type="text" id="precio'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$preciototal.'">'.$abreviatura.$simbolo.' '.$preciototal.'</td>
+							<td><input type="text" id="precio'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$preciototal.'">'.$abreviatura.$simbolo.' '.$preciototal.'
+								<input type="text" id="simbolo'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$abreviatura.$simbolo.'">
+							</td>
 							<td><input type="text" id="subtotal'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$subtotal.'">$ '.$subtotal.'</td>
 							<td>Nuevo</td>
-							<td><a class="btn btn-danger btn-xs" onclick="deleteRow(this,'.$this->input->post('pedido').')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></td>
+							<td><a class="btn btn-danger btn-xs" onclick="deleteRow(this,'.$this->input->post('pedido').','.$this->input->post('aux').')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></td>
 						</tr>'; 
 		
 			}																
@@ -817,11 +818,43 @@ class Pedidos extends My_Controller {
 	
 	public function nuevoPedido(){
 		
-		$fecha = formato_fecha($this->input->post('fecha'));
+		$id_presupuesto	= $this->presupuestos_model->getCantidadRegistros() + 1;
+		$id_visita		= $this->visitas_model->getCantidadRegistros() + 1;
+		$id_pedido		= $this->pedidos_model->getCantidadRegistros() + 1;
+		$id_cliente		= $this->input->post('id_cliente');
+		$id_vendedor	= $this->input->post('id_vendedor');
+		$fecha			= formato_fecha($this->input->post('fecha'));
+		
+		if($id_pedido){
+						
+			$db['clientes']			= $this->clientes_model->getRegistro($id_cliente);
+			$db['vendedores']		= $this->vendedores_model->getRegistro($id_vendedor);
+			
+			$db['id_visita']		= $id_visita;
+			$db['id_presupuesto']	= $id_presupuesto;
+			$db['id_pedido']		= $id_pedido;
+			$db['fecha']			= $fecha;
+			$db['id_cliente']		= $id_cliente;
+			$db['id_vendedor']		= $id_vendedor;
+			
+			$db['iva']				= $this->clientes_model->getTodo('iva');		
+			$db['pedidos']			= $this->pedidos_model->getDetallePedido($id_pedido);
+			$db['estados']			= $this->pedidos_model->getTodo('estados_pedidos');
+			
+			
+			$this->cargar_vista($db, 'carga_pedido');
+		}
+	}
+
+	public function guardarNuevoPedido(){
+		
+		$cliente 	= $this->input->post('cliente');
+		$vendedor	= $this->input->post('vendedor');
+		$fecha		= $this->input->post('fecha');
 			
 		$visita			= array(
-			'id_cliente' 		=> $this->input->post('id_cliente'), 
-			'id_vendedor' 		=> $this->input->post('id_vendedor'),
+			'id_cliente' 		=> $cliente, 
+			'id_vendedor' 		=> $vendedor,
 			'fecha'				=> $fecha,
 			'id_origen_visita'	=> 2,
 			'id_origen'			=> 2
@@ -832,8 +865,8 @@ class Pedidos extends My_Controller {
 			
 		$presupuesto	= array(
 				'id_visita'				=> $id_visita,
-				'id_cliente' 			=> $this->input->post('id_cliente'), 
-				'id_vendedor' 			=> $this->input->post('id_vendedor'),
+				'id_cliente' 			=> $cliente, 
+				'id_vendedor' 			=> $vendedor,
 				'fecha'					=> $fecha,
 				'id_origen'				=> 2,
 				'visto_back'			=> 1,
@@ -852,8 +885,8 @@ class Pedidos extends My_Controller {
 		$pedido			= array(
 				'id_visita'				=> $id_visita,
 				'id_presupuesto'		=> $id_presupuesto,
-				'id_cliente' 			=> $this->input->post('id_cliente'), 
-				'id_vendedor' 			=> $this->input->post('id_vendedor'),
+				'id_cliente' 			=> $cliente, 
+				'id_vendedor' 			=> $vendedor,
 				'fecha'					=> $fecha,
 				'id_origen'				=> 2,
 				'visto_back'			=> 0,
@@ -862,24 +895,7 @@ class Pedidos extends My_Controller {
 	
 		$id_pedido 		= $this->pedidos_model->insert($pedido);
 		
+		redirect('Pedidos/pestanas/'.$id_pedido,'refresh');
 		
-		if($id_pedido){
-			$pedido					= $this->pedidos_model->getRegistro($id_pedido);
-			$db['pedido']			= $pedido;
-			
-			if($pedido){
-				foreach($pedido as $row) {
-					$db['clientes']		= $this->clientes_model->getRegistro($row->id_cliente);
-					$db['vendedores']	= $this->vendedores_model->getRegistro($row->id_vendedor);
-				}
-			}
-			
-			$db['iva']				= $this->clientes_model->getTodo('iva');		
-			$db['pedidos']			= $this->pedidos_model->getDetallePedido($id_pedido);
-			$db['estados']			= $this->pedidos_model->getTodo('estados_pedidos');
-			$db['id_pedido']		= $id_pedido;
-			
-			$this->cargar_vista($db, 'carga_pedido');
-		}
 	}
 }

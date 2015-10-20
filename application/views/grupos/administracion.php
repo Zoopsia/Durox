@@ -92,25 +92,45 @@ function editarGrupo(){
 }
 
 function nuevoGrupo(){
- 	var grupo_nombre	= $('input#grupo_nombre').val(); //Obtenemos el nombre del grupo seleccionado en la lista
+ 	var grupo_nombre	= $('input#grupo_nombre').val(); 
  	var regla			= $('input#regla').val();
  	var valor			= $('input#valor').val();
  	var tipo			= $('select#tipo').val();
- 	
- 	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/grupos/nuevoGrupo', //Realizaremos la petición al metodo prueba del controlador cliente
-	 	data: {'grupo_nombre' 	: grupo_nombre,
-	 			'btn-save'		: 1, 
-	 			'regla'			: regla,
-	 			'valor'			: valor,
-	 			'tipo'			: tipo,
-	 	}, //Pasaremos por parámetro POST
-	 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-	 		//Activar y Rellenar la tabla
-	 		$('#divregistro').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de reglas
-	 	}
-	});
+ 	if(comprobarGrupo()){
+	 	$.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/grupos/nuevoGrupo', 
+		 	data: {'grupo_nombre' 	: grupo_nombre,
+		 			'btn-save'		: 1, 
+		 			'regla'			: regla,
+		 			'valor'			: valor,
+		 			'tipo'			: tipo,
+		 	}, //Pasaremos por parámetro POST
+		 	success: function(resp) { 
+		 		$('#divregistro').attr('disabled',false).html(resp); 
+		 	}
+		});
+	}
+}
+
+
+
+function comprobarGrupo(){
+	var grupo_nombre	= $('input#grupo_nombre').val();
+	var i = 0;
+	<?php 
+	if($grupos){
+		foreach ($grupos as $row) {
+			echo "if(grupo_nombre == '".$row->grupo_nombre."'){ i++;}";
+		}
+	}
+	?>
+	if(i > 0){
+		alert("ERROR - Ya existe un grupo '"+grupo_nombre+"'");
+		return false;
+	}
+	else
+		return true;
 }
 
 function nuevoCliente(){
@@ -219,29 +239,34 @@ function volverHide(){
 												<li class="<?php echo $array_n['editargrupo']; ?> desactive"><a href="#tab4" data-toggle="tab" onclick="volverShow(), editarGrupo()"><?php echo $this->lang->line('editar').' '.$this->lang->line('grupo'); ?></a></li>
 											</ul>
 									</div>
-	    							
+	    							<!--
 		    						<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupos_clientes'); ?></label>
-										<div class="col-md-6">
+									-->
+										<div class="col-md-4">
 											<select id="grupos" name="id_grupo_cliente" class="form-control chosen-select" data-placeholder="Seleccione un Grupo..." onchange="reglasActivas(),clientesActivos()">
 		    									<option></option>
 		    									<?php
-		    										foreach ($grupos as $row) {
-		    											if($row->id_grupo_cliente==1){
-		    												echo '<option value="'.$row->id_grupo_cliente.'">'.$row->grupo_nombre.'</option>';
-		    											}
-														else if($id_grupo==$row->id_grupo_cliente){
-															echo '<option value="'.$row->id_grupo_cliente.'" selected>'.$row->grupo_nombre.'</option>';
-															//----LLAMO FUNCION DE LLENAR LAS REGLAS---//
-															?><script>reglasActivas(), clientesActivos();</script><?php
+			    									if($grupos){
+			    										foreach ($grupos as $row) {
+			    											if($row->id_grupo_cliente==1){
+			    												echo '<option value="'.$row->id_grupo_cliente.'">'.$row->grupo_nombre.'</option>';
+			    											}
+															else if($id_grupo==$row->id_grupo_cliente){
+																echo '<option value="'.$row->id_grupo_cliente.'" selected>'.$row->grupo_nombre.'</option>';
+																//----LLAMO FUNCION DE LLENAR LAS REGLAS---//
+																?><script>reglasActivas(), clientesActivos();</script><?php
+															}
+															else
+			    												echo '<option value="'.$row->id_grupo_cliente.'">'.$row->grupo_nombre.'</option>';
 														}
-														else
-		    												echo '<option value="'.$row->id_grupo_cliente.'">'.$row->grupo_nombre.'</option>';
 													}
 		    									?>
 		    								</select>
 										</div>
-								</div>
+								<!--ACÁ ESTABA DIV DE ROW PRUEBA-->
 								
+								<div class="col-md-7"><!--DIV DE COL PRUEBA-->
+									
 								<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="padding-top: 20px">
 								  <div class="panel panel-default">
 								    <div class="panel-heading" role="tab" id="headingOne">
@@ -284,7 +309,9 @@ function volverHide(){
 								    </div>
 								  </div>
 								</div>
-				
+								
+								</div><!--DIV DE COL PRUEBA-->
+								</div><!--DIV DE ROW PRUEBA-->
 	    					</div> <!--TAB 1 GRUPOS CLIENTES -->
 	     					<div class="tab-pane fade <?php echo $array_n['nuevogrupo']; ?>" id="tab2">
 	     					<!--TAB 2 CARGA DE GRUPOS-->
@@ -299,7 +326,7 @@ function volverHide(){
 							            </ul>
 							    	</nav>
 							    </div>
-	     						<form action="<?php echo base_url()."index.php/grupos/nuevoGrupo"?>" class="form-horizontal" method="post">
+	     						<form action="<?php echo base_url()."index.php/grupos/nuevoGrupo"?>" id="form-grupo" class="form-horizontal" onsubmit="return comprobarGrupo()" method="post">
 											
 		     						<div class="tab-content">
 			     						<div class="tab-pane fade" id="grupo1">

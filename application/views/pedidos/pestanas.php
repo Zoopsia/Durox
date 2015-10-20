@@ -117,7 +117,7 @@
 					</div>
 					<div class="row">
 						<form id="formProducto" name="formProducto" class="form-inline" method="post">
-                       		<div class="col-xs-12 table-responsive" id="tablapedido">
+                       		<div class="col-xs-12 table-responsive" >
                        		<?php
 								$total = 0;
 								$bandera = 0;
@@ -658,13 +658,40 @@ function aprobarForm() {
  	$("#aprobarForm").submit();
 }
 
+var aux = 0;
+
 $( document ).ready(function() {
+	var j = 0;
     getAlarmas(<?php echo $id_pedido?>);
     if(location.hash == "#tab2")
     	$('.nav-pills a:last').tab('show');
+    	
+    if(sessionStorage['aux']){
+		for(i = 0; i <= sessionStorage['aux']; i++ ){
+			if(sessionStorage['nomb'+i]){
+				$("#tablapedido > tbody").append('<tr>'+
+											 			'<td><input type="text" id="id_producto'+j+'" autocomplete="off" required hidden value="'+sessionStorage['id_producto'+i]+'">'+sessionStorage['nomb'+i]+
+											 				'<input type="text" id="nomb'+j+'" autocomplete="off" required hidden value="'+sessionStorage['nomb'+i]+'">'+
+											 				'<input type="text" id="id_moneda'+j+'" autocomplete="off" required hidden value="'+sessionStorage['id_moneda'+i]+'">'+
+															'<input type="text" id="valor_moneda'+j+'" autocomplete="off" required hidden value="'+sessionStorage['valor_moneda'+i]+'">'+
+											 			'</td>'+
+											 			'<td><input type="text" id="cant'+j+'" autocomplete="off" required hidden value="'+sessionStorage['cant'+i]+'">'+sessionStorage['cant'+i]+'</td>'+
+											 			'<td><input type="text" id="precio'+j+'" autocomplete="off" required hidden value="'+sessionStorage['precio'+i]+'">'+sessionStorage['simbolo'+i]+' '+sessionStorage['precio'+i]+
+											 				'<input type="text" id="simbolo'+j+'" autocomplete="off" required hidden value="'+sessionStorage['simbolo'+i]+'">'+
+											 			'</td>'+
+											 			'<td><input type="text" id="subtotal'+j+'" autocomplete="off" required hidden value="'+sessionStorage['subtotal'+i]+'">$ '+sessionStorage['subtotal'+i]+'</td>'+
+											 			'<td>Nuevo</td>'+
+											 			'<td><a class="btn btn-danger btn-xs btn-nuevo-hide" onclick="deleteRow(this,<?php echo $id_pedido;?>,'+aux+')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto" style="display:none"><i class="fa fa-minus"></i></a></td>'+
+											 		'</tr>');
+				j++;
+			}
+			aux++;
+		}
+		editable();
+	}
+	armarTotales(<?php echo $id_pedido;?>);
 });
- 
-var aux = 0;
+
 function editable(){
 	if(cotizar_cng%2 != 0){
 		$('.subtotal1').hide();
@@ -681,23 +708,45 @@ function editable(){
 	$('#btn-guardar').show();
 	$('#btn-cancelar').show();
 	$('#btn-cotizacion').hide();
+	$('.btn-nuevo-hide').show();
+	$('#tablapedido').removeClass('table-striped');
 	document.getElementById("producto").focus();
 }
 
-function cargaProducto($id_pedido){
+function cargaProducto($id_cliente){
 	var producto 	= $('input#id_producto').val(); 
  	var cantidad 	= $('input#cantidad').val();
- 	var pedido		= $id_pedido;
+ 	var cliente		= $id_cliente;
+ 	var pedido		= <?php echo $id_pedido;?>;
 	$.ajax({
 	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/Pedidos/traerProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
+	 	url: '<?php echo base_url(); ?>index.php/Pedidos/traerProducto2', //Realizaremos la petición al metodo prueba del controlador direcciones
 	 	data: {'producto'	: producto,
 	 		   'cantidad'	: cantidad,
-	 		   'pedido'		: pedido,
-	 		   'aux'		: aux
+	 		   'cliente'	: cliente,
+	 		   'aux'		: aux,
+	 		   'pedido'		: pedido
 	 		   },
 	 	success: function(resp) { 
 	 		$("#tablapedido > tbody").append(resp);
+	 		
+	 		sessionStorage.setItem('aux', aux);
+	 		
+	 		sessionStorage.setItem('id_producto'+aux, $('#id_producto'+aux).val());
+	 		sessionStorage.setItem('nomb'+aux, $('#nomb'+aux).val());
+	 		sessionStorage.setItem('id_moneda'+aux, $('#id_moneda'+aux).val());
+	 		sessionStorage.setItem('valor_moneda'+aux, $('#valor_moneda'+aux).val());
+	 		
+	 		sessionStorage.setItem('cant'+aux, $('#cant'+aux).val());
+	 		
+	 		sessionStorage.setItem('precio'+aux, $('#precio'+aux).val());
+	 		sessionStorage.setItem('simbolo'+aux, $('#simbolo'+aux).val());
+	 		
+	 		sessionStorage.setItem('subtotal'+aux, $('#subtotal'+aux).val());
+	 		
+	 		for(i = 0; i <= sessionStorage['aux']; i++ ){
+				console.log(sessionStorage['nomb'+i]);	
+	 		}
 	 		aux = aux+1;
 	 		armarTotales(pedido);
 	 		document.formProducto.reset(); 
@@ -705,6 +754,7 @@ function cargaProducto($id_pedido){
 	 	}
 	});
 }
+
 function armarTotales($id_pedido){
 	var pedido	= $id_pedido;
 	var x = 0;
@@ -753,18 +803,24 @@ function funcion1($id_producto){
 	document.getElementById("cantidad").focus();
 }
 function sacarProducto($id_linea, $pedido){
-	var producto = [];
-	var cantidad = [];
-	var precio = [];
-	var subtotal = [];
-	var nombre = [];
+	var producto 		= [];
+	var cantidad 		= [];
+	var precio 			= [];
+	var subtotal 		= [];
+	var nombre 			= [];
+	var id_moneda 		= [];
+	var valor_moneda 	= [];
+	var simbolo			= [];
+	
 	for(i = 0; i < aux; i++){
 		producto[i] 	= $('#id_producto'+i).val();
 		cantidad[i] 	= $('#cant'+i).val();
 		precio[i] 		= $('#precio'+i).val();
 		subtotal[i] 	= $('#subtotal'+i).val();
 		nombre[i]		= $('#nomb'+i).val();
-		
+		id_moneda[i]	= $('#id_moneda'+i).val();
+		valor_moneda[i]	= $('#valor_moneda'+i).val();
+		simbolo[i]		= $('#simbolo'+i).val();
 	}	
 	var pedido = $pedido;
  	var id_linea	= $id_linea;
@@ -777,35 +833,48 @@ function sacarProducto($id_linea, $pedido){
 	 	success: function(resp) {
 	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
 	 		for(i = 0; i < aux; i++){
-	 			$("#tablapedido > tbody").append('<tr>'+
-										 			'<td><input type="text" id="id_producto'+i+'" autocomplete="off" required hidden value="'+producto[i]+'">'+nombre[i]+
-										 				'<input type="text" id="nomb'+i+'" autocomplete="off" required hidden value="'+nombre[i]+'">'+
-										 			'</td>'+
-										 			'<td><input type="text" id="cant'+i+'" autocomplete="off" required hidden value="'+cantidad[i]+'">'+cantidad[i]+'</td>'+
-										 			'<td><input type="text" id="precio'+i+'" autocomplete="off" required hidden value="'+precio[i]+'">$ '+precio[i]+'</td>'+
-										 			'<td><input type="text" id="subtotal'+i+'" autocomplete="off" required hidden value="'+subtotal[i]+'">$ '+subtotal[i]+'</td>'+
-										 			'<td>Nuevo</td>'+
-										 			'<td></td>'+
-										 		'</tr>');
+	 			if(precio[i]){
+		 			$("#tablapedido > tbody").append('<tr>'+
+											 			'<td><input type="text" id="id_producto'+i+'" autocomplete="off" required hidden value="'+producto[i]+'">'+nombre[i]+
+											 				'<input type="text" id="nomb'+i+'" autocomplete="off" required hidden value="'+nombre[i]+'">'+
+											 				'<input type="text" id="id_moneda'+i+'" autocomplete="off" required hidden value="'+id_moneda[i]+'">'+
+															'<input type="text" id="valor_moneda'+i+'" autocomplete="off" required hidden value="'+valor_moneda[i]+'">'+
+												 		'</td>'+
+											 			'<td><input type="text" id="cant'+i+'" autocomplete="off" required hidden value="'+cantidad[i]+'">'+cantidad[i]+'</td>'+
+											 			'<td><input type="text" id="precio'+i+'" autocomplete="off" required hidden value="'+precio[i]+'">'+simbolo[i]+' '+precio[i]+
+												 			'<input type="text" id="simbolo'+i+'" autocomplete="off" required hidden value="'+simbolo[i]+'">'+
+												 		'</td>'+
+												 		'<td><input type="text" id="subtotal'+i+'" autocomplete="off" required hidden value="'+subtotal[i]+'">$ '+subtotal[i]+'</td>'+
+											 			'<td>Nuevo</td>'+
+											 			'<td><a class="btn btn-danger btn-xs" onclick="deleteRow(this,<?php echo $id_pedido;?>,'+aux+')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></td>'+
+												 	'</tr>');
+				}
 			}	
 	 		$(".cargarLinea").show();
 	 		armarTotales(pedido);
 	 	}
 	});
 }
+
 function cargarProducto($id_linea, $pedido){
-	var producto = [];
-	var cantidad = [];
-	var precio = [];
-	var subtotal = [];
-	var nombre = [];
+	var producto		= [];
+	var cantidad 		= [];
+	var precio 			= [];
+	var subtotal 		= [];
+	var nombre 			= [];
+	var id_moneda 		= [];
+	var valor_moneda 	= [];
+	var simbolo			= [];
+	
 	for(i = 0; i < aux; i++){
 		producto[i] 	= $('#id_producto'+i).val();
 		cantidad[i] 	= $('#cant'+i).val();
 		precio[i] 		= $('#precio'+i).val();
 		subtotal[i] 	= $('#subtotal'+i).val();
 		nombre[i]		= $('#nomb'+i).val();
-		
+		id_moneda[i]	= $('#id_moneda'+i).val();
+		valor_moneda[i]	= $('#valor_moneda'+i).val();
+		simbolo[i]		= $('#simbolo'+i).val();		
 	}	
 	var pedido = $pedido;
  	var id_linea	= $id_linea;
@@ -818,16 +887,22 @@ function cargarProducto($id_linea, $pedido){
 	 	success: function(resp) {
 	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
 	 		for(i = 0; i < aux; i++){
-	 			$("#tablapedido > tbody").append('<tr>'+
-										 			'<td><input type="text" id="id_producto'+i+'" autocomplete="off" required hidden value="'+producto[i]+'">'+nombre[i]+
-										 				'<input type="text" id="nomb'+i+'" autocomplete="off" required hidden value="'+nombre[i]+'">'+
-										 			'</td>'+
-										 			'<td><input type="text" id="cant'+i+'" autocomplete="off" required hidden value="'+cantidad[i]+'">'+cantidad[i]+'</td>'+
-										 			'<td><input type="text" id="precio'+i+'" autocomplete="off" required hidden value="'+precio[i]+'">$ '+precio[i]+'</td>'+
-										 			'<td><input type="text" id="subtotal'+i+'" autocomplete="off" required hidden value="'+subtotal[i]+'">$ '+subtotal[i]+'</td>'+
-										 			'<td>Nuevo</td>'+
-										 			'<td></td>'+
-										 		'</tr>');
+	 			if(precio[i]){
+		 			$("#tablapedido > tbody").append('<tr>'+
+											 			'<td><input type="text" id="id_producto'+i+'" autocomplete="off" required hidden value="'+producto[i]+'">'+nombre[i]+
+											 				'<input type="text" id="nomb'+i+'" autocomplete="off" required hidden value="'+nombre[i]+'">'+
+											 				'<input type="text" id="id_moneda'+i+'" autocomplete="off" required hidden value="'+id_moneda[i]+'">'+
+															'<input type="text" id="valor_moneda'+i+'" autocomplete="off" required hidden value="'+valor_moneda[i]+'">'+
+												 		'</td>'+
+											 			'<td><input type="text" id="cant'+i+'" autocomplete="off" required hidden value="'+cantidad[i]+'">'+cantidad[i]+'</td>'+
+											 			'<td><input type="text" id="precio'+i+'" autocomplete="off" required hidden value="'+precio[i]+'">'+simbolo[i]+' '+precio[i]+
+												 			'<input type="text" id="simbolo'+i+'" autocomplete="off" required hidden value="'+simbolo[i]+'">'+
+												 		'</td>'+
+												 		'<td><input type="text" id="subtotal'+i+'" autocomplete="off" required hidden value="'+subtotal[i]+'">$ '+subtotal[i]+'</td>'+
+											 			'<td>Nuevo</td>'+
+											 			'<td><a class="btn btn-danger btn-xs" onclick="deleteRow(this,<?php echo $id_pedido;?>,'+aux+')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></td>'+
+												 	'</tr>');
+				}
 			}	
 	 		$(".cargarLinea").show();
 	 		armarTotales(pedido);
@@ -852,6 +927,8 @@ function cancelarCambios($pedido){
 			$('#btn-cancelar').hide();
 			$('#btn-cotizacion').show();
 			aux = 0;
+			$('#tablapedido').addClass('table-striped');
+			sessionStorage.clear();
 	 	}
 	});
 }
@@ -859,33 +936,36 @@ function imprimirConLogo(){
 	$('#imagen-durox').show();
 	setTimeout(function(){ $('#imagen-durox').hide(); }, 100);
 }
+
 function guardarLineasNuevas($pedido){
 	var pedido = $pedido;
 	var total = $('#total-ped').val();
 	if(aux > 0){
 		for(i = 0; i < aux; i++){
-			var producto 	= $('#id_producto'+i).val();
-			var cantidad 	= $('#cant'+i).val();
-			var precio 		= $('#precio'+i).val();
-			var subtotal 	= $('#subtotal'+i).val();
-			var id_moneda	= $('#id_moneda'+i).val();
-			var valor_moneda= $('#valor_moneda'+i).val();
-			$.ajax({
-			 	type: 'POST',
-			 	url: '<?php echo base_url(); ?>index.php/Pedidos/cargaProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
-			 	data: {	'producto'		: producto,
-			 		   	'cantidad'		: cantidad,
-			 		   	'precio'		: precio,
-			 		   	'subtotal'		: subtotal,
-			 		   	'pedido'		: pedido,
-			 		   	'id_moneda'		: id_moneda,
-				 		'valor_moneda'	: valor_moneda,
-			 		   },
-			 	success: function(resp) { 
-			 		
-			 	},
-			 	async: false
-			});
+			if($('#id_producto'+i).val()){
+				var producto 	= $('#id_producto'+i).val();
+				var cantidad 	= $('#cant'+i).val();
+				var precio 		= $('#precio'+i).val();
+				var subtotal 	= $('#subtotal'+i).val();
+				var id_moneda	= $('#id_moneda'+i).val();
+				var valor_moneda= $('#valor_moneda'+i).val();
+				$.ajax({
+				 	type: 'POST',
+				 	url: '<?php echo base_url(); ?>index.php/Pedidos/cargaProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
+				 	data: {	'producto'		: producto,
+				 		   	'cantidad'		: cantidad,
+				 		   	'precio'		: precio,
+				 		   	'subtotal'		: subtotal,
+				 		   	'pedido'		: pedido,
+				 		   	'id_moneda'		: id_moneda,
+					 		'valor_moneda'	: valor_moneda,
+				 		   },
+				 	success: function(resp) { 
+				 		sessionStorage.clear();
+				 	},
+				 	async: false
+				});
+			}
 		}
 		return true;
 	}
@@ -895,6 +975,7 @@ function guardarLineasNuevas($pedido){
 		}
 		else{
 			alert("ERROR! - No hay lineas en el pedido!");
+			$('#producto').focus();
 			return false;
 		}
 	}
@@ -979,5 +1060,24 @@ function cotizar(){
 		$('#sub-otra-moneda').hide();
 		cotizar_cng ++;
 	}
+}
+
+function deleteRow(r, $pedi, $row) {
+    var j 		= r.parentNode.parentNode.rowIndex;
+    var fila 	= $row;
+    document.getElementById("tablapedido").deleteRow(j);
+        
+	sessionStorage.removeItem('id_producto'+fila);
+	sessionStorage.removeItem('nomb'+fila);
+	sessionStorage.removeItem('id_moneda'+fila);
+	sessionStorage.removeItem('valor_moneda'+fila);
+		 	
+	sessionStorage.removeItem('cant'+fila);
+		 	
+	sessionStorage.removeItem('precio'+fila);
+	sessionStorage.removeItem('simbolo'+fila);
+	 	
+	sessionStorage.removeItem('subtotal'+fila);
+    
 }
 </script>

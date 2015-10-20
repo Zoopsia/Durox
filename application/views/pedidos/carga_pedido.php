@@ -1,29 +1,75 @@
 <script>
 
+var aux = 0;
+
 $( document ).ready(function() {
+	//sessionStorage.clear();
+	var j = 0;
 	$('#producto').focus();
+	if(sessionStorage['aux']){
+		for(i = 0; i <= sessionStorage['aux']; i++ ){
+			if(sessionStorage['nomb'+i]){
+				$("#tablapedido > tbody").append('<tr>'+
+											 			'<td><input type="text" id="id_producto'+j+'" autocomplete="off" required hidden value="'+sessionStorage['id_producto'+i]+'">'+sessionStorage['nomb'+i]+
+											 				'<input type="text" id="nomb'+j+'" autocomplete="off" required hidden value="'+sessionStorage['nomb'+i]+'">'+
+											 				'<input type="text" id="id_moneda'+j+'" autocomplete="off" required hidden value="'+sessionStorage['id_moneda'+i]+'">'+
+															'<input type="text" id="valor_moneda'+j+'" autocomplete="off" required hidden value="'+sessionStorage['valor_moneda'+i]+'">'+
+											 			'</td>'+
+											 			'<td><input type="text" id="cant'+j+'" autocomplete="off" required hidden value="'+sessionStorage['cant'+i]+'">'+sessionStorage['cant'+i]+'</td>'+
+											 			'<td><input type="text" id="precio'+j+'" autocomplete="off" required hidden value="'+sessionStorage['precio'+i]+'">'+sessionStorage['simbolo'+i]+' '+sessionStorage['precio'+i]+
+											 				'<input type="text" id="simbolo'+j+'" autocomplete="off" required hidden value="'+sessionStorage['simbolo'+i]+'">'+
+											 			'</td>'+
+											 			'<td><input type="text" id="subtotal'+j+'" autocomplete="off" required hidden value="'+sessionStorage['subtotal'+i]+'">$ '+sessionStorage['subtotal'+i]+'</td>'+
+											 			'<td>Nuevo</td>'+
+											 			'<td><a class="btn btn-danger btn-xs" onclick="deleteRow(this,<?php echo $id_pedido;?>,'+aux+')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></td>'+
+											 		'</tr>');
+				j++;
+			}
+			aux++;
+		}
+	}
+	armarTotales(<?php echo $id_pedido;?>);
 });
 
 function aprobarForm() {
  	$("#aprobarForm").submit();
 }
 
-var aux = 0;
 
-function cargaProducto($id_pedido){
+function cargaProducto($id_cliente){
 	var producto 	= $('input#id_producto').val(); 
  	var cantidad 	= $('input#cantidad').val();
- 	var pedido		= $id_pedido;
+ 	var cliente		= $id_cliente;
+ 	var pedido		= <?php echo $id_pedido;?>;
 	$.ajax({
 	 	type: 'POST',
 	 	url: '<?php echo base_url(); ?>index.php/Pedidos/traerProducto2', //Realizaremos la petición al metodo prueba del controlador direcciones
 	 	data: {'producto'	: producto,
 	 		   'cantidad'	: cantidad,
-	 		   'pedido'		: pedido,
-	 		   'aux'		: aux
+	 		   'cliente'	: cliente,
+	 		   'aux'		: aux,
+	 		   'pedido'		: pedido
 	 		   },
 	 	success: function(resp) { 
 	 		$("#tablapedido > tbody").append(resp);
+	 		
+	 		sessionStorage.setItem('aux', aux);
+	 		
+	 		sessionStorage.setItem('id_producto'+aux, $('#id_producto'+aux).val());
+	 		sessionStorage.setItem('nomb'+aux, $('#nomb'+aux).val());
+	 		sessionStorage.setItem('id_moneda'+aux, $('#id_moneda'+aux).val());
+	 		sessionStorage.setItem('valor_moneda'+aux, $('#valor_moneda'+aux).val());
+	 		
+	 		sessionStorage.setItem('cant'+aux, $('#cant'+aux).val());
+	 		
+	 		sessionStorage.setItem('precio'+aux, $('#precio'+aux).val());
+	 		sessionStorage.setItem('simbolo'+aux, $('#simbolo'+aux).val());
+	 		
+	 		sessionStorage.setItem('subtotal'+aux, $('#subtotal'+aux).val());
+	 		
+	 		for(i = 0; i <= sessionStorage['aux']; i++ ){
+				console.log(sessionStorage['nomb'+i]);	
+	 		}
 	 		aux = aux+1;
 	 		armarTotales(pedido);
 	 		document.formProducto.reset(); 
@@ -31,6 +77,7 @@ function cargaProducto($id_pedido){
 	 	}
 	});
 }
+
 function armarTotales($id_pedido){
 	var pedido	= $id_pedido;
 	var x = 0;
@@ -79,101 +126,14 @@ function funcion1($id_producto){
 	$('#suggestions').hide();
 	document.getElementById("cantidad").focus();
 }
-function sacarProducto($id_linea, $pedido){
-	var producto = [];
-	var cantidad = [];
-	var precio = [];
-	var subtotal = [];
-	var nombre = [];
-	for(i = 0; i < aux; i++){
-		producto[i] 	= $('#id_producto'+i).val();
-		cantidad[i] 	= $('#cant'+i).val();
-		precio[i] 		= $('#precio'+i).val();
-		subtotal[i] 	= $('#subtotal'+i).val();
-		nombre[i]		= $('#nomb'+i).val();
-		
-	}	
-	var pedido = $pedido;
- 	var id_linea	= $id_linea;
- 	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/Pedidos/sacarProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
-	 	data: {'id_linea'	: id_linea,
-	 		   'pedido': pedido,
-	 		   },
-	 	success: function(resp) {
-	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
-	 		for(i = 0; i < aux; i++){
-	 			$("#tablapedido > tbody").append('<tr>'+
-										 			'<td><input type="text" id="id_producto'+i+'" autocomplete="off" required hidden value="'+producto[i]+'">'+nombre[i]+
-										 				'<input type="text" id="nomb'+i+'" autocomplete="off" required hidden value="'+nombre[i]+'">'+
-										 			'</td>'+
-										 			'<td><input type="text" id="cant'+i+'" autocomplete="off" required hidden value="'+cantidad[i]+'">'+cantidad[i]+'</td>'+
-										 			'<td><input type="text" id="precio'+i+'" autocomplete="off" required hidden value="'+precio[i]+'">$ '+precio[i]+'</td>'+
-										 			'<td><input type="text" id="subtotal'+i+'" autocomplete="off" required hidden value="'+subtotal[i]+'">$ '+subtotal[i]+'</td>'+
-										 			'<td>Nuevo</td>'+
-										 			'<td></td>'+
-										 		'</tr>');
-			}	
-	 		$(".cargarLinea").show();
-	 		armarTotales(pedido);
-	 	}
-	});
-}
-function cargarProducto($id_linea, $pedido){
-	var producto = [];
-	var cantidad = [];
-	var precio = [];
-	var subtotal = [];
-	var nombre = [];
-	for(i = 0; i < aux; i++){
-		producto[i] 	= $('#id_producto'+i).val();
-		cantidad[i] 	= $('#cant'+i).val();
-		precio[i] 		= $('#precio'+i).val();
-		subtotal[i] 	= $('#subtotal'+i).val();
-		nombre[i]		= $('#nomb'+i).val();
-		
-	}	
-	var pedido = $pedido;
- 	var id_linea	= $id_linea;
- 	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/Pedidos/cargarProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
-	 	data: {'id_linea'	: id_linea,
-	 		   'pedido': pedido,
-	 		   },
-	 	success: function(resp) {
-	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
-	 		for(i = 0; i < aux; i++){
-	 			$("#tablapedido > tbody").append('<tr>'+
-										 			'<td><input type="text" id="id_producto'+i+'" autocomplete="off" required hidden value="'+producto[i]+'">'+nombre[i]+
-										 				'<input type="text" id="nomb'+i+'" autocomplete="off" required hidden value="'+nombre[i]+'">'+
-										 			'</td>'+
-										 			'<td><input type="text" id="cant'+i+'" autocomplete="off" required hidden value="'+cantidad[i]+'">'+cantidad[i]+'</td>'+
-										 			'<td><input type="text" id="precio'+i+'" autocomplete="off" required hidden value="'+precio[i]+'">$ '+precio[i]+'</td>'+
-										 			'<td><input type="text" id="subtotal'+i+'" autocomplete="off" required hidden value="'+subtotal[i]+'">$ '+subtotal[i]+'</td>'+
-										 			'<td>Nuevo</td>'+
-										 			'<td></td>'+
-										 		'</tr>');
-			}	
-	 		$(".cargarLinea").show();
-	 		armarTotales(pedido);
-	 	}
-	});
-}
+
+
 function cancelarCambios($pedido){
-	var pedido = $pedido;
-	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/Pedidos/cancelarCambios', //Realizaremos la petición al metodo prueba del controlador direcciones
-	 	data: {'pedido': pedido,},
-	 	success: function(resp) {
-	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
-	 		armarTotales(pedido);
-	 		$(".cargarLinea").show();
-			aux = 0;
-	 	}
-	});
+	var r = confirm("Desea Cancelar el pedido?\nAdventencia! - No podrá volver atrás");
+	if (r == true) {
+		sessionStorage.clear();
+		window.location.assign("/Durox/index.php/Pedidos/pedidos_abm/tab1");
+	}
 }
 
 function guardarLineasNuevas($pedido){
@@ -199,7 +159,7 @@ function guardarLineasNuevas($pedido){
 				 		   'valor_moneda'	: valor_moneda,
 				 		   },
 				 	success: function(resp) { 
-				 		
+				 		sessionStorage.clear();
 				 	},
 				 	async: false
 				});
@@ -209,29 +169,40 @@ function guardarLineasNuevas($pedido){
 	}
 	else{
 		alert("ERROR! - No hay lineas en el pedido!");
+		$('#producto').focus();
 		return false;
 	}
 }
 
-function deleteRow(r, $pedi) {
-    var i = r.parentNode.parentNode.rowIndex;
-    document.getElementById("tablapedido").deleteRow(i);
-    armarTotales($pedi);
+function deleteRow(r, $pedi, $row) {
+    var j 		= r.parentNode.parentNode.rowIndex;
+    var fila 	= $row;
+    document.getElementById("tablapedido").deleteRow(j);
+    
+    console.log('id_producto'+fila);
+    
+	sessionStorage.removeItem('id_producto'+fila);
+	sessionStorage.removeItem('nomb'+fila);
+	sessionStorage.removeItem('id_moneda'+fila);
+	sessionStorage.removeItem('valor_moneda'+fila);
+		 	
+	sessionStorage.removeItem('cant'+fila);
+		 	
+	sessionStorage.removeItem('precio'+fila);
+	sessionStorage.removeItem('simbolo'+fila);
+	 	
+	sessionStorage.removeItem('subtotal'+fila);
+    
 }
 </script>
 
-<?php
-	if($pedido){
-		foreach ($pedido as $row) {
-?>	
-
-       
+   
 <div class="col-md-12">
 	<div class="panel panel-default">
 		<div class="panel-heading no-print">
 			<ul class="nav nav-pills">
 				<li class="active"><a href="#tab1" data-toggle="tab">
-					<i class="fa fa-shopping-cart"></i> <?php echo $this -> lang -> line('pedido') . ' N° ' . $row -> id_pedido; ?>
+					<i class="fa fa-shopping-cart"></i> <?php echo $this -> lang -> line('pedido') . ' N° ' . $id_pedido; ?>
 				</a></li>
 			</ul>
 		</div>
@@ -294,28 +265,23 @@ function deleteRow(r, $pedi) {
                         	<b><?php echo $this -> lang -> line('presupuesto'); ?></b>
                             <?php
 								echo '<div class="odd">';
-								echo $this -> lang -> line('id') . ' ' . $this -> lang -> line('presupuesto') . ': ' . '<a class="sinhref" href="' . base_url() . 'index.php/Presupuestos/pestanas/' . $row -> id_presupuesto . '">' . $row -> id_presupuesto . '</a>';
+								echo $this -> lang -> line('id') . ' ' . $this -> lang -> line('presupuesto') . ': ' . '<a class="sinhref">' . $id_presupuesto . '</a>';
 								echo "</div>";
 								echo '<div class="even">';
-								echo $this -> lang -> line('id') . ' ' . $this -> lang -> line('visita') . ': ' . '<a class="sinhref" href="' . base_url() . 'index.php/Visitas/carga/' . $row -> id_visita . '/0">' . $row -> id_visita . '</a>';
+								echo $this -> lang -> line('id') . ' ' . $this -> lang -> line('visita') . ': ' . '<a class="sinhref" >' . $id_visita . '</a>';
 								echo "</div>";
 								echo '<div class="odd">';
-								$date = date_create($row -> fecha);
+								$date = date_create($fecha);
 								echo $this -> lang -> line('fecha') . ': ' . date_format($date, 'd/m/Y');
 								echo "</div>";
 								foreach ($estados as $key) {
-									if ($key -> id_estado_pedido == $row -> id_estado_pedido) {
+									if ($key -> id_estado_pedido == 1) {
 										echo '<div class="even no-print">';
 										echo $this -> lang -> line('estado') . ': ' . $key -> estado;
 										echo "</div>";
 									}
 								}
-								echo '<div class="odd">';
-								echo $this -> lang -> line('total') . ' ' . $this -> lang -> line('presupuesto') . ': $ ' . $row -> total;
-								echo "</div>";
 								echo "<br>";
-								}
-							}
 							?>
 						</div>
 					</div>
@@ -353,7 +319,7 @@ function deleteRow(r, $pedi) {
 											        <input type="text" id="id_producto" name="id_producto" autocomplete="off" pattern="[0-9]*" required hidden>
 												</td>
 												<td style="width: 200px">
-													<input type="text" id="cantidad" name="cantidad1" class="numeric form-control editable" onkeypress="if (event.keyCode==13){cargaProducto(<?php echo $id_pedido?>); return false;}" autocomplete="off" pattern="[0-9]*" placeholder="<?php echo $this -> lang -> line('cantidad'); ?>" style="height: 20px" required>
+													<input type="text" id="cantidad" name="cantidad1" class="numeric form-control editable" onkeypress="if (event.keyCode==13){cargaProducto(<?php echo $id_cliente?>); return false;}" autocomplete="off" pattern="[0-9]*" placeholder="<?php echo $this -> lang -> line('cantidad'); ?>" style="height: 20px" required>
 												</td>
 												<td></td>
 												<td></td>
@@ -394,7 +360,10 @@ function deleteRow(r, $pedi) {
 					
 					<div class="row no-print">
                         <div class="col-xs-12">
-                        	<form action="<?php echo base_url().'/index.php/Pedidos/guardarPedido/'.$id_pedido.'/1'?>" onsubmit="return guardarLineasNuevas(<?php echo $id_pedido?>)" method="post">
+                        	<form action="<?php echo base_url().'/index.php/Pedidos/guardarNuevoPedido/'?>" onsubmit="return guardarLineasNuevas(<?php echo $id_pedido?>)" method="post">
+	                        	<input type="text" name="cliente" value="<?php echo $id_cliente; ?>" hidden />
+	                        	<input type="text" name="vendedor" value="<?php echo $id_vendedor; ?>" hidden/>
+	                        	<input type="text" name="fecha" value="<?php echo $fecha; ?>" hidden/>
 	                        	<button type="button" id="btn-cancelar" class="btn btn-danger btn-sm pull-right" onclick="cancelarCambios(<?php echo $id_pedido?>)" style="margin-left: 5px">
 									<?php echo $this -> lang -> line('cancelar'); ?>
 								</button>

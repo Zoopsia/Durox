@@ -12,6 +12,7 @@ function busqueda2(){
 	 	}
 	});
 }
+
 </script>
 
 <div class="row">
@@ -31,7 +32,7 @@ function busqueda2(){
 						</div></h3>
 					</div>
 				</div>
-				<form action="<?php echo base_url().'index.php/Pedidos/nuevoPedido/'; ?>" class="form-horizontal" method="post">
+				<form action="<?php echo base_url().'index.php/Pedidos/nuevoPedido/'; ?>" onsubmit="sessionStorage.clear();" class="form-horizontal" method="post">
 				<div style="padding: 0 50px">	
 					<div class="form-group odd">
 						<label class="col-sm-2 control-label"><?php echo $this->lang->line('vendedor').'*:'; ?></label>

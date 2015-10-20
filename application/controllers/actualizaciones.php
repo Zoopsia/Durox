@@ -9,6 +9,7 @@ class Actualizaciones extends CI_Controller {
 	{
 		parent::__construct();
 
+		$this->load->model('alarmas_model');
 		$this->load->model('clientes_model');
 		$this->load->model('direcciones_model');
 		$this->load->model('documentos_model');
@@ -27,111 +28,124 @@ class Actualizaciones extends CI_Controller {
 		
 	}
 	
+	public function setLog($tipo, $tabla, $id_vendedor = NULL){
+		if($tipo == 'DEBUG'){
+			if($id_vendedor){
+				log_message('DEBUG', 'Actualización de '.$tabla.', vendedor: '.$id_vendedor);
+			}
+		}	
+	}
+	
+	
 	public function getClientes(){
 		if(isset($_POST['id_vendedor'])){	
+			$tablas = array(
+				'clientes'		=> 'clientes',
+				'grupos'			=> 'grupos',
+				'iva'					=> 'iva',
+				'tipos'				=> 'tipos',
+				'telefonos'		=> 'telefonos',
+				'mails'				=> 'mails',
+				'direcciones'	=> 'direcciones',
+				'sin_clientes_telefonos'	=> 'sin_clientes_telefonos',
+				'sin_clientes_mails'			=> 'sin_clientes_mails',
+				'sin_clientes_direcciones'=> 'sin_clientes_direcciones',
+				'departamentos'	=> 'departamentos',
+				'provincias'		=> 'provincias',
+				
+			);
 			
-			$db['array']		= "clientes";
-			$db['registros']	= $this->clientes_model->getActualizacion($_POST['id_vendedor'], 'vendedores');
-			log_message('DEBUG', 'Actualización de '.$db['array'].', vendedor: '.$_POST['id_vendedor']);
+			$array[$tablas['clientes']]	= $this->clientes_model->getActualizacion($_POST['id_vendedor'], 'vendedores');
+			$this->setLog('DEBUG', $tablas['clientes'], $_POST['id_vendedor']);
+						
+			$array[$tablas['grupos']]	= $this->grupos_model->getTodo();
+			$this->setLog('DEBUG', $tablas['grupos']);
+			
+			$array[$tablas['iva']]	= $this->iva_model->getTodo();
+			$this->setLog('DEBUG', $tablas['iva']);
+			
+			$array[$tablas['tipos']]	= $this->tipos_model->getTodo();
+			$this->setLog('DEBUG', $tablas['tipos']);
+			
+			$array[$tablas['telefonos']]	= $this->clientes_model->getActualizacion($_POST['id_vendedor'], $tablas['telefonos']);
+			$this->setLog('DEBUG', $tablas['telefonos']);
+			
+			$array[$tablas['mails']]	= $this->clientes_model->getActualizacion($_POST['id_vendedor'], $tablas['mails']);
+			$this->setLog('DEBUG', $tablas['mails']);
+			
+			$array[$tablas['direcciones']]	= $this->clientes_model->getActualizacion($_POST['id_vendedor'], $tablas['direcciones']);
+			$this->setLog('DEBUG', $tablas['direcciones']);
 			
 			
-			$db['array2']		= "grupos";
-			$db['registros2']	= $this->grupos_model->getTodo();
-			log_message('DEBUG', 'Actualización de '.$db['array2']);
-			
-			
-			$db['array3']		= "iva";
-			$db['registros3']	= $this->iva_model->getTodo();
-			log_message('DEBUG', 'Actualización de '.$db['array3']);
-			
-			
-			$db['array4']		= "tipos";
-			$db['registros4']	= $this->tipos_model->getTodo();
-			log_message('DEBUG', 'Actualización de '.$db['array4']);
-			
-			
-			$db['array5']		= "telefonos";
-			$db['registros5']	= $this->clientes_model->getActualizacion($_POST['id_vendedor'], 'telefonos');
-			log_message('DEBUG', 'Actualización de '.$db['array5'].', vendedor: '.$_POST['id_vendedor']);
-			
-			
-			$db['array6']		= "mails";
-			$db['registros6']	= $this->clientes_model->getActualizacion($_POST['id_vendedor'], 'mails');
-			log_message('DEBUG', 'Actualización de '.$db['array6'].', vendedor: '.$_POST['id_vendedor']);
-			
-			
-			$db['array7']		= "direcciones";
-			$db['registros7']	= $this->clientes_model->getActualizacion($_POST['id_vendedor'], 'direcciones');
-			log_message('DEBUG', 'Actualización de '.$db['array7'].', vendedor: '.$_POST['id_vendedor']);
-			
-			
-			$db['array8']		= "sin_clientes_telefonos";
-			$sql = $this->consultaSin($db['array8'], $_POST['id_vendedor']);
+			$sql = $this->consultaSin($tablas['sin_clientes_telefonos'], $_POST['id_vendedor']);
 			$query = $this->db->query($sql);
 			if($query->num_rows() > 0){
 				foreach ($query->result() as $row){
 					$data8[] = $row;
 				}
+				
+				$array[$tablas['sin_clientes_telefonos']]	= $data8;
+				$this->setLog('DEBUG', $tablas['sin_clientes_telefonos'], $_POST['id_vendedor']);
 			}
-			$db['registros8']	= $data8;
-			log_message('DEBUG', 'Actualización de '.$db['array8'].', vendedor: '.$_POST['id_vendedor']);
 			
 		
-			$db['array9']		= "sin_clientes_mails";
-			$sql = $this->consultaSin($db['array9'], $_POST['id_vendedor']);
+			$sql = $this->consultaSin($tablas['sin_clientes_mails'], $_POST['id_vendedor']);
 			$query = $this->db->query($sql);
 			if($query->num_rows() > 0){
 				foreach ($query->result() as $row){
 					$data9[] = $row;
 				}
+				
+				$array[$tablas['sin_clientes_mails']]	= $data9;
+				$this->setLog('DEBUG', $tablas['sin_clientes_mails'], $_POST['id_vendedor']);
 			}
-			$db['registros9']	= $data9;
-			log_message('DEBUG', 'Actualización de '.$db['array9'].', vendedor: '.$_POST['id_vendedor']);
 			
 			
-			$db['array10']		= "sin_clientes_direcciones";
-			$sql = $this->consultaSin($db['array10'], $_POST['id_vendedor']);
+			$sql = $this->consultaSin($tablas['sin_clientes_direcciones'], $_POST['id_vendedor']);
 			$query = $this->db->query($sql);
 			if($query->num_rows() > 0){
 				foreach ($query->result() as $row){
 					$data10[] = $row;
 				}
+				
+				$array[$tablas['sin_clientes_direcciones']]	= $data10;
+				$this->setLog('DEBUG', $tablas['sin_clientes_direcciones'], $_POST['id_vendedor']);
 			}
-			$db['registros10']	= $data10;
-			log_message('DEBUG', 'Actualización de '.$db['array10'].', vendedor: '.$_POST['id_vendedor']);
 			
 			
-			$db['array11']		= "departamentos" ;
 			$sql = "SELECT * FROM `departamentos` WHERE eliminado = '0'";
 			$query = $this->db->query($sql);
 			if($query->num_rows() > 0){
 				foreach ($query->result() as $row){
 					$data11[] = $row;
 				}
+				
+				$array[$tablas['departamentos']]	= $data11;
+				$this->setLog('DEBUG', $tablas['departamentos']);
 			}
-			$db['registros11']	= $data11;
-			log_message('DEBUG', 'Actualización de '.$db['array11'].', vendedor: '.$_POST['id_vendedor']);
 			
 			
-			$db['array12']		= "provincias" ;
+			
 			$sql = "SELECT * FROM `provincias` WHERE eliminado = '0'";
 			$query = $this->db->query($sql);
 			if($query->num_rows() > 0){
 				foreach ($query->result() as $row){
 					$data[] = $row;
 				}
+				
+				$array[$tablas['provincias']]	= $data;
+				$this->setLog('DEBUG', $tablas['provincias']);
 			}
-			$db['registros12']	= $data;
-			log_message('DEBUG', 'Actualización de '.$db['array12'].', vendedor: '.$_POST['id_vendedor']);
 			
 			
-			$this->load->view($this->_subject."/getRegistrosClientes.php", $db);
+			$db['registros'] = $array;
+			$this->load->view($this->_subject."/getRegistrosVarios.php", $db);
 		}
 	}
 	
 	public function setClientes(){
 		if(isset($_POST['id_back'])){
-		
+	
 			log_message('DEBUG', 'ID '.$_POST['id_back']);
 
 			if($_POST['id_back'] != '0'){
@@ -324,11 +338,14 @@ class Actualizaciones extends CI_Controller {
 	
 	
 	public function getProductos(){
-		$db['array']		= "productos";
-		$db['registros']	= $this->productos_model->getTodo();
-		log_message('DEBUG', 'Actualización de '.$db['array']);
+		$tablas = array(
+			'productos' => 'productos',
+			'monedas'		=> 'monedas'
+		);
 		
-		$db['array2']		= "monedas" ;
+		$array[$tablas['productos']]	= $this->productos_model->getTodo();
+		$this->setLog('DEBUG', $tablas['productos']);
+		
 		$sql = "SELECT * FROM `monedas` WHERE eliminado = '0'";
 		$query = $this->db->query($sql);
 		if($query->num_rows() > 0){
@@ -336,11 +353,12 @@ class Actualizaciones extends CI_Controller {
 				$data[] = $row;
 			}
 		}
-		$db['registros2']	= $data;
-		log_message('DEBUG', 'Actualización de '.$db['array2']);
+		$array[$tablas['monedas']]	= $data;
+		$this->setLog('DEBUG', $tablas['monedas']);
 		
-		$this->load->view($this->_subject."/getRegistrosProductos.php", $db);
+		$db['registros'] = $array;
 		
+		$this->load->view($this->_subject."/getRegistrosVarios.php", $db);
 	}
 	
 	
@@ -476,13 +494,16 @@ class Actualizaciones extends CI_Controller {
 	
 	
 	public function getPresupuestos(){
-		//if(isset($_POST['id_vendedor'])){	
-			$_POST['id_vendedor'] = 1;
+		if(isset($_POST['id_vendedor'])){	
+			$tablas = array(
+				'presupuestos'					=> 'presupuestos',
+				'lineas_presupuestos'		=> 'lineas_presupuestos',
+				'estados_presupuestos'	=> 'estados_presupuestos',
+				'epocas'								=> 'epocas',
+			);
 		
-			$db['array']		= "presupuestos";
-			$db['registros']	= $this->presupuestos_model->getActualizacion($_POST['id_vendedor']);
-			log_message('DEBUG', 'Actualización de '.$db['array'].', vendedor: '.$_POST['id_vendedor']);
-			
+			$array[$tablas['presupuestos']]	= $this->presupuestos_model->getActualizacion($_POST['id_vendedor']);
+			$this->setLog('DEBUG', $tablas['presupuestos'], $_POST['id_vendedor']);
 			
 			$sql = "SELECT 
 							`id_linea_producto_presupuesto`, 
@@ -522,8 +543,6 @@ class Actualizaciones extends CI_Controller {
 				}
 			}
 			
-			
-			$db['array2']		= "lineas_presupuestos";
 			$id_vendedor = $_POST['id_vendedor'];
 			$sql = "SELECT 
 							linea_productos_presupuestos.* 
@@ -538,24 +557,24 @@ class Actualizaciones extends CI_Controller {
 				foreach ($query->result() as $row){
 					$data[] = $row;
 				}
+				
+				$array[$tablas['lineas_presupuestos']] = $data;
+				$this->setLog('DEBUG', $tablas['lineas_presupuestos'], $_POST['id_vendedor']);
 			}
-			$db['registros2']	= $data;
-			log_message('DEBUG', 'Actualización de '.$db['array2'].', vendedor: '.$_POST['id_vendedor']);
 			
 			
-			$db['array3']		= "estados_presupuestos";
-			$db['registros3']	= $this->estados_presupuestos_model->getTodo();
-			log_message('DEBUG', 'Actualización de '.$db['array3'].', vendedor: '.$_POST['id_vendedor']);
+			$array[$tablas['estados_presupuestos']]	= $this->estados_presupuestos_model->getTodo();
+			$this->setLog('DEBUG', $tablas['estados_presupuestos'], $_POST['id_vendedor']);
+			
+			$array[$tablas['epocas']]	= $this->estados_presupuestos_model->getTodo();
+			$this->setLog('DEBUG', $tablas['epocas'], $_POST['id_vendedor']);
+			
+			$db['registros'] = $array;
 			
 			
-			$db['array4']		= "epocas";
-			$db['registros4']	= $this->epocas_model->getTodo();
-			log_message('DEBUG', 'Actualización de '.$db['array4'].', vendedor: '.$_POST['id_vendedor']);
-			
-			
-			$this->load->view($this->_subject."/getRegistrosPresupuestos.php", $db);
+			$this->load->view($this->_subject."/getRegistrosVarios.php", $db);
 		
-		//}
+		}
 	}
 	
 	
@@ -695,4 +714,66 @@ class Actualizaciones extends CI_Controller {
 		return $sql;		
 	}
 	
+	
+	
+	function getAlarmas(){
+	
+		$sin = array(
+				'sin_alarmas_clientes'		=> 'id_cliente',
+				'sin_alarmas_pedidos'			=> 'id_pedido',
+				'sin_alarmas_productos'		=> 'id_producto',
+				'sin_alarmas_presupuestos'=> 'id_presupuesto',
+				'sin_alarmas_visitas'			=> 'id_visita',
+				'sin_alarmas_vendedores'	=> 'id_vendedor',
+		);
+		
+		$i = 0;
+		
+		foreach($sin as $table => $id_table){
+			$sql = "SELECT 
+								*
+						FROM 
+								$table
+						WHERE 
+							eliminado = 0";
+				
+			$query = $this->db->query($sql);
+			
+			if($query->num_rows() > 0){
+				foreach ($query->result() as $row){
+					$data[] = $row;
+				}
+			}
+			
+			if(isset($data)){
+				$array[$table]	= $data;
+			}
+		}
+		
+		$tablas = array(
+			'alarmas' => 'alarmas',
+			'tipos_alarmas' => 'tipos_alarmas'
+		);
+		
+		$array[$tablas['alarmas']]	= $this->alarmas_model->getTodo();
+		$this->setLog('DEBUG', $tablas['alarmas']);
+		
+		$sql = "SELECT * FROM `tipos_alarmas` WHERE eliminado = '0'";
+			$query = $this->db->query($sql);
+			if($query->num_rows() > 0){
+				foreach ($query->result() as $row){
+					$data11[] = $row;
+				}
+				
+				$array[$tablas['tipos_alarmas']]	= $data11;
+				$this->setLog('DEBUG', $tablas['tipos_alarmas']);
+				
+			}
+		
+		$db['registros']	= $array;
+		
+		$this->load->view($this->_subject."/getRegistrosAlarmas.php", $db);
+			
+		
+	}
 }

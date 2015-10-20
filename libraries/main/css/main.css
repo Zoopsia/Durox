@@ -432,7 +432,7 @@ input#cantidad{
 	cursor: default !important;
 	border: transparent !important;
     background-color: transparent !important;
-    width: auto !important;
+    /*width: auto !important;*/
     font-size: 13px !important;
 }
 
