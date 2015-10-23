@@ -30,14 +30,25 @@ class Condiciones_pago extends My_Controller {
 		$dias			= $this->input->post('value');
 		$id_condicion	= $this->input->post('id');
 		
-		$condicion	= array(
-						$nombre			=> $dias,
-						'eliminado'		=> 0
-		);
+		if($this->condiciones_pago_model->deleteCondicionPresupuesto($id_condicion)){
+			if($this->condiciones_pago_model->deleteCondicionPedido($id_condicion)){
 		
-		$this->condiciones_pago_model->update($condicion, $id_condicion);	
-		
-		echo "El registro fué modificado con exito";
+			$condicion	= array(
+				$nombre			=> $dias,
+				'eliminado'		=> 0
+			);
+					
+			$this->condiciones_pago_model->update($condicion, $id_condicion);	
+					
+			echo "2";
+			}
+			else {
+				echo "1";
+			}
+		}
+		else {
+			echo "1";
+		}
 	}
 	
 	public function guardarCondicion(){

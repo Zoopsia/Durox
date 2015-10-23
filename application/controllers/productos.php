@@ -18,6 +18,7 @@ class Productos extends My_Controller {
 		$this->load->library('image_CRUD');
 		
 		$this->load->model('empresas_model');
+		$this->load->model('monedas_model');
 		$this->load->model($this->_subject.'_model');
 	}
 	
@@ -31,6 +32,7 @@ class Productos extends My_Controller {
 		$db['alarmas']			= $this->productos_model->getAlarmas($id);
 		$db['tipos_alarmas']	= $this->productos_model->getTodo('tipos_alarmas');
 		$db['datosDB']			= $this->productos_model->traerDatosDBExterna($id);
+		$db['monedas']			= $this->monedas_model->getTodo();
 
 		$this->cargar_vista($db, 'pestanas');			
 	}
@@ -80,7 +82,7 @@ class Productos extends My_Controller {
 			$crud->callback_delete(array($this,'delete_user'));
 			$crud->callback_after_insert(array($this, 'insertDatos'));
 			
-			$crud->set_relation('id_moneda','monedas','moneda');
+			$crud->set_relation('id_moneda','monedas','{moneda} {abreviatura}');
 			
 			$crud->unset_export();
 			$crud->unset_print();
@@ -202,6 +204,7 @@ class Productos extends My_Controller {
 						'codigo' 			=> $this->input->post('codigo'),
 						'descripcion'		=> $this->input->post('editor1'),
 						'ficha_tecnica'		=> $ficha_tecnica,
+						'id_moneda'			=> $this->input->post('id_moneda'),
 						'eliminado'			=> 0
 				);
 			}
@@ -211,6 +214,7 @@ class Productos extends My_Controller {
 						'precio'			=> $this->input->post('precio'),		
 						'codigo' 			=> $this->input->post('codigo'),
 						'descripcion'		=> $this->input->post('editor1'),
+						'id_moneda'			=> $this->input->post('id_moneda'),
 						'eliminado'			=> 0
 				);
 			}

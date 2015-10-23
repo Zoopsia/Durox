@@ -287,32 +287,14 @@
 								</button>
 								<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
 									<li><a onclick="editable()"><?php echo $this -> lang -> line('editar'); ?></a></li>
+									<li><a data-toggle="modal" data-target="#mail-todos"><?php echo $this->lang-> line('enviar').' '.$this->lang-> line('correo');?></a></li>
 									<li><a <?php
 											if ($mail -> enviar_auto == 0) {echo 'data-toggle="modal" data-target="#mandar-mail"';
 											} else {echo 'onclick="aprobarForm()"';
 											} ?> 
-										><?php echo $this -> lang -> line('aprobar') . ' ' . $this -> lang -> line('pedido'); ?>
+										><?php echo $this -> lang -> line('aprobar') . ' ' . $this->lang->line('pedido'); ?>
 									</a></li>
 								</ul>
-							</div>
-							<?php
-									}
-									else if($row->id_estado_pedido == 5 && $row->id_origen == 1){
-							?>
-							<div class="dropdown pull-right" id="btn-editar">
-								<button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-									Acciones
-									<span class="caret"></span>
-								</button>
-								<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
-									<li><a onclick="editable()"><?php echo $this -> lang -> line('editar'); ?></a></li>
-									<li><a <?php
-											if ($mail -> enviar_auto == 0) {echo 'data-toggle="modal" data-target="#mandar-mail"';
-											} else {echo 'onclick="aprobarForm()"';
-											} ?> 
-										><?php echo $this -> lang -> line('aprobar') . ' ' . $this -> lang -> line('pedido'); ?>
-									</a></li>
-								</ul>	
 							</div>
 							<?php
 									}
@@ -328,7 +310,7 @@
 											if ($mail -> enviar_auto == 0) {echo 'data-toggle="modal" data-target="#mandar-mail"';
 											} else {echo 'onclick="aprobarForm()"';
 											} ?> 
-										><?php echo $this -> lang -> line('aprobar') . ' ' . $this -> lang -> line('pedido'); ?>
+										><?php echo $this->lang-> line('aprobar') . ' ' . $this->lang->line('pedido'); ?>
 									</a></li>
 								</ul>	
 							</div>
@@ -548,6 +530,106 @@
 </div>
 <?php } } ?>
 
+<!-- Modal Mandar Mail a Todos-->
+<div class="modal fade" id="mail-todos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width: 800px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">Enviar aviso</h4>
+      </div>
+      <form id="aprobarForm" action="<?php echo base_url().'/index.php/Pedidos/aprobarPedido/'.$id_pedido?>" method="post">
+      <div class="modal-body">
+      	<div class="row">
+      		<div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1">
+	      		<div class="form-group">
+	      			<select name="mail2[]" class="form-control" id="chosen-mail" multiple  data-placeholder="Enviar a: ">
+						<?php
+						if ($todosmails) {
+							foreach ($todosmails as $row) {
+								echo '<option>' . $row -> mail . '</option>';
+							}
+						}
+						?>
+	            	</select> 
+	            </div>
+	            
+	            <?php if($config_mail){ foreach($config_mail as $mail){?>
+	            <div class="form-group">
+	            	<input type="text" class="form-control" name="titulo-Mail" placeholder="Titulo" required value="<?php echo $mail->asunto?>">
+	            </div>
+	            <div class="form-group">
+	            	<textarea id="txt2" class="texteditor" name="cuerpo" style="resize: none;">
+						<?php echo $mail->cuerpo?>
+						<table class="table table-striped" cellspacing="0" width="60%" border="1"> 
+							<thead class="tabla-datos-importantes">
+								<tr>
+									<th><?php echo $this -> lang -> line('producto'); ?></th>
+								    <th><?php echo $this -> lang -> line('cantidad'); ?></th>
+								    <th><?php echo $this -> lang -> line('precio'); ?></th>
+								    <th><?php echo $this -> lang -> line('subtotal'); ?></th>
+								</tr>
+							</thead>
+								 
+							<tbody>
+							<?php
+								if ($pedidos) {
+									foreach ($pedidos as $row) {
+										echo '<tr>';
+										echo '<td style="text-align: center;">' .$row->nombre . '</td>';
+										echo '<td style="text-align: center;">' .$row->cantidad . '</td>';
+										echo '<td style="text-align: center;">$ ' .$row->precio . '</td>';
+										echo '<td style="text-align: center;">$ ' .$row->subtotal . '</td>';
+										echo '</tr>';
+									}
+								}
+							?>
+							</tbody>
+							<tfoot>
+								<tr>
+									<td></td>
+									<td></td>
+									<th><?php echo $this -> lang -> line('total'); ?></th>
+									<td style="text-align: center;"><u>$ <?php echo round($total, 2); ?></u></td>
+								</tr>
+							</tfoot>
+						</table> 
+					</textarea>
+		        </div>
+	            <div class="form-group">
+	            	<textarea id="editor1" name="cabecera" rows="10" cols="80" style="display:none;">
+	            		<?php echo $mail->cabecera?>
+	            	</textarea>
+	            </div>
+	            <?php } } ?>
+	            <?php $tags = traerTags(); ?>
+	            <div class="form-group">
+	            	<div class="col-md-8">
+		            	<select id="etiquetas2" onchange="insertInputTag2()" class="form-control" data-placeholder="Seleccione un tipo...">
+		            		<option disabled selected>Etiquetas...</option>
+		            		<?php
+								foreach ($tags as $key => $value) {
+									echo '<option value="' . $value . '">' . $key . '</option>';
+								}
+							?>
+		            	</select>
+	            	</div>
+	            	<div class="col-md-4">
+	            		<input type="button" id="btn-tag2" value="" onclick="pegarEtiqueta2()" class="btn btn-default form-control">
+	            	</div>
+	            </div>
+			</div>
+		</div>	
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this -> lang -> line('cerrar'); ?></button>
+      	<button type="submit" class="btn btn-primary">Enviar</button>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 <!-- Modal Mandar Mail-->
 <div class="modal fade" id="mandar-mail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
   <div class="modal-dialog" role="document" style="width: 800px">
@@ -651,9 +733,26 @@
     </div>
   </div>
 </div>
-
 <script>
-   
+  
+$('#chosen-mail').chosen({ width: '100%' });
+
+$('#chosen-mail').on('chosen:no_results',function(evt, params){
+	$(document).keypress(function(e) {
+    	if(e.which == 59) {
+    		console.log(params.chosen.search_results.find('span').text());
+			var value = params.chosen.search_results.find('span').text();
+			$('#chosen-mail').append(new Option(value, value,true).outerHTML);
+			$('#chosen-mail').trigger("chosen:updated");
+		}
+	});
+});
+/*
+$(document).keypress(function(e) {
+    if(e.which == 59) {
+        alert('You pressed ;!');
+    }
+});*/
 function aprobarForm() {
  	$("#aprobarForm").submit();
 }
@@ -789,10 +888,14 @@ function ajaxSearch() {
 	                $('#autoSuggestionsList').addClass('auto_list');
 	                $('#autoSuggestionsList').html(data);
 	            }
+	            else{
+	            	$('#suggestions').hide();
+	            }
             }
 		});
 	}
 }
+
 //-----FUNCION PARA SELECCIONAR UN PRODUCTO Y ESCONDER EL AUTOCOMPLETAR---//
 function funcion1($id_producto){
 	var nombre 		= $('#id_valor'+$id_producto).val();
@@ -802,6 +905,7 @@ function funcion1($id_producto){
 	$('#suggestions').hide();
 	document.getElementById("cantidad").focus();
 }
+
 function sacarProducto($id_linea, $pedido){
 	var producto 		= [];
 	var cantidad 		= [];
@@ -986,10 +1090,19 @@ function pegarEtiqueta(){
     var txtToAdd 		=  $( "#btn-tag" ).val();
 	$("#txt").val(textAreaTxt + txtToAdd);
 }
+function pegarEtiqueta2(){
+	//var caretPos 		= document.getElementById("txt").selectionEnd;
+    var textAreaTxt 	= $('#txt2').val();
+    var txtToAdd 		=  $( "#btn-tag2" ).val();
+	$("#txt2").val(textAreaTxt + txtToAdd);
+}
 function insertInputTag(){
 	$("#btn-tag" ).val($( "#etiquetas" ).val());
 }
 
+function insertInputTag2(){
+	$("#btn-tag2" ).val($( "#etiquetas2" ).val());
+}
 function saveAlarm($id){
 	<?php
 	$cantidad_paginas = 0;

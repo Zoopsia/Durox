@@ -190,6 +190,13 @@ class Pedidos_model extends My_Model {
 			return FALSE;
 		}							
 	}
-		
+	
+	public function buscarMail($mail) {
+        $this->db->select('mail');
+        $this->db->select('id_mail');
+		$this->db->where('eliminado',0);
+        $this->db->like('mail', $mail);
+        return $this->db->get('mails', 10);
+    }	
 } 
 ?>

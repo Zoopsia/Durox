@@ -411,10 +411,11 @@ class Actualizaciones extends CI_Controller {
 				}
 			}
 			
-			$db['registros']	= $data;
-			log_message('DEBUG', 'Actualización de '.$db['array']);
-			
-			$this->load->view($this->_subject."/getRegistros.php", $db);
+			if(isset($data)){
+				$db['registros']	= $data;
+				log_message('DEBUG', 'Actualización de '.$db['array']);
+				$this->load->view($this->_subject."/getRegistros.php", $db);
+			}
 		}
 	}
 	
@@ -463,6 +464,7 @@ class Actualizaciones extends CI_Controller {
 	
 	public function getVisitas(){
 		if(isset($_POST['id_vendedor'])){	
+			log_message('DEBUG', 'Entro de '.$_POST['id_vendedor']);
 			$db['array']		= "visitas";
 			$db['registros']	= $this->visitas_model->getActualizacion($_POST['id_vendedor']);
 			log_message('DEBUG', 'Actualización de '.$db['array'].', vendedor: '.$_POST['id_vendedor']);
@@ -495,11 +497,18 @@ class Actualizaciones extends CI_Controller {
 	
 	public function getPresupuestos(){
 		if(isset($_POST['id_vendedor'])){	
+		
 			$tablas = array(
 				'presupuestos'					=> 'presupuestos',
 				'lineas_presupuestos'		=> 'lineas_presupuestos',
 				'estados_presupuestos'	=> 'estados_presupuestos',
 				'epocas'								=> 'epocas',
+				'condiciones_pago'			=> 'condiciones_pago',
+				'modos_pago'						=> 'modos_pago',
+				'sin_clientes_modos'		=> 'sin_clientes_modos',
+				'sin_pedidos_modos'			=> 'sin_clientes_modos',
+				'sin_presupuestos_modos'=> 'sin_clientes_modos',
+				'tiempos_entrega'				=> 'tiempos_entrega',
 			);
 		
 			$array[$tablas['presupuestos']]	= $this->presupuestos_model->getActualizacion($_POST['id_vendedor']);
@@ -513,7 +522,6 @@ class Actualizaciones extends CI_Controller {
 							`linea_productos_presupuestos` 
 						WHERE 
 							`id_presupuesto` = 0";
-		
 			$query = $this->db->query($sql);
 			if($query->num_rows() > 0){
 				foreach ($query->result() as $row){
@@ -557,17 +565,45 @@ class Actualizaciones extends CI_Controller {
 				foreach ($query->result() as $row){
 					$data[] = $row;
 				}
-				
 				$array[$tablas['lineas_presupuestos']] = $data;
 				$this->setLog('DEBUG', $tablas['lineas_presupuestos'], $_POST['id_vendedor']);
 			}
-			
 			
 			$array[$tablas['estados_presupuestos']]	= $this->estados_presupuestos_model->getTodo();
 			$this->setLog('DEBUG', $tablas['estados_presupuestos'], $_POST['id_vendedor']);
 			
 			$array[$tablas['epocas']]	= $this->estados_presupuestos_model->getTodo();
 			$this->setLog('DEBUG', $tablas['epocas'], $_POST['id_vendedor']);
+			
+			$sql = "SELECT * FROM condiciones_pago";
+			$query = $this->db->query($sql);
+			if($query->num_rows() > 0){
+				foreach ($query->result() as $row){
+					$condiciones_pago[] = $row;
+				}
+				$array[$tablas['condiciones_pago']] = $condiciones_pago;
+				$this->setLog('DEBUG', $tablas['condiciones_pago'], $_POST['id_vendedor']);
+			}
+			
+			$sql = "SELECT * FROM modos_pago";
+			$query = $this->db->query($sql);
+			if($query->num_rows() > 0){
+				foreach ($query->result() as $row){
+					$modos_pago[] = $row;
+				}
+				$array[$tablas['modos_pago']] = $modos_pago;
+				$this->setLog('DEBUG', $tablas['modos_pago'], $_POST['id_vendedor']);
+			}
+			
+			$sql = "SELECT * FROM tiempos_entrega";
+			$query = $this->db->query($sql);
+			if($query->num_rows() > 0){
+				foreach ($query->result() as $row){
+					$tiempos_entrega[] = $row;
+				}
+				$array[$tablas['tiempos_entrega']] = $tiempos_entrega;
+				$this->setLog('DEBUG', $tablas['tiempos_entrega'], $_POST['id_vendedor']);
+			}
 			
 			$db['registros'] = $array;
 			

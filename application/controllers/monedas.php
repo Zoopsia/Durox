@@ -39,4 +39,19 @@ class Monedas extends My_Controller {
 		echo "El registro fué modificado con exito";
 	}
 	
+	public function guardarMoneda(){
+		
+		$moneda	= array(
+				'moneda' 		=> $this->input->post('nuevo_moneda'),			
+				'abreviatura'	=> $this->input->post('nuevo_abreviatura'),
+				'simbolo'		=> $this->input->post('nuevo_simbolo'),
+				'valor'			=> $this->input->post('nuevo_valor')
+		);
+		
+		$this->monedas_model->insert($moneda);	
+		
+		redirect($this->_subject.'/Monedas/','refresh');
+		
+	}
+	
 }

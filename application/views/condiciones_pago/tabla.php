@@ -19,11 +19,11 @@
 										$i=0; $j=1;
 										foreach($condiciones as $row){
 											echo "<tr>";
-											echo '<td ondblclick="editar('.$i.');"><input type="text" class="editable text-center" id="'.$i.'" name="condicion_pago" value="'.$row->condicion_pago.'" autocomplete="off" disabled onblur="guardar('.$i.','.$j.')"></td>';
+											echo '<td ondblclick="editar('.$i.');"><input type="text" class="editable text-center" id="'.$i.'" name="condicion_pago" value="'.$row->condicion_pago.'" autocomplete="off" disabled onblur="guardar('.$i.','.$j.')" style="width: 100%"></td>';
 											$i++;
 											echo '<td ondblclick="editar('.$i.');"><input type="number" class="editable text-center" id="'.$i.'" name="dias" value="'.$row->dias.'" autocomplete="off" disabled min="1" step="1" onblur="guardar('.$i.','.$j.')"></td>';
 											$i++;
-											echo '<td class="col-eliminar displaynone"><input type="checkbox" class="check-eliminar" name="eliminar[]" value="'.$row->id_condicion_pago.'"></td>';
+											echo '<td class="col-eliminar"><input type="checkbox" class="check-eliminar" name="eliminar[]" value="'.$row->id_condicion_pago.'"></td>';
 											echo "</tr>";
 											$j++;
 										}
@@ -49,27 +49,45 @@
 					</div>
 				</div>
 				<div class="row">
-                        <div class="col-xs-12">
-                        	<button type="button" id="btn-nuevo" class="btn btn-success btn-sm pull-right" onclick="nuevo()" style=" margin-left: 5px">
-								<?php echo $this -> lang -> line('nuevo'); ?>
-							</button>
-							<button type="button" id="btn-eliminar" class="btn btn-danger btn-sm pull-right" onclick="verEliminar()" style=" margin-left: 5px">
-								<?php echo $this -> lang -> line('eliminar'); ?>
-							</button>
-							<button type="button" id="btn-cancelar" class="btn btn-primary btn-sm pull-right" onclick="cancelar()" style=" display:none; margin-left: 5px">
-								<?php echo $this -> lang -> line('cancelar'); ?>
-							</button>
-							<button type="button" id="reg-eliminar" class="btn btn-danger btn-sm pull-right" onclick="eliminar()" style=" display:none; margin-left: 5px">
-								<?php echo $this -> lang -> line('eliminar'); ?>
-							</button>
-                         </div>
-                    </div>
+                	<div class="col-xs-12">
+                        <button type="button" id="btn-nuevo" class="btn btn-success btn-sm pull-right" onclick="nuevo()" style=" margin-left: 5px">
+							<?php echo $this -> lang -> line('nuevo'); ?>
+						</button>
+						<button type="button" id="btn-cancelar" class="btn btn-primary btn-sm pull-right" onclick="cancelar()" style=" display:none; margin-left: 5px">
+							<?php echo $this -> lang -> line('cancelar'); ?>
+						</button>
+						<button type="button" id="reg-eliminar" class="btn btn-danger btn-sm pull-right" onclick="eliminar()" style=" display:none; margin-left: 5px">
+							<?php echo $this -> lang -> line('eliminar'); ?>
+						</button>
+                	</div>
+            	</div>
 			</div>
 		</div>
 	</div>
 </div>	     				
 <script>
 var valorInput;
+var varCheck = 0;
+$('.check-eliminar').on('ifChecked', function(){
+	$('#btn-nuevo').hide();
+	$('#btn-cancelar').show();
+	$(".cargarLinea").hide();
+	$('#reg-eliminar').show();
+	varCheck ++;
+});
+
+$('.check-eliminar').on('ifUnchecked', function(){
+	varCheck --;
+	if(varCheck == 0)
+		armarNuevo();
+});
+
+function armarNuevo(){
+	$('#btn-nuevo').show();
+	$('#btn-cancelar').hide();
+	$('#reg-eliminar').hide();
+}
+
 function editar($i){
 	var aux = $i;
 	$('#'+aux).removeAttr("disabled");
@@ -97,7 +115,12 @@ function guardar($i, $j){
 					 			'id'				: id,
 					 	}, 
 					 	success: function(resp) { 
-					 		alert(resp);
+					 		if(resp == "1"){
+					 			alert("Hay registros que no se pueden editar ya que han sido usados previamente!");
+					 			$('#'+aux).val(valorInput);
+					 		}
+					 		else
+					 			alert("El registro fué modificado con exito");
 					 	}
 					});
 		    	}
@@ -174,11 +197,9 @@ function verEliminar(){
 }
 
 function cancelar(){
-	$('.col-eliminar').addClass("displaynone");
-	$('#btn-nuevo').show();
-	$('#btn-eliminar').show();
-	$('#btn-cancelar').hide();
-	$('#reg-eliminar').hide();
+	varCheck = 0;
+	$('.check-eliminar').iCheck('uncheck');
+	armarNuevo();
 }
 
 function eliminar(){
@@ -192,6 +213,7 @@ function eliminar(){
 		 	success: function(resp) { 
 		 		if(resp)
 					alert("Hay registros que no se pueden eliminar ya que han sido usados previamente!");	
+				
 				location.reload();
 			},	
 		});

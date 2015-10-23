@@ -563,3 +563,9 @@ div.user-panel{
 .col-eliminar{
 	width: 50px;
 }
+
+.txtmoneda{
+	height: 30px;
+	margin: 0px;
+	width: 100%;
+}

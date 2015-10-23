@@ -33,6 +33,10 @@ function editable(){
 	$('#ficha_tecnica').attr('type', 'file');
 	$("#ficha_tecnica").removeClass("web");
 	$("#ficha_tecnica").addClass("editable2");
+	$("#td_confirmar").html('Tipo de Moneda: ');
+	$("#td_confirmar").removeClass("transparente");
+	$("#td_moneda").removeClass("transparente");
+	$('#moneda').show();
 	$('#textarea').html('<textarea class="texteditor" name="editor1" rows="10" cols="88" style="resize: none;">'+descripcion+'</textarea>');
 }
 
@@ -58,6 +62,10 @@ function cancelar(){
 		$('#ficha_tecnica').attr('type', 'text');
 		$("#ficha_tecnica").addClass("web");
 		$("#ficha_tecnica").removeClass("editable2");
+		$("#td_confirmar").html('');
+		$("#td_confirmar").addClass("transparente");
+		$("#td_moneda").addClass("transparente");
+		$('#moneda').hide();
 		<?php
 			if($productos){
 				foreach($productos as $row){
@@ -78,7 +86,8 @@ function cambiarImagen(){
 	if(!document.getElementById("em-text").innerHTML){
 		$("#textarea").addClass("no-print");
 	}
-	$('.img-cambiar').attr('style','height: 270px !important');
+	if($('.img-cambiar').val());
+		$('.img-cambiar').attr('style','height: 270px !important');
 	setTimeout(function(){ $('.img-cambiar').attr('style','height: 300px !important'); }, 100);
 	
 }
@@ -232,7 +241,7 @@ $bandera = 0;
 												echo  "</tr>";
 												echo  "<tr>";
 												echo  '<td class="padtop">'.$this->lang->line('precio').':</td>';
-												echo  '<td class="tabla-datos-importantes"><input type="text" name="precio" id="precio" class="form-control editable cambio" pattern="[0-9]*.{1,}" value="'.$row->abreviatura.$row->simbolo.' '.$row->precio.'" placeholder="'.$this->lang->line('precio').'" autocomplete="off" disabled required></td>';
+												echo  '<td class="tabla-datos-importantes"><input type="text" name="precio" id="precio" class="form-control editable cambio" pattern="[0-9]*.{1,}" value="'.$row->abreviatura.$row->simbolo.' '.round($row->precio,2).'" placeholder="'.$this->lang->line('precio').'" autocomplete="off" disabled required></td>';
 												echo  "</tr>";
 												echo  "<tr>";
 												echo  '<td class="padtop">'.$this->lang->line('codigo').':</td>';
@@ -264,6 +273,7 @@ $bandera = 0;
 													echo  '<td class="tabla-datos-importantes"><input type="file" name="ficha_tecnica" class="form-control editable2" id="ficha_tecnica1" style="display: none"></td>';
 													echo  "</tr>";
 												}
+												
 												echo  "<tr class='no-print'>";
 												echo  '<td  class="padtop" colspan="2" style="text-align: center">';
 												echo '<button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#popPrecios">';
@@ -271,6 +281,23 @@ $bandera = 0;
 												echo '</button>';
 												echo '</td>';
 												echo  "</tr>";
+												echo "<tr>";
+												if($monedas){
+													echo '<td class="padtop transparente" id="td_confirmar"></td>';
+													echo '<td class="transparente" id="td_moneda">';
+													echo '<div id="moneda" style="display: none">';
+													echo '<select name="id_moneda" id="id_moneda" class="form-control cambio">';
+													foreach ($monedas as $key) {
+														if($key->abreviatura == $row->abreviatura && $key->simbolo == $row->simbolo)
+															echo '<option value="'.$key->id_moneda.'" selected>'.$key->moneda.' '.$key->abreviatura.'</option>';
+														else
+															echo '<option value="'.$key->id_moneda.'">'.$key->moneda.' '.$key->abreviatura.'</option>';
+													}
+													echo '</select>';	
+													echo  '</div>';
+													echo '</td>';
+												}	
+												echo "</tr>";
 												echo  "</tbody>";
 											}
 											else

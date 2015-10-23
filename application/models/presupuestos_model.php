@@ -32,19 +32,26 @@ class Presupuestos_model extends My_Model {
 					linea_productos_$this->_tablename.subtotal AS subtotal,
 					linea_productos_$this->_tablename.id_linea_producto_presupuesto AS id_linea_producto_presupuesto,
 					linea_productos_$this->_tablename.id_estado_producto_presupuesto AS estado_linea,
-					estados_productos_$this->_tablename.estado AS estado
+					estados_productos_$this->_tablename.estado AS estado,
+					monedas.id_moneda,
+					monedas.valor,
+					monedas.abreviatura,
+					monedas.simbolo
 				FROM 
 					$this->_tablename 
 				INNER JOIN 
 					visitas USING(id_visita)
 				INNER JOIN 
 					linea_productos_$this->_tablename USING($this->_id_table)
+				INNER JOIN
+					monedas USING (id_moneda)
 				INNER JOIN 
 					productos USING (id_producto)
 				INNER JOIN 
 					estados_productos_$this->_tablename USING(id_estado_producto_$this->_subject)
 				WHERE 
 					$this->_id_table = '$id'";
+
 					
 		$query = $this->db->query($sql);
 		

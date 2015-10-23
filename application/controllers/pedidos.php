@@ -55,6 +55,7 @@ class Pedidos extends My_Controller {
 		$db['alarmas']			= $this->pedidos_model->getAlarmas($id);
 		$db['tipos_alarmas']	= $this->pedidos_model->getTodo('tipos_alarmas');
 		$db['id_pedido']		= $id;
+		$db['todosmails']		= $this->mails_model->getTodo();
 		
 		$this->cargar_vista($db, 'pestanas');	
 	}
@@ -100,7 +101,7 @@ class Pedidos extends My_Controller {
 			$crud->order_by('id_pedido','asc');
 							
 			$crud->set_relation('id_cliente','clientes','{razon_social}');
-			$crud->set_relation('id_vendedor','vendedores','{apellido} {nombre}');
+			$crud->set_relation('id_vendedor','vendedores','{nombre} {apellido}');
 			$crud->set_relation('id_estado_pedido','estados_pedidos','estado');
 			
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
@@ -193,6 +194,8 @@ class Pedidos extends My_Controller {
 						'subtotal'							=> $row->subtotal,
 						'cantidad'							=> $row->cantidad,
 						'id_estado_producto_pedido'			=> $row->estado_linea,
+						'id_moneda'							=> $row->id_moneda,
+						'valor_moneda'						=> $row->valor,
 						'aprobado_back'						=> 0,
 						'aprobado_front'					=> 1,
 						'eliminado'							=> 0
@@ -898,4 +901,14 @@ class Pedidos extends My_Controller {
 		redirect('Pedidos/pestanas/'.$id_pedido,'refresh');
 		
 	}
+
+	public function buscarMail() 
+	{
+        $mail = $this->input->post('mail');
+        $query = $this->pedidos_model->buscarMail($mail);
+
+        foreach ($query->result() as $row){
+        	echo '<li style="padding: 5px 0px; border-top: 1px solid #E3E3E3;"><a onclick="funcion2('.$row->id_mail.')">'.$row->mail.'<input type="text" id="id_mail'.$row->id_mail.'" value="'.$row->mail.'" hidden></a></li>';
+        }
+    }
 }

@@ -300,6 +300,7 @@ class Presupuestos extends My_Controller {
 				foreach ($productos as $row) {
 					if($row->id_producto == $producto){
 						$precio 	= $row->precio;
+						$moneda		= $row->id_moneda;
 					}
 				}
 				
@@ -320,7 +321,8 @@ class Presupuestos extends My_Controller {
 					'cantidad' 						=> $cantidad,
 					'id_estado_producto_presupuesto'=> 1,
 					'precio'						=> round($preciofinal, 2),
-					'subtotal'						=> round($preciofinal, 2)*$cantidad,	
+					'subtotal'						=> round($preciofinal, 2)*$cantidad,
+					'id_moneda'						=> $moneda	
 				);
 
 				$linea				= $this->presupuestos_model->insertLinea($arreglo);
@@ -589,6 +591,8 @@ class Presupuestos extends My_Controller {
 						'id_producto'						=> $row->producto,
 						'precio'							=> $row->precio,
 						'subtotal'							=> $row->subtotal,
+						'id_moneda'							=> $row->id_moneda,
+						'valor_moneda'						=> $row->valor,
 						'cantidad'							=> $row->cantidad,
 						'id_estado_producto_presupuesto'	=> $row->estado_linea,
 					);
