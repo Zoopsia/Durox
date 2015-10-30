@@ -25,6 +25,9 @@ class Pedidos extends My_Controller {
 		$this->load->model('presupuestos_model');
 		$this->load->model('log_linea_pedidos_model');
 		$this->load->model('mails_model');
+		$this->load->model('modos_pago_model');
+		$this->load->model('condiciones_pago_model');
+		$this->load->model('tiempos_entrega_model');
 		
 		$this->load->model($this->_subject.'_model');	
 	}
@@ -49,6 +52,7 @@ class Pedidos extends My_Controller {
 				$db['config_mail']	= $this->mails_model->getConfigMails();
 			}
 		}
+		
 		$db['iva']				= $this->clientes_model->getTodo('iva');		
 		$db['pedidos']			= $this->pedidos_model->getDetallePedido($id);
 		$db['estados']			= $this->pedidos_model->getTodo('estados_pedidos');
@@ -56,6 +60,11 @@ class Pedidos extends My_Controller {
 		$db['tipos_alarmas']	= $this->pedidos_model->getTodo('tipos_alarmas');
 		$db['id_pedido']		= $id;
 		$db['todosmails']		= $this->mails_model->getTodo();
+		
+		$db['modos_pago']		= $this->modos_pago_model->getTodo();
+		$db['condiciones_pago']	= $this->condiciones_pago_model->getTodo();
+		$db['tiempos_entrega']	= $this->tiempos_entrega_model->getTodo();
+		$db['sin_modos']		= $this->pedidos_model->getModos($id);
 		
 		$this->cargar_vista($db, 'pestanas');	
 	}
@@ -129,6 +138,7 @@ class Pedidos extends My_Controller {
 
 	function just_a_test($primary_key , $row)
 	{
+		echo "<script>sessionStorage.clear();</script>";
 	    return site_url($this->_subject.'/pestanas').'/'.$row->id_pedido;
 	}
 
@@ -423,8 +433,10 @@ class Pedidos extends My_Controller {
 	}  
 
 	function guardarPedido($id_pedido,$nuevo=null){
-		$pedidos				= $this->pedidos_model->getDetallePedido($id_pedido);
-		$total = 0;
+		$pedidos			= $this->pedidos_model->getDetallePedido($id_pedido);
+		$total				= 0;
+		$condicion_pago		= $this->input->post('condicion_pago');
+		$tiempo_entrega		= $this->input->post('tiempo_entrega');
 		
 		if($pedidos)
 		{
@@ -445,7 +457,9 @@ class Pedidos extends My_Controller {
 				'visto_back'			=> 0,
 				'visto_front'			=> 0,
 				'iteracion'				=> 0,
-				'eliminado'				=> 0
+				'eliminado'				=> 0,
+				'id_condicion_pago'		=> $condicion_pago,
+				'id_tiempo_entrega'		=> $tiempo_entrega
 			);
 		}
 		else{
@@ -457,7 +471,9 @@ class Pedidos extends My_Controller {
 				'visto_back'			=> 1,
 				'visto_front'			=> 0,
 				'iteracion'				=> $iteracion + 1,
-				'eliminado'				=> 0
+				'eliminado'				=> 0,
+				'id_condicion_pago'		=> $condicion_pago,
+				'id_tiempo_entrega'		=> $tiempo_entrega
 			);
 		}
 
@@ -500,8 +516,11 @@ class Pedidos extends My_Controller {
 	}
 
 	function guardarPedido2($id_pedido){
-		$pedidos				= $this->pedidos_model->getDetallePedido($id_pedido);
-		$total = 0;
+		$pedidos			= $this->pedidos_model->getDetallePedido($id_pedido);
+		$sin_modos			= $this->pedidos_model->getModos($id_pedido);
+		$total 				= 0;
+		$condicion_pago		= $this->input->post('condicion_pago');
+		$tiempo_entrega		= $this->input->post('tiempo_entrega');
 		
 		if($pedidos)
 		{
@@ -522,12 +541,54 @@ class Pedidos extends My_Controller {
 			'visto_back'			=> 1,
 			'visto_front'			=> 0,
 			'iteracion'				=> $iteracion + 1,
-			'eliminado'				=> 0
+			'eliminado'				=> 0,
+			'id_condicion_pago'		=> $condicion_pago,
+			'id_tiempo_entrega'		=> $tiempo_entrega
 		);
 		
 
 		$this->pedidos_model->update($arreglo, $id_pedido);
 		
+		if($_POST['modos_pago']){
+			if($sin_modos){
+				foreach($_POST['modos_pago'] as $modos){
+					$aux = 0;	
+					foreach($sin_modos as $row){
+						if($modos == $row->id_modo_pago)
+							$aux = 1;
+					}
+					if($aux == 0){
+						$cruce_pedido_modo	= array(
+							'id_modo_pago'		=> $modos,
+							'id_pedido'			=> $id_pedido
+						);
+						
+						$this->pedidos_model->insertCruceModos($cruce_pedido_modo);
+					}
+				}
+			}
+		}
+
+		$sin_modos			= $this->pedidos_model->getModos($id_pedido);
+		
+		if($_POST['modos_pago']){
+			if($sin_modos){
+				foreach($sin_modos as $row){
+					$aux = 0;
+					foreach($_POST['modos_pago'] as $modos){
+						if($row->id_modo_pago == $modos)
+							$aux = 1;
+					}
+					if($aux == 0){
+						$eliminar	= array(
+							'eliminado'		=> 1
+						);
+						
+						$this->pedidos_model->updateCruceModos($eliminar,$row->id_sin_pedido_modo);
+					}
+				}
+			}
+		}
 		//----- CARGO ACCION A UN REGISTRO LOG---//
 		if($pedidos){
 			foreach($pedidos as $row){
@@ -620,6 +681,21 @@ class Pedidos extends My_Controller {
 			$this->pedidos_model->update($arreglo_pedido, $id_pedido);
 		}
 			
+		redirect('Pedidos/pestanas/'.$id_pedido,'refresh');
+	}
+	
+	function enviarMailPedido($id_pedido){
+		
+		$mails = $this->input->post('mail2');
+		$pedido	= $this->pedidos_model->getDetallePedido($id_pedido);
+		
+		if($mails){
+			foreach($mails as $row){
+				$cuerpo = $this->armarCuerpo($this->input->post('cuerpo2'),$id_pedido);
+				mail($row, $this->input->post('titulo-Mail'), $cuerpo, $this->input->post('cabecera2'));
+			}
+		}
+		
 		redirect('Pedidos/pestanas/'.$id_pedido,'refresh');
 	}
 	
@@ -844,6 +920,9 @@ class Pedidos extends My_Controller {
 			$db['pedidos']			= $this->pedidos_model->getDetallePedido($id_pedido);
 			$db['estados']			= $this->pedidos_model->getTodo('estados_pedidos');
 			
+			$db['modos_pago']		= $this->modos_pago_model->getTodo();
+			$db['condiciones_pago']	= $this->condiciones_pago_model->getTodo();
+			$db['tiempos_entrega']	= $this->tiempos_entrega_model->getTodo();
 			
 			$this->cargar_vista($db, 'carga_pedido');
 		}
@@ -851,9 +930,13 @@ class Pedidos extends My_Controller {
 
 	public function guardarNuevoPedido(){
 		
-		$cliente 	= $this->input->post('cliente');
-		$vendedor	= $this->input->post('vendedor');
-		$fecha		= $this->input->post('fecha');
+		$cliente 			= $this->input->post('cliente');
+		$vendedor			= $this->input->post('vendedor');
+		$fecha				= $this->input->post('fecha');
+		$condicion_pago		= $this->input->post('condicion_pago');
+		//$modos_pago			= $this->input->post('modos_pago');
+		$tiempo_entrega		= $this->input->post('tiempo_entrega');
+		
 			
 		$visita			= array(
 			'id_cliente' 		=> $cliente, 
@@ -873,7 +956,9 @@ class Pedidos extends My_Controller {
 				'fecha'					=> $fecha,
 				'id_origen'				=> 2,
 				'visto_back'			=> 1,
-				'id_estado_presupuesto'	=> 2
+				'id_estado_presupuesto'	=> 2,
+				'id_condicion_pago'		=> $condicion_pago,
+				'id_tiempo_entrega'		=> $tiempo_entrega
 		);
 	
 		$id_presupuesto 	= $this->presupuestos_model->insert($presupuesto);
@@ -893,10 +978,29 @@ class Pedidos extends My_Controller {
 				'fecha'					=> $fecha,
 				'id_origen'				=> 2,
 				'visto_back'			=> 0,
-				'id_estado_pedido'		=> 1
+				'id_estado_pedido'		=> 1,
+				'id_condicion_pago'		=> $condicion_pago,
+				'id_tiempo_entrega'		=> $tiempo_entrega
 		);
 	
 		$id_pedido 		= $this->pedidos_model->insert($pedido);
+		
+		
+		foreach($_POST['modos_pago'] as $modos){
+			$cruce_presupuesto_modo	= array(
+				'id_modo_pago'		=> $modos,
+				'id_presupuesto'	=> $id_presupuesto
+			);
+			
+			$this->presupuestos_model->insertCruceModos($cruce_presupuesto_modo);
+			
+			$cruce_pedido_modo	= array(
+				'id_modo_pago'		=> $modos,
+				'id_pedido'			=> $id_pedido
+			);
+			
+			$this->pedidos_model->insertCruceModos($cruce_pedido_modo);
+		}
 		
 		redirect('Pedidos/pestanas/'.$id_pedido,'refresh');
 		

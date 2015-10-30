@@ -1,5 +1,6 @@
 <?php
 	if($pedido){
+		$arreglo_info = array();
 		foreach ($pedido as $row) {
 ?>	
    
@@ -216,10 +217,104 @@
 					</div><!-- /.row -->
 					<div class="row">
                     <!-- accepted payments column -->
-                        <div class="col-xs-6">
+                    	<div class="col-xs-6 box box-default" id="div-cargar-info" style="width: 48%; margin-left: 10px; border-top: none; box-shadow: none; display:none;">
+                        	<div class="box-header" style="margin-bottom: 0px">
+                        		<div class="pull-right box-tools">                                        
+                                	<button class="btn btn-default btn-sm pull-right" data-widget="collapse" data-toggle="tooltip" title="" style="margin-right: 5px;" data-original-title="Datos"><i class="fa fa-minus"></i></button>
+                                </div>
+                                <p class="lead"><?php echo $this->lang->line('informacion')?></p>
+                        	</div>
+                        	<div class="box-body">
+                        		<div class="col-xs-5 form-group">
+		                        	<label><?php echo $this->lang->line('modos').' de '.$this->lang->line('pago').':';?></label>
+		                        </div>
+		                        <div class="col-xs-7 form-group">
+			                    	<select name="modos_pago[]" id="modos_pago" class="form-control chosen-select" multiple="" data-placeholder="<?php echo $this->lang->line('modos').' de '.$this->lang->line('pago');?>" required form="formGuardar">
+			                        	<option></option>
+			                           	<?php 
+			                           		if($sin_modos){
+			                           			if($modos_pago){
+				                           			foreach($modos_pago as $modos){
+				                           				$aux = 0;
+				                           				foreach($sin_modos as $row){
+				                           					if($modos->id_modo_pago == $row->id_modo_pago)
+																$aux = 1;
+				                           				}
+														if($aux == 0)
+				                           					echo '<option value="'.$modos->id_modo_pago.'">'.$modos->modo_pago.'</option>';
+														else{
+															echo '<option value="'.$modos->id_modo_pago.'" selected>'.$modos->modo_pago.'</option>';
+															$arreglo_info['modos_pago'] = $modos->modo_pago;
+														}
+														
+													}
+				                           		}
+											}
+										?>
+			                           </select>
+			                    </div>
+		                        <div class="col-xs-5 form-group">
+		                        	<label><?php echo $this->lang->line('condiciones').' de '.$this->lang->line('pago').':';?></label>
+		                        </div>
+		                        <div class="col-xs-7 form-group">
+		                            <select name="condicion_pago" id="condicion_pago" class="form-control chosen-select" data-placeholder="<?php echo $this->lang->line('condicion').' de '.$this->lang->line('pago');?>" required form="formGuardar">
+			                           	<option></option>
+			                           	<?php
+			                           		if($pedido){ 
+				                           		if($condiciones_pago){
+				                           			foreach($condiciones_pago as $condicion){
+				                           				$aux = 0;
+				                           				foreach($pedido as $row){
+				                           					if($condicion->id_condicion_pago == $row->id_condicion_pago)
+																$aux = 1;
+				                           				}
+														if($aux == 0)
+				                           					echo '<option value="'.$condicion->id_condicion_pago.'">'.$condicion->condicion_pago.'</option>';
+														else{
+															echo '<option value="'.$condicion->id_condicion_pago.'" selected>'.$condicion->condicion_pago.'</option>';
+															$arreglo_info['condiciones_pago'] = $condicion->condicion_pago;
+														}
+													}
+				                           		}
+											}
+										?>
+			                        </select>
+			                    </div>
+		                        <div class="col-xs-5 form-group">
+									<label><?php echo $this->lang->line('tiempos').' de '.$this->lang->line('entrega').':';?></label>
+		                        </div>
+		                        <div class="col-xs-7 form-group">
+			                    	<select name="tiempo_entrega" id="tiempo_entrega" class="form-control chosen-select" data-placeholder="<?php echo $this->lang->line('tiempo').' de '.$this->lang->line('entrega');?>" required form="formGuardar">
+			                        	<option></option>
+			                           	<?php
+			                           		if($pedido){  
+				                           		if($tiempos_entrega){
+				                            		foreach($tiempos_entrega as $tiempo){
+				                            			$aux = 0;
+				                           				foreach($pedido as $row){
+				                           					if($tiempo->id_tiempo_entrega == $row->id_tiempo_entrega)
+																$aux = 1;
+				                           				}
+														if($aux == 0)
+				                            				echo '<option value="'.$tiempo->id_tiempo_entrega.'">'.$tiempo->tiempo_entrega.'</option>';
+														else{
+															echo '<option value="'.$tiempo->id_tiempo_entrega.'" selected>'.$tiempo->tiempo_entrega.'</option>';
+															$arreglo_info['tiempos_entrega'] = $tiempo->tiempo_entrega;
+														}
+													}
+				                            	}
+											}
+										?>
+			                       </select>
+			                    </div>
+                           </div>
+                        </div><!-- /.col -->
+                        
+                    
+                        <div class="col-xs-6" id="div-info-extra">
                             <p class="lead no-print"><?php echo $this -> lang -> line('notas'); ?></p>
                             <p class="text-muted well well-sm no-shadow no-print" style="margin-top: 10px;">
-                                
+                                <?php echo armarInformacion($arreglo_info); ?>
                             </p>
                         </div><!-- /.col -->
                        
@@ -298,7 +393,7 @@
 							</div>
 							<?php
 									}
-									else if($row->id_estado_pedido == 5 && $row->id_origen == 2){
+									else if($row->id_estado_pedido == 5 && $row->id_origen == 1){
 							?>
 							<div class="dropdown pull-right" id="btn-editar">
 								<button class="btn btn-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
@@ -306,6 +401,8 @@
 									<span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenu2">
+									<li><a onclick="editable()"><?php echo $this -> lang -> line('editar'); ?></a></li>
+									<li><a data-toggle="modal" data-target="#mail-todos"><?php echo $this->lang-> line('enviar').' '.$this->lang-> line('correo');?></a></li>
 									<li><a <?php
 											if ($mail -> enviar_auto == 0) {echo 'data-toggle="modal" data-target="#mandar-mail"';
 											} else {echo 'onclick="aprobarForm()"';
@@ -321,11 +418,11 @@
 								foreach($pedido as $row){
 									if($row->id_estado_pedido == 1 && $row->id_origen == 2){
 							?>
-							<form action="<?php echo base_url().'/index.php/Pedidos/guardarPedido2/'.$id_pedido?>" onsubmit="return guardarLineasNuevas(<?php echo $id_pedido?>)" method="post">
+							<form action="<?php echo base_url().'/index.php/Pedidos/guardarPedido2/'.$id_pedido?>" onsubmit="return guardarLineasNuevas(<?php echo $id_pedido?>)" method="post" id="formGuardar" name="formGuardar" novalidate>
 							<?php
 									}else{
 							?>
-							<form action="<?php echo base_url().'/index.php/Pedidos/guardarPedido/'.$id_pedido?>" onsubmit="return guardarLineasNuevas(<?php echo $id_pedido?>)" method="post">
+							<form action="<?php echo base_url().'/index.php/Pedidos/guardarPedido/'.$id_pedido?>" onsubmit="return guardarLineasNuevas(<?php echo $id_pedido?>)" method="post" id="formGuardar" name="formGuardar" novalidate>
 							<?php 	}
 								}
 							}
@@ -538,7 +635,7 @@
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="myModalLabel">Enviar aviso</h4>
       </div>
-      <form id="aprobarForm" action="<?php echo base_url().'/index.php/Pedidos/aprobarPedido/'.$id_pedido?>" method="post">
+      <form id="aprobarForm2" action="<?php echo base_url().'/index.php/Pedidos/enviarMailPedido/'.$id_pedido?>" method="post">
       <div class="modal-body">
       	<div class="row">
       		<div class="col-lg-10 col-lg-offset-1 col-md-10 col-md-offset-1">
@@ -559,7 +656,7 @@
 	            	<input type="text" class="form-control" name="titulo-Mail" placeholder="Titulo" required value="<?php echo $mail->asunto?>">
 	            </div>
 	            <div class="form-group">
-	            	<textarea id="txt2" class="texteditor" name="cuerpo" style="resize: none;">
+	            	<textarea id="txt2" class="texteditor" name="cuerpo2" style="resize: none;">
 						<?php echo $mail->cuerpo?>
 						<table class="table table-striped" cellspacing="0" width="60%" border="1"> 
 							<thead class="tabla-datos-importantes">
@@ -597,7 +694,7 @@
 					</textarea>
 		        </div>
 	            <div class="form-group">
-	            	<textarea id="editor1" name="cabecera" rows="10" cols="80" style="display:none;">
+	            	<textarea id="editor1" name="cabecera2" rows="10" cols="80" style="display:none;">
 	            		<?php echo $mail->cabecera?>
 	            	</textarea>
 	            </div>
@@ -740,19 +837,13 @@ $('#chosen-mail').chosen({ width: '100%' });
 $('#chosen-mail').on('chosen:no_results',function(evt, params){
 	$(document).keypress(function(e) {
     	if(e.which == 59) {
-    		console.log(params.chosen.search_results.find('span').text());
 			var value = params.chosen.search_results.find('span').text();
 			$('#chosen-mail').append(new Option(value, value,true).outerHTML);
 			$('#chosen-mail').trigger("chosen:updated");
 		}
 	});
 });
-/*
-$(document).keypress(function(e) {
-    if(e.which == 59) {
-        alert('You pressed ;!');
-    }
-});*/
+
 function aprobarForm() {
  	$("#aprobarForm").submit();
 }
@@ -799,6 +890,8 @@ function editable(){
 		$('#sub-otra-moneda').hide();
 		cotizar_cng++;
 	}
+	$('#div-cargar-info').show();
+	$('#div-info-extra').hide();
 	$("#btn-print").hide();
 	$("#btn-editar").hide();
 	$("#btn-aprobar").hide();
@@ -843,9 +936,6 @@ function cargaProducto($id_cliente){
 	 		
 	 		sessionStorage.setItem('subtotal'+aux, $('#subtotal'+aux).val());
 	 		
-	 		for(i = 0; i <= sessionStorage['aux']; i++ ){
-				console.log(sessionStorage['nomb'+i]);	
-	 		}
 	 		aux = aux+1;
 	 		armarTotales(pedido);
 	 		document.formProducto.reset(); 
@@ -1022,6 +1112,8 @@ function cancelarCambios($pedido){
 	 	success: function(resp) {
 	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias
 	 		armarTotales(pedido);
+	 		$('#div-cargar-info').hide();
+			$('#div-info-extra').show();
 	 		$("#btn-print").show();
 			$("#btn-editar").show();
 			$("#btn-aprobar").show();
@@ -1044,44 +1136,50 @@ function imprimirConLogo(){
 function guardarLineasNuevas($pedido){
 	var pedido = $pedido;
 	var total = $('#total-ped').val();
-	if(aux > 0){
-		for(i = 0; i < aux; i++){
-			if($('#id_producto'+i).val()){
-				var producto 	= $('#id_producto'+i).val();
-				var cantidad 	= $('#cant'+i).val();
-				var precio 		= $('#precio'+i).val();
-				var subtotal 	= $('#subtotal'+i).val();
-				var id_moneda	= $('#id_moneda'+i).val();
-				var valor_moneda= $('#valor_moneda'+i).val();
-				$.ajax({
-				 	type: 'POST',
-				 	url: '<?php echo base_url(); ?>index.php/Pedidos/cargaProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
-				 	data: {	'producto'		: producto,
-				 		   	'cantidad'		: cantidad,
-				 		   	'precio'		: precio,
-				 		   	'subtotal'		: subtotal,
-				 		   	'pedido'		: pedido,
-				 		   	'id_moneda'		: id_moneda,
-					 		'valor_moneda'	: valor_moneda,
-				 		   },
-				 	success: function(resp) { 
-				 		sessionStorage.clear();
-				 	},
-				 	async: false
-				});
+	if($('#tiempo_entrega').val() && $('#condicion_pago').val() && $('#modos_pago').val()){
+		if(aux > 0){
+			for(i = 0; i < aux; i++){
+				if($('#id_producto'+i).val()){
+					var producto 	= $('#id_producto'+i).val();
+					var cantidad 	= $('#cant'+i).val();
+					var precio 		= $('#precio'+i).val();
+					var subtotal 	= $('#subtotal'+i).val();
+					var id_moneda	= $('#id_moneda'+i).val();
+					var valor_moneda= $('#valor_moneda'+i).val();
+					$.ajax({
+					 	type: 'POST',
+					 	url: '<?php echo base_url(); ?>index.php/Pedidos/cargaProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
+					 	data: {	'producto'		: producto,
+					 		   	'cantidad'		: cantidad,
+					 		   	'precio'		: precio,
+					 		   	'subtotal'		: subtotal,
+					 		   	'pedido'		: pedido,
+					 		   	'id_moneda'		: id_moneda,
+						 		'valor_moneda'	: valor_moneda,
+					 		   },
+					 	success: function(resp) { 
+					 		sessionStorage.clear();
+					 	},
+					 	async: false
+					});
+				}
 			}
-		}
-		return true;
-	}
-	else{
-		if(total > 0){
 			return true;
 		}
 		else{
-			alert("ERROR! - No hay lineas en el pedido!");
-			$('#producto').focus();
-			return false;
+			if(total > 0){
+				return true;
+			}
+			else{
+				alert("ERROR! - No hay lineas en el pedido!");
+				$('#producto').focus();
+				return false;
+			}
 		}
+	}
+	else{
+		alert("ERROR! - Falta agregar Información al pedido!");
+		return false;
 	}
 }
 function pegarEtiqueta(){

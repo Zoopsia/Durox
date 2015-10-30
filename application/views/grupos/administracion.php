@@ -1,5 +1,4 @@
 <script>
-
 function reglasActivas(){
  	var id_grupo_cliente = $('select#grupos').val(); //Obtenemos el id del grupo seleccionado en la lista
  	$.ajax({
@@ -12,7 +11,6 @@ function reglasActivas(){
 	 	}
 	});
 }
-	
 function clientesActivos(){
  	var id_grupo_cliente = $('select#grupos').val(); //Obtenemos el id del grupo seleccionado en la lista
  	$.ajax({
@@ -51,166 +49,8 @@ function clientesActivos(){
 	 	}
 	});
 }
-
-function editarGrupo(){
- 	var id_grupo_cliente = $('select#grupos').val(); //Obtenemos el id del grupo seleccionado en la lista
- 	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/grupos/editarGrupo', //Realizaremos la petición al metodo prueba del controlador cliente
-	 	data: 'id_grupo_cliente='+id_grupo_cliente,
-		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-	 		$('#editargrupo').attr('disabled',false).html(resp); 
-		}
-	});
-	
-	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/grupos/getRegla', //Realizaremos la petición al metodo prueba del controlador cliente
-	 	data: 'id_grupo_cliente='+id_grupo_cliente,
-		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-	 		$('#nombre_regla').attr('disabled',false).html(resp); 
-		}
-	});
-	
-	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/grupos/getValorRegla', //Realizaremos la petición al metodo prueba del controlador cliente
-	 	data: 'id_grupo_cliente='+id_grupo_cliente,
-		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-	 		$('#valor_regla').attr('disabled',false).html(resp); 
-		}
-	});	
-	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/grupos/getTipoRegla', //Realizaremos la petición al metodo prueba del controlador cliente
-	 	data: 'id_grupo_cliente='+id_grupo_cliente,
-		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-	 		$('#tipo_regla').attr('disabled',false).html(resp); 
-	 		$(".chosen-select").chosen({ width: '100%' });
-		}
-	});	
-}
-
-function nuevoGrupo(){
- 	var grupo_nombre	= $('input#grupo_nombre').val(); 
- 	var regla			= $('input#regla').val();
- 	var valor			= $('input#valor').val();
- 	var tipo			= $('select#tipo').val();
- 	if(comprobarGrupo()){
-	 	$.ajax({
-		 	type: 'POST',
-		 	url: '<?php echo base_url(); ?>index.php/grupos/nuevoGrupo', 
-		 	data: {'grupo_nombre' 	: grupo_nombre,
-		 			'btn-save'		: 1, 
-		 			'regla'			: regla,
-		 			'valor'			: valor,
-		 			'tipo'			: tipo,
-		 	}, //Pasaremos por parámetro POST
-		 	success: function(resp) { 
-		 		$('#divregistro').attr('disabled',false).html(resp); 
-		 	}
-		});
-	}
-}
-
-
-
-function comprobarGrupo(){
-	var grupo_nombre	= $('input#grupo_nombre').val();
-	var i = 0;
-	<?php 
-	if($grupos){
-		foreach ($grupos as $row) {
-			echo "if(grupo_nombre == '".$row->grupo_nombre."'){ i++;}";
-		}
-	}
-	?>
-	if(i > 0){
-		alert("ERROR - Ya existe un grupo '"+grupo_nombre+"'");
-		return false;
-	}
-	else
-		return true;
-}
-
-function nuevoCliente(){
- 	var id_grupo_cliente = $('select#grupos').val(); //Obtenemos el id del grupo seleccionado en la lista
- 	if(id_grupo_cliente){
-	
-		$.ajax({
-		 	type: 'POST',
-		 	url: '<?php echo base_url(); ?>index.php/grupos/nuevoCliente', //Realizaremos la petición al metodo prueba del controlador cliente
-		 	data: {'id_grupo_cliente' : id_grupo_cliente}, //Pasaremos por parámetro POST el id del grupo
-		 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-		 		//Activar y Rellenar la tabla
-		 		$('#clientes').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de reglas
-		 		$('.prueba').DataTable();
-		 	}
-		});
-	}
-}		
-function nuevoCliente2(){
- 	var id_grupo_cliente = $('select#grupos').val(); //Obtenemos el id del grupo seleccionado en la lista
- 	if(id_grupo_cliente){
-			
-		$.ajax({
-			 type: 'POST',
-			 url: '<?php echo base_url(); ?>index.php/grupos/grupoCliente', //Realizaremos la petición al metodo prueba del controlador cliente
-			 data: {'id_grupo_cliente' : id_grupo_cliente}, //Pasaremos por parámetro POST el id del grupo
-			 success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-			 	//Activar y Rellenar la tabla	
-			 	$('#clientegrupo').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de reglas
-			 	$('.prueba').DataTable();
-			 }
-		});
-	}
-}
-
-function cargarCliente($id_cliente){
- 	var id_cliente 			= $id_cliente; //Obtenemos el id del grupo seleccionado en la lista
-	var id_grupo_cliente 	= $('select#grupos').val();
-	$.ajax({
-		type: 'POST',
-		url: '<?php echo base_url(); ?>index.php/grupos/cargarCliente', //Realizaremos la petición al metodo prueba del controlador cliente
-		data: {'id_cliente' : id_cliente, 'id_grupo_cliente' : id_grupo_cliente}, //Pasaremos por parámetro POST el id del grupo
-		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-		 	//Activar y Rellenar la tabla
-		 	nuevoCliente();
-		}
-	});	
-}
-
-function sacarCliente($id_cliente){
- 	var id_cliente 			= $id_cliente; //Obtenemos el id del grupo seleccionado en la lista
-	$.ajax({
-		type: 'POST',
-		url: '<?php echo base_url(); ?>index.php/grupos/sacarCliente', //Realizaremos la petición al metodo prueba del controlador cliente
-		data: {'id_cliente' : id_cliente}, //Pasaremos por parámetro POST el id del grupo
-		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-		 	//Activar y Rellenar la tabla
-		 	nuevoCliente2();
-		}
-	});	
-}
-
-$(document).ready(function(){
-	document.getElementById('volver').style.display = 'none';
-});
-
-function volverShow(){
-	document.getElementById('volver').style.display = 'block';
-	$('#volver').removeClass('active');
-}
-function volverHide(){
-	document.getElementById('volver').style.display = 'none';
-	$('.desactive').removeClass('active');
-	$('#clientes').html('');
-	$('#clientegrupo').html('');
-}
 </script>
-
 <?php $array_n = pestañaActivaGrupo($this->uri->segment(3));?>
-
 
 	    <div class="row">
 			<div class="col-md-12">
@@ -479,3 +319,163 @@ function volverHide(){
 			</div><!--contenedor-->
 		</div>    
 
+<script>
+
+
+
+function editarGrupo(){
+ 	var id_grupo_cliente = $('select#grupos').val(); //Obtenemos el id del grupo seleccionado en la lista
+ 	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/grupos/editarGrupo', //Realizaremos la petición al metodo prueba del controlador cliente
+	 	data: 'id_grupo_cliente='+id_grupo_cliente,
+		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+	 		$('#editargrupo').attr('disabled',false).html(resp); 
+		}
+	});
+	
+	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/grupos/getRegla', //Realizaremos la petición al metodo prueba del controlador cliente
+	 	data: 'id_grupo_cliente='+id_grupo_cliente,
+		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+	 		$('#nombre_regla').attr('disabled',false).html(resp); 
+		}
+	});
+	
+	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/grupos/getValorRegla', //Realizaremos la petición al metodo prueba del controlador cliente
+	 	data: 'id_grupo_cliente='+id_grupo_cliente,
+		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+	 		$('#valor_regla').attr('disabled',false).html(resp); 
+		}
+	});	
+	$.ajax({
+	 	type: 'POST',
+	 	url: '<?php echo base_url(); ?>index.php/grupos/getTipoRegla', //Realizaremos la petición al metodo prueba del controlador cliente
+	 	data: 'id_grupo_cliente='+id_grupo_cliente,
+		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+	 		$('#tipo_regla').attr('disabled',false).html(resp); 
+	 		$(".chosen-select").chosen({ width: '100%' });
+		}
+	});	
+}
+
+function nuevoGrupo(){
+ 	var grupo_nombre	= $('input#grupo_nombre').val(); 
+ 	var regla			= $('input#regla').val();
+ 	var valor			= $('input#valor').val();
+ 	var tipo			= $('select#tipo').val();
+ 	if(comprobarGrupo()){
+	 	$.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/grupos/nuevoGrupo', 
+		 	data: {'grupo_nombre' 	: grupo_nombre,
+		 			'btn-save'		: 1, 
+		 			'regla'			: regla,
+		 			'valor'			: valor,
+		 			'tipo'			: tipo,
+		 	}, //Pasaremos por parámetro POST
+		 	success: function(resp) { 
+		 		$('#divregistro').attr('disabled',false).html(resp); 
+		 	}
+		});
+	}
+}
+
+
+
+function comprobarGrupo(){
+	var grupo_nombre	= $('input#grupo_nombre').val();
+	var i = 0;
+	<?php 
+	if($grupos){
+		foreach ($grupos as $row) {
+			echo "if(grupo_nombre == '".$row->grupo_nombre."'){ i++;}";
+		}
+	}
+	?>
+	if(i > 0){
+		alert("ERROR - Ya existe un grupo '"+grupo_nombre+"'");
+		return false;
+	}
+	else
+		return true;
+}
+
+function nuevoCliente(){
+ 	var id_grupo_cliente = $('select#grupos').val(); //Obtenemos el id del grupo seleccionado en la lista
+ 	if(id_grupo_cliente){
+	
+		$.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/grupos/nuevoCliente', //Realizaremos la petición al metodo prueba del controlador cliente
+		 	data: {'id_grupo_cliente' : id_grupo_cliente}, //Pasaremos por parámetro POST el id del grupo
+		 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+		 		//Activar y Rellenar la tabla
+		 		$('#clientes').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de reglas
+		 		$('.prueba').DataTable();
+		 	}
+		});
+	}
+}		
+function nuevoCliente2(){
+ 	var id_grupo_cliente = $('select#grupos').val(); //Obtenemos el id del grupo seleccionado en la lista
+ 	if(id_grupo_cliente){
+			
+		$.ajax({
+			 type: 'POST',
+			 url: '<?php echo base_url(); ?>index.php/grupos/grupoCliente', //Realizaremos la petición al metodo prueba del controlador cliente
+			 data: {'id_grupo_cliente' : id_grupo_cliente}, //Pasaremos por parámetro POST el id del grupo
+			 success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+			 	//Activar y Rellenar la tabla	
+			 	$('#clientegrupo').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de reglas
+			 	$('.prueba').DataTable();
+			 }
+		});
+	}
+}
+
+function cargarCliente($id_cliente){
+ 	var id_cliente 			= $id_cliente; //Obtenemos el id del grupo seleccionado en la lista
+	var id_grupo_cliente 	= $('select#grupos').val();
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo base_url(); ?>index.php/grupos/cargarCliente', //Realizaremos la petición al metodo prueba del controlador cliente
+		data: {'id_cliente' : id_cliente, 'id_grupo_cliente' : id_grupo_cliente}, //Pasaremos por parámetro POST el id del grupo
+		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+		 	//Activar y Rellenar la tabla
+		 	nuevoCliente();
+		}
+	});	
+}
+
+function sacarCliente($id_cliente){
+ 	var id_cliente 			= $id_cliente; //Obtenemos el id del grupo seleccionado en la lista
+	$.ajax({
+		type: 'POST',
+		url: '<?php echo base_url(); ?>index.php/grupos/sacarCliente', //Realizaremos la petición al metodo prueba del controlador cliente
+		data: {'id_cliente' : id_cliente}, //Pasaremos por parámetro POST el id del grupo
+		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+		 	//Activar y Rellenar la tabla
+		 	nuevoCliente2();
+		}
+	});	
+}
+
+$(document).ready(function(){
+	document.getElementById('volver').style.display = 'none';
+});
+
+function volverShow(){
+	document.getElementById('volver').style.display = 'block';
+	$('#volver').removeClass('active');
+}
+function volverHide(){
+	document.getElementById('volver').style.display = 'none';
+	$('.desactive').removeClass('active');
+	$('#clientes').html('');
+	$('#clientegrupo').html('');
+}
+</script>

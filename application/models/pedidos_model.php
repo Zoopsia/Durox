@@ -198,5 +198,28 @@ class Pedidos_model extends My_Model {
         $this->db->like('mail', $mail);
         return $this->db->get('mails', 10);
     }	
+
+	function getModos($id_pedido){
+
+		$sql = "SELECT
+					*
+				FROM
+					sin_pedidos_modos
+				WHERE 
+					id_pedido = $id_pedido
+				AND
+					eliminado = 0";
+		
+		$query = $this->db->query($sql);
+						
+		if($query->num_rows() > 0){
+			foreach ($query->result() as $fila){
+				$data[] = $fila;
+			}
+			return $data;
+		}else{
+			return FALSE;
+		}	
+	}
 } 
 ?>

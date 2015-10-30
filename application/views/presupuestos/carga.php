@@ -181,7 +181,7 @@ $('#formPresupuesto').submit(function(event){
 															if($key->id_cliente == $row->id_cliente){
 													?>	
 													<select name="id_cliente" class="form-control chosen-select" required>	
-														<option value="<?php echo $key->id_cliente; ?>" selected><?php echo $key->nombre.', '.$key->apellido; ?></option>
+														<option value="<?php echo $key->id_cliente; ?>" selected><?php echo $key->razon_social; ?></option>
 													</select>	
 													
 													<?php

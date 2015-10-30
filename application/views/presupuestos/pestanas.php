@@ -101,7 +101,7 @@ $aux2 = 0;
 								<div class="col-md-10 col-md-offset-1 no-print">
 									<div class="alert alert-success alert-dismissible" role="alert">
 										<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  				El Presupuesto <a href="#"><?php echo $id_presupuesto; ?></a> fué insertado con exito
+						  				El Presupuesto <a href="#"><?php echo $id_presupuesto; ?></a> <?php echo ' '.$this->lang->line('insert_ok');?>
 									</div>	
 								</div>
 							</div>

@@ -26,28 +26,19 @@
 						<table class="table table-striped table-bordered text-center" cellspacing="0" width="100%">
 							<thead>
 								<tr>
-									<th><?php echo $this->lang->line('moneda'); ?></th>
-									<th><?php echo $this->lang->line('abreviatura'); ?></th>
-									<th><?php echo $this->lang->line('simbolo'); ?></th>
-									<th><?php echo $this->lang->line('valor'); ?></th>
+									<th><?php echo $this->lang->line('tiempo').' de '.$this->lang->line('entrega'); ?></th>
 								</tr>
 							</thead>
 																						 
 							<tbody>
 								<?php
-								if($monedas){
+								if($tiempos_entrega){
 									$i=0; $j=1;
-									foreach($monedas as $row){
+									foreach($tiempos_entrega as $row){
 										echo "<tr>";
-										echo '<td ondblclick="editar('.$i.');"><input type="text" class="editable text-center" id="'.$i.'" name="moneda" value="'.$row->moneda.'" autocomplete="off" disabled onblur="guardar('.$i.','.$j.')" style="width: 100%"></td>';
+										echo '<td ondblclick="editar('.$i.');"><input type="text" class="editable text-center" id="'.$i.'" name="tiempo_entrega" value="'.$row->tiempo_entrega.'" autocomplete="off" disabled onblur="guardar('.$i.','.$j.')" style="width: 100%"></td>';
 										$i++;
-										echo '<td ondblclick="editar('.$i.');"><input type="text" class="editable text-center" id="'.$i.'" name="abreviatura" value="'.$row->abreviatura.'" autocomplete="off" disabled onblur="guardar('.$i.','.$j.')"></td>';
-										$i++;
-										echo '<td ondblclick="editar('.$i.');"><input type="text" class="editable text-center" id="'.$i.'" name="simbolo" value="'.$row->simbolo.'" autocomplete="off" disabled onblur="guardar('.$i.','.$j.')"></td>';
-										$i++;
-										echo '<td ondblclick="editar('.$i.');"><input type="number" class="editable text-center" id="'.$i.'" name="valor" value="'.$row->valor.'" autocomplete="off" disabled onblur="guardar('.$i.','.$j.')"></td>';
-										$i++;
-										echo '<td class="col-eliminar"><input type="checkbox" class="check-eliminar" name="eliminar[]" value="'.$row->id_moneda.'"></td>';
+										echo '<td class="col-eliminar"><input type="checkbox" class="check-eliminar" name="eliminar[]" value="'.$row->id_tiempo_entrega.'"></td>';
 										echo "</tr>";
 										$j++;
 									}
@@ -55,20 +46,11 @@
 								?>
 							</tbody>
 							
-							<form action="<?php echo base_url().'/index.php/Monedas/guardarMoneda/'?>" onsubmit="return guardarRegistroNuevo()" method="post" name="formCondicion" id="formCondicion" class="form-horizontal">						 
+							<form action="<?php echo base_url().'/index.php/Tiempos_entrega/guardarTiempo/'?>" onsubmit="return guardarRegistroNuevo()" method="post" name="formCondicion" id="formCondicion" class="form-horizontal">						 
 								<tfoot>
 									<tr class="cargarLinea" style="display: none">
 										<td>
-											<input type="text" id="nuevo_moneda" name="nuevo_moneda" onkeypress="if (event.keyCode==13){ $('#nuevo_abreviatura').focus(); return false;}" class="editable text-center txtmoneda" autocomplete="off" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('moneda'); ?>" required>
-										</td>
-										<td>
-											<input type="text" id="nuevo_abreviatura" name="nuevo_abreviatura" onkeypress="if (event.keyCode==13){ $('#nuevo_simbolo').focus(); return false;}" class="editable text-center txtmoneda" autocomplete="off" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('abreviatura'); ?>" required>
-										</td>
-										<td>
-											<input type="text" id="nuevo_simbolo" name="nuevo_simbolo" onkeypress="if (event.keyCode==13){ $('#nuevo_valor').focus(); return false;}" class="editable text-center txtmoneda" autocomplete="off" placeholder="<?php echo $this->lang->line('simbolo'); ?>" required>
-										</td>
-										<td>
-											<input type="text" id="nuevo_valor" name="nuevo_valor" onkeypress="if (event.keyCode==13){ $('#formCondicion').submit(); return false;}" class="editable text-center txtmoneda" autocomplete="off" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('valor'); ?>" min="1" required>
+											<input type="text" id="nuevo_tiempo" name="nuevo_tiempo" onkeypress="if (event.keyCode==13){ $('#formCondicion').submit(); return false;}" class="editable text-center txtmoneda" autocomplete="off" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('tiempo').' de '.$this->lang->line('entrega'); ?>" required>
 										</td>	
 										<td style="display: none"></td>
 									</tr>
@@ -142,7 +124,7 @@ function guardar($i, $j){
     	if (r == true) {
     		$.ajax({
 			 	type: 'POST',
-			 	url: '<?php echo base_url(); ?>index.php/Monedas/editarMoneda', 
+			 	url: '<?php echo base_url(); ?>index.php/Tiempos_entrega/editarTiempo', 
 			 	data: { 'name' 			: $('#'+aux).attr("name"),
 			 			'valor'			: $('#'+aux).val(),
 			 			'id'			: id,
@@ -160,11 +142,11 @@ function guardar($i, $j){
 
 function nuevo(){
 	$(".cargarLinea").show();
-	$('#nuevo_moneda').focus();
+	$('#nuevo_tiempo').focus();
 }
 
 function guardarRegistroNuevo(){
-	if($('#nuevo_moneda').val() && $('#nuevo_abreviatura').val() && $('#nuevo_simbolo').val() && $('#nuevo_valor').val()){
+	if($('#nuevo_tiempo').val()){
 		var r = confirm("¿Desea guardar el nuevo registro?");
 	    if (r == true) 
 	    	return true;
@@ -181,12 +163,12 @@ function eliminar(){
 		var Datos = $('.check-eliminar').serializeArray();
 		$.ajax({
 			type: 'POST',
-			url: '<?php echo base_url(); ?>index.php/Monedas/eliminarMoneda', 
+			url: '<?php echo base_url(); ?>index.php/Tiempos_entrega/eliminarTiempo', 
 			data: Datos, 
 		 	success: function(resp) { 
 		 		if(resp){
 					alert("Hay registros que no se pueden eliminar ya que han sido usados previamente!");	
-					window.location.replace('<?php echo base_url()."index.php/Monedas/Monedas/";?>');
+					window.location.replace('<?php echo base_url()."index.php/Tiempos_entrega/Tiempos_entrega/";?>');
 				}
 				else
 					window.location.replace("Delete");

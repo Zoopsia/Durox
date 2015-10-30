@@ -1,8 +1,8 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
-class Monedas extends My_Controller {
+class Modos_pago extends My_Controller {
 	
-	protected $_subject		= 'monedas';
+	protected $_subject		= 'modos_pago';
 	
 	function __construct()
 	{
@@ -17,9 +17,9 @@ class Monedas extends My_Controller {
 		
 	}
 	
-	public function Monedas($aux=null){
+	public function Modos_pago($aux=null){
 		
-		$db['monedas']		=$this->monedas_model->getTodo();
+		$db['modos_pago']			= $this->modos_pago_model->getTodo();
 		
 		if($aux == "Save")
 			$db['mostrar_registro']	= 1;
@@ -31,48 +31,45 @@ class Monedas extends My_Controller {
 		$this->cargar_vista($db, 'tabla');
 	}
 	
-	public function editarMoneda(){
+	public function editarModo(){
 		$nombre 	= $this->input->post('name');
 		$valor		= $this->input->post('valor');
-		$id_moneda	= $this->input->post('id');
+		$id_modo	= $this->input->post('id');
 		
-		$moneda	= array(
+		$modo	= array(
 						$nombre			=> $valor,
 						'eliminado'		=> 0
 		);
 		
-		$this->monedas_model->update($moneda, $id_moneda);	
+		$this->modos_pago_model->update($modo, $id_modo);	
 		
 		echo "El registro fue modificado con éxito";
 	}
 	
-	public function guardarMoneda(){
+	public function guardarModo(){
 		
-		$moneda	= array(
-				'moneda' 		=> $this->input->post('nuevo_moneda'),			
-				'abreviatura'	=> $this->input->post('nuevo_abreviatura'),
-				'simbolo'		=> $this->input->post('nuevo_simbolo'),
-				'valor'			=> $this->input->post('nuevo_valor')
+		$modo	= array(
+				'modo_pago'			=> $this->input->post('nuevo_modo')
 		);
 		
-		$id_insert = $this->monedas_model->insert($moneda);	
+		$id_insert = $this->modos_pago_model->insert($modo);	
 		
 		if($id_insert)
-			redirect($this->_subject.'/Monedas/Save','refresh');
+			redirect($this->_subject.'/Modos_pago/Save','refresh');
 		else
-			redirect($this->_subject.'/Monedas/','refresh');
+			redirect($this->_subject.'/Modos_pago/','refresh');
 	}
 	
-	public function eliminarMoneda(){
+	public function eliminarModo(){
 		if($this->input->post('eliminar')){	
 			foreach($this->input->post('eliminar') as $row){
-				if($this->monedas_model->deleteMonedaPresupuesto($row)){
-					if($this->monedas_model->deleteMonedaPedido($row)){
+				if($this->modos_pago_model->deleteModoPresupuesto($row)){
+					if($this->modos_pago_model->deleteModoPedido($row)){
 						$arreglo = array(
 							'eliminado'		=> 1
 						);
 									
-						$this->monedas_model->update($arreglo,$row);
+						$this->modos_pago_model->update($arreglo,$row);
 					}
 					else {
 						echo "resp";

@@ -2,6 +2,25 @@
 	<div class="col-md-12">
 		<div class="panel panel-default">
 			<div class="panel-body">
+				<?php if($mostrar_registro == 1){ ?>	
+				<div class="row">
+					<div class="col-md-12 col-xs-12">
+						<div class="alert alert-success alert-dismissible slideDown" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							El registro <?php echo ' '.$this->lang->line('insert_ok');?>
+						</div>
+					</div>
+				</div>
+				<?php }  else if($mostrar_registro == 2){ ?>	
+				<div class="row">
+					<div class="col-md-12 col-xs-12">
+						<div class="alert alert-success alert-dismissible slideDown" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+							El registro <?php echo ' '.$this->lang->line('delete_ok');?>
+						</div>
+					</div>
+				</div>
+				<?php } ?>
 				<div class="row">
 					<div class="col-md-12 col-xs-12">
 						<table class="table table-striped table-bordered text-center" cellspacing="0" width="100%">
@@ -36,10 +55,10 @@
 								<tfoot>
 									<tr class="cargarLinea" style="display: none">
 										<td>
-											<input type="text" id="nuevo_pago" name="nuevo_pago" onkeypress="if (event.keyCode==13){ $('#nuevo_pago_dias').focus(); return false;}" class="editable text-center" autocomplete="off" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('condicion').' de '.$this->lang->line('pago'); ?>" required style="height: 20px">
+											<input type="text" id="nuevo_pago" name="nuevo_pago" onkeypress="if (event.keyCode==13){ $('#nuevo_pago_dias').focus(); return false;}" class="editable text-center txtmoneda" autocomplete="off" pattern="^[A-Za-z0-9 ]+$" placeholder="<?php echo $this->lang->line('condicion').' de '.$this->lang->line('pago'); ?>" required>
 										</td>
 										<td>
-											<input type="number" id="nuevo_pago_dias" name="nuevo_pago_dias" onkeypress="if (event.keyCode==13){ $('#formCondicion').submit(); return false;}" class="editable text-center" min="1" step="1" autocomplete="off" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('dias'); ?>" style="height: 20px" required>
+											<input type="number" id="nuevo_pago_dias" name="nuevo_pago_dias" onkeypress="if (event.keyCode==13){ $('#formCondicion').submit(); return false;}" class="editable text-center txtmoneda" min="1" step="1" autocomplete="off" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('dias'); ?>" required>
 										</td>	
 										<td style="display: none"></td>
 									</tr>
@@ -120,7 +139,7 @@ function guardar($i, $j){
 					 			$('#'+aux).val(valorInput);
 					 		}
 					 		else
-					 			alert("El registro fué modificado con exito");
+					 			alert("El registro fue modificado con éxito");
 					 	}
 					});
 		    	}
@@ -187,15 +206,6 @@ function guardarRegistroNuevo(){
 	}
 }
 
-function verEliminar(){
-	$('.col-eliminar').removeClass("displaynone");
-	$('#btn-nuevo').hide();
-	$('#btn-eliminar').hide();
-	$('#btn-cancelar').show();
-	$(".cargarLinea").hide();
-	$('#reg-eliminar').show();
-}
-
 function cancelar(){
 	varCheck = 0;
 	$('.check-eliminar').iCheck('uncheck');
@@ -211,10 +221,12 @@ function eliminar(){
 			url: '<?php echo base_url(); ?>index.php/Condiciones_pago/eliminarCondicion', 
 			data: Datos, 
 		 	success: function(resp) { 
-		 		if(resp)
+		 		if(resp){
 					alert("Hay registros que no se pueden eliminar ya que han sido usados previamente!");	
-				
-				location.reload();
+					window.location.replace('<?php echo base_url()."index.php/Condiciones_pago/Condiciones_pago/";?>');
+				}
+				else
+					window.location.replace("Delete");
 			},	
 		});
 	}

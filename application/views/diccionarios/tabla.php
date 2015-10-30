@@ -20,6 +20,14 @@
 							<td class="text-left" style="padding-left: 10%"><strong><a class="link-diccionarios" href="<?php echo base_url().'index.php/Condiciones_pago/Condiciones_pago/'?>"><?php echo $this->lang->line('condicion').' de '.$this->lang->line('pago'); ?></a></strong></td>
 							<td><em><p class="font-notas">"Editar Condiciones de Pago..."</p></em></td>
 						</tr>
+						<tr>
+							<td class="text-left" style="padding-left: 10%"><strong><a class="link-diccionarios" href="<?php echo base_url().'index.php/Modos_pago/Modos_pago/'?>"><?php echo $this->lang->line('modo').' de '.$this->lang->line('pago'); ?></a></strong></td>
+							<td><em><p class="font-notas">"Editar Modos de Pago..."</p></em></td>
+						</tr>
+						<tr>
+							<td class="text-left" style="padding-left: 10%"><strong><a class="link-diccionarios" href="<?php echo base_url().'index.php/Tiempos_entrega/Tiempos_entrega/'?>"><?php echo $this->lang->line('tiempo').' de '.$this->lang->line('entrega'); ?></a></strong></td>
+							<td><em><p class="font-notas">"Editar Tiempos de Entrega..."</p></em></td>
+						</tr>
 					</tbody>
 				</table>
 			</div>

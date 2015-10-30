@@ -155,7 +155,7 @@ class Grupos extends My_Controller {
 		/*-----MENSAJE DE REGISTRO NO INSERTADO----*/
 		$mensaje  = '<div class="alert alert-danger alert-dismissible slideDown" id="registro" role="alert">';
 		$mensaje .= '<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>';	
-		$mensaje .= "El registro no fué insertado";
+		$mensaje .= " ".$this->lang->line('insert_ok');
 		$mensaje .= "</div>";	
 		
 			
@@ -193,7 +193,7 @@ class Grupos extends My_Controller {
 						$mensaje .= '<a href="#">';
 						$mensaje .= $id_grupo;
 						$mensaje .= '</a>';
-						$mensaje .=	" fué insertado con exito";
+						$mensaje .=	" ".$this->lang->line('insert_ok');
 						$mensaje .= "</div>";
 						echo $mensaje;
 						

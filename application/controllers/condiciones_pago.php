@@ -17,9 +17,16 @@ class Condiciones_pago extends My_Controller {
 		
 	}
 	
-	public function Condiciones_pago(){
+	public function Condiciones_pago($aux=null){
 		
 		$db['condiciones']		=$this->condiciones_pago_model->getTodo();
+		
+		if($aux == "Save")
+			$db['mostrar_registro']	= 1;
+		else if($aux == "Delete")
+			$db['mostrar_registro']	= 2;
+		else
+			$db['mostrar_registro']	= 0;
 		
 		$this->cargar_vista($db, 'tabla');
 	}
@@ -62,10 +69,12 @@ class Condiciones_pago extends My_Controller {
 						'eliminado'			=> 0
 		);
 		
-		$this->condiciones_pago_model->insert($condicion);	
+		$id_insert = $this->condiciones_pago_model->insert($condicion);	
 		
-		redirect($this->_subject.'/Condiciones_pago/','refresh');
-		
+		if($id_insert)
+			redirect($this->_subject.'/Condiciones_pago/Save','refresh');
+		else
+			redirect($this->_subject.'/Condiciones_pago/','refresh');
 	}
 	
 	public function eliminarCondicion(){
@@ -89,8 +98,6 @@ class Condiciones_pago extends My_Controller {
 				}
 			}
 		}
-		
-		
 	}
 	
 }

@@ -497,7 +497,6 @@ class Actualizaciones extends CI_Controller {
 	
 	public function getPresupuestos(){
 		if(isset($_POST['id_vendedor'])){	
-		
 			$tablas = array(
 				'presupuestos'					=> 'presupuestos',
 				'lineas_presupuestos'		=> 'lineas_presupuestos',
@@ -506,8 +505,8 @@ class Actualizaciones extends CI_Controller {
 				'condiciones_pago'			=> 'condiciones_pago',
 				'modos_pago'						=> 'modos_pago',
 				'sin_clientes_modos'		=> 'sin_clientes_modos',
-				'sin_pedidos_modos'			=> 'sin_clientes_modos',
-				'sin_presupuestos_modos'=> 'sin_clientes_modos',
+				'sin_pedidos_modos'			=> 'sin_pedidos_modos',
+				'sin_presupuestos_modos'=> 'sin_presupuestos_modos',
 				'tiempos_entrega'				=> 'tiempos_entrega',
 			);
 		
@@ -595,6 +594,16 @@ class Actualizaciones extends CI_Controller {
 				$this->setLog('DEBUG', $tablas['modos_pago'], $_POST['id_vendedor']);
 			}
 			
+			$sql = "SELECT * FROM sin_presupuestos_modos";
+			$query = $this->db->query($sql);
+			if($query->num_rows() > 0){
+				foreach ($query->result() as $row){
+					$sin_presupuestos_modos[] = $row;
+				}
+				$array[$tablas['sin_presupuestos_modos']] = $sin_presupuestos_modos;
+				$this->setLog('DEBUG', $tablas['sin_presupuestos_modos'], $_POST['id_vendedor']);
+			}
+			
 			$sql = "SELECT * FROM tiempos_entrega";
 			$query = $this->db->query($sql);
 			if($query->num_rows() > 0){
@@ -679,6 +688,9 @@ class Actualizaciones extends CI_Controller {
 				'id_vendedor'			=> $_POST['id_vendedor'],
 				'fecha'						=> date("Y-m-d"),
 				'id_estado_presupuesto' => $_POST['id_estado_presupuesto'],
+				'id_condicion_pago' => $_POST['id_condicion_pago'],
+				'id_tiempo_entrega' => $_POST['id_tiempo_entrega'],
+				'nota_publica'		=> $_POST['nota_publica'],
 				'total'						=> $_POST['total'],
 				'id_origen'				=> $_POST['id_origen'],
 				'aprobado_back'		=> $_POST['aprobado_back'],
@@ -808,8 +820,89 @@ class Actualizaciones extends CI_Controller {
 		
 		$db['registros']	= $array;
 		
-		$this->load->view($this->_subject."/getRegistrosAlarmas.php", $db);
+		$this->load->view($this->_subject."/getRegistrosAlarmas.php", $db);	
+	}
+	
+	
+	
+	public function setAlarmas(){
+		if(isset($_POST['id_alarma'])){		
+			$registro = array(
+				'id_front'				=> $_POST['id_alarma'],
+				'id_tipo_alarma'	=> $_POST['id_tipo_alarma'],
+ 				'mensaje'					=> $_POST['mensaje'],
+ 				'id_creador'			=> $_POST['id_creador'],
+ 				'id_origen'				=> $_POST['id_origen'],
+ 				'visto_back'			=> $_POST['visto_back'],
+ 				'visto_front'			=> $_POST['visto_front'],
+				'eliminado' 			=> 0,
+				'user_add'				=> 0,
+				'user_upd'				=> 0,
+				'date_add'				=> date("Y-m-d H:i:s"),
+				'date_upd'				=> date("Y-m-d H:i:s")
+			);
 			
+			$this->db->insert("alarmas", $registro);
+		 
+			$db['mensaje'] = TRUE;
+		}else{
+			log_message('error', 'Post a setAlarmas sin id_alarma');
 		
+			$db['mensaje']	=	FALSE;
+		}
+		$this->load->view($this->_subject."/setRegistro.php", $db);
+	}
+	
+	
+	
+	public function setAlarmasSin(){
+		if(isset($_POST['id_front_alarma'])){		
+			$registro = array(
+				'id_alarma'				=> $_POST['id_alarma'],
+ 				'id_front_alarma'	=> $_POST['id_front_alarma'],
+ 				'id_presupuesto'	=> $_POST['id_presupuesto'],
+ 				'id_front_tabla'	=> $_POST['id_front_tabla'],
+ 				'eliminado' 			=> 0,
+				'user_add'				=> 0,
+				'user_upd'				=> 0,
+				'date_add'				=> date("Y-m-d H:i:s"),
+				'date_upd'				=> date("Y-m-d H:i:s")
+			);
+			
+			$this->db->insert("sin_alarmas_presupuestos", $registro);
+		 
+			$db['mensaje'] = TRUE;
+		}else{
+			log_message('error', 'Post a setAlarmasSin sin id_front_alarma');
+		
+			$db['mensaje']	=	FALSE;
+		}
+		$this->load->view($this->_subject."/setRegistro.php", $db);
+	}
+	
+	
+	
+	public function setModosSin(){
+		if(isset($_POST['id_presupuesto_front'])){		
+			$registro = array(
+				'id_presupuesto'	=> $_POST['id_presupuesto'],
+ 				'id_presupuesto_front'	=> $_POST['id_presupuesto_front'],
+ 				'id_modo_pago'		=> $_POST['id_modo_pago'],
+ 				'eliminado' 			=> 0,
+				'user_add'				=> 0,
+				'user_upd'				=> 0,
+				'date_add'				=> date("Y-m-d H:i:s"),
+				'date_upd'				=> date("Y-m-d H:i:s")
+			);
+			
+			$this->db->insert("sin_presupuestos_modos", $registro);
+		 
+			$db['mensaje'] = TRUE;
+		}else{
+			log_message('error', 'Post a setModosSin sin id_presupuesto_front');
+		
+			$db['mensaje']	=	FALSE;
+		}
+		$this->load->view($this->_subject."/setRegistro.php", $db);
 	}
 }

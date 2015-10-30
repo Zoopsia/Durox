@@ -17,6 +17,45 @@ class Monedas_model extends My_Model {
 				$_array_cruze	= $this->_array_cruze
 		);
 	}
+	
+	function deleteMonedaPresupuesto($id){
+		
+		$sql = "SELECT
+					*
+				FROM
+					linea_productos_presupuestos
+				WHERE
+					$this->_id_table = $id";
 
+		$query = $this->db->query($sql);
+		
+		if($query->num_rows() > 0)
+		{
+			return FALSE;
+		}
+		else {
+			return TRUE;
+		}
+	}
+	
+	function deleteMonedaPedido($id){
+		
+		$sql = "SELECT
+					*
+				FROM
+					linea_productos_pedidos
+				WHERE
+					$this->_id_table = $id";
+		
+		$query = $this->db->query($sql);
+		
+		if($query->num_rows() > 0)
+		{
+			return FALSE;
+		}
+		else {
+			return TRUE;
+		}
+	}
 } 
 ?>

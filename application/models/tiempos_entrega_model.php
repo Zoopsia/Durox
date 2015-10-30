@@ -1,10 +1,10 @@
 <?php 
-class Condiciones_pago_model extends My_Model {
+class Tiempos_entrega_model extends My_Model {
 		
-	protected $_tablename	= 'condiciones_pago';
-	protected $_id_table	= 'id_condicion_pago';
-	protected $_order		= 'id_condicion_pago';
-	protected $_subject		= 'condicion_pago';
+	protected $_tablename	= 'tiempos_entrega';
+	protected $_id_table	= 'id_tiempo_entrega';
+	protected $_order		= 'id_tiempo_entrega';
+	protected $_subject		= 'tiempo_entrega';
 	
 	
 	function __construct()
@@ -18,17 +18,15 @@ class Condiciones_pago_model extends My_Model {
 		);
 	}
 	
-	function deleteCondicionPresupuesto($id){
+	function deleteTiempoPresupuesto($id){
 		
 		$sql = "SELECT
 					*
 				FROM
 					presupuestos
 				WHERE
-					$this->_id_table = $id
-				AND
-					presupuestos.eliminado = 0";
-		
+					$this->_id_table = $id";
+
 		$query = $this->db->query($sql);
 		
 		if($query->num_rows() > 0)
@@ -40,16 +38,14 @@ class Condiciones_pago_model extends My_Model {
 		}
 	}
 	
-	function deleteCondicionPedido($id){
-			
+	function deleteTiempoPedido($id){
+		
 		$sql = "SELECT
 					*
 				FROM
 					pedidos
 				WHERE
-					$this->_id_table = $id
-				AND
-					pedidos.eliminado = 0";
+					$this->_id_table = $id";
 		
 		$query = $this->db->query($sql);
 		
@@ -61,6 +57,5 @@ class Condiciones_pago_model extends My_Model {
 			return TRUE;
 		}
 	}
-
 } 
 ?>
