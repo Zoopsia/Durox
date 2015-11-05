@@ -109,8 +109,6 @@ class Productos extends My_Controller {
 			'eliminado'		=> 0
 		);
 		
-		$id			= $this->productos_model->update($arreglo,$primary_key);
-		
 		$log		= array(
 			'accion'	=> 'INSERT',
 			'tabla'		=> 'productos',
@@ -118,6 +116,8 @@ class Productos extends My_Controller {
 		);
 		
 		$this->productos_model->logRegistros($log);
+		
+		$id			= $this->productos_model->update($arreglo,$primary_key);
 		
 		return true;
 	}

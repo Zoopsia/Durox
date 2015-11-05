@@ -45,8 +45,6 @@
 	                                                <li><a onclick="funcionNoLeido()"><?php echo $this->lang->line('marcar_noleido')?></a></li>
 	                                                <li class="divider"></li>
 	                                                <li><a onclick="funcionPapelera()"><?php echo $this->lang->line('mover_papelera')?></a></li>
-	                                                <li class="divider"></li>
-	                                                <li><a href="#"><?php echo $this->lang->line('eliminar')?></a></li>
                                                 </ul>
                                             </div>
 										</div>
@@ -107,8 +105,6 @@
                                                 </button>
                                                 <ul class="dropdown-menu" role="menu">
 	                                                <li><a onclick="funcionPapelera2()"><?php echo $this->lang->line('mover_papelera')?></a></li>
-	                                                <li class="divider"></li>
-	                                                <li><a ><?php echo $this->lang->line('eliminar')?></a></li>
                                                 </ul>
                                             </div>
 										</div>

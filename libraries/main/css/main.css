@@ -570,3 +570,29 @@ div.user-panel{
 	width: 100%;
 }
 
+.talkbubble-rectangulo{
+	background-color: #DAE9F6;
+ 	width:120px; 
+ 	height:80px;  
+ 	position:relative;
+ 	-moz-border-radius:10px; 
+ 	-webkit-border-radius:10px; 
+ 	border-radius: 10px;
+ 	z-index: 1000;
+    right: 80px;
+    top:16px;
+    border-style: solid;
+    border-color: #aaa
+} 
+
+.talkbubble{
+	content:""; 
+	position:absolute;
+	/*top: 60%;*/
+	/*right: 2%;*/
+	width:0;
+	height:0; 
+	border-right:8px solid transparent; 
+	border-bottom:16px solid #aaa; 
+	border-left:8px solid transparent;
+} 

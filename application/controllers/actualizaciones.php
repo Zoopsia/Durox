@@ -568,6 +568,96 @@ class Actualizaciones extends CI_Controller {
 				$this->setLog('DEBUG', $tablas['lineas_presupuestos'], $_POST['id_vendedor']);
 			}
 			
+			$sql = "SELECT 
+								`id_sin_alarma_presupuesto`,
+								`id_alarma`, 
+								`id_front_alarma`,
+								`id_presupuesto`,
+								`id_front_tabla`
+							FROM 
+								`sin_alarmas_presupuestos` 
+							WHERE 
+								`id_alarma` = '0'";
+			$query = $this->db->query($sql);
+			if($query->num_rows() > 0){
+				foreach ($query->result() as $row){
+					$id_temp_alarma = 0;
+					$id_temp_presupuesto = 0;
+					$sql_alarma = "SELECT 
+									`id_alarma` 
+								FROM 
+									`alarmas` 
+								WHERE 
+									`id_front` = '$row->id_front_alarma'";
+					$query_alarma = $this->db->query($sql_alarma);
+					if($query_alarma->num_rows() > 0){
+						foreach ($query_alarma->result() as $row_alarma){
+							$id_temp_alarma = $row_alarma->id_alarma;
+						}
+					}	
+					$sql_presupuesto = "SELECT 
+									`id_presupuesto` 
+								FROM 
+									`presupuestos` 
+								WHERE 
+									`id_front` = '$row->id_front_tabla'";
+					$query_presupuesto = $this->db->query($sql_presupuesto);
+					if($query_presupuesto->num_rows() > 0){
+						foreach ($query_presupuesto->result() as $row_presupuesto){
+							$id_temp_presupuesto = $row_presupuesto->id_presupuesto;
+						}
+					}	
+					if($id_temp_alarma != 0 && $id_temp_presupuesto != 0){
+						$registro = array(
+							'id_alarma' => $id_temp_alarma,
+							'id_presupuesto' => $id_temp_presupuesto,
+						);						
+						$this->db->update(
+								'sin_alarmas_presupuestos', 
+								$registro, 
+								array('`id_sin_alarma_presupuesto`' => $row->id_sin_alarma_presupuesto)
+						);
+					}
+				}
+			}
+			
+			
+			$sql = "SELECT 
+							`id_sin_presupuesto_modo`,
+							`id_presupuesto_front`
+						FROM 
+							`sin_presupuestos_modos` 
+						WHERE 
+							`id_presupuesto` = '0'";
+			$query = $this->db->query($sql);
+			if($query->num_rows() > 0){
+				foreach ($query->result() as $row){
+					$id_temp_presupuesto = 0;
+					$sql_presupuesto = "SELECT 
+									`id_presupuesto` 
+								FROM 
+									`presupuestos` 
+								WHERE 
+									`id_front` = '$row->id_presupuesto_front'";
+					$query_presupuesto = $this->db->query($sql_presupuesto);
+					if($query_presupuesto->num_rows() > 0){
+						foreach ($query_presupuesto->result() as $row_presupuesto){
+							$id_temp_presupuesto = $row_presupuesto->id_presupuesto;
+						}
+					}	
+					if($id_temp_presupuesto != 0){
+						$registro = array(
+							'id_presupuesto' => $id_temp_presupuesto,
+						);						
+						$this->db->update(
+								'sin_presupuestos_modos', 
+								$registro, 
+								array('`id_sin_presupuesto_modo`' => $row->id_sin_presupuesto_modo)
+						);
+					}
+				}
+			}
+			
 			$array[$tablas['estados_presupuestos']]	= $this->estados_presupuestos_model->getTodo();
 			$this->setLog('DEBUG', $tablas['estados_presupuestos'], $_POST['id_vendedor']);
 			

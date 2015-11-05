@@ -160,6 +160,7 @@ class Pedidos extends My_Controller {
 	{
 		$presupuesto	= $this->presupuestos_model->getRegistro($id_presupuesto);
 		$detalle		= $this->presupuestos_model->getDetallePresupuesto($id_presupuesto);
+		$sin_modos		= $this->presupuestos_model->getModos($id_presupuesto);
 		
 		if($presupuesto)
 		{
@@ -173,6 +174,9 @@ class Pedidos extends My_Controller {
 					'id_estado_pedido'		=> 1,
 					'total'					=> $row->total,
 					'fecha'					=> date('Y-m-d'),
+					'id_condicion_pago'		=> $row->id_condicion_pago,
+					'id_tiempo_entrega'		=> $row->id_tiempo_entrega,
+					'nota_publica'			=> $row->nota_publica,
 					'id_origen'				=> 2,
 					'aprobado_back'			=> 0,
 					'aprobado_front'		=> 0,
@@ -191,6 +195,18 @@ class Pedidos extends My_Controller {
 			);
 			$this->presupuestos_model->update($estado_presupuesto,$id_presupuesto);
 		}
+		
+		if($sin_modos){
+			foreach($sin_modos as $modos){
+				$cruce_pedido_modo	= array(
+					'id_modo_pago'		=> $modos->id_modo_pago,
+					'id_pedido'			=> $id
+				);
+			
+				$this->pedidos_model->insertCruceModos($cruce_pedido_modo);
+			}
+		}
+		
 		
 		if($detalle)
 		{
@@ -262,6 +278,7 @@ class Pedidos extends My_Controller {
 			'subtotal'						=> $this->input->post('subtotal'),	
 			'id_moneda'						=> $this->input->post('id_moneda'),
 			'valor_moneda'					=> $this->input->post('valor_moneda'),
+			'comentario'					=> $this->input->post('comentario'),
 			'eliminado'						=> 0
 		);
 
@@ -305,6 +322,7 @@ class Pedidos extends My_Controller {
 					<th>'.$this->lang->line('subtotal').'</th>
 					<th class="no-print">'.$this->lang->line('estado').'</th>
 					<th></th>
+					<th style="width: 43px"></th>
 					</tr>
 			</thead>
 									 
@@ -341,6 +359,27 @@ class Pedidos extends My_Controller {
 					$mensaje .=	'<td style="width: 50px"><span class="display-none"><a class="btn btn-success btn-xs" onclick="cargarProducto('.$row->id_linea_producto_pedido.','.$id.')" role="button" data-toggle="tooltip" data-placement="bottom" title="Agregar Producto"><i class="fa fa-plus"></i></a></span></td>';	
 				else
 					$mensaje .=	 '<td style="width: 50px"></td>';
+				if($row->comentario){
+				$mensaje .= '<td class="text-center" style="width: 20px"><button type="button" onclick="$(\'#2open-coment'.$row->id_linea_producto_pedido.'\').show(); $(\'#2text-coment'.$row->id_linea_producto_pedido.'\').focus()" style="background: transparent; border: transparent; padding-left: 0px"><i class="fa fa-sticky-note-o fa-2x fa-rotate-180"></i></button>
+								<span id="2open-coment'.$row->id_linea_producto_pedido.'" style="display:none">
+									<div class="talkbubble" >
+										<div class="talkbubble-rectangulo">
+											<textarea rows="4" id="2text-coment'.$row->id_linea_producto_pedido.'" name="2text-coment'.$row->id_linea_producto_pedido.'" style="resize: none; width: 100%; background-color: transparent" onblur="$(\'#2open-coment'.$row->id_linea_producto_pedido.'\').hide(); guardarComentario2('.$row -> id_linea_producto_pedido.')">'.$row->comentario.'</textarea>
+										</div>
+									</div>
+								</span>
+							</td>';
+				}
+				else
+					$mensaje .= '<td class="text-center" style="width: 20px"><button type="button" onclick="$(\'#2open-coment'.$row -> id_linea_producto_pedido.'\').show(); $(\'#2text-coment'.$row -> id_linea_producto_pedido.'\').focus()" style="background: transparent; border: transparent; padding-left: 0px"><i class="fa fa-sticky-note-o fa-2x fa-rotate-180 nota"></i></button>
+									<span id="2open-coment'.$row -> id_linea_producto_pedido.'" style="display:none">
+										<div class="talkbubble" >
+											<div class="talkbubble-rectangulo">
+												<textarea rows="4" id="2text-coment'.$row -> id_linea_producto_pedido.'" name="2text-coment'.$row -> id_linea_producto_pedido.'" style="resize: none; width: 100%; background-color: transparent" onblur="$(\'#2open-coment'.$row -> id_linea_producto_pedido.'\').hide(); guardarComentario2('.$row -> id_linea_producto_pedido.')">'.$row->comentario.'</textarea>
+											</div>
+										</div>
+									</span>
+								</td>';
 				$mensaje .=	'</tr>';
 			}	
 		}
@@ -360,7 +399,8 @@ class Pedidos extends My_Controller {
 					<td></td>
 					<td></td>
 					<td></td>	
-					<td></td>			
+					<td></td>		
+					<td></td>	
 				</tr>
 				</tfoot>
 			</table>';  
@@ -434,9 +474,12 @@ class Pedidos extends My_Controller {
 
 	function guardarPedido($id_pedido,$nuevo=null){
 		$pedidos			= $this->pedidos_model->getDetallePedido($id_pedido);
+		$sin_modos			= $this->pedidos_model->getModos($id_pedido);
 		$total				= 0;
 		$condicion_pago		= $this->input->post('condicion_pago');
 		$tiempo_entrega		= $this->input->post('tiempo_entrega');
+		$nota_publica		= $this->input->post('nota-publica');
+		$primera_vez		= 0;
 		
 		if($pedidos)
 		{
@@ -459,7 +502,8 @@ class Pedidos extends My_Controller {
 				'iteracion'				=> 0,
 				'eliminado'				=> 0,
 				'id_condicion_pago'		=> $condicion_pago,
-				'id_tiempo_entrega'		=> $tiempo_entrega
+				'id_tiempo_entrega'		=> $tiempo_entrega,
+				'nota_publica'			=> $nota_publica
 			);
 		}
 		else{
@@ -473,11 +517,67 @@ class Pedidos extends My_Controller {
 				'iteracion'				=> $iteracion + 1,
 				'eliminado'				=> 0,
 				'id_condicion_pago'		=> $condicion_pago,
-				'id_tiempo_entrega'		=> $tiempo_entrega
+				'id_tiempo_entrega'		=> $tiempo_entrega,
+				'nota_publica'			=> $nota_publica
 			);
 		}
 
 		$this->pedidos_model->update($arreglo, $id_pedido);
+		
+		if($_POST['modos_pago']){
+			if($sin_modos){
+				foreach($_POST['modos_pago'] as $modos){
+					$aux = 0;	
+					foreach($sin_modos as $row){
+						if($modos == $row->id_modo_pago)
+							$aux = 1;
+					}
+					if($aux == 0){
+						$cruce_pedido_modo	= array(
+							'id_modo_pago'		=> $modos,
+							'id_pedido'			=> $id_pedido
+						);
+						
+						$this->pedidos_model->insertCruceModos($cruce_pedido_modo);
+					}
+				}
+			}
+			else {
+				foreach($_POST['modos_pago'] as $modos){
+						
+					$cruce_pedido_modo	= array(
+							'id_modo_pago'		=> $modos,
+							'id_pedido'			=> $id_pedido
+					);
+						
+					$this->pedidos_model->insertCruceModos($cruce_pedido_modo);
+				}
+				$primera_vez = 1;
+			}
+		}
+
+		if($primera_vez == 0){
+			$sin_modos			= $this->pedidos_model->getModos($id_pedido);
+			
+			if($_POST['modos_pago']){
+				if($sin_modos){
+					foreach($sin_modos as $row){
+						$aux = 0;
+						foreach($_POST['modos_pago'] as $modos){
+							if($row->id_modo_pago == $modos)
+								$aux = 1;
+						}
+						if($aux == 0){
+							$eliminar	= array(
+								'eliminado'		=> 1
+							);
+							
+							$this->pedidos_model->updateCruceModos($eliminar,$row->id_sin_pedido_modo);
+						}
+					}
+				}
+			}
+		}
 		
 		//----- CARGO ACCION A UN REGISTRO LOG---//
 		if($pedidos){
@@ -521,6 +621,8 @@ class Pedidos extends My_Controller {
 		$total 				= 0;
 		$condicion_pago		= $this->input->post('condicion_pago');
 		$tiempo_entrega		= $this->input->post('tiempo_entrega');
+		$nota_publica		= $this->input->post('nota-publica');
+		$primera_vez		= 0;
 		
 		if($pedidos)
 		{
@@ -543,7 +645,8 @@ class Pedidos extends My_Controller {
 			'iteracion'				=> $iteracion + 1,
 			'eliminado'				=> 0,
 			'id_condicion_pago'		=> $condicion_pago,
-			'id_tiempo_entrega'		=> $tiempo_entrega
+			'id_tiempo_entrega'		=> $tiempo_entrega,
+			'nota_publica'			=> $nota_publica
 		);
 		
 
@@ -567,24 +670,38 @@ class Pedidos extends My_Controller {
 					}
 				}
 			}
+			else {
+				foreach($_POST['modos_pago'] as $modos){
+						
+					$cruce_pedido_modo	= array(
+							'id_modo_pago'		=> $modos,
+							'id_pedido'			=> $id_pedido
+					);
+						
+					$this->pedidos_model->insertCruceModos($cruce_pedido_modo);
+				}
+				$primera_vez = 1;
+			}
 		}
 
-		$sin_modos			= $this->pedidos_model->getModos($id_pedido);
-		
-		if($_POST['modos_pago']){
-			if($sin_modos){
-				foreach($sin_modos as $row){
-					$aux = 0;
-					foreach($_POST['modos_pago'] as $modos){
-						if($row->id_modo_pago == $modos)
-							$aux = 1;
-					}
-					if($aux == 0){
-						$eliminar	= array(
-							'eliminado'		=> 1
-						);
-						
-						$this->pedidos_model->updateCruceModos($eliminar,$row->id_sin_pedido_modo);
+		if($primera_vez == 0){
+			$sin_modos			= $this->pedidos_model->getModos($id_pedido);
+			
+			if($_POST['modos_pago']){
+				if($sin_modos){
+					foreach($sin_modos as $row){
+						$aux = 0;
+						foreach($_POST['modos_pago'] as $modos){
+							if($row->id_modo_pago == $modos)
+								$aux = 1;
+						}
+						if($aux == 0){
+							$eliminar	= array(
+								'eliminado'		=> 1
+							);
+							
+							$this->pedidos_model->updateCruceModos($eliminar,$row->id_sin_pedido_modo);
+						}
 					}
 				}
 			}
@@ -803,6 +920,15 @@ class Pedidos extends My_Controller {
 							<td><input type="text" id="subtotal'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$subtotal.'">$ '.$subtotal.'</td>
 							<td>Nuevo</td>
 							<td><a class="btn btn-danger btn-xs" onclick="deleteRow(this,'.$this->input->post('pedido').','.$this->input->post('aux').')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></td>
+							<td class="text-center" style="width: 20px"><button type="button" onclick="$(\'#open-coment'.$this->input->post('aux').'\').show(); $(\'#text-coment'.$this->input->post('aux').'\').focus()" style="background: transparent; border: transparent; padding-left: 0px"><i class="fa fa-sticky-note-o fa-2x fa-rotate-180"></i></button>
+								<span id="open-coment'.$this->input->post('aux').'" style="display:none">
+									<div class="talkbubble" >
+										<div class="talkbubble-rectangulo">
+											<textarea rows="4" id="text-coment'.$this->input->post('aux').'" name="text-coment'.$this->input->post('aux').'" style="resize: none; width: 100%; background-color: transparent" onblur="$(\'#open-coment'.$this->input->post('aux').'\').hide(); guardarComentario('.$this->input->post('aux').')"></textarea>
+										</div>
+									</div>
+								</span>
+							</td>
 						</tr>'; 
 		
 			}																
@@ -1008,11 +1134,20 @@ class Pedidos extends My_Controller {
 
 	public function buscarMail() 
 	{
-        $mail = $this->input->post('mail');
-        $query = $this->pedidos_model->buscarMail($mail);
+        $mail 	= $this->input->post('mail');
+        $query 	= $this->pedidos_model->buscarMail($mail);
 
         foreach ($query->result() as $row){
         	echo '<li style="padding: 5px 0px; border-top: 1px solid #E3E3E3;"><a onclick="funcion2('.$row->id_mail.')">'.$row->mail.'<input type="text" id="id_mail'.$row->id_mail.'" value="'.$row->mail.'" hidden></a></li>';
         }
     }
+	
+	public function updateNotaLinea(){
+		
+		$arreglo	= array(
+			'comentario'	=> $this->input->post('comentario')	
+		);
+		
+		$this->pedidos_model->updateLinea($arreglo,$this->input->post('linea'));
+	}
 }

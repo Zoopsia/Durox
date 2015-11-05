@@ -1,53 +1,57 @@
 <script>
+var id_grupo_cliente = 0;
+function grupoElegido($id_grupo_cliente){
+	id_grupo_cliente = $id_grupo_cliente;
+}
 function reglasActivas(){
- 	var id_grupo_cliente = $('select#grupos').val(); //Obtenemos el id del grupo seleccionado en la lista
- 	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/grupos/getReglasGrupos', //Realizaremos la petición al metodo prueba del controlador cliente
-	 	data: 'id_grupo_cliente='+id_grupo_cliente, //Pasaremos por parámetro POST el id del grupo
-	 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-	 		//Activar y Rellenar la tabla
-	 		$('#tablareglas').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de reglas
-	 	}
-	});
+ 	if(id_grupo_cliente){
+	 	$.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/grupos/getReglasGrupos', 
+		 	data: 'id_grupo_cliente='+id_grupo_cliente, 
+		 	success: function(resp) { 
+		 		$('#tablareglas').attr('disabled',false).html(resp); 
+		 	}
+		});
+	}
 }
 function clientesActivos(){
- 	var id_grupo_cliente = $('select#grupos').val(); //Obtenemos el id del grupo seleccionado en la lista
- 	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/grupos/getClientesGrupos', //Realizaremos la petición al metodo prueba del controlador cliente
-	 	data: 'id_grupo_cliente='+id_grupo_cliente, //Pasaremos por parámetro POST el id del grupo
-	 	success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-	 		//Activar y Rellenar la tabla
-	 		$('#tablaclientes').attr('disabled',false).html(resp); //Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de reglas
-	 		$('.prueba').DataTable({
-			 		"language": {
-						"sProcessing":     "Procesando...",
-						"sLengthMenu":     "Mostrar _MENU_ registros",
-						"sZeroRecords":    "No se encontraron resultados",
-						"sEmptyTable":     "Ningún dato disponible en esta tabla",
-						"sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
-						"sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
-						"sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
-						"sInfoPostFix":    "",
-						"sSearch":         "Buscar:",
-						"sUrl":            "",
-						"sInfoThousands":  ",",
-						"sLoadingRecords": "Cargando...",
-						"oPaginate": {
-							"sFirst":    "Primero",
-							"sLast":     "Último",
-							"sNext":     "Siguiente",
-							"sPrevious": "Anterior"
-						},
-						"oAria": {
-							"sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
-							"sSortDescending": ": Activar para ordenar la columna de manera descendente"
+ 	if(id_grupo_cliente){
+	 	$.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/grupos/getClientesGrupos', 
+		 	data: 'id_grupo_cliente='+id_grupo_cliente, 
+		 	success: function(resp) {
+		 		$('#tablaclientes').attr('disabled',false).html(resp); 
+		 		$('.prueba').DataTable({
+				 		"language": {
+							"sProcessing":     "Procesando...",
+							"sLengthMenu":     "Mostrar _MENU_ registros",
+							"sZeroRecords":    "No se encontraron resultados",
+							"sEmptyTable":     "Ningún dato disponible en esta tabla",
+							"sInfo":           "",
+							"sInfoEmpty":      "",
+							"sInfoFiltered":   "",
+							"sInfoPostFix":    "",
+							"sSearch":         "Buscar:",
+							"sUrl":            "",
+							"sInfoThousands":  ",",
+							"sLoadingRecords": "Cargando...",
+							"oPaginate": {
+								"sFirst":    "Primero",
+								"sLast":     "Último",
+								"sNext":     "Siguiente",
+								"sPrevious": "Anterior"
+							},
+							"oAria": {
+								"sSortAscending":  "",
+								"sSortDescending": ""
+							}
 						}
-					}
-	 		});
-	 	}
-	});
+		 		});
+		 	}
+		});
+	}
 }
 </script>
 <?php $array_n = pestañaActivaGrupo($this->uri->segment(3));?>
@@ -68,89 +72,82 @@ function clientesActivos(){
 	    					<!--Grupos de Clientes-->
 	    							    						
 	    						<div class="row">
-	    							
 	    							<div class="col-md-1 dropdown">
-											<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-												<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
-											</button>
-											<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-												<li class="<?php echo $array_n['nuevogrupo']; ?> desactive"><a href="#tab2" data-toggle="tab" onclick="volverShow()"><?php echo $this->lang->line('nuevo').' '.$this->lang->line('grupo'); ?></a></li>
-												<li class="<?php echo $array_n['agregarcliente']; ?> desactive"><a href="#tab3" data-toggle="tab" onclick="volverShow()"><?php echo $this->lang->line('agregar').' '.$this->lang->line('cliente'); ?></a></li>
-												<li class="<?php echo $array_n['editargrupo']; ?> desactive"><a href="#tab4" data-toggle="tab" onclick="volverShow(), editarGrupo()"><?php echo $this->lang->line('editar').' '.$this->lang->line('grupo'); ?></a></li>
-											</ul>
+										<button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+											<span class="glyphicon glyphicon-cog" aria-hidden="true"></span>
+										</button>
+										<ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+											<li class="<?php echo $array_n['nuevogrupo']; ?> desactive"><a href="#tab2" data-toggle="tab" onclick="volverShow()"><?php echo $this->lang->line('nuevo').' '.$this->lang->line('grupo'); ?></a></li>
+											<li class="<?php echo $array_n['agregarcliente']; ?> desactive"><a href="#tab3" data-toggle="tab" onclick="volverShow()"><?php echo $this->lang->line('agregar').' '.$this->lang->line('cliente'); ?></a></li>
+											<li class="<?php echo $array_n['editargrupo']; ?> desactive"><a href="#tab4" data-toggle="tab" onclick="volverShow(), editarGrupo()"><?php echo $this->lang->line('editar').' '.$this->lang->line('grupo'); ?></a></li>
+										</ul>
 									</div>
-	    							<!--
-		    						<label class="col-sm-2 col-sm-offset-1 control-label"><?php echo $this->lang->line('grupos_clientes'); ?></label>
-									-->
-										<div class="col-md-4">
-											<select id="grupos" name="id_grupo_cliente" class="form-control chosen-select" data-placeholder="Seleccione un Grupo..." onchange="reglasActivas(),clientesActivos()">
-		    									<option></option>
-		    									<?php
-			    									if($grupos){
-			    										foreach ($grupos as $row) {
-			    											if($row->id_grupo_cliente==1){
-			    												echo '<option value="'.$row->id_grupo_cliente.'">'.$row->grupo_nombre.'</option>';
-			    											}
-															else if($id_grupo==$row->id_grupo_cliente){
-																echo '<option value="'.$row->id_grupo_cliente.'" selected>'.$row->grupo_nombre.'</option>';
-																//----LLAMO FUNCION DE LLENAR LAS REGLAS---//
-																?><script>reglasActivas(), clientesActivos();</script><?php
-															}
-															else
-			    												echo '<option value="'.$row->id_grupo_cliente.'">'.$row->grupo_nombre.'</option>';
+	    							
+	    							<div class="col-md-4" style="margin-top: 2%">	
+											<table class="table table-bordered table-hover" cellspacing="0" width="100%">
+										        <thead>
+										            <tr>
+										            	<th class="text-center"><?php echo $this->lang->line('nombre').' '.$this->lang->line('grupo'); ?></th>
+										            </tr>
+										        </thead>
+										 		<tbody class="text-center">
+										 		<?php
+													if($grupos){
+														foreach($grupos as $row){
+															echo "<tr>";
+															echo "<td onclick='grupoElegido(".$row->id_grupo_cliente."),reglasActivas(),clientesActivos()'>".$row->grupo_nombre."</td>";
+															echo "</tr>";
 														}
 													}
-		    									?>
-		    								</select>
-										</div>
-								<!--ACÁ ESTABA DIV DE ROW PRUEBA-->
-								
-								<div class="col-md-7"><!--DIV DE COL PRUEBA-->
-									
-								<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="padding-top: 20px">
-								  <div class="panel panel-default">
-								    <div class="panel-heading" role="tab" id="headingOne">
-								      <h4 class="panel-title">
-								        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-								         	<?php echo $this->lang->line('clientes'); ?>
-								        </a>
-								      </h4>
-								    </div>
-								    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-								      <div class="panel-body">
-								        <div class="row">
-											<div class="col-md-9 col-sm-offset-1">
-												<div id="tablaclientes">
-												<!-- Esta tabla se llena con AJAX -->		
+												?>
+												</tbody>
+											</table>
+									</div>
+	    							
+									<div class="col-md-7"><!--DIV DE COL PRUEBA-->
+										<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="padding-top: 20px">
+										  <div class="panel panel-default">
+										    <div class="panel-heading" role="tab" id="headingOne">
+										      <h4 class="panel-title">
+										        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+										         	<?php echo $this->lang->line('clientes'); ?>
+										        </a>
+										      </h4>
+										    </div>
+										    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
+										      <div class="panel-body">
+										        <div class="row">
+													<div class="col-md-12">
+														<div id="tablaclientes">
+														<!-- Esta tabla se llena con AJAX -->		
+														</div>
+													</div>
 												</div>
-											</div>
-										</div>
-								      </div>
-								    </div>
-								  </div>
-								  <div class="panel panel-default">
-								    <div class="panel-heading" role="tab" id="headingTwo">
-								      <h4 class="panel-title">
-								        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-								        	<?php echo $this->lang->line('reglas'); ?>
-								        </a>
-								      </h4>
-								    </div>
-								    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-								      <div class="panel-body">
-								      	<div class="row">
-											<div class="col-md-9 col-sm-offset-1">
-												<div id="tablareglas">
-												<!-- Esta tabla se llena con AJAX -->		
+										      </div>
+										    </div>
+										  </div>
+										  <div class="panel panel-default">
+										    <div class="panel-heading" role="tab" id="headingTwo">
+										      <h4 class="panel-title">
+										        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+										        	<?php echo $this->lang->line('reglas'); ?>
+										        </a>
+										      </h4>
+										    </div>
+										    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
+										      <div class="panel-body">
+										      	<div class="row">
+													<div class="col-md-12">
+														<div id="tablareglas">
+														<!-- Esta tabla se llena con AJAX -->		
+														</div>
+													</div>
 												</div>
-											</div>
+										      </div>
+										    </div>
+										  </div>
 										</div>
-								      </div>
-								    </div>
-								  </div>
-								</div>
-								
-								</div><!--DIV DE COL PRUEBA-->
+									</div><!--DIV DE COL PRUEBA-->
 								</div><!--DIV DE ROW PRUEBA-->
 	    					</div> <!--TAB 1 GRUPOS CLIENTES -->
 	     					<div class="tab-pane fade <?php echo $array_n['nuevogrupo']; ?>" id="tab2">
@@ -238,7 +235,7 @@ function clientesActivos(){
 	     							
 	     						<div class="tab-content">
 		     						<div class="tab-pane fade" id="cliente1">
-		     							<div class="col-md-9" >
+		     							<div class="col-md-10" >
 											<div id="clientes">
 												<!-- Esta tabla se llena con AJAX -->		
 											</div>
@@ -246,7 +243,7 @@ function clientesActivos(){
 		     						</div>
 	     							
 	     							<div class="tab-pane fade" id="cliente2">
-		     							<div class="col-md-9">
+		     							<div class="col-md-10">
 											<div id="clientegrupo">
 												<!-- Esta tabla se llena con AJAX -->		
 											</div>
@@ -324,42 +321,43 @@ function clientesActivos(){
 
 
 function editarGrupo(){
- 	var id_grupo_cliente = $('select#grupos').val(); //Obtenemos el id del grupo seleccionado en la lista
- 	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/grupos/editarGrupo', //Realizaremos la petición al metodo prueba del controlador cliente
-	 	data: 'id_grupo_cliente='+id_grupo_cliente,
-		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-	 		$('#editargrupo').attr('disabled',false).html(resp); 
-		}
-	});
-	
-	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/grupos/getRegla', //Realizaremos la petición al metodo prueba del controlador cliente
-	 	data: 'id_grupo_cliente='+id_grupo_cliente,
-		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-	 		$('#nombre_regla').attr('disabled',false).html(resp); 
-		}
-	});
-	
-	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/grupos/getValorRegla', //Realizaremos la petición al metodo prueba del controlador cliente
-	 	data: 'id_grupo_cliente='+id_grupo_cliente,
-		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-	 		$('#valor_regla').attr('disabled',false).html(resp); 
-		}
-	});	
-	$.ajax({
-	 	type: 'POST',
-	 	url: '<?php echo base_url(); ?>index.php/grupos/getTipoRegla', //Realizaremos la petición al metodo prueba del controlador cliente
-	 	data: 'id_grupo_cliente='+id_grupo_cliente,
-		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-	 		$('#tipo_regla').attr('disabled',false).html(resp); 
-	 		$(".chosen-select").chosen({ width: '100%' });
-		}
-	});	
+ 	if(id_grupo_cliente && id_grupo_cliente != 1){
+	 	$.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/grupos/editarGrupo', //Realizaremos la petición al metodo prueba del controlador cliente
+		 	data: 'id_grupo_cliente='+id_grupo_cliente,
+			success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+		 		$('#editargrupo').attr('disabled',false).html(resp); 
+			}
+		});
+		
+		$.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/grupos/getRegla', //Realizaremos la petición al metodo prueba del controlador cliente
+		 	data: 'id_grupo_cliente='+id_grupo_cliente,
+			success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+		 		$('#nombre_regla').attr('disabled',false).html(resp); 
+			}
+		});
+		
+		$.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/grupos/getValorRegla', //Realizaremos la petición al metodo prueba del controlador cliente
+		 	data: 'id_grupo_cliente='+id_grupo_cliente,
+			success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+		 		$('#valor_regla').attr('disabled',false).html(resp); 
+			}
+		});	
+		$.ajax({
+		 	type: 'POST',
+		 	url: '<?php echo base_url(); ?>index.php/grupos/getTipoRegla', //Realizaremos la petición al metodo prueba del controlador cliente
+		 	data: 'id_grupo_cliente='+id_grupo_cliente,
+			success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+		 		$('#tipo_regla').attr('disabled',false).html(resp); 
+		 		$(".chosen-select").chosen({ width: '100%' });
+			}
+		});	
+	}
 }
 
 function nuevoGrupo(){
@@ -404,10 +402,8 @@ function comprobarGrupo(){
 		return true;
 }
 
-function nuevoCliente(){
- 	var id_grupo_cliente = $('select#grupos').val(); //Obtenemos el id del grupo seleccionado en la lista
+function nuevoCliente(){ 
  	if(id_grupo_cliente){
-	
 		$.ajax({
 		 	type: 'POST',
 		 	url: '<?php echo base_url(); ?>index.php/grupos/nuevoCliente', //Realizaremos la petición al metodo prueba del controlador cliente
@@ -421,9 +417,7 @@ function nuevoCliente(){
 	}
 }		
 function nuevoCliente2(){
- 	var id_grupo_cliente = $('select#grupos').val(); //Obtenemos el id del grupo seleccionado en la lista
  	if(id_grupo_cliente){
-			
 		$.ajax({
 			 type: 'POST',
 			 url: '<?php echo base_url(); ?>index.php/grupos/grupoCliente', //Realizaremos la petición al metodo prueba del controlador cliente
@@ -438,30 +432,33 @@ function nuevoCliente2(){
 }
 
 function cargarCliente($id_cliente){
- 	var id_cliente 			= $id_cliente; //Obtenemos el id del grupo seleccionado en la lista
-	var id_grupo_cliente 	= $('select#grupos').val();
-	$.ajax({
-		type: 'POST',
-		url: '<?php echo base_url(); ?>index.php/grupos/cargarCliente', //Realizaremos la petición al metodo prueba del controlador cliente
-		data: {'id_cliente' : id_cliente, 'id_grupo_cliente' : id_grupo_cliente}, //Pasaremos por parámetro POST el id del grupo
-		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-		 	//Activar y Rellenar la tabla
-		 	nuevoCliente();
-		}
-	});	
+ 	var id_cliente 			= $id_cliente; 
+	if(id_grupo_cliente && id_cliente){	
+		$.ajax({
+			type: 'POST',
+			url: '<?php echo base_url(); ?>index.php/grupos/cargarCliente', //Realizaremos la petición al metodo prueba del controlador cliente
+			data: {'id_cliente' : id_cliente, 'id_grupo_cliente' : id_grupo_cliente}, //Pasaremos por parámetro POST el id del grupo
+			success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+			 	//Activar y Rellenar la tabla
+			 	nuevoCliente();
+			}
+		});	
+	}
 }
 
 function sacarCliente($id_cliente){
- 	var id_cliente 			= $id_cliente; //Obtenemos el id del grupo seleccionado en la lista
-	$.ajax({
-		type: 'POST',
-		url: '<?php echo base_url(); ?>index.php/grupos/sacarCliente', //Realizaremos la petición al metodo prueba del controlador cliente
-		data: {'id_cliente' : id_cliente}, //Pasaremos por parámetro POST el id del grupo
-		success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
-		 	//Activar y Rellenar la tabla
-		 	nuevoCliente2();
-		}
-	});	
+ 	var id_cliente 			= $id_cliente; 
+ 	if(id_cliente){
+		$.ajax({
+			type: 'POST',
+			url: '<?php echo base_url(); ?>index.php/grupos/sacarCliente', //Realizaremos la petición al metodo prueba del controlador cliente
+			data: {'id_cliente' : id_cliente}, //Pasaremos por parámetro POST el id del grupo
+			success: function(resp) { //Cuando se procese con éxito la petición se ejecutará esta función
+			 	//Activar y Rellenar la tabla
+			 	nuevoCliente2();
+			}
+		});	
+	}
 }
 
 $(document).ready(function(){

@@ -261,12 +261,57 @@ $aux2 = 0;
                     </div><!-- /.row -->
 					<div class="row">
                     <!-- accepted payments column -->
-                        <div class="col-xs-6">
-                            <p class="lead no-print"><?php echo $this->lang->line('notas');?></p>
-                            <p class="text-muted well well-sm no-shadow no-print" style="margin-top: 10px;">
-                                
+                        <div class="col-xs-6" id="div-info-extra">
+                            <p class="lead"><?php echo $this -> lang -> line('informacion'); ?></p>
+                            <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                                <?php 
+                               		
+                                	if($presupuesto){
+                                		$arreglo_condiciones 	= array();
+										$arreglo_tiempos		= array();
+										$arreglo_modos			= array();
+										
+                                		foreach($presupuesto as $row){
+                                			if($condiciones_pago){
+				                           		foreach($condiciones_pago as $condicion){
+				                           			if($condicion->id_condicion_pago == $row->id_condicion_pago)
+														$arreglo_condiciones[$condicion->id_condicion_pago] = $condicion->condicion_pago;
+												}
+											}
+											
+											if($tiempos_entrega){
+				                            	foreach($tiempos_entrega as $tiempo){
+				                            		if($tiempo->id_tiempo_entrega == $row->id_tiempo_entrega)
+                                						$arreglo_tiempos[$tiempo->id_tiempo_entrega] = $tiempo->tiempo_entrega;
+												}
+											}
+											
+											if($sin_modos){
+			                           			if($modos_pago){
+                                					foreach($modos_pago as $modos){
+                                						foreach($sin_modos as $row){
+				                           					if($modos->id_modo_pago == $row->id_modo_pago)
+																$arreglo_modos[$modos->id_modo_pago] = $modos->modo_pago;
+				                           				}
+													}
+												}
+											}
+										} 
+									} 
+                                	
+									echo armarInformacion(
+                                		$arreglo_info=array(
+                                			$this->lang->line('modos').' de '.$this->lang->line('pago') 		=> $arreglo_modos,
+                                			$this->lang->line('condiciones').' de '.$this->lang->line('pago') 	=> $arreglo_condiciones,
+                                			$this->lang->line('tiempos').' de '.$this->lang->line('entrega')	=> $arreglo_tiempos
+										)
+									);
+									
+									if($presupuesto){ foreach($presupuesto as $row){ echo $row->nota_publica; } }  
+								?>
                             </p>
                         </div><!-- /.col -->
+                        
                         <div class="col-xs-6">
                             <p class="lead"><?php echo $this->lang->line('totales');?></p>
                             <div class="table-responsive">

@@ -22,6 +22,9 @@ class Presupuestos extends My_Controller {
 		$this->load->model('reglas_model');
 		$this->load->model('visitas_model');
 		$this->load->model('pedidos_model');
+		$this->load->model('modos_pago_model');
+		$this->load->model('condiciones_pago_model');
+		$this->load->model('tiempos_entrega_model');
 			
 		$this->load->model($this->_subject.'_model');
 	}
@@ -47,6 +50,11 @@ class Presupuestos extends My_Controller {
 		$db['id_presupuesto']	= $id;
 		$db['tipo']				= $tipo;
 		
+		$db['modos_pago']		= $this->modos_pago_model->getTodo();
+		$db['sin_modos']		= $this->presupuestos_model->getModos($id);
+		$db['condiciones_pago']	= $this->condiciones_pago_model->getTodo();
+		$db['tiempos_entrega']	= $this->tiempos_entrega_model->getTodo();
+	
 		$this->cargar_vista($db, 'pestanas');	
 	}
 	

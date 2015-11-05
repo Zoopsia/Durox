@@ -102,7 +102,8 @@
 								                <th><?php echo $this -> lang -> line('precio'); ?></th>
 								                <th><?php echo $this -> lang -> line('subtotal'); ?></th>
 								                <th class="no-print"><?php echo $this -> lang -> line('estado'); ?></th>
-								            	<th></th>
+								            	<th style="width: 84px"></th>
+								            	<th class="text-center" style="width: 20px"></th>
 								            </tr>
 								        </thead>
 								 
@@ -125,9 +126,10 @@
 												<td></td>
 												<td></td>
 												<td class="no-print"></td>		
-												<td></td>		
+												<td></td>
+												<td class="text-center" style="width: 20px">
+												</td>	
 											</tr>
-										
 										</tfoot>
 								    </table> 
                         	</div><!-- /.col -->
@@ -152,7 +154,10 @@
 			                           	<?php 
 			                           		if($modos_pago){
 			                           			foreach($modos_pago as $modos){
-			                           				echo '<option value="'.$modos->id_modo_pago.'">'.$modos->modo_pago.'</option>';
+			                           				if($modos->id_modo_pago == 1)
+														echo '<option value="'.$modos->id_modo_pago.'" selected>'.$modos->modo_pago.'</option>';
+													else
+			                           					echo '<option value="'.$modos->id_modo_pago.'">'.$modos->modo_pago.'</option>';
 			                           			}
 			                           		}
 										?>
@@ -167,7 +172,10 @@
 			                           	<?php 
 			                           		if($condiciones_pago){
 			                           			foreach($condiciones_pago as $condicion){
-			                           				echo '<option value="'.$condicion->id_condicion_pago.'">'.$condicion->condicion_pago.'</option>';
+			                           				if($condicion->id_condicion_pago == 1)
+														echo '<option value="'.$condicion->id_condicion_pago.'" selected>'.$condicion->condicion_pago.'</option>';
+													else
+			                           					echo '<option value="'.$condicion->id_condicion_pago.'">'.$condicion->condicion_pago.'</option>';
 			                           			}
 			                           		}
 										?>
@@ -182,7 +190,10 @@
 			                           	<?php 
 			                           		if($tiempos_entrega){
 			                            		foreach($tiempos_entrega as $tiempo){
-			                            			echo '<option value="'.$tiempo->id_tiempo_entrega.'">'.$tiempo->tiempo_entrega.'</option>';
+			                            			if($tiempo->id_tiempo_entrega == 1)
+														echo '<option value="'.$tiempo->id_tiempo_entrega.'" selected>'.$tiempo->tiempo_entrega.'</option>';
+													else
+			                            				echo '<option value="'.$tiempo->id_tiempo_entrega.'">'.$tiempo->tiempo_entrega.'</option>';
 			                            		}
 			                            	}
 										?>
@@ -256,6 +267,16 @@ $( document ).ready(function() {
 											 			'<td><input type="text" id="subtotal'+j+'" autocomplete="off" required hidden value="'+sessionStorage['subtotal'+i]+'">$ '+sessionStorage['subtotal'+i]+'</td>'+
 											 			'<td>Nuevo</td>'+
 											 			'<td><a class="btn btn-danger btn-xs" onclick="deleteRow(this,<?php echo $id_pedido;?>,'+aux+')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></td>'+
+											 			'<td class="text-center" style="width: 20px"><button type="button" onclick="$(\'#open-coment'+j+'\').show(); $(\'#text-coment'+j+'\').focus()" style="background: transparent; border: transparent; padding-left: 0px"><i class="fa fa-sticky-note-o fa-2x fa-rotate-180"></i></button>'+
+															'<span id="open-coment'+j+'" style="display:none">'+
+																'<div class="talkbubble" >'+
+																	'<div class="talkbubble-rectangulo">'+
+																		'<textarea rows="4" id="text-coment'+j+'" name="text-coment'+j+'" style="resize: none; width: 100%; background-color: transparent" onblur="$(\'#open-coment'+j+'\').hide(); guardarComentario('+j+')">'+sessionStorage['comentario'+i]+
+																		'</textarea>'+
+																	'</div>'+
+																'</div>'+
+															'</span>'+
+														'</td>'+
 											 		'</tr>');
 				j++;
 			}
@@ -306,6 +327,11 @@ function cargaProducto($id_cliente){
 			document.getElementById("producto").focus();
 	 	}
 	});
+}
+
+function guardarComentario($linea){
+	var j 	= $linea;
+	sessionStorage.setItem('comentario'+j, $('#text-coment'+j).val());
 }
 
 function armarTotales($id_pedido){
@@ -377,6 +403,7 @@ function guardarLineasNuevas($pedido){
 				var subtotal 	= $('#subtotal'+i).val();
 				var id_moneda	= $('#id_moneda'+i).val();
 				var valor_moneda= $('#valor_moneda'+i).val();
+				var comentario	= $('#text-coment'+i).val();
 				if(producto){
 					$.ajax({
 					 	type: 'POST',
@@ -388,6 +415,7 @@ function guardarLineasNuevas($pedido){
 					 		   'pedido'			: pedido,
 					 		   'id_moneda'		: id_moneda,
 					 		   'valor_moneda'	: valor_moneda,
+					 		   'comentario'		: comentario,
 					 		   },
 					 	success: function(resp) { 
 					 		sessionStorage.clear();
@@ -428,6 +456,9 @@ function deleteRow(r, $pedi, $row) {
 	 	
 	sessionStorage.removeItem('subtotal'+fila);
     
+    sessionStorage.removeItem('comentario'+fila);
+    
     armarTotales(pedido);
 }
+
 </script>

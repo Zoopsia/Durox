@@ -196,5 +196,25 @@ class Alarmas_model extends My_Model {
 			return FALSE;
 		}
 	}
+
+	function updateAlarma($arreglo_campos, $id)
+	{
+		$session_data = $this->session->userdata('logged_in');
+		
+		if($this->db->field_exists('date_upd', $this->_tablename))
+		{
+			$arreglo_campos['date_upd'] = date('Y-m-d H:i:s'); 
+		}
+		
+		if($this->db->field_exists('user_upd', $this->_tablename))
+		{
+			$arreglo_campos['user_upd'] = $session_data['id_usuario']; 
+		}
+		
+		$this->db->where('id_tipo_alarma', $id);
+		$this->db->update('tipos_alarmas', $arreglo_campos);
+
+		return $id;
+	}
 } 
 ?>

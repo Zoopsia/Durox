@@ -107,8 +107,6 @@ class Vendedores extends My_Controller {
 			'eliminado'		=> 0
 		);
 		
-		$id			= $this->vendedores_model->update($arreglo,$primary_key);
-		
 		$log		= array(
 			'accion'	=> 'INSERT',
 			'tabla'		=> 'vendedores',
@@ -116,6 +114,8 @@ class Vendedores extends My_Controller {
 		);
 		
 		$this->vendedores_model->logRegistros($log);
+		
+		$id			= $this->vendedores_model->update($arreglo,$primary_key);
 		
 		return true;
 	}

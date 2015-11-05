@@ -1,6 +1,8 @@
 <?php
 	if($pedido){
-		$arreglo_info = array();
+		$arreglo_modos 			= array();
+		$arreglo_tiempos		= array();
+		$arreglo_condiciones	= array();
 		foreach ($pedido as $row) {
 ?>	
    
@@ -145,7 +147,8 @@
 								                <th><?php echo $this -> lang -> line('precio'); ?></th>
 								                <th><?php echo $this -> lang -> line('subtotal'); ?></th>
 								                <th class="no-print"><?php echo $this -> lang -> line('estado'); ?></th>
-								            	<th></th>
+								            	<th class="no-print"></th>
+								            	<th class="no-print" style="width: 43px"></th>
 								            </tr>
 								        </thead>
 								 
@@ -168,11 +171,11 @@
 													else 
 														$cotizacion[$row->abreviatura.$row->simbolo] = round($row -> precio*$row -> cantidad, 2);
 													echo '<td class="subtotal2">$ ' . $row -> subtotal . '</td>';
-													echo '<td class="no-print" style="width: 150px">' . $row -> estado . '</th>';
+													echo '<td class="no-print" style="width: 150px">' . $row -> estado . '</td>';
 													if ($row -> estado == 'En Proceso')
-														echo '<td style="width: 50px"><span class="display-none" style="display:none"><a class="btn btn-danger btn-xs" onclick="sacarProducto(' . $row -> id_linea_producto_pedido . ',' . $id_pedido . ')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></span></td>';
+														echo '<td class="no-print" style="width: 50px"><span class="display-none" style="display:none"><a class="btn btn-danger btn-xs" onclick="sacarProducto(' . $row -> id_linea_producto_pedido . ',' . $id_pedido . ')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></span></td>';
 													else if ($row -> estado == 'Nuevo')
-														echo '<td style="width: 50px"></td>';
+														echo '<td class="no-print" style="width: 50px"></td>';
 													/*
 													else if($row->estado == 'Aprobado')
 													 echo 	'<td style="width: 200px">'.devolverEstadoPedido($row->estado).'</td>';
@@ -183,9 +186,30 @@
 													 else if($row->estado == 'Eliminado')
 													 echo 	'<td style="width: 200px">'.devolverEstadoPedido($row->estado).'</td>';	*/
 													else if ($row -> estado == 'Imposible de Enviar')
-														echo '<td style="width: 50px"><span class="display-none" style="display:none"><a class="btn btn-success btn-xs" onclick="cargarProducto(' . $row -> id_linea_producto_pedido . ',' . $id_pedido . ')" role="button" data-toggle="tooltip" data-placement="bottom" title="Agregar Producto"><i class="fa fa-plus"></i></a></span></td>';
+														echo '<td class="no-print" style="width: 50px"><span class="display-none" style="display:none"><a class="btn btn-success btn-xs" onclick="cargarProducto(' . $row -> id_linea_producto_pedido . ',' . $id_pedido . ')" role="button" data-toggle="tooltip" data-placement="bottom" title="Agregar Producto"><i class="fa fa-plus"></i></a></span></td>';
 													else
-														echo '<td style="width: 50px"></td>';
+														echo '<td class="no-print" style="width: 50px"></td>';
+													if($row->comentario)
+													
+													echo 	'<td class="text-center no-print" style="width: 20px"><button type="button" onclick="$(\'#2open-coment'.$row -> id_linea_producto_pedido.'\').show(); $(\'#2text-coment'.$row -> id_linea_producto_pedido.'\').focus()" style="background: transparent; border: transparent; padding-left: 0px"><i class="fa fa-sticky-note-o fa-2x fa-rotate-180"></i></button>
+																<span id="2open-coment'.$row -> id_linea_producto_pedido.'" style="display:none">
+																	<div class="talkbubble" >
+																		<div class="talkbubble-rectangulo">
+																			<textarea rows="4" id="2text-coment'.$row -> id_linea_producto_pedido.'" name="2text-coment'.$row -> id_linea_producto_pedido.'" style="resize: none; width: 100%; background-color: transparent" onblur="$(\'#2open-coment'.$row -> id_linea_producto_pedido.'\').hide(); guardarComentario2('.$row -> id_linea_producto_pedido.')">'.$row->comentario.'</textarea>
+																		</div>
+																	</div>
+																</span>
+															</td>';
+													else
+														echo '<td class="text-center no-print" style="width: 20px"><button type="button" onclick="$(\'#2open-coment'.$row -> id_linea_producto_pedido.'\').show(); $(\'#2text-coment'.$row -> id_linea_producto_pedido.'\').focus()" style="background: transparent; border: transparent; padding-left: 0px"><i class="fa fa-sticky-note-o fa-2x fa-rotate-180 nota displaynone"></i></button>
+																<span id="2open-coment'.$row -> id_linea_producto_pedido.'" style="display:none">
+																	<div class="talkbubble" >
+																		<div class="talkbubble-rectangulo">
+																			<textarea rows="4" id="2text-coment'.$row -> id_linea_producto_pedido.'" name="2text-coment'.$row -> id_linea_producto_pedido.'" style="resize: none; width: 100%; background-color: transparent" onblur="$(\'#2open-coment'.$row -> id_linea_producto_pedido.'\').hide(); guardarComentario2('.$row -> id_linea_producto_pedido.')">'.$row->comentario.'</textarea>
+																		</div>
+																	</div>
+																</span>
+															</td>';
 													echo '</tr>';
 												}
 											}
@@ -207,7 +231,8 @@
 												<td></td>
 												<td></td>
 												<td class="no-print"></td>		
-												<td></td>		
+												<td class="no-print"></td>		
+												<td class="no-print"></td>	
 											</tr>
 										
 										</tfoot>
@@ -244,9 +269,16 @@
 				                           					echo '<option value="'.$modos->id_modo_pago.'">'.$modos->modo_pago.'</option>';
 														else{
 															echo '<option value="'.$modos->id_modo_pago.'" selected>'.$modos->modo_pago.'</option>';
-															$arreglo_info['modos_pago'] = $modos->modo_pago;
+															$arreglo_modos[$modos->id_modo_pago] = $modos->modo_pago;
 														}
 														
+													}
+				                           		}
+											}
+											else{
+												if($modos_pago){
+				                           			foreach($modos_pago as $modos){
+				                           				echo '<option value="'.$modos->id_modo_pago.'">'.$modos->modo_pago.'</option>';
 													}
 				                           		}
 											}
@@ -272,7 +304,7 @@
 				                           					echo '<option value="'.$condicion->id_condicion_pago.'">'.$condicion->condicion_pago.'</option>';
 														else{
 															echo '<option value="'.$condicion->id_condicion_pago.'" selected>'.$condicion->condicion_pago.'</option>';
-															$arreglo_info['condiciones_pago'] = $condicion->condicion_pago;
+															$arreglo_condiciones[$condicion->id_condicion_pago] = $condicion->condicion_pago;
 														}
 													}
 				                           		}
@@ -299,7 +331,7 @@
 				                            				echo '<option value="'.$tiempo->id_tiempo_entrega.'">'.$tiempo->tiempo_entrega.'</option>';
 														else{
 															echo '<option value="'.$tiempo->id_tiempo_entrega.'" selected>'.$tiempo->tiempo_entrega.'</option>';
-															$arreglo_info['tiempos_entrega'] = $tiempo->tiempo_entrega;
+															$arreglo_tiempos[$tiempo->id_tiempo_entrega] = $tiempo->tiempo_entrega;
 														}
 													}
 				                            	}
@@ -307,17 +339,28 @@
 										?>
 			                       </select>
 			                    </div>
-                           </div>
+			                    <div class="col-xs-12 form-group">
+			                    	<textarea id="nota-publica" name="nota-publica" placeholder="<?php echo $this -> lang -> line('notas'); ?>" onkeyup="sessionStorage.setItem('nota-publica',$('#nota-publica').val());" style="width: 100%; resize: none" form="formGuardar"><?php if($pedido){	foreach($pedido as $row){ echo $row->nota_publica; } } ?></textarea>
+			                    </div>
+                           	</div>
                         </div><!-- /.col -->
-                        
-                    
-                        <div class="col-xs-6" id="div-info-extra">
-                            <p class="lead no-print"><?php echo $this -> lang -> line('notas'); ?></p>
-                            <p class="text-muted well well-sm no-shadow no-print" style="margin-top: 10px;">
-                                <?php echo armarInformacion($arreglo_info); ?>
+                    	
+                    	<div class="col-xs-6" id="div-info-extra">
+                            <p class="lead"><?php echo $this -> lang -> line('informacion'); ?></p>
+                            <p class="text-muted well well-sm no-shadow" style="margin-top: 10px;">
+                                <?php 
+                                	echo armarInformacion(
+                                			$arreglo_info=array(
+                                				$this->lang->line('modos').' de '.$this->lang->line('pago') 		=> $arreglo_modos,
+                                				$this->lang->line('condiciones').' de '.$this->lang->line('pago') 	=> $arreglo_condiciones,
+                                				$this->lang->line('tiempos').' de '.$this->lang->line('entrega')	=> $arreglo_tiempos
+											)
+										);
+									if($pedido){ foreach($pedido as $row){ echo $row->nota_publica; } }  
+								?>
                             </p>
                         </div><!-- /.col -->
-                       
+                        
                         <div class="col-xs-6" id="sub-pesos">
                             <p class="lead"><?php echo $this->lang->line('totales')?></p>
                             <div class="table-responsive" id="table-totales">
@@ -350,9 +393,8 @@
                                 <?php } } ?>
                                 </table>
                             </div>
-                        </div><!-- /.col -->
-                        
-                    </div><!-- /.row -->
+                        </div><!-- /.col --> 
+					</div><!-- /.row -->
 					
 					<div class="row no-print">
                         <div class="col-xs-12">
@@ -848,14 +890,25 @@ function aprobarForm() {
  	$("#aprobarForm").submit();
 }
 
-var aux = 0;
-
+var aux 		= 0;
+var aux_coment 	= 0;
+var aux_linea	= 0;
 $( document ).ready(function() {
 	var j = 0;
     getAlarmas(<?php echo $id_pedido?>);
     if(location.hash == "#tab2")
     	$('.nav-pills a:last').tab('show');
-    	
+   
+    if(sessionStorage['aux2'] > 0){
+    	for(i = 1; i <= sessionStorage['aux2']; i++ ){
+    		$('#2text-coment'+sessionStorage['posicion'+i]).val(sessionStorage['2comentario'+i]);
+    	}
+    }
+    
+    if(sessionStorage['nota-publica'] != 'undefined'){
+    	$('#nota-publica').val(sessionStorage['nota-publica']);
+    }
+    
     if(sessionStorage['aux']){
 		for(i = 0; i <= sessionStorage['aux']; i++ ){
 			if(sessionStorage['nomb'+i]){
@@ -871,14 +924,30 @@ $( document ).ready(function() {
 											 			'</td>'+
 											 			'<td><input type="text" id="subtotal'+j+'" autocomplete="off" required hidden value="'+sessionStorage['subtotal'+i]+'">$ '+sessionStorage['subtotal'+i]+'</td>'+
 											 			'<td>Nuevo</td>'+
-											 			'<td><a class="btn btn-danger btn-xs btn-nuevo-hide" onclick="deleteRow(this,<?php echo $id_pedido;?>,'+aux+')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto" style="display:none"><i class="fa fa-minus"></i></a></td>'+
-											 		'</tr>');
+											 			'<td><a class="btn btn-danger btn-xs" onclick="deleteRow(this,<?php echo $id_pedido;?>,'+aux+')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></td>'+
+											 			'<td class="text-center" style="width: 20px"><button type="button" onclick="$(\'#open-coment'+j+'\').show(); $(\'#text-coment'+j+'\').focus()" style="background: transparent; border: transparent; padding-left: 0px"><i class="fa fa-sticky-note-o fa-2x fa-rotate-180"></i></button>'+
+															'<span id="open-coment'+j+'" style="display:none">'+
+																'<div class="talkbubble" >'+
+																	'<div class="talkbubble-rectangulo">'+
+																		'<textarea rows="4" id="text-coment'+j+'" name="text-coment'+j+'" style="resize: none; width: 100%; background-color: transparent" onblur="$(\'#open-coment'+j+'\').hide(); guardarComentario('+j+')">'+
+																		'</textarea>'+
+																	'</div>'+
+																'</div>'+
+															'</span>'+
+														'</td>'+
+														'</tr>');
 				j++;
 			}
 			aux++;
 		}
 		editable();
 	}
+	
+	if(sessionStorage['aux3'] > 0){
+    	for(i = 1; i <= sessionStorage['aux3']; i++ ){
+    		$('#text-coment'+sessionStorage['linea'+i]).val(sessionStorage['comentario'+i]);
+    	}
+    }
 	armarTotales(<?php echo $id_pedido;?>);
 });
 
@@ -902,6 +971,8 @@ function editable(){
 	$('#btn-cotizacion').hide();
 	$('.btn-nuevo-hide').show();
 	$('#tablapedido').removeClass('table-striped');
+	$('.nota').removeClass('displaynone');
+
 	document.getElementById("producto").focus();
 }
 
@@ -944,11 +1015,28 @@ function cargaProducto($id_cliente){
 	});
 }
 
+function guardarComentario($linea){
+	aux_linea++;
+	var j 	= $linea;
+	sessionStorage.setItem('linea'+aux_linea, j);
+	sessionStorage.setItem('comentario'+aux_linea, $('#text-coment'+j).val());
+	sessionStorage.setItem('aux3', aux_linea); 
+}
+
+function guardarComentario2($linea){
+	aux_coment++;
+	var j 	= $linea;
+	sessionStorage.setItem('2comentario'+aux_coment, $('#2text-coment'+j).val());
+	sessionStorage.setItem('posicion'+aux_coment, j);
+	sessionStorage.setItem('aux2', aux_coment); 
+}
+
 function armarTotales($id_pedido){
 	var pedido	= $id_pedido;
 	var x = 0;
 	for(i = 0; i < aux; i++){
-		x += parseFloat($('#subtotal'+i).val());
+		if($('#subtotal'+i).val())
+			x += parseFloat($('#subtotal'+i).val());
 	}		
 	$.ajax({
 	 	type: 'POST',
@@ -1005,6 +1093,7 @@ function sacarProducto($id_linea, $pedido){
 	var id_moneda 		= [];
 	var valor_moneda 	= [];
 	var simbolo			= [];
+	var comentario		= [];
 	
 	for(i = 0; i < aux; i++){
 		producto[i] 	= $('#id_producto'+i).val();
@@ -1015,6 +1104,7 @@ function sacarProducto($id_linea, $pedido){
 		id_moneda[i]	= $('#id_moneda'+i).val();
 		valor_moneda[i]	= $('#valor_moneda'+i).val();
 		simbolo[i]		= $('#simbolo'+i).val();
+		comentario[i]	= $('#text-coment'+i).val();
 	}	
 	var pedido = $pedido;
  	var id_linea	= $id_linea;
@@ -1041,9 +1131,24 @@ function sacarProducto($id_linea, $pedido){
 												 		'<td><input type="text" id="subtotal'+i+'" autocomplete="off" required hidden value="'+subtotal[i]+'">$ '+subtotal[i]+'</td>'+
 											 			'<td>Nuevo</td>'+
 											 			'<td><a class="btn btn-danger btn-xs" onclick="deleteRow(this,<?php echo $id_pedido;?>,'+aux+')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></td>'+
+												 		'<td class="text-center" style="width: 20px"><button type="button" onclick="$(\'#open-coment'+i+'\').show(); $(\'#text-coment'+i+'\').focus()" style="background: transparent; border: transparent; padding-left: 0px"><i class="fa fa-sticky-note-o fa-2x fa-rotate-180"></i></button>'+
+															'<span id="open-coment'+i+'" style="display:none">'+
+																'<div class="talkbubble" >'+
+																	'<div class="talkbubble-rectangulo">'+
+																		'<textarea rows="4" id="text-coment'+i+'" name="text-coment'+i+'" style="resize: none; width: 100%; background-color: transparent" onblur="$(\'#open-coment'+i+'\').hide(); guardarComentario('+i+')">'+comentario[i]+
+																		'</textarea>'+
+																	'</div>'+
+																'</div>'+
+															'</span>'+
+														'</td>'+
 												 	'</tr>');
 				}
-			}	
+			}
+			if(sessionStorage['aux2'] > 0){
+		    	for(i = 1; i <= sessionStorage['aux2']; i++ ){
+		    		$('#2text-coment'+sessionStorage['posicion'+i]).val(sessionStorage['2comentario'+i]);
+		    	}
+		    }	
 	 		$(".cargarLinea").show();
 	 		armarTotales(pedido);
 	 	}
@@ -1059,6 +1164,7 @@ function cargarProducto($id_linea, $pedido){
 	var id_moneda 		= [];
 	var valor_moneda 	= [];
 	var simbolo			= [];
+	var comentario		= [];
 	
 	for(i = 0; i < aux; i++){
 		producto[i] 	= $('#id_producto'+i).val();
@@ -1068,7 +1174,8 @@ function cargarProducto($id_linea, $pedido){
 		nombre[i]		= $('#nomb'+i).val();
 		id_moneda[i]	= $('#id_moneda'+i).val();
 		valor_moneda[i]	= $('#valor_moneda'+i).val();
-		simbolo[i]		= $('#simbolo'+i).val();		
+		simbolo[i]		= $('#simbolo'+i).val();
+		comentario[i]	= $('#text-coment'+i).val();		
 	}	
 	var pedido = $pedido;
  	var id_linea	= $id_linea;
@@ -1095,9 +1202,24 @@ function cargarProducto($id_linea, $pedido){
 												 		'<td><input type="text" id="subtotal'+i+'" autocomplete="off" required hidden value="'+subtotal[i]+'">$ '+subtotal[i]+'</td>'+
 											 			'<td>Nuevo</td>'+
 											 			'<td><a class="btn btn-danger btn-xs" onclick="deleteRow(this,<?php echo $id_pedido;?>,'+aux+')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></td>'+
+												 		'<td class="text-center" style="width: 20px"><button type="button" onclick="$(\'#open-coment'+i+'\').show(); $(\'#text-coment'+i+'\').focus()" style="background: transparent; border: transparent; padding-left: 0px"><i class="fa fa-sticky-note-o fa-2x fa-rotate-180"></i></button>'+
+															'<span id="open-coment'+i+'" style="display:none">'+
+																'<div class="talkbubble" >'+
+																	'<div class="talkbubble-rectangulo">'+
+																		'<textarea rows="4" id="text-coment'+i+'" name="text-coment'+i+'" style="resize: none; width: 100%; background-color: transparent" onblur="$(\'#open-coment'+i+'\').hide(); guardarComentario('+i+')">'+comentario[i]+
+																		'</textarea>'+
+																	'</div>'+
+																'</div>'+
+															'</span>'+
+														'</td>'+
 												 	'</tr>');
 				}
-			}	
+			}
+			if(sessionStorage['aux2'] > 0){
+		    	for(i = 1; i <= sessionStorage['aux2']; i++ ){
+		    		$('#2text-coment'+sessionStorage['posicion'+i]).val(sessionStorage['2comentario'+i]);
+		    	}
+		    }		
 	 		$(".cargarLinea").show();
 	 		armarTotales(pedido);
 	 	}
@@ -1122,6 +1244,7 @@ function cancelarCambios($pedido){
 			$('#btn-guardar').hide();
 			$('#btn-cancelar').hide();
 			$('#btn-cotizacion').show();
+			$('.nota').addClass('displaynone');
 			aux = 0;
 			$('#tablapedido').addClass('table-striped');
 			sessionStorage.clear();
@@ -1136,6 +1259,22 @@ function imprimirConLogo(){
 function guardarLineasNuevas($pedido){
 	var pedido = $pedido;
 	var total = $('#total-ped').val();
+	if(sessionStorage['aux2'] > 0){
+	   	for(i = 1; i <= sessionStorage['aux2']; i++ ){
+	   		$.ajax({
+				type: 'POST',
+				url: '<?php echo base_url(); ?>index.php/Pedidos/updateNotaLinea', //Realizaremos la petición al metodo prueba del controlador direcciones
+				data: {	'linea'			: sessionStorage['posicion'+i],
+						'comentario'	: sessionStorage['2comentario'+i],
+				},
+				success: function(resp) { 
+						
+				},
+				async: false
+			});
+	   	}
+	}
+	
 	if($('#tiempo_entrega').val() && $('#condicion_pago').val() && $('#modos_pago').val()){
 		if(aux > 0){
 			for(i = 0; i < aux; i++){
@@ -1146,6 +1285,7 @@ function guardarLineasNuevas($pedido){
 					var subtotal 	= $('#subtotal'+i).val();
 					var id_moneda	= $('#id_moneda'+i).val();
 					var valor_moneda= $('#valor_moneda'+i).val();
+					var comentario	= $('#text-coment'+i).val();
 					$.ajax({
 					 	type: 'POST',
 					 	url: '<?php echo base_url(); ?>index.php/Pedidos/cargaProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
@@ -1156,6 +1296,7 @@ function guardarLineasNuevas($pedido){
 					 		   	'pedido'		: pedido,
 					 		   	'id_moneda'		: id_moneda,
 						 		'valor_moneda'	: valor_moneda,
+						 		'comentario'	: comentario,
 					 		   },
 					 	success: function(resp) { 
 					 		sessionStorage.clear();
@@ -1276,6 +1417,8 @@ function cotizar(){
 function deleteRow(r, $pedi, $row) {
     var j 		= r.parentNode.parentNode.rowIndex;
     var fila 	= $row;
+    var pedido	= <?php echo $id_pedido;?>;
+
     document.getElementById("tablapedido").deleteRow(j);
         
 	sessionStorage.removeItem('id_producto'+fila);
@@ -1289,6 +1432,9 @@ function deleteRow(r, $pedi, $row) {
 	sessionStorage.removeItem('simbolo'+fila);
 	 	
 	sessionStorage.removeItem('subtotal'+fila);
-    
+	
+	sessionStorage.removeItem('comentario'+fila);
+	
+	armarTotales(pedido);    
 }
 </script>

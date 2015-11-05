@@ -144,8 +144,6 @@ class Clientes extends My_Controller {
 			'eliminado'		=> 0
 		);
 		
-		$id			= $this->clientes_model->update($arreglo,$primary_key);
-		
 		$log		= array(
 			'accion'	=> 'INSERT',
 			'tabla'		=> 'clientes',
@@ -153,6 +151,8 @@ class Clientes extends My_Controller {
 		);
 		
 		$this->clientes_model->logRegistros($log);
+		
+		$id			= $this->clientes_model->update($arreglo,$primary_key);
 		
 		return true;
 	}

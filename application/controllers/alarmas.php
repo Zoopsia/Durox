@@ -21,7 +21,7 @@ class Alarmas extends My_Controller {
 	
 	public function nuevaAlarma($id_alarma=null){
 		
-		$db['alarmas']	= $this->alarmas_model->getTodo();
+		$db['alarmas']	= $this->alarmas_model->getTodo('tipos_alarmas');
 		
 		if($id_alarma){
 			$db['id_alarma']		= $id_alarma;
@@ -138,5 +138,19 @@ class Alarmas extends My_Controller {
 		}
 		
 		echo $url;
+	}
+	
+	public function editarTipoAlarma(){
+		
+		$alarma = array(
+			'nombre'		=> $this->input->post('nombre_editar'),
+			'tipo_alarma'	=> $this->input->post('icono_editar'),
+			'color'			=> $this->input->post('color_editar')
+		);
+		
+		$this->alarmas_model->updateAlarma($alarma, $this->input->post('id_alarma_editar'));
+		
+		redirect('Alarmas/nuevaAlarma/','refresh');
+		
 	}
 }

@@ -34,6 +34,7 @@ class Pedidos_model extends My_Model {
 					linea_productos_$this->_tablename.id_estado_producto_pedido AS estado_linea,
 					linea_productos_$this->_tablename.id_moneda,
 					linea_productos_$this->_tablename.valor_moneda,
+					linea_productos_$this->_tablename.comentario,
 					estados_productos_$this->_tablename.estado AS estado,
 					$this->_tablename.iteracion AS iteracion,
 					monedas.abreviatura,
