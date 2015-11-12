@@ -1108,7 +1108,7 @@ function cancelar(){
 function eliminar($id){
 	var r = confirm("¿Esta seguro que quiere eliminar el registro?");
     if (r == true) {
-		window.location.assign("/Durox/index.php/Clientes/delete_user/"+$id);
+		window.location.assign("/durox/index.php/Clientes/delete_user/"+$id);
 	}
 }
 

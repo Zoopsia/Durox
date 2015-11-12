@@ -68,17 +68,18 @@ function confirmar($id,$tipo){
 	var c = confirm("Los datos no han sido guardados.\n¿Está seguro que quiere salir?");
 	if (c==true){
 		if($tipo==1){
-			window.location.assign("/Durox/index.php/clientes/pestanas/"+$id);
+			window.history.back();
 		}
 		else if($tipo==2)
-			window.location.assign("/Durox/index.php/vendedores/pestanas/"+$id);
+			window.history.back();	
 	}
 }
 
 function confirmarGrupo(){
 	var c = confirm("Los datos no han sido guardados.\n¿Está seguro que quiere salir?");
 	if (c==true){
-			window.location.assign("/Durox/index.php/Grupos/adminClientes");
+			window.history.back();
+			//window.location.assign("/durox/index.php/Grupos/adminClientes");
 	}
 }
 

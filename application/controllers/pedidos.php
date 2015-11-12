@@ -29,6 +29,7 @@ class Pedidos extends My_Controller {
 		$this->load->model('condiciones_pago_model');
 		$this->load->model('tiempos_entrega_model');
 		
+		
 		$this->load->model($this->_subject.'_model');	
 	}
 	
@@ -777,7 +778,12 @@ class Pedidos extends My_Controller {
 		if($mails){
 			foreach($mails as $row){
 				$cuerpo = $this->armarCuerpo($this->input->post('cuerpo'),$id_pedido);
-				mail($row, $this->input->post('titulo'), $cuerpo, $this->input->post('cabecera'));
+				$cabeceras  = 'MIME-Version: 1.0' . "\r\n";
+				$cabeceras .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+				$cabeceras .= 'From: Durox | Enología S.R.L <cristian.nieto@tmsgroup.com.ar>' . "\r\n";
+				$cabeceras	= utf8_decode($cabeceras);
+				$asunto		= utf8_decode($this->input->post('titulo'));
+				mail($row, $asunto, $cuerpo, $cabeceras);
 			}
 		}
 		
@@ -809,7 +815,13 @@ class Pedidos extends My_Controller {
 		if($mails){
 			foreach($mails as $row){
 				$cuerpo = $this->armarCuerpo($this->input->post('cuerpo2'),$id_pedido);
-				mail($row, $this->input->post('titulo-Mail'), $cuerpo, $this->input->post('cabecera2'));
+				$cabeceras  = 'MIME-Version: 1.0' . "\r\n";
+				$cabeceras .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
+				$cabeceras .= 'From: Durox | Enología S.R.L <cristian.nieto@tmsgroup.com.ar>' . "\r\n";
+				$cabeceras	= utf8_decode($cabeceras);
+				$asunto		= utf8_decode($this->input->post('titulo-Mail'));
+				mail($row, $asunto, $cuerpo, $cabeceras);
+				//mail($row, $this->input->post('titulo-Mail'), $cuerpo, $this->input->post('cabecera2'));
 			}
 		}
 		
@@ -876,7 +888,7 @@ class Pedidos extends My_Controller {
 	function traerProducto2(){
 		$producto	= $this->productos_model->getRegistro($this->input->post('producto'));
 		
-		$cliente			= $this->clientes_model->getCliente($this->input->post('cliente'));
+		$cliente	= $this->clientes_model->getCliente($this->input->post('cliente'));
 				
 		if($this->input->post('producto')){
 			if($this->input->post('cantidad')){
@@ -1060,7 +1072,6 @@ class Pedidos extends My_Controller {
 		$vendedor			= $this->input->post('vendedor');
 		$fecha				= $this->input->post('fecha');
 		$condicion_pago		= $this->input->post('condicion_pago');
-		//$modos_pago			= $this->input->post('modos_pago');
 		$tiempo_entrega		= $this->input->post('tiempo_entrega');
 		
 			

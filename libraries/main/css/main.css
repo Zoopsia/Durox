@@ -596,3 +596,10 @@ div.user-panel{
 	border-bottom:16px solid #aaa; 
 	border-left:8px solid transparent;
 } 
+
+.itemSeleccionado{
+	background-color: #EEEDED;
+    border-style: dashed;
+    border-width: 2px;
+    border-color: #DDDDDD;
+}

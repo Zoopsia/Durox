@@ -95,7 +95,7 @@ function clientesActivos(){
 													if($grupos){
 														foreach($grupos as $row){
 															echo "<tr>";
-															echo "<td onclick='grupoElegido(".$row->id_grupo_cliente."),reglasActivas(),clientesActivos()'>".$row->grupo_nombre."</td>";
+															echo "<td ondblclick='grupoElegido(".$row->id_grupo_cliente."),reglasActivas(),clientesActivos()'>".$row->grupo_nombre."</td>";
 															echo "</tr>";
 														}
 													}
@@ -475,4 +475,5 @@ function volverHide(){
 	$('#clientes').html('');
 	$('#clientegrupo').html('');
 }
+
 </script>

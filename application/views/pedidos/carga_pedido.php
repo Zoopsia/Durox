@@ -388,7 +388,7 @@ function cancelarCambios($pedido){
 	var r = confirm("Desea Cancelar el pedido?\nAdventencia! - No podrá volver atrás");
 	if (r == true) {
 		sessionStorage.clear();
-		window.location.assign("/Durox/index.php/Pedidos/pedidos_abm/tab1");
+		window.location.assign("/durox/index.php/Pedidos/pedidos_abm/tab1");
 	}
 }
 

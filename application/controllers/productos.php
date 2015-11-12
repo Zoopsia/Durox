@@ -70,6 +70,8 @@ class Productos extends My_Controller {
 						  'id_moneda',
 						  'ficha_tecnica',
 						  'descripcion');
+			
+			$crud->set_rules('precio','Precio','numeric');
 						  
 			$crud->set_field_upload('ficha_tecnica','img/productos/documentos');			  
 							

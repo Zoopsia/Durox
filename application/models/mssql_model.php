@@ -3,7 +3,7 @@ class Mssql_model extends My_Model {
 			
 	protected $subjet 	= 'dbo';//esquema
 	protected $prefijo 	= 'bj_';
-	protected $host		= '192.168.1.234';
+	protected $host		= '192.168.1.232';
 	protected $port 	= 1433; 
 	
 	function __construct(){
@@ -45,12 +45,19 @@ class Mssql_model extends My_Model {
         //a la base de datos mssql
         
         if($db_mssql){
-        	
+        	//CONSULTA CON TABLAS
+        	/*
 	        $sql = "SELECT	
 	        			TABLE_NAME
 					FROM 
 						$nombreDB.INFORMATION_SCHEMA.TABLES";
-	
+			*/
+			//CONSULTA CON VISTAS
+			$sql = "SELECT	
+	        			TABLE_NAME
+					FROM 
+						$nombreDB.INFORMATION_SCHEMA.VIEWS";
+						
 			$query = $db_mssql->query($sql);
 			
 			if($query->num_rows() > 0)
@@ -70,12 +77,12 @@ class Mssql_model extends My_Model {
 	
 	function crearColumnas($db, $nombreDB ,$tabla){
 			
-		/*
+		
 		//Elimino la tabla existente//
 		$tabladestino = strtolower($tabla);	
 		$delete = "DROP TABLE IF EXISTS $this->prefijo$tabladestino";
 		$this->db->query($delete);
-		*/
+		
 		$db_mssql = $this->load->database($db, TRUE);
 		
 		//-- Hago un SELECT de los nombres de las Columnas de su db 

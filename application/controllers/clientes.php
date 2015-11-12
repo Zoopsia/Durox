@@ -89,6 +89,8 @@ class Clientes extends My_Controller {
 							'cuit',
 							'id_grupo_cliente',
 							'id_iva');
+			
+			$crud->set_rules('cuit','Cuit','integer');
 							
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
 			$crud->callback_delete(array($this,'delete_user'));

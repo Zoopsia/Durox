@@ -43,7 +43,7 @@ function editable(){
 function eliminar($id){
 	var r = confirm("¿Esta seguro que quiere eliminar el registro?");
     if (r == true) {
-		window.location.assign("/Durox/index.php/Productos/delete_user/"+$id);
+		window.location.assign("/durox/index.php/Productos/delete_user/"+$id);
 	}
 }
 

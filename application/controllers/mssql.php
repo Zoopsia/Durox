@@ -20,15 +20,19 @@ class Mssql extends My_Controller {
 	
 	public function armarTablas(){
 			
-		$nombreDB 			= 'Prueba';
-		$basededatos		= 'mssql';
-		$tablas 			= $this->mssql_model->crearTablas($basededatos,$nombreDB);
+		$coneccion			= $this->mssql_model->pingDB();
 		
-		if($tablas){
-			foreach ($tablas as $row) {
-				$this->mssql_model->crearColumnas($basededatos,$nombreDB,$row->TABLE_NAME);
-				$this->mssql_model->copiarRegistros($basededatos,$nombreDB,$row->TABLE_NAME);
-				$this->mssql_model->mergeTablas($row->TABLE_NAME);
+		if($coneccion){
+			$nombreDB 			= 'WEB_Bejerman';
+			$basededatos		= 'mssql';
+			$tablas 			= $this->mssql_model->crearTablas($basededatos,$nombreDB);
+			
+			if($tablas){
+				foreach ($tablas as $row) {
+					$this->mssql_model->crearColumnas($basededatos,$nombreDB,$row->TABLE_NAME);
+					//$this->mssql_model->copiarRegistros($basededatos,$nombreDB,$row->TABLE_NAME);
+					//$this->mssql_model->mergeTablas($row->TABLE_NAME);
+				}
 			}
 		}
 	}

@@ -1112,7 +1112,7 @@ function sacarProducto($id_linea, $pedido){
 	 	type: 'POST',
 	 	url: '<?php echo base_url(); ?>index.php/Pedidos/sacarProducto', //Realizaremos la petición al metodo prueba del controlador direcciones
 	 	data: {'id_linea'	: id_linea,
-	 		   'pedido': pedido,
+	 		   'pedido'		: pedido,
 	 		   },
 	 	success: function(resp) {
 	 		$('#tablapedido').attr('disabled',false).html(resp);//Con el método ".html()" incluimos el código html devuelto por AJAX en la lista de provincias

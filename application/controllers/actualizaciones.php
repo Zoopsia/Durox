@@ -727,6 +727,7 @@ class Actualizaciones extends CI_Controller {
 					log_message('DEBUG', 'El vendedor '.$row->nombre.' ha realizado login');
 				}
 			}
+		
 		}else{
 			$db['registros'] = FALSE;
 			   log_message('ERROR', 'No se envio el post con el usuario');

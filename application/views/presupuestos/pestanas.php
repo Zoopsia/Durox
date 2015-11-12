@@ -94,20 +94,6 @@ $aux2 = 0;
 		<div class="panel-body">
 			<div class="tab-content">
 				<div class="tab-pane fade in active" id="tab1"> 
-		  		<?php
-					if($id_presupuesto){
-						if($tipo!=1){?>
-							<div class="row">
-								<div class="col-md-10 col-md-offset-1 no-print">
-									<div class="alert alert-success alert-dismissible" role="alert">
-										<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-						  				El Presupuesto <a href="#"><?php echo $id_presupuesto; ?></a> <?php echo ' '.$this->lang->line('insert_ok');?>
-									</div>	
-								</div>
-							</div>
-				<?php 	} 
-					}
-				?>
 		  		<!--INFO GRAL DEL PRESUPUESTO-->	
 	    		<?php
 					if($presupuesto){
@@ -228,6 +214,7 @@ $aux2 = 0;
 								                <th><?php echo $this->lang->line('precio'); ?></th>
 								                <th><?php echo $this->lang->line('subtotal'); ?></th>
 								                <th class="no-print"><?php echo $this->lang->line('estado'); ?></th>
+								            	<th class="text-center" style="width: 20px"></th>
 								            </tr>
 								        </thead>
 								 
@@ -251,6 +238,17 @@ $aux2 = 0;
 												echo '<td>$ '.$row->precio.'</td>'; // Aca debe ir el signo de la moneda que se esta usando
 												echo '<td>$ '.$row->subtotal.'</td>';
 												echo '<td class="no-print">'.$row->estado.'</td>';				
+													if($row->comentario){
+																echo '<td class="text-center no-print" style="width: 20px"><button type="button" onclick="$(\'#2open-coment'.$row -> id_linea_producto_presupuesto.'\').show(); $(\'#2text-coment'.$row -> id_linea_producto_presupuesto.'\').focus()" style="background: transparent; border: transparent; padding-left: 0px"><i class="fa fa-sticky-note-o fa-2x fa-rotate-180"></i></button>
+																	<span id="2open-coment'.$row -> id_linea_producto_presupuesto.'" style="display:none">
+																		<div class="talkbubble" >
+																			<div class="talkbubble-rectangulo">
+																				<textarea rows="4" id="2text-coment'.$row -> id_linea_producto_presupuesto.'" name="2text-coment'.$row -> id_linea_producto_presupuesto.'" style="resize: none; width: 100%; background-color: transparent" onblur="$(\'#2open-coment'.$row -> id_linea_producto_presupuesto.'\').hide();">'.$row->comentario.'</textarea>
+																			</div>
+																		</div>
+																	</span>
+																</td>';
+													}
 												echo '</tr>';
 											}	
 										}		

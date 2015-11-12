@@ -32,6 +32,9 @@ class Presupuestos_model extends My_Model {
 					linea_productos_$this->_tablename.subtotal AS subtotal,
 					linea_productos_$this->_tablename.id_linea_producto_presupuesto AS id_linea_producto_presupuesto,
 					linea_productos_$this->_tablename.id_estado_producto_presupuesto AS estado_linea,
+					linea_productos_$this->_tablename.id_moneda,
+					linea_productos_$this->_tablename.valor_moneda,
+					linea_productos_$this->_tablename.comentario,
 					estados_productos_$this->_tablename.estado AS estado,
 					monedas.id_moneda,
 					monedas.valor,
@@ -52,7 +55,6 @@ class Presupuestos_model extends My_Model {
 				WHERE 
 					$this->_id_table = '$id'";
 
-					
 		$query = $this->db->query($sql);
 		
 		if($query->num_rows() > 0)
@@ -162,17 +164,6 @@ class Presupuestos_model extends My_Model {
         $this->db->like('nombre', $producto);
         return $this->db->get('productos', 10);
     }
-    
-	public function deletePresupuesto($presupuesto){
-    	$this->db->where($this->_id_table, $presupuesto);
-		$this->db->delete('presupuestos');
-		
-		$this->db->where($this->_id_table, $presupuesto);
-		$this->db->delete('sin_visitas_presupuestos');
-		
-		$this->db->where($this->_id_table, $presupuesto);
-		$this->db->delete('linea_productos_presupuestos');
-    }  
 	
 	public function updateLinea($arreglo_campos, $id){
 		

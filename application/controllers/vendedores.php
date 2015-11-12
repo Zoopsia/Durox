@@ -77,6 +77,8 @@ class Vendedores extends My_Controller {
 			$crud->fields(	'nombre',
 							'apellido',
 							'pass');
+			
+			$crud->set_rules('pass','Contraseña','integer');
 					
 			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
 			$crud->callback_delete(array($this,'delete_user'));

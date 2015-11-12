@@ -31,11 +31,11 @@ class Home extends My_Controller {
 		$db['visitas_cantidad'] 	= $this->visitas_model->getCantidad();
 		$db['vendedores'] 			= $this->vendedores_model->getTodo();
 		$db['recibidos']			= $this->mensajes_model->mensajesNuevosHome();
-		
+		/*
 		$coneccion			= $this->mssql_model->pingDB();
 		
 		if($coneccion){
-			$nombreDB 			= 'Prueba';
+			$nombreDB 			= 'WEB_Bejerman';
 			$basededatos		= 'mssql';
 			$tablas 			= $this->mssql_model->crearTablas($basededatos,$nombreDB);
 			
@@ -47,7 +47,7 @@ class Home extends My_Controller {
 				}
 			}
 		}
-		
+		*/
 		$this->cargar_vista($db, 'inicio');
 	}
 

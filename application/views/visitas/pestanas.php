@@ -27,7 +27,7 @@ function tablaPresupuesto($id_presupuesto){
 function eliminar($id){
 	var r = confirm("¿Esta seguro que quiere eliminar el registro?");
     if (r == true) {
-		window.location.assign("/Durox/index.php/Visitas/delete_user/"+$id);
+		window.location.assign("/durox/index.php/Visitas/delete_user/"+$id);
 	}
 }
 function saveAlarm($id){

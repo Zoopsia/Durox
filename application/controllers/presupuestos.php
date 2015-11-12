@@ -30,7 +30,7 @@ class Presupuestos extends My_Controller {
 	}
 	
 
-	public function pestanas($id, $tipo=1)
+	public function pestanas($id)
 	{
 		$presupuesto			= $this->presupuestos_model->getRegistro($id);
 		$db['presupuesto']		= $presupuesto;
@@ -48,7 +48,6 @@ class Presupuestos extends My_Controller {
 		$db['alarmas']			= $this->presupuestos_model->getAlarmas($id);
 		$db['tipos_alarmas']	= $this->presupuestos_model->getTodo('tipos_alarmas');
 		$db['id_presupuesto']	= $id;
-		$db['tipo']				= $tipo;
 		
 		$db['modos_pago']		= $this->modos_pago_model->getTodo();
 		$db['sin_modos']		= $this->presupuestos_model->getModos($id);
@@ -153,79 +152,145 @@ class Presupuestos extends My_Controller {
 	
 	public function nuevoPresupuesto()
 	{
-		
-		//----- SI LA VISITA YA EXISTIA----//
-		
-		$fecha = formato_fecha($this->input->post('fecha'));
-		
-		if($this->input->post('id_visita'))
-		{
-			$presupuesto	= array(
-				'id_visita'				=> $this->input->post('id_visita'),
-				'id_cliente' 			=> $this->input->post('id_cliente'), 
-				'id_vendedor' 			=> $this->input->post('id_vendedor'),
-				'fecha'					=> $fecha,
-				'id_origen'				=> 2,
-				'visto_back'			=> 0,
-				'eliminado'				=> 0
-			);
-	
-			$id_presupuesto 	= $this->presupuestos_model->insert($presupuesto);
-			
-			$arreglo_cruce	= array(
-				'id_visita'				=> $this->input->post('id_visita'),
-				'id_presupuesto'		=> $id_presupuesto, 
-			);
-			
-			$this->presupuestos_model->insertCruceVisita($arreglo_cruce);
-			
-			$id_visita		= $this->input->post('id_visita');
+		$id_presupuesto	= $this->presupuestos_model->getCantidadRegistros() + 1;
+		if($this->input->post('id_visita')){
+			$id_visita	= $this->input->post('id_visita');
 		}
-		else 
-		{//------ SI LA VISITA NO SE ELIGIÓ O NO EXISTIA----//
-			
-			$visita	= array(
-			'id_cliente' 		=> $this->input->post('id_cliente'), 
-			'id_vendedor' 		=> $this->input->post('id_vendedor'),
-			'fecha'				=> $fecha		
-			);
-
-			$id_visita = $this->visitas_model->insert($visita);
-			
-			$presupuesto	= array(
-				'id_visita'				=> $id_visita,
-				'id_cliente' 			=> $this->input->post('id_cliente'), 
-				'id_vendedor' 			=> $this->input->post('id_vendedor'),
-				'fecha'					=> $fecha,
-				'id_origen'				=> 2,
-				'visto_back'			=> 0
-			);
-	
-			$id_presupuesto 	= $this->presupuestos_model->insert($presupuesto);
-			
-			$arreglo_cruce	= array(
-				'id_visita'				=> $id_visita,
-				'id_presupuesto'		=> $id_presupuesto, 
-			);
-			
-			$this->presupuestos_model->insertCruceVisita($arreglo_cruce);
+		else{
+			$id_visita	= $this->visitas_model->getCantidadRegistros() + 1;
 		}
 		
-		//----- LO LLEVO A LA CARGA DE PRODUCTOS DEL PRESUPUESTO -----//
-		if($id_presupuesto)
-		{
+		$id_cliente		= $this->input->post('id_cliente');
+		$id_vendedor	= $this->input->post('id_vendedor');
+		$fecha			= formato_fecha($this->input->post('fecha'));
+		
+		if($id_presupuesto){
+			$db['clientes']			= $this->clientes_model->getRegistro($id_cliente);
+			$db['vendedores']		= $this->vendedores_model->getRegistro($id_vendedor);
+			$db['fecha']			= $fecha;
+			$db['id_cliente']		= $id_cliente;
+			$db['id_vendedor']		= $id_vendedor;
+			$db['visita']			= $id_visita;
 			$db['presupuesto']		= $id_presupuesto;
 			$db['productos']		= $this->presupuestos_model->getProductosTodo();
-			$db['visita']			= $id_visita;
-			$db['tipo']				= 0;
-			$db['presupuestos']		= $this->presupuestos_model->getRegistro($id_presupuesto);
-			$db['clientes']			= $this->clientes_model->getTodo();
-			$db['vendedores']		= $this->vendedores_model->getTodo();
-			$db['iva']				= $this->clientes_model->getTodo('iva');	
+			
+			$db['iva']				= $this->clientes_model->getTodo('iva');		
+			$db['modos_pago']		= $this->modos_pago_model->getTodo();
+			$db['condiciones_pago']	= $this->condiciones_pago_model->getTodo();
+			$db['tiempos_entrega']	= $this->tiempos_entrega_model->getTodo();
 			$db['estados']			= $this->presupuestos_model->getTodo('estados_presupuestos');
+			$db['nota']				= '';
+			$db['anterior_presup']	= 0;
+			$db['detalle']			= '';
+			
+			$db['presupuestos']		= $this->presupuestos_model->getRegistro($id_presupuesto);
 			
 			$this->cargar_vista($db, 'carga_productos');
 		}
+	}
+	
+	public function guardarNuevoPresupuesto(){
+		
+		$cliente 			= $this->input->post('cliente');
+		$vendedor			= $this->input->post('vendedor');
+		$fecha				= $this->input->post('fecha');
+		$condicion_pago		= $this->input->post('condicion_pago');
+		$tiempo_entrega		= $this->input->post('tiempo_entrega');
+		$nota				= $this->input->post('nota-publica');
+		$id_visita			= $this->input->post('visita');
+		$estado				= $this->input->post('estado_presupuesto');
+		$total				= $this->input->post('total-ped');
+		$anterior			= $this->input->post('anterior_presupuesto');
+		
+		if($this->visitas_model->getCantidadRegistros() + 1 == $id_visita){
+			
+			$visita			= array(
+				'id_cliente' 		=> $cliente, 
+				'id_vendedor' 		=> $vendedor,
+				'fecha'				=> $fecha,
+				'id_origen_visita'	=> 0,
+				'id_origen'			=> 2
+						
+			);
+	
+			$id_visita = $this->visitas_model->insert($visita);
+		}
+
+		$presupuesto	= array(
+				'id_visita'				=> $id_visita,
+				'id_cliente' 			=> $cliente, 
+				'id_vendedor' 			=> $vendedor,
+				'fecha'					=> $fecha,
+				'id_origen'				=> 2,
+				'visto_back'			=> 0,
+				'id_estado_presupuesto'	=> $estado,
+				'id_condicion_pago'		=> $condicion_pago,
+				'id_tiempo_entrega'		=> $tiempo_entrega,
+				'nota_publica'			=> $nota,
+				'total'					=> $total
+		);
+	
+		$id_presupuesto 	= $this->presupuestos_model->insert($presupuesto);
+			
+		$arreglo_cruce	= array(
+				'id_visita'				=> $id_visita,
+				'id_presupuesto'		=> $id_presupuesto, 
+		);
+			
+		$this->presupuestos_model->insertCruceVisita($arreglo_cruce);
+		
+		foreach($_POST['modos_pago'] as $modos){
+			$cruce_presupuesto_modo	= array(
+				'id_modo_pago'		=> $modos,
+				'id_presupuesto'	=> $id_presupuesto
+			);
+			
+			$this->presupuestos_model->insertCruceModos($cruce_presupuesto_modo);
+		}
+		
+		if($anterior != 0){
+			$arreglo_anterior = array(
+				'id_estado_presupuesto' => 3,
+				'eliminado'				=> 0
+			);
+			
+			$this->presupuestos_model->update($arreglo_anterior, $anterior);
+		}
+		
+		redirect('Presupuestos/pestanas/'.$id_presupuesto,'refresh');
+		
+	}
+	
+	function armarTotales(){
+		$total = 0;
+		$presupuesto		= $this->presupuestos_model->getDetallePresupuesto($this->input->post('presupuesto'));
+		
+		if($presupuesto)
+		{
+			foreach ($presupuesto as $row) 
+			{
+				if($row->estado_linea != 3)
+					$total = $row->subtotal + $total;
+			}
+		}
+		$total = $total + $this->input->post('subtotal');
+		
+		$mensaje = '<table class="table">
+				        <tr>
+				        	<th style="width:50%">'.$this->lang->line('subtotal').'</th>
+				       		<td>$ '.round($total,2).'<input type="number" name="total-ped" id="total-ped" value="'.$total.'" hidden form="formGuardar"></td>
+				       	</tr>
+				        <tr>
+				       		<th>'.$this->lang->line('iva').'</th>
+				       		<td>$ '.round($total*1.21-$total,2).'</td>
+				       	</tr>
+				       	<tr>
+				      		<th>'.$this->lang->line('total').'</th>
+				    		<td>$ '.round($total*1.21,2).'</td>
+				       	</tr>
+       				</table>';
+       	
+       	echo $mensaje;
 	}
 	
 	public function getVendedor(){
@@ -290,30 +355,27 @@ class Presupuestos extends My_Controller {
 	
 	public function cargaProducto(){
 		
-		$presupuesto		= $this->input->post('presupuesto');
-		$pres				= $this->presupuestos_model->getRegistro($presupuesto);
+		$producto	= $this->productos_model->getRegistro($this->input->post('producto'));
 		
-		foreach($pres as $row){
-			$cliente			= $this->clientes_model->getCliente($row->id_cliente);
-		}
+		$cliente			= $this->clientes_model->getCliente($this->input->post('cliente'));
 		
 		if($this->input->post('producto')){
 			if($this->input->post('cantidad')){
-
-				$producto			= $this->input->post('producto');
-				$cantidad			= $this->input->post('cantidad');
-
-				$productos			= $this->presupuestos_model->getProductosTodo();
+				$cantidad		= $this->input->post('cantidad');
+				$producto		= $this->productos_model->getRegistro($this->input->post('producto'));
 				
-				foreach ($productos as $row) {
-					if($row->id_producto == $producto){
-						$precio 	= $row->precio;
-						$moneda		= $row->id_moneda;
+				if($producto){
+					foreach ($producto as $row) {
+						$precio 		= $row->precio;
+						$nombre			= $row->nombre;
+						$abreviatura	= $row->abreviatura;
+						$simbolo		= $row->simbolo;
+						$valor			= $row->valor;
+						$id_moneda		= $row->id_moneda;
 					}
 				}
 				
 				foreach($cliente as $row){
-					
 					$descuento = ($precio * $row->valor)/100;
 					if($row->aumento_descuento == 1){
 						$preciofinal = $precio - $descuento;
@@ -323,220 +385,54 @@ class Presupuestos extends My_Controller {
 					}
 				}
 				
-				$arreglo	= array(
-					'id_presupuesto'				=> $this->input->post('presupuesto'),
-					'id_producto' 					=> $this->input->post('producto'), 
-					'cantidad' 						=> $cantidad,
-					'id_estado_producto_presupuesto'=> 1,
-					'precio'						=> round($preciofinal, 2),
-					'subtotal'						=> round($preciofinal, 2)*$cantidad,
-					'id_moneda'						=> $moneda	
-				);
-
-				$linea				= $this->presupuestos_model->insertLinea($arreglo);
-			}
+				$preciototal	= round($preciofinal, 2);
+				$subtotal 		= round((round($preciofinal, 2)*$cantidad)*$valor, 2);	
+				
+				echo 	'<tr>
+							<td><input type="text" id="id_producto'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$this->input->post('producto').'">'.$nombre.'
+								<input type="text" id="nomb'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$nombre.'">
+								<input type="text" id="id_moneda'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$id_moneda.'">
+								<input type="text" id="valor_moneda'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$valor.'">
+								<input type="text" id="estado'.$this->input->post('aux').'" autocomplete="off" required hidden value="1">
+							</td>
+							<td><input type="text" id="cant'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$this->input->post('cantidad').'">'.$cantidad.'</td>
+							<td><input type="text" id="precio'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$preciototal.'">'.$abreviatura.$simbolo.' '.$preciototal.'
+								<input type="text" id="simbolo'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$abreviatura.$simbolo.'">
+							</td>
+							<td><input type="text" id="subtotal'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$subtotal.'">$ '.$subtotal.'</td>
+							<td>Nuevo</td>
+							<td><a class="btn btn-danger btn-xs" onclick="sacarProducto(this,'.$this->input->post('aux').')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></td>
+							<td class="text-center" style="width: 20px"><button type="button" onclick="$(\'#open-coment'.$this->input->post('aux').'\').show(); $(\'#text-coment'.$this->input->post('aux').'\').focus()" style="background: transparent; border: transparent; padding-left: 0px"><i class="fa fa-sticky-note-o fa-2x fa-rotate-180"></i></button>
+								<span id="open-coment'.$this->input->post('aux').'" style="display:none">
+									<div class="talkbubble" >
+										<div class="talkbubble-rectangulo">
+											<textarea rows="4" id="text-coment'.$this->input->post('aux').'" name="text-coment'.$this->input->post('aux').'" style="resize: none; width: 100%; background-color: transparent" onblur="$(\'#open-coment'.$this->input->post('aux').'\').hide(); guardarComentario('.$this->input->post('aux').')"></textarea>
+										</div>
+									</div>
+								</span>
+							</td>
+						</tr>'; 
+		
+			}																
 		}
-	
-		$this->armarTabla($presupuesto);	
 	}
-
-	public function sacarProducto(){
-			
-		$id_linea			= $this->input->post('id_linea');
-		$presupuesto		= $this->input->post('presupuesto');
-		
-		if($id_linea){
-			$arreglo	= array(
-				'id_estado_producto_presupuesto'	=> 3, 	
-			);
-		}
-		
-		$id_presupuesto 	= $this->presupuestos_model->updateLinea($arreglo,$id_linea);
-		
-		$this->armarTabla($presupuesto);
-	} 
 	
-	public function ingresarProducto(){
-			
-		$id_linea			= $this->input->post('id_linea');
-		$presupuesto		= $this->input->post('presupuesto');
-		
+	public function guardarLineasPresupuesto(){
 		
 		$arreglo	= array(
-			'id_estado_producto_presupuesto'	=> 1, 	
+			'id_presupuesto'				=> $this->input->post('presupuesto'),
+			'id_producto' 					=> $this->input->post('producto'), 
+			'cantidad' 						=> $this->input->post('cantidad'),
+			'precio'						=> $this->input->post('precio'),
+			'subtotal'						=> $this->input->post('subtotal'),	
+			'id_moneda'						=> $this->input->post('id_moneda'),
+			'valor_moneda'					=> $this->input->post('valor_moneda'),
+			'comentario'					=> $this->input->post('comentario'),
+			'id_estado_producto_presupuesto'=> $this->input->post('estado'),
+			'eliminado'						=> 0
 		);
-		
-		$id_presupuesto 	= $this->presupuestos_model->updateLinea($arreglo,$id_linea);
-		
-		$this->armarTabla($presupuesto);
-	} 
-	
-	public function armarTabla($presupuesto){
-		
-		$pres			= $this->presupuestos_model->getRegistro($presupuesto);
-		
-		foreach($pres as $row){
-			$cliente			= $this->clientes_model->getCliente($row->id_cliente);
-		}
 
-		$detalle			= $this->presupuestos_model->getDetallePresupuesto($presupuesto);
-			
-		$mensaje = '<form action="" id="formProducto" class="form-inline" method="post">
-					<table class="table" cellspacing="0" width="100%">
-					<thead>
-						<tr>
-							
-							<th class="th">'.$this->lang->line("producto").'</th>
-							<th class="th">'.$this->lang->line("cantidad").'</th>
-							<th class="th">'.$this->lang->line("precio").' '.$this->lang->line("base").'</th>
-							<th class="th">'.$this->lang->line("precio").'</th>
-							<th class="th">'.$this->lang->line("subtotal").'</th>
-							<th></th>
-							<th></th>
-						</tr>
-					</thead>';
-					
-		$mensaje .= '<tbody>';		
-		
-		$mensaje .= '<tr>
-							<th>
-							<input type="text" id="producto" name="producto" class="numeric form-control" autocomplete="off" pattern="^[A-Za-z0-9 ]+$" onkeyup="ajaxSearch();" placeholder="'.$this->lang->line('producto').'" required>
-								<div id="suggestions">
-									<div id="autoSuggestionsList">  
-									</div>
-							    </div>
-								<input type="text" id="id_producto" name="id_producto" autocomplete="off" pattern="[0-9]*" required hidden>
-							</th>
-							<th><input type="text" id="cantidad" name="cantidad1" class="numeric form-control" onkeypress="if (event.keyCode==13){nuevaLinea(); return false;}" autocomplete="off" pattern="[0-9]*" placeholder="'.$this->lang->line('cantidad').'" required></th>
-							<th></th>
-							<th></th>
-							<th></th>
-							<th>
-								<a role="button" id="nuevalinea" class="btn btn-success btn-sm" onclick="cargaProducto('.$presupuesto.')" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('agregar').' '.$this->lang->line('producto').'">
-									<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-								</a>
-							</th>
-							<th></th>
-					</tr>';
-		
-		foreach ($detalle as $row) {
-			if($row->estado_linea == 1){
-				$mensaje	.= '<tr>';					
-				$mensaje	.= '<th>'.$row->nombre.'</th>';
-				$mensaje	.= '<th>'.$row->cantidad.'</th>';
-				$mensaje	.= '<th>'.'$'.$row->preciobase.'</th>';
-				$mensaje	.= '<th>'.'$'.$row->precio.'</th>';
-				$mensaje	.= '<th>'.'$'.$row->subtotal.'</th>';
-				$mensaje	.= '<th><a href="#" class="btn btn-danger btn-xs" onclick="sacarProducto('.$row->id_linea_producto_presupuesto.','.$presupuesto.')" role="button" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('sacar').' '.$this->lang->line('producto').'">';
-				$mensaje	.= '<i class="fa fa-minus"></i>';
-				$mensaje	.= '</a></th>';
-				$mensaje	.= '<th style="width: 107px"></th>';
-				$mensaje	.= '</tr>';
-			}
-			else{
-				$mensaje	.= '<tr class="rechazado">';					
-				$mensaje	.= '<th>'.$row->nombre.'</th>';
-				$mensaje	.= '<th>'.$row->cantidad.'</th>';
-				$mensaje	.= '<th>'.'$'.$row->preciobase.'</th>';
-				$mensaje	.= '<th>'.'$'.$row->precio.'</th>';
-				$mensaje	.= '<th>'.'$'.$row->subtotal.'</th>';
-				$mensaje	.= '<th><a href="#" class="btn btn-success btn-xs" onclick="ingresarProducto('.$row->id_linea_producto_presupuesto.','.$presupuesto.')" role="button" data-toggle="tooltip" data-placement="bottom" title="'.$this->lang->line('insertar').' '.$this->lang->line('producto').'">';
-				$mensaje	.= '<i class="fa fa-plus"></i>';
-				$mensaje	.= '</a></th>';
-				$mensaje	.= '<th>'.$row->estado.'</th>';
-				$mensaje	.= '</tr>';
-			}
-		}
-		
-		$mensaje .= '</tbody>';
-		
-		$total = 0;
-		foreach ($detalle as $row) {
-			if($row->estado_linea!=3){
-				$total = $row->subtotal + $total;
-			}
-		}
-		
-		$mensaje .= '<tfoot>
-						<tr>
-							<th></th>
-							<th></th>
-							<th></th>
-							<th class="th1">'.$this->lang->line("total").'</th>
-							<th>'.'$'.$total.'</th>
-							<th></th>
-							<th></th>
-						</tr>
-					</tfoot>';
-		
-		
-		$mensaje .= '</table>
-					</form>';
-		
-		$mensaje .= '<form action="'.base_url().'index.php/Presupuestos/totalPresupuesto/'.$presupuesto.'" id="formGuardar" class="form-inline" method="post">';			
-		$mensaje .= '<input type="number" id="total" name="total" pattern="[0-9 ]*" placeholder="'.$total.'" value="'.$total.'" required hidden>';			
-		$mensaje .= '</form>';
-		echo $mensaje;
-	}
-
-	function totalPresupuesto($presupuesto){
-		
-		$tabla				= $this->presupuestos_model->getDetallePresupuesto($presupuesto);
-
-		$cambioEstado		= $this->presupuestos_model->getTodo();
-
-		if($cambioEstado){
-			foreach($cambioEstado as $row){
-				if($row->id_presupuesto == $presupuesto){
-					$visita = $row->id_visita; 
-				}
-			}
-		}
-		
-		if($cambioEstado)
-		{
-			foreach($cambioEstado as $row){
-				if($visita == $row->id_visita){
-					$arreglo	= array(
-						'id_estado_presupuesto'	=> 3,
-						'eliminado'				=> 0	
-					);
-					$id_presupuesto 	= $this->presupuestos_model->update($arreglo,$row->id_presupuesto);	
-				}
-			}
-		}
-	
-		if($this->input->post('total'))
-		{
-			$total		= $this->input->post('total');
-			$bandera = 0;
-			foreach ($tabla as $row) {
-				if($row->estado_linea==3){
-					$bandera = 1;
-				}
-			}
-			
-			if($bandera==1){
-				$arreglo	= array(
-					'total'					=> $total,
-					'id_estado_presupuesto'	=> 3,
-					'eliminado'				=> 0 	
-				);
-			}
-			else{
-				$arreglo	= array(
-					'total'					=> $total,
-					'id_estado_presupuesto'	=> 1,
-					'eliminado'				=> 0 	
-				);
-			}
-	
-			$id_presupuesto 	= $this->presupuestos_model->update($arreglo,$presupuesto);
-		}
-		
-		$tipo = 0;
-		
-		redirect('Presupuestos/pestanas/'.$presupuesto.'/'.$tipo,'refresh');
+		$linea				= $this->presupuestos_model->insertLinea($arreglo);
 	}
 	
 	public function buscarProducto() 
@@ -548,25 +444,25 @@ class Presupuestos extends My_Controller {
         	echo '<li><a onclick="funcion1('.$row->id_producto.')">'.$row->nombre.'<input type="text" id="id_valor'.$row->id_producto.'" value="'.$row->nombre.'" hidden></a></li>';
         }
     }
-
-	public function deletePresupuesto()
-	{
-		$presupuesto = $this->input->post('presupuesto');
-		
-		if($presupuesto){
-			$this->presupuestos_model->deletePresupuesto($presupuesto);
-		}
-	}
 	
 	public function generarNuevoPresupuesto($id_presupuesto)
 	{
 		$presupuesto	= $this->presupuestos_model->getRegistro($id_presupuesto);
 		$detalle		= $this->presupuestos_model->getDetallePresupuesto($id_presupuesto);
+		$modos			= $this->presupuestos_model->getModos($id_presupuesto);
 		
 		if($presupuesto)
 		{
 			foreach($presupuesto as $row)
 			{
+				$id_cliente		= $row->id_cliente;
+				$id_vendedor	= $row->id_vendedor;
+				$id_visita		= $row->id_visita;
+				$fecha			= date('Y-m-d');
+				$condicion		= $row->id_condicion_pago;
+				$tiempo			= $row->id_tiempo_entrega;
+				$nota			= $row->nota_publica;
+				/*
 				$arreglo	= array(
 					'id_visita'				=> $row->id_visita,
 					'id_cliente'			=> $row->id_cliente,
@@ -575,19 +471,32 @@ class Presupuestos extends My_Controller {
 					'total'					=> $row->total,
 					'fecha'					=> date('Y-m-d'),
 					'id_origen'				=> 2,
-						
+					'visto_back'			=> 0,
+					'id_condicion_pago'		=> $row->id_condicion_pago,
+					'id_tiempo_entrega'		=> $row->id_tiempo_entrega,
+					'nota_publica'			=> $row->nota_publica,
 				);
 				
 				$arreglo_cruce	= array(
 					'id_visita'				=> $row->id_visita,
 					'id_presupuesto'		=> $id_presupuesto, 
 				);
+				*/
 			}
 		}
-
+		/*
 		$id = $this->presupuestos_model->insert($arreglo);
 			
 		$this->presupuestos_model->insertCruceVisita($arreglo_cruce);
+		
+		foreach($modos as $modo){
+			$cruce_presupuesto_modo	= array(
+				'id_modo_pago'		=> $modo->id_modo_pago,
+				'id_presupuesto'	=> $id
+			);
+			
+			$this->presupuestos_model->insertCruceModos($cruce_presupuesto_modo);
+		}
 		
 		if($detalle)
 		{
@@ -603,6 +512,7 @@ class Presupuestos extends My_Controller {
 						'valor_moneda'						=> $row->valor,
 						'cantidad'							=> $row->cantidad,
 						'id_estado_producto_presupuesto'	=> $row->estado_linea,
+						'comentario'						=> $row->comentario
 					);
 					
 					$id_linea = $this->presupuestos_model->insertLinea($arreglo_linea);
@@ -610,26 +520,37 @@ class Presupuestos extends My_Controller {
 			}
 			
 		}
-		
-		
+		*/
+		$id = $id_presupuesto + 1;
 		if($id)
 		{
-			$db['clientes']			= $this->clientes_model->getTodo();
-			$db['vendedores']		= $this->vendedores_model->getTodo();
+			$db['clientes']			= $this->clientes_model->getRegistro($id_cliente);
+			$db['vendedores']		= $this->vendedores_model->getRegistro($id_vendedor);
+			$db['fecha']			= $fecha;
+			$db['id_cliente']		= $id_cliente;
+			$db['id_vendedor']		= $id_vendedor;
+			$db['visita']			= $id_visita;
+			$db['presupuesto']		= $id;
+			$db['productos']		= $this->presupuestos_model->getProductosTodo();
+			
 			$db['iva']				= $this->clientes_model->getTodo('iva');		
+			$db['modos_pago']		= $this->modos_pago_model->getTodo();
+			$db['condiciones_pago']	= $this->condiciones_pago_model->getTodo();
+			$db['tiempos_entrega']	= $this->tiempos_entrega_model->getTodo();
 			$db['estados']			= $this->presupuestos_model->getTodo('estados_presupuestos');
 			
-			$db['detalle']			= $this->presupuestos_model->getDetallePresupuesto($id);
-			$db['presupuesto']		= $id;
-			$db['presupuestos']		= $this->presupuestos_model->getRegistro($id);
-			$db['productos']		= $this->presupuestos_model->getProductosTodo();
-			$db['tipo']				= 1;
 			
-			foreach($db['presupuestos'] as $row)
-			{
-				$db['visita']			= $row->id_visita;
-			}
+			$db['condicion']		= $condicion;		
+			$db['tiempo']			= $tiempo;		
+			$db['nota']				= $nota;
+			$db['modos']			= $modos;
 			
+			$db['anterior_presup']	= $id_presupuesto;
+			
+			$db['presupuestos']		= $this->presupuestos_model->getRegistro($id_presupuesto);
+			
+			$db['detalle']			= $detalle;
+						
 			$this->cargar_vista($db, 'carga_productos');
 		}
 	}

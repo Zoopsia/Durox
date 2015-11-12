@@ -270,11 +270,13 @@ class Visitas extends My_Controller {
 		$crud->set_language("spanish");
 			
 		$crud->set_table('visitas');
-			
+					
 		$crud->columns('id_visita',
 						'id_cliente',
 						'id_vendedor',
 						'fecha');
+						
+		$crud->callback_column('fecha',array($this,'_callback_fecha'));
 			
 		$crud->display_as('id_visita','N° Visita')
 			 ->display_as('id_cliente','Cliente')
@@ -291,7 +293,7 @@ class Visitas extends My_Controller {
 						
 		$crud->set_relation('id_cliente','clientes','{razon_social}');
 		$crud->set_relation('id_vendedor','vendedores','{apellido} {nombre}');
-			
+		
 		$crud->add_action('Elegir', '', '','edit_button',array($this,'volverBusqueda'));
 			
 		$crud->unset_export();
@@ -306,7 +308,8 @@ class Visitas extends My_Controller {
 	
 	function volverBusqueda($primary_key , $row)
 	{
-	    return site_url('Presupuestos/carga').'/'.$row->id_visita;
+		if(!$this->pedidos_model->getPedido($row->id_visita))
+			return site_url('Presupuestos/carga').'/'.$row->id_visita;
 	}
 	
 	public function vistaPresupuesto(){

@@ -181,14 +181,14 @@ class Productos_model extends My_Model {
 					$this->_tablename  
 				WHERE 
 					$this->_id_table = '$id'";
-						
+					
 		$producto = $this->db->query($sql);
 		
 		if($producto->num_rows() > 0){
 			foreach ($producto->result_array() as $producto){
 			
 				$sql = "SHOW COLUMNS FROM durox.$tabla";
-				
+			
 				$query = $this->db->query($sql);
 				
 				if($query->num_rows() > 0){
