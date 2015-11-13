@@ -1073,7 +1073,7 @@ class Pedidos extends My_Controller {
 		$fecha				= $this->input->post('fecha');
 		$condicion_pago		= $this->input->post('condicion_pago');
 		$tiempo_entrega		= $this->input->post('tiempo_entrega');
-		
+		$nota 				= $this->input->post('nota-publica');
 			
 		$visita			= array(
 			'id_cliente' 		=> $cliente, 
@@ -1117,7 +1117,8 @@ class Pedidos extends My_Controller {
 				'visto_back'			=> 0,
 				'id_estado_pedido'		=> 1,
 				'id_condicion_pago'		=> $condicion_pago,
-				'id_tiempo_entrega'		=> $tiempo_entrega
+				'id_tiempo_entrega'		=> $tiempo_entrega,
+				'nota_publica'			=> $nota
 		);
 	
 		$id_pedido 		= $this->pedidos_model->insert($pedido);

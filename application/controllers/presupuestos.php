@@ -123,6 +123,7 @@ class Presupuestos extends My_Controller {
 
 	function just_a_test($primary_key , $row)
 	{
+		echo "<script>sessionStorage.clear();</script>";
 	    return site_url($this->_subject.'/pestanas').'/'.$row->id_presupuesto;
 	}
 	
@@ -357,7 +358,7 @@ class Presupuestos extends My_Controller {
 		
 		$producto	= $this->productos_model->getRegistro($this->input->post('producto'));
 		
-		$cliente			= $this->clientes_model->getCliente($this->input->post('cliente'));
+		$cliente	= $this->clientes_model->getCliente($this->input->post('cliente'));
 		
 		if($this->input->post('producto')){
 			if($this->input->post('cantidad')){
@@ -435,6 +436,34 @@ class Presupuestos extends My_Controller {
 		$linea				= $this->presupuestos_model->insertLinea($arreglo);
 	}
 	
+	public function guardarLineasViejas(){
+		
+		$linea = $this->presupuestos_model->getLinea($this->input->post('linea'));
+		
+		if($linea){
+			foreach($linea as $row){
+					
+				$arreglo	= array(
+					'id_presupuesto'				=> $this->input->post('id_presupuesto'),
+					'id_producto' 					=> $row->id_producto,
+					'cantidad' 						=> $row->cantidad,
+					'precio'						=> $row->precio,
+					'subtotal'						=> $row->subtotal,
+					'id_moneda'						=> $row->id_moneda,
+					'valor_moneda'					=> $row->valor_moneda,
+					'comentario'					=> $this->input->post('comentario'),
+					'id_estado_producto_presupuesto'=> $this->input->post('estado'),
+					'eliminado'						=> 0
+				);
+		
+				$lineanueva				= $this->presupuestos_model->insertLinea($arreglo);
+				echo $lineanueva;
+			}
+		}	
+			
+		
+	}
+	
 	public function buscarProducto() 
 	{
         $producto = $this->input->post('producto');
@@ -462,66 +491,10 @@ class Presupuestos extends My_Controller {
 				$condicion		= $row->id_condicion_pago;
 				$tiempo			= $row->id_tiempo_entrega;
 				$nota			= $row->nota_publica;
-				/*
-				$arreglo	= array(
-					'id_visita'				=> $row->id_visita,
-					'id_cliente'			=> $row->id_cliente,
-					'id_vendedor'			=> $row->id_vendedor,
-					'id_estado_presupuesto'	=> 1,
-					'total'					=> $row->total,
-					'fecha'					=> date('Y-m-d'),
-					'id_origen'				=> 2,
-					'visto_back'			=> 0,
-					'id_condicion_pago'		=> $row->id_condicion_pago,
-					'id_tiempo_entrega'		=> $row->id_tiempo_entrega,
-					'nota_publica'			=> $row->nota_publica,
-				);
-				
-				$arreglo_cruce	= array(
-					'id_visita'				=> $row->id_visita,
-					'id_presupuesto'		=> $id_presupuesto, 
-				);
-				*/
 			}
 		}
-		/*
-		$id = $this->presupuestos_model->insert($arreglo);
-			
-		$this->presupuestos_model->insertCruceVisita($arreglo_cruce);
 		
-		foreach($modos as $modo){
-			$cruce_presupuesto_modo	= array(
-				'id_modo_pago'		=> $modo->id_modo_pago,
-				'id_presupuesto'	=> $id
-			);
-			
-			$this->presupuestos_model->insertCruceModos($cruce_presupuesto_modo);
-		}
-		
-		if($detalle)
-		{
-			foreach($detalle as $row)
-			{
-				if($row->estado_linea!=3){
-					$arreglo_linea	= array(
-						'id_presupuesto'					=> $id,
-						'id_producto'						=> $row->producto,
-						'precio'							=> $row->precio,
-						'subtotal'							=> $row->subtotal,
-						'id_moneda'							=> $row->id_moneda,
-						'valor_moneda'						=> $row->valor,
-						'cantidad'							=> $row->cantidad,
-						'id_estado_producto_presupuesto'	=> $row->estado_linea,
-						'comentario'						=> $row->comentario
-					);
-					
-					$id_linea = $this->presupuestos_model->insertLinea($arreglo_linea);
-				}
-			}
-			
-		}
-		*/
-		$id = $id_presupuesto + 1;
+		$id = $this->presupuestos_model->getCantidadRegistros() + 1;
 		if($id)
 		{
 			$db['clientes']			= $this->clientes_model->getRegistro($id_cliente);

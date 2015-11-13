@@ -116,11 +116,11 @@
 														
 														echo '<tr>';
 														
-														echo '<td>' . $row -> nombre . '</td>';
+														echo '<td>' . $row -> nombre . '<input type="text" name="linea'.$row -> id_linea_producto_presupuesto.'" id="linea'.$row -> id_linea_producto_presupuesto.'" value="1" hidden></td>';
 														echo '<td>' . $row -> cantidad . '</td>';
 														echo '<td>' . $row->abreviatura.$row->simbolo.' '.$row -> precio . '</td>';
-														echo '<td>$ ' . $row -> subtotal . '<input type="text" class="subtotal_anteriores" name="anterior_subtotal'.$row -> id_linea_producto_presupuesto.'" id="anterior_subtotal'.$row -> id_linea_producto_presupuesto.'" value="' . $row -> subtotal . '" hidden></td>';
-														echo '<td class="no-print">' . $row -> estado . '<input type="text" name="linea'.$row -> id_linea_producto_presupuesto.'" id="linea'.$row -> id_linea_producto_presupuesto.'" value="1" hidden></td>';
+														echo '<td>$ ' . $row -> subtotal . '<input type="text" class="subtotal_anteriores" name="anterior_subtotal'.$row -> id_linea_producto_presupuesto.'" id="anterior_subtotal'.$row -> id_linea_producto_presupuesto.'" value="' . round( $row -> subtotal,2) . '" hidden></td>';
+														echo '<td class="no-print">' . $row -> estado . '</td>';
 														echo '<td><a class="btn btn-danger btn-xs" onclick="eliminarProducto(this,'.$row -> id_linea_producto_presupuesto.')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></td>';
 														if($row->comentario){
 																echo '<td class="text-center no-print" style="width: 20px"><button type="button" onclick="$(\'#2open-coment'.$row -> id_linea_producto_presupuesto.'\').show(); $(\'#2text-coment'.$row -> id_linea_producto_presupuesto.'\').focus()" style="background: transparent; border: transparent; padding-left: 0px"><i class="fa fa-sticky-note-o fa-2x fa-rotate-180"></i></button>
@@ -299,7 +299,7 @@
 					
 					<div class="row no-print">
                         <div class="col-xs-12">
-                        	<form action="<?php echo base_url().'/index.php/Presupuestos/guardarNuevoPresupuesto/'?>" onsubmit="return guardarLineasNuevas(<?php echo $presupuesto?>)" method="post" id="formGuardar" name="formGuardar" novalidate>
+                        	<form action="<?php echo base_url().'/index.php/Presupuestos/guardarNuevoPresupuesto/'?>" onsubmit="return <?php if($detalle){ echo "guardarLineasViejas(".$presupuesto.") &&";}?> guardarLineasNuevas(<?php echo $presupuesto?>)" method="post" id="formGuardar" name="formGuardar" novalidate>
 	                        	<input type="text" name="cliente" value="<?php echo $id_cliente; ?>" hidden required/>
 	                        	<input type="text" name="vendedor" value="<?php echo $id_vendedor; ?>" hidden required/>
 	                        	<input type="text" name="visita" value="<?php echo $visita; ?>" hidden required/>
@@ -328,10 +328,16 @@
    
 
 <script>
-var aux = 0;
-var aux_coment = 0;
+var aux 			= 0;
+var aux_coment 		= 0;
+var subtotal 		= 0;
+var lineascambiar 	= 0;
+var arreglo_lineas	= [];
 $(document ).ready(function() {
 	$('#producto').focus();
+	if(sessionStorage['total_anterior']){
+		subtotal = parseFloat(sessionStorage['total_anterior']);
+	}
 	
 	if(sessionStorage['aux2'] > 0){
     	for(i = 1; i <= sessionStorage['aux2']; i++ ){
@@ -404,17 +410,26 @@ $(document ).ready(function() {
 			aux++;
 		}
 	}
-	armarTotales(<?php echo $presupuesto;?>); 
+	
+	if(sessionStorage['cambiarLinea'] > 0){
+		for(i = 0; i <= $('input.subtotal_anteriores').length; i++ ){
+			if(sessionStorage['linea'+i]){
+				$('#linea'+sessionStorage['linea'+i]).val(3);
+				$('#tablapedido > tbody').find("tr:nth-child("+sessionStorage['row'+i]+")").css({"background-color": "#f56954 !important", "color": "#fff"});
+				$('#tablapedido > tbody >tr:nth-child('+sessionStorage['row'+i]+')').find("td:nth-child(6)").html('<a class="btn btn-success btn-xs" onclick="agregarProducto(this,'+sessionStorage['linea'+i]+')" role="button" data-toggle="tooltip" data-placement="bottom" title="Cargar Producto"><i class="fa fa-plus"></i></a>');
+				$('#tablapedido > tbody >tr:nth-child('+sessionStorage['row'+i]+')').find("td:nth-child(5)").html('Imposible de Enviar');
+			}
+		}
+		lineascambiar = sessionStorage['cambiarLinea'];
+	}
+	
+	armarTotales(<?php echo $anterior_presup;?>); 
 });
 
 function armarTotales($presupuesto){
-	var presupuesto	= $presupuesto - 1;
+	var presupuesto	= $presupuesto;
 	var x = 0;
-	/*
-	for(i = 0; i < $(".subtotal_anteriores").length; i++){
-		var name = $("input.subtotal_anteriores").attr('name');
-		console.log(name.slice(17));
-	}*/
+	x = x + subtotal;
 	for(i = 0; i < aux; i++){
 		if($('#estado'+i).val() == 1){
 			if($('#subtotal'+i).val())
@@ -437,7 +452,7 @@ function cargaProducto($id_cliente){
  	var producto 	= $('input#id_producto').val(); 
  	var cantidad 	= $('input#cantidad').val();
  	var cliente		= $id_cliente;
- 	var presupuesto	= <?php echo $presupuesto; ?>;
+ 	var presupuesto	= <?php echo $anterior_presup; ?>;
  	if(producto && cantidad){
 	 	$.ajax({
 		 	type: 'POST',
@@ -467,7 +482,7 @@ function cargaProducto($id_cliente){
 		 		sessionStorage.setItem('subtotal'+aux, $('#subtotal'+aux).val());
 		 		
 		 		aux = aux+1;
-		 		armarTotales(presupuesto);
+		 		armarTotales(<?php echo $anterior_presup;?>);
 		 		document.formProducto.reset(); 
 				document.getElementById("producto").focus();
 		 	}
@@ -506,25 +521,39 @@ function sacarProducto(r, $row){
 		$('#text-coment'+fila).val(sessionStorage['comentario'+fila]);
 	}
 	sessionStorage.setItem('estado'+fila, $('#estado'+fila).val());
-	armarTotales(<?php echo $presupuesto;?>);
+	armarTotales(<?php echo $anterior_presup;?>);
 }
 
 function eliminarProducto(r, $row){
 	var j 		= r.parentNode.parentNode.rowIndex;
 	var fila 	= $row;
+	lineascambiar++;
 	$('#tablapedido > tbody').find("tr:nth-child("+j+")").css({"background-color": "#f56954 !important", "color": "#fff"});
 	$('#tablapedido > tbody >tr:nth-child('+j+')').find("td:nth-child(6)").html('<a class="btn btn-success btn-xs" onclick="agregarProducto(this,'+fila+')" role="button" data-toggle="tooltip" data-placement="bottom" title="Cargar Producto"><i class="fa fa-plus"></i></a>');
+	$('#tablapedido > tbody >tr:nth-child('+j+')').find("td:nth-child(5)").html('Imposible de Enviar');
 	$('#linea'+fila).val(3);
-	armarTotales(<?php echo $presupuesto;?>);
+	subtotal = subtotal - parseFloat($('#anterior_subtotal'+fila).val());
+	armarTotales(<?php echo $anterior_presup;?>);
+	sessionStorage.setItem('total_anterior', subtotal);
+	sessionStorage.setItem('linea'+j, fila);
+	sessionStorage.setItem('row'+j, j);
+	sessionStorage.setItem('cambiarLinea', lineascambiar);
 }
 
 function agregarProducto(r, $row){
 	var j 		= r.parentNode.parentNode.rowIndex;
 	var fila 	= $row;
+	lineascambiar = lineascambiar - 1;
 	$('#tablapedido > tbody').find("tr:nth-child("+j+")").css({"background-color": "#FFFFFF !important", "color": "#333333"});
 	$('#tablapedido > tbody >tr:nth-child('+j+')').find("td:nth-child(6)").html('<a class="btn btn-danger btn-xs" onclick="eliminarProducto(this,'+fila+')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a>');
+	$('#tablapedido > tbody >tr:nth-child('+j+')').find("td:nth-child(5)").html('En Espera');
 	$('#linea'+fila).val(1);
-	armarTotales(<?php echo $presupuesto;?>);
+	subtotal = subtotal + parseFloat($('#anterior_subtotal'+fila).val());
+	armarTotales(<?php echo $anterior_presup;?>);
+	sessionStorage.setItem('total_anterior', subtotal);
+	sessionStorage.removeItem('linea'+j);
+	sessionStorage.removeItem('row'+j);
+	sessionStorage.setItem('cambiarLinea', lineascambiar);
 }
 
 function cargarProducto2(r, $row){
@@ -558,7 +587,7 @@ function cargarProducto2(r, $row){
 		$('#text-coment'+fila).val(sessionStorage['comentario'+fila]);
 	}
 	sessionStorage.setItem('estado'+fila, $('#estado'+fila).val());
-	armarTotales(<?php echo $presupuesto;?>);
+	armarTotales(<?php echo $anterior_presup;?>);
 }
 
 function ajaxSearch() {
@@ -610,7 +639,7 @@ function cancelarCambios($presupuesto){
 	var r = confirm("Desea Cancelar el presupuesto?\nAdventencia! - No podrá volver atrás");
 	if (r == true) {
 		sessionStorage.clear();
-		window.location.assign("/durox/index.php/Presupuestos/presupuestos_abm/tab1");
+		window.history.back();
 	}
 }
 
@@ -654,6 +683,7 @@ function guardarLineasNuevas($presupuesto){
 			return true;
 		}
 		else{
+			<?php if($detalle){ echo "return true;"; } ?>
 			alert("ERROR! - No hay lineas en el presupuesto!");
 			$('#producto').focus();
 			return false;
@@ -663,6 +693,39 @@ function guardarLineasNuevas($presupuesto){
 		alert("ERROR! - Falta agregar Información al presupuesto!");
 		return false;
 	}
+}
+
+function guardarLineasViejas($presupuesto){
+	<?php 
+		if($detalle){
+			foreach ($detalle as $row) {
+				if ($row -> estado_linea != 3) {
+					echo "arreglo_lineas.push(".$row->id_linea_producto_presupuesto.");";
+				}
+			}
+		}
+	?>
+	
+	for(i = 0; i < arreglo_lineas.length; i++ ){
+		if($('#linea'+arreglo_lineas[i]).val() == 3){
+			$('#estado_presupuesto').val(3);
+		}
+		$.ajax({
+			type: 'POST',
+			url: '<?php echo base_url(); ?>index.php/Presupuestos/guardarLineasViejas', //Realizaremos la petición al metodo prueba del controlador direcciones
+			data: {	'estado'			: $('#linea'+arreglo_lineas[i]).val(),
+				 	'linea'				: arreglo_lineas[i],
+				 	'comentario'		: $('#2text-coment'+arreglo_lineas[i]).val(),
+					'id_presupuesto'	: $presupuesto		  
+			},
+		 	success: function(resp) { 
+		 		console.log(resp);
+		 	},
+		 	async: false
+		});
+	}
+	
+	return true;
 }
 </script>
 

@@ -199,6 +199,9 @@
 										?>
 			                       </select>
 			                    </div>
+			                    <div class="col-xs-12 form-group">
+			                    	<textarea id="nota-publica" name="nota-publica" placeholder="<?php echo $this -> lang -> line('notas'); ?>" onkeyup="sessionStorage.setItem('nota-publica',$('#nota-publica').val());" style="width: 100%; resize: none" form="formGuardar"></textarea>
+			                    </div>
                            </div>
                         </div><!-- /.col -->
                         
@@ -249,6 +252,9 @@ var aux = 0;
 
 $( document ).ready(function() {
 	//sessionStorage.clear();
+	if(sessionStorage['nota-publica'] != 'undefined'){
+    	$('#nota-publica').val(sessionStorage['nota-publica']);
+    }
 	var j = 0;
 	$('#producto').focus();
 	if(sessionStorage['aux']){
@@ -388,7 +394,7 @@ function cancelarCambios($pedido){
 	var r = confirm("Desea Cancelar el pedido?\nAdventencia! - No podrá volver atrás");
 	if (r == true) {
 		sessionStorage.clear();
-		window.location.assign("/durox/index.php/Pedidos/pedidos_abm/tab1");
+		window.history.back();
 	}
 }
 

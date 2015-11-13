@@ -62,6 +62,25 @@ function imprimirConLogo(){
 	$('#imagen-durox').show();
 	setTimeout(function(){ $('#imagen-durox').hide(); }, 100);
 }
+
+var cotizar_cng = 0;
+
+function cotizar(){
+	if(cotizar_cng%2 == 0){
+		$('.subtotal1').show();
+		$('.subtotal2').hide();
+		$('#sub-pesos').hide();
+		$('#sub-otra-moneda').show("drop");
+		cotizar_cng ++;
+	}
+	else{
+		$('.subtotal1').hide();
+		$('.subtotal2').show();
+		$('#sub-pesos').show("drop");
+		$('#sub-otra-moneda').hide();
+		cotizar_cng ++;
+	}
+}
 </script>
 
 <?php
@@ -108,7 +127,7 @@ $aux2 = 0;
 									foreach ($vendedores as $key) 
 									{
 										echo '<a class="sinhref" href="'.base_url().'index.php/vendedores/pestanas/'.$key->id_vendedor.'">';
-										echo $key->apellido.', '.$key->nombre;
+										echo $key->nombre.' '.$key->apellido;
 										echo '</a>';
 										echo "<br>";
 										echo "<div class='no-print'>";
@@ -182,9 +201,13 @@ $aux2 = 0;
 						</div>
 					</div>
 					<div class="row">
+						<div class="col-md-1 col-lg-1">
+							<?php echo $this -> lang -> line('detalle'); ?>
+						</div>
+					</div>
+					<div class="row">
                     	<div class="col-xs-12 table-responsive">
-                        	<?php echo $this->lang->line('detalle'); ?>
-                                <?php
+                        	 	<?php
                                 	if($presupuesto){
 	     								foreach($presupuesto as $row)
 	     								{
@@ -209,8 +232,8 @@ $aux2 = 0;
 								?>
 								        <thead class="tabla-datos-importantes">
 								            <tr>
-								            	<th><?php echo $this->lang->line('producto'); ?></th>
-								                <th><?php echo $this->lang->line('cantidad'); ?></th>
+								            	<th style="width: 210px"><?php echo $this->lang->line('producto'); ?></th>
+								                <th style="width: 200px"><?php echo $this->lang->line('cantidad'); ?></th>
 								                <th><?php echo $this->lang->line('precio'); ?></th>
 								                <th><?php echo $this->lang->line('subtotal'); ?></th>
 								                <th class="no-print"><?php echo $this->lang->line('estado'); ?></th>
@@ -219,7 +242,8 @@ $aux2 = 0;
 								        </thead>
 								 
 								 		<tbody>
-								        <?php	
+								        <?php
+								        $cotizacion = array();	
 								        if($presupuestos)
 										{
 									        foreach ($presupuestos as $row) 
@@ -235,8 +259,15 @@ $aux2 = 0;
 												}
 												echo '<td>'.$row->nombre.'</td>';
 												echo '<td>'.$row->cantidad.'</td>';
-												echo '<td>$ '.$row->precio.'</td>'; // Aca debe ir el signo de la moneda que se esta usando
-												echo '<td>$ '.$row->subtotal.'</td>';
+												echo '<td>'. $row->abreviatura.$row->simbolo.' '.$row->precio.'</td>'; // Aca debe ir el signo de la moneda que se esta usando
+												
+												echo '<td class="subtotal1" style="display: none">'.$row->abreviatura.$row->simbolo.' '.round($row -> precio*$row -> cantidad, 2).'</td>';
+													if(array_key_exists($row->abreviatura.$row->simbolo, $cotizacion))
+														$cotizacion[$row->abreviatura.$row->simbolo] += round($row -> precio*$row -> cantidad, 2);
+													else 
+														$cotizacion[$row->abreviatura.$row->simbolo] = round($row -> precio*$row -> cantidad, 2);
+												echo '<td class="subtotal2">$ '.$row->subtotal.'</td>';
+												
 												echo '<td class="no-print">'.$row->estado.'</td>';				
 													if($row->comentario){
 																echo '<td class="text-center no-print" style="width: 20px"><button type="button" onclick="$(\'#2open-coment'.$row -> id_linea_producto_presupuesto.'\').show(); $(\'#2text-coment'.$row -> id_linea_producto_presupuesto.'\').focus()" style="background: transparent; border: transparent; padding-left: 0px"><i class="fa fa-sticky-note-o fa-2x fa-rotate-180"></i></button>
@@ -248,6 +279,9 @@ $aux2 = 0;
 																		</div>
 																	</span>
 																</td>';
+													}
+													else{
+														echo "<td></td>";
 													}
 												echo '</tr>';
 											}	
@@ -310,7 +344,7 @@ $aux2 = 0;
                             </p>
                         </div><!-- /.col -->
                         
-                        <div class="col-xs-6">
+                        <div class="col-xs-6" id="sub-pesos">
                             <p class="lead"><?php echo $this->lang->line('totales');?></p>
                             <div class="table-responsive">
                                 <table class="table">
@@ -329,6 +363,20 @@ $aux2 = 0;
                                 </table>
                             </div>
                         </div><!-- /.col -->
+                        
+                        <div class="col-xs-6" id="sub-otra-moneda" style="display: none;">
+                            <p class="lead"><?php echo $this->lang->line('totales')?></p>
+                            <div class="table-responsive" id="table-totales">
+                            	<table class="table">
+                            	<?php if($cotizacion){ foreach ($cotizacion as $key => $value) { ?>
+									<tr>
+                                        <th style="width:50%"><?php echo $this -> lang -> line('subtotal'); ?></th>
+                                        <td><?php echo $key.' '.$value; ?></td>
+                                    </tr>
+                                <?php } } ?>
+                                </table>
+                            </div>
+                        </div><!-- /.col --> 
                     </div><!-- /.row -->
 					
 					<div class="row no-print">
@@ -339,6 +387,7 @@ $aux2 = 0;
                             
                             <button class="btn btn-default" onclick="imprimirConLogo();window.print();"><i class="fa fa-print"></i> Print</button>
                             
+                            <button type="button" id="btn-cotizacion" class="btn btn-default" onclick="cotizar();"><i class="fa fa-usd"></i> Cotización</button>
                             <?php
                             	$tengopedido = 0;
                             	if($presupuesto){
@@ -347,7 +396,7 @@ $aux2 = 0;
 									    	if($row->id_estado_presupuesto != 2)
 											{
 									    ?>
-									   		<a role="button" class="btn btn-primary pull-right" href="<?php echo base_url().'/index.php/Presupuestos/generarNuevoPresupuesto/'.$row->id_presupuesto ?>">
+									   		<a role="button" class="btn btn-primary pull-right" onclick="sessionStorage.clear();" href="<?php echo base_url().'/index.php/Presupuestos/generarNuevoPresupuesto/'.$row->id_presupuesto ?>">
 									   			<?php echo $this->lang->line('generar').' '.$this->lang->line('presupuesto') ?>
 									   		</a>
 											
