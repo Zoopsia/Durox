@@ -46,18 +46,19 @@ class Mssql_model extends My_Model {
         
         if($db_mssql){
         	//CONSULTA CON TABLAS
-        	/*
+        	
 	        $sql = "SELECT	
 	        			TABLE_NAME
 					FROM 
 						$nombreDB.INFORMATION_SCHEMA.TABLES";
-			*/
+			
+			/*
 			//CONSULTA CON VISTAS
 			$sql = "SELECT	
 	        			TABLE_NAME
 					FROM 
 						$nombreDB.INFORMATION_SCHEMA.VIEWS";
-						
+			*/			
 			$query = $db_mssql->query($sql);
 			
 			if($query->num_rows() > 0)
@@ -76,7 +77,6 @@ class Mssql_model extends My_Model {
 	}
 	
 	function crearColumnas($db, $nombreDB ,$tabla){
-			
 		
 		//Elimino la tabla existente//
 		$tabladestino = strtolower($tabla);	
@@ -139,14 +139,24 @@ class Mssql_model extends My_Model {
 			if($query->num_rows() > 0){
 				foreach ($query->result() as $fila){
 					if(!$this->db->field_exists($fila->COLUMN_NAME,$this->prefijo.$tabla)){
-							
-						$fields = array(
-		                        $fila->COLUMN_NAME => array(
-				                       	'type' 			=> $fila->DATA_TYPE,
-				                        'constraint' 	=> $fila->CHARACTER_MAXIMUM_LENGTH,
-				                        'null' 			=> TRUE,
-										)
-						);	
+						
+						if($fila->IS_NULLABLE == "NO"){
+							$fields = array(
+			                        $fila->COLUMN_NAME => array(
+					                       	'type' 			=> $fila->DATA_TYPE,
+					                        'constraint' 	=> $fila->CHARACTER_MAXIMUM_LENGTH,
+											)
+							);
+						}
+						else{
+							$fields = array(
+			                        $fila->COLUMN_NAME => array(
+					                       	'type' 			=> $fila->DATA_TYPE,
+					                        'constraint' 	=> $fila->CHARACTER_MAXIMUM_LENGTH,
+					                        'null' 			=> TRUE,
+											)
+							);	
+						}
 						
 						$this->dbforge->add_column($this->prefijo.$tabla, $fields);
 					}
@@ -342,6 +352,84 @@ class Mssql_model extends My_Model {
 		}			
 	}
 	
+	function getColumnasUpdate($origen,$destino){
+			
+		$sql = "SELECT 
+					bj_tablas.nombre_tabla AS origen,
+					tablas.nombre_tabla	AS destino,
+					bj_sin_columnas.bj_columna,
+					bj_sin_columnas.columna
+				FROM
+					bj_sin_columnas 
+				INNER JOIN
+					bj_tablas
+				USING
+					(id_bj_tabla)
+				INNER JOIN
+					tablas
+				USING
+					(id_tabla)
+				WHERE
+					tablas.nombre_tabla = '$destino'
+				AND
+					bj_tablas.nombre_tabla = '$origen'
+				AND
+					bj_sin_columnas.actualiza = 1";
+		
+		$query = $this->db->query($sql);
+			
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+			return $data;
+		}
+		else
+		{
+			return FALSE;
+		}			
+	}
+	
+	function getSincronizacion(){
+			
+		$sql = "SELECT 
+					bj_sin_columnas.id_bj_sin_columna AS id_sincronizacion,
+					bj_tablas.nombre_tabla AS origen,
+					tablas.nombre_tabla	AS destino,
+					bj_sin_columnas.bj_columna,
+					bj_sin_columnas.columna,
+					actualiza
+				FROM
+					bj_sin_columnas 
+				INNER JOIN
+					bj_tablas
+				USING
+					(id_bj_tabla)
+				INNER JOIN
+					tablas
+				USING
+					(id_tabla)
+				WHERE
+					1";
+		
+		$query = $this->db->query($sql);
+			
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+			return $data;
+		}
+		else
+		{
+			return FALSE;
+		}			
+	}
+
 	function getIdSinInsert($source, $target, $id_source, $id_target){
 			
 		$sql = "SELECT 
@@ -372,10 +460,38 @@ class Mssql_model extends My_Model {
 		}		
 	}
 	
-	function mergeTablas($tabla){
+	function getIdUpdate($source, $target, $id_source, $id_target){
 			
-		$session_data = $this->session->userdata('logged_in');
+		$sql = "SELECT 
+					$id_source AS id_actualizacion
+				FROM 
+					$source 
+				WHERE 
+					$source.$id_source 
+				IN( 
+					SELECT 
+						$id_target 
+					FROM 
+						$target)";
 		
+		$query = $this->db->query($sql);
+			
+		if($query->num_rows() > 0)
+		{
+			foreach ($query->result() as $fila)
+			{
+				$data[] = $fila;
+			}
+			return $data;
+		}
+		else
+		{
+			return FALSE;
+		}		
+	}
+		
+	function mergeTablas($tabla){
+					
 		if(preg_match("/articulos/i",$tabla)){
 			$source 	= $this->prefijo.strtolower($tabla);
 			$target 	= "productos";
@@ -395,23 +511,35 @@ class Mssql_model extends My_Model {
 						foreach($tablasin as $row){
 							$columnassin 	= $this->getColumnasSin($row->origen ,$row->destino);
 							if($columnassin){
-								
+									
 								$sql = "INSERT INTO $row->destino (";
 								
 								foreach($columnassin as $fila){
-									if ($fila === end($columnassin)) 
-								        $sql .= $fila->columna;
-									else
-										$sql .= $fila->columna.",";
+									if($this->db->field_exists($fila->bj_columna,$source)){
+										if ($fila === end($columnassin)) 
+										    $sql .= $fila->columna;
+										else
+											$sql .= $fila->columna.",";
+									}
+									else{
+										if ($fila === end($columnassin)) 
+											$sql = substr($sql, 0, -1);
+									}
 								}
 								
 								$sql .=	") SELECT ";
 									
 								foreach($columnassin as $fila){
-									if ($fila === end($columnassin)) 
-								        $sql .= $fila->bj_columna;
-									else
-										$sql .= $fila->bj_columna.",";
+									if($this->db->field_exists($fila->bj_columna,$source)){
+										if ($fila === end($columnassin)) 
+										    $sql .= "REPLACE($fila->bj_columna,'-','')";
+										else
+											$sql .= "REPLACE($fila->bj_columna,'-','')".",";
+									}
+									else {
+										if ($fila === end($columnassin)) 
+											$sql = substr($sql, 0, -1);
+									}
 								}
 								
 								$sql .=	" 	FROM 
@@ -431,20 +559,80 @@ class Mssql_model extends My_Model {
 					}
 					if(count($productos) > 0){
 						for ($i=0; $i < count($productos); $i++) {
-							//--- Datos que no puedo traer de su tabla ---//	
-							$datos_ext	= array(
-								'id_origen'			=> 3,
-								'date_add'			=> date('Y-m-d H:i:s'),
-								'date_upd'			=> date('Y-m-d H:i:s'),
-								'eliminado'			=> 0,
-								'user_add'			=> $session_data['id_usuario'],
-								'user_upd'			=> $session_data['id_usuario']
-							);
+							//--- Datos que no puedo traer de su tabla ---//
+							
+							$colFaltante	= 'mon_descrip';
+									
+							$match = "SELECT 
+										id_moneda
+									  FROM 
+									  	monedas 
+									  WHERE 
+									  	moneda LIKE 
+											CONCAT('%', (SELECT $colFaltante FROM $source WHERE $id_source = '$id->id_faltante'))";
+				
+							
+							if($this->db->field_exists($colFaltante,$source)){		
+								$result 	= $this->db->query($match);
+							}
+							else{
+								$result 	= $this->db->query("SELECT id_moneda FROM monedas WHERE moneda LIKE 0");
+							}
+							
+							if($result->num_rows() > 0){
+								foreach($result->result() as $row){
+									$datos_ext	= array(
+										'id_moneda'			=> $row->id_moneda,
+										'id_origen'			=> 3,
+										'date_add'			=> date('Y-m-d H:i:s'),
+										'date_upd'			=> date('Y-m-d H:i:s'),
+										'eliminado'			=> 0,
+										'user_add'			=> 0,
+										'user_upd'			=> 0
+									);
+								}
+							}
+							else{	
+								$datos_ext	= array(
+									'id_moneda'			=> 1,
+									'id_origen'			=> 3,
+									'date_add'			=> date('Y-m-d H:i:s'),
+									'date_upd'			=> date('Y-m-d H:i:s'),
+									'eliminado'			=> 0,
+									'user_add'			=> 0,
+									'user_upd'			=> 0
+								);
+								
+								if($this->db->field_exists($colFaltante,$source)){	
+									//-- Registro Que no tengo cargado en mi base de datos --//
+									$consultaCampoFaltante = 
+										"SELECT 
+											$colFaltante 
+										FROM
+											$source 
+										WHERE 
+											$id_source = '$id->id_faltante'";
+										
+									$faltante = $this->db->query($consultaCampoFaltante);
+										
+									if($faltante){
+										foreach($faltante->result() as $faltante){
+											$log_error = array(
+												'tipo'		=>	'ERROR',
+												'mensaje'	=>	'No existe el registro "'.$faltante->$colFaltante.'" en nuestra tabla "monedas". Ver ID '.$productos[$i].' producto',
+												'fecha'		=>	date('Y-m-d H:i:s'),
+												'origen'	=>	'mssql_model'
+											);
+											$this->db->insert('log_error', $log_error);
+										}
+									}
+								}
+							}
 							
 							$this->db->where($id_clave, $productos[$i]);
 							$this->db->update($target, $datos_ext);
 						}
-					}		
+					}	
 				}
 			}
 			
@@ -482,19 +670,31 @@ class Mssql_model extends My_Model {
 								$sql = "INSERT INTO $row->destino (";
 								
 								foreach($columnassin as $fila){
-									if ($fila === end($columnassin)) 
-								        $sql .= $fila->columna;
-									else
-										$sql .= $fila->columna.",";
+									if($this->db->field_exists($fila->bj_columna,$source)){
+										if ($fila === end($columnassin)) 
+										    $sql .= $fila->columna;
+										else
+											$sql .= $fila->columna.",";
+									}
+									else{
+										if ($fila === end($columnassin)) 
+											$sql = substr($sql, 0, -1);
+									}
 								}
 								
 								$sql .=	") SELECT ";
 									
 								foreach($columnassin as $fila){
-									if ($fila === end($columnassin)) 
-								        $sql .= "REPLACE($fila->bj_columna,'-','')";
-									else
-										$sql .= "REPLACE($fila->bj_columna,'-','')".",";
+									if($this->db->field_exists($fila->bj_columna,$source)){
+										if ($fila === end($columnassin)) 
+										    $sql .= "REPLACE($fila->bj_columna,'-','')";
+										else
+											$sql .= "REPLACE($fila->bj_columna,'-','')".",";
+									}
+									else {
+										if ($fila === end($columnassin)) 
+											$sql = substr($sql, 0, -1);
+									}
 								}
 								
 								$sql .=	" 	FROM 
@@ -526,8 +726,8 @@ class Mssql_model extends My_Model {
 								'date_add'			=> date('Y-m-d H:i:s'),
 								'date_upd'			=> date('Y-m-d H:i:s'),
 								'eliminado'			=> 0,
-								'user_add'			=> $session_data['id_usuario'],
-								'user_upd'			=> $session_data['id_usuario']
+								'user_add'			=> 0,
+								'user_upd'			=> 0
 							);
 							
 							$this->db->where($id_clave, $vendedores[$i]);
@@ -538,25 +738,80 @@ class Mssql_model extends My_Model {
 								$tabla = 'sin_vendedores_'.$key;
 								
 								if($key == 'direcciones'){
+									
 									$arreglo = array(
-										'id_vendedor'	=> $vendedores[$i],
-										'id_direccion'	=> $value,
-										'date_add'		=> date('Y-m-d H:i:s'),
-										'date_upd'		=> date('Y-m-d H:i:s'),
-										'eliminado'		=> 0,
-										'user_add'		=> $session_data['id_usuario'],
-										'user_upd'		=> $session_data['id_usuario']
+											'id_vendedor'	=> $vendedores[$i],
+											'id_direccion'	=> $value,
+											'id_db'			=> $id->id_faltante,
+											'date_add'		=> date('Y-m-d H:i:s'),
+											'date_upd'		=> date('Y-m-d H:i:s'),
+											'eliminado'		=> 0,
+											'user_add'		=> 0,
+											'user_upd'		=> 0
 									);
 									
-									//--- Datos que no puedo traer de su tabla ---//	
-									$datos_perfil  = array(
-										'id_tipo'			=> 1,
-										'date_add'			=> date('Y-m-d H:i:s'),
-										'date_upd'			=> date('Y-m-d H:i:s'),
-										'eliminado'			=> 0,
-										'user_add'			=> $session_data['id_usuario'],
-										'user_upd'			=> $session_data['id_usuario']
-									);
+									$colFaltante	= 'prv_descrip';
+									
+									$match = "SELECT 
+												id_provincia,id_pais
+											  FROM 
+											  	provincias 
+											  WHERE 
+											  	nombre_provincia LIKE 
+													CONCAT('%', (SELECT $colFaltante FROM $source WHERE $id_source = '$id->id_faltante'), '%')";
+									
+									$result_prv 	= $this->db->query($match);
+									
+									if($result_prv->num_rows() > 0){
+										//--- Datos que no puedo traer de su tabla ---//	
+										foreach($result_prv->result() as $prv){
+											$datos_perfil  = array(
+												'id_tipo'			=> 1,
+												'id_pais'			=> $prv->id_pais,
+												'id_provincia'		=> $prv->id_provincia,
+												'date_add'			=> date('Y-m-d H:i:s'),
+												'date_upd'			=> date('Y-m-d H:i:s'),
+												'eliminado'			=> 0,
+												'user_add'			=> 0,
+												'user_upd'			=> 0
+											);
+										}
+									}
+									else{
+										
+										//--- Datos que no puedo traer de su tabla ---//	
+										$datos_perfil  = array(
+											'id_tipo'			=> 1,
+											'date_add'			=> date('Y-m-d H:i:s'),
+											'date_upd'			=> date('Y-m-d H:i:s'),
+											'eliminado'			=> 0,
+											'user_add'			=> 0,
+											'user_upd'			=> 0
+										);	
+										
+										//-- Registro Que no tengo cargado en mi base de datos --// 
+										$consultaCampoFaltante = 
+													"SELECT 
+														$colFaltante 
+													FROM 
+														$source 
+													WHERE 
+														$id_source = '$id->id_faltante'";
+										
+										$faltante = $this->db->query($consultaCampoFaltante);
+										
+										if($faltante){
+											foreach($faltante->result() as $faltante){
+												$log_error = array(
+													'tipo'		=>	'ERROR',
+													'mensaje'	=>	'No existe el registro "'.$faltante->$colFaltante.'" en nuestra tabla "provincias". Ver ID '.$vendedores[$i].' vendedor',
+													'fecha'		=>	date('Y-m-d H:i:s'),
+													'origen'	=>	'mssql_model'
+												);
+												$this->db->insert('log_error', $log_error);
+											}
+										}									
+									}
 									
 									$this->db->where('id_direccion', $value);
 									$this->db->update($key, $datos_perfil);
@@ -565,11 +820,12 @@ class Mssql_model extends My_Model {
 									$arreglo = array(
 										'id_vendedor'	=> $vendedores[$i],
 										'id_telefono'	=> $value,
+										'id_db'			=> $id->id_faltante,
 										'date_add'		=> date('Y-m-d H:i:s'),
 										'date_upd'		=> date('Y-m-d H:i:s'),
 										'eliminado'		=> 0,
-										'user_add'		=> $session_data['id_usuario'],
-										'user_upd'		=> $session_data['id_usuario']
+										'user_add'		=> 0,
+										'user_upd'		=> 0
 									);
 									
 									//--- Datos que no puedo traer de su tabla ---//	
@@ -578,8 +834,8 @@ class Mssql_model extends My_Model {
 										'date_add'			=> date('Y-m-d H:i:s'),
 										'date_upd'			=> date('Y-m-d H:i:s'),
 										'eliminado'			=> 0,
-										'user_add'			=> $session_data['id_usuario'],
-										'user_upd'			=> $session_data['id_usuario']
+										'user_add'			=> 0,
+										'user_upd'			=> 0
 									);
 									
 									$this->db->where('id_telefono', $value);
@@ -589,11 +845,12 @@ class Mssql_model extends My_Model {
 									$arreglo = array(
 										'id_vendedor'	=> $vendedores[$i],
 										'id_mail'		=> $value,
+										'id_db'			=> $id->id_faltante,
 										'date_add'		=> date('Y-m-d H:i:s'),
 										'date_upd'		=> date('Y-m-d H:i:s'),
 										'eliminado'		=> 0,
-										'user_add'		=> $session_data['id_usuario'],
-										'user_upd'		=> $session_data['id_usuario']
+										'user_add'		=> 0,
+										'user_upd'		=> 0
 									);
 									
 									//--- Datos que no puedo traer de su tabla ---//	
@@ -602,8 +859,8 @@ class Mssql_model extends My_Model {
 										'date_add'			=> date('Y-m-d H:i:s'),
 										'date_upd'			=> date('Y-m-d H:i:s'),
 										'eliminado'			=> 0,
-										'user_add'			=> $session_data['id_usuario'],
-										'user_upd'			=> $session_data['id_usuario']
+										'user_add'			=> 0,
+										'user_upd'			=> 0
 									);
 									
 									$this->db->where('id_mail', $value);
@@ -612,8 +869,6 @@ class Mssql_model extends My_Model {
 								
 								$this->db->insert($tabla, $arreglo);
 								
-								//echo $vendedores[$i].' '.$key.' '.$value;	
-								//echo "<br>";
 							}
 						}
 					}
@@ -655,19 +910,31 @@ class Mssql_model extends My_Model {
 								$sql = "INSERT INTO $row->destino (";
 								
 								foreach($columnassin as $fila){
-									if ($fila === end($columnassin)) 
-								        $sql .= $fila->columna;
-									else
-										$sql .= $fila->columna.",";
+									if($this->db->field_exists($fila->bj_columna,$source)){
+										if ($fila === end($columnassin)) 
+										    $sql .= $fila->columna;
+										else
+											$sql .= $fila->columna.",";
+									}
+									else{
+										if ($fila === end($columnassin)) 
+											$sql = substr($sql, 0, -1);
+									}
 								}
 								
 								$sql .=	") SELECT ";
 									
 								foreach($columnassin as $fila){
-									if ($fila === end($columnassin)) 
-								        $sql .= "REPLACE($fila->bj_columna,'-','')";
-									else
-										$sql .= "REPLACE($fila->bj_columna,'-','')".",";
+									if($this->db->field_exists($fila->bj_columna,$source)){
+										if ($fila === end($columnassin)) 
+										    $sql .= "REPLACE($fila->bj_columna,'-','')";
+										else
+											$sql .= "REPLACE($fila->bj_columna,'-','')".",";
+									}
+									else {
+										if ($fila === end($columnassin)) 
+											$sql = substr($sql, 0, -1);
+									}
 								}
 								
 								$sql .=	" 	FROM 
@@ -693,16 +960,76 @@ class Mssql_model extends My_Model {
 					if(count($clientes) > 0){
 						for ($i=0; $i < count($clientes); $i++) {
 							//--- Datos que no puedo traer de su tabla ---//	
-							$datos_ext	= array(
-								'id_grupo_cliente'	=> 1,
-								'id_iva'			=> 1,
-								'id_origen'			=> 3,
-								'date_add'			=> date('Y-m-d H:i:s'),
-								'date_upd'			=> date('Y-m-d H:i:s'),
-								'eliminado'			=> 0,
-								'user_add'			=> $session_data['id_usuario'],
-								'user_upd'			=> $session_data['id_usuario']
-							);
+							
+							$colFaltante	= 'siv_Desc';
+									
+							$match = "SELECT 
+										id_iva
+									  FROM 
+									  	iva 
+									  WHERE 
+									  	iva LIKE 
+											CONCAT('%', (SELECT $colFaltante FROM $source WHERE $id_source = '$id->id_faltante'), '%')";
+							
+							if($this->db->field_exists($colFaltante,$source)){		
+								$result 	= $this->db->query($match);
+							}
+							else{
+								$result 	= $this->db->query("SELECT id_iva FROM iva WHERE iva LIKE 0");
+							}
+							
+							
+							if($result->num_rows() > 0){
+								foreach($result->result() as $row){
+									$datos_ext	= array(
+										'id_grupo_cliente'	=> 1,
+										'id_iva'			=> $row->id_iva,
+										'id_origen'			=> 3,
+										'date_add'			=> date('Y-m-d H:i:s'),
+										'date_upd'			=> date('Y-m-d H:i:s'),
+										'eliminado'			=> 0,
+										'user_add'			=> 0,
+										'user_upd'			=> 0
+									);
+								}
+							}
+							else{
+								$datos_ext	= array(
+									'id_grupo_cliente'	=> 1,
+									'id_iva'			=> 1,
+									'id_origen'			=> 3,
+									'date_add'			=> date('Y-m-d H:i:s'),
+									'date_upd'			=> date('Y-m-d H:i:s'),
+									'eliminado'			=> 0,
+									'user_add'			=> 0,
+									'user_upd'			=> 0
+								);
+									
+								if($this->db->field_exists($colFaltante,$source)){	
+									//-- Registro Que no tengo cargado en mi base de datos --//
+									$consultaCampoFaltante = 
+										"SELECT 
+											$colFaltante 
+										FROM
+											$source 
+										WHERE 
+											$id_source = '$id->id_faltante'";
+										
+									$faltante = $this->db->query($consultaCampoFaltante);
+										
+									if($faltante){
+										foreach($faltante->result() as $faltante){
+											$log_error = array(
+												'tipo'		=>	'ERROR',
+												'mensaje'	=>	'No existe el registro "'.$faltante->$colFaltante.'" en nuestra tabla "iva". Ver ID '.$clientes[$i].' cliente',
+												'fecha'		=>	date('Y-m-d H:i:s'),
+												'origen'	=>	'mssql_model'
+											);
+											$this->db->insert('log_error', $log_error);
+										}
+									}
+								}
+							}
 							
 							$this->db->where($id_clave, $clientes[$i]);
 							$this->db->update($target, $datos_ext);
@@ -712,26 +1039,78 @@ class Mssql_model extends My_Model {
 								$tabla = 'sin_clientes_'.$key;
 								
 								if($key == 'direcciones'){
+									
 									$arreglo = array(
 										'id_cliente'	=> $clientes[$i],
 										'id_direccion'	=> $value,
+										'id_db'			=> $id->id_faltante,
 										'date_add'		=> date('Y-m-d H:i:s'),
 										'date_upd'		=> date('Y-m-d H:i:s'),
 										'eliminado'		=> 0,
-										'user_add'		=> $session_data['id_usuario'],
-										'user_upd'		=> $session_data['id_usuario']
+										'user_add'		=> 0,
+										'user_upd'		=> 0
 									);
 									
-									//--- Datos que no puedo traer de su tabla ---//	
-									$datos_perfil  = array(
-										'id_tipo'			=> 1,
-										'date_add'			=> date('Y-m-d H:i:s'),
-										'date_upd'			=> date('Y-m-d H:i:s'),
-										'eliminado'			=> 0,
-										'user_add'			=> $session_data['id_usuario'],
-										'user_upd'			=> $session_data['id_usuario']
-									);
+									$colFaltante	= 'prv_descrip';
 									
+									$match = "SELECT 
+												id_provincia,id_pais
+											  FROM 
+											  	provincias 
+											  WHERE 
+											  	nombre_provincia LIKE 
+													CONCAT('%', (SELECT $colFaltante FROM $source WHERE $id_source = '$id->id_faltante'), '%')";
+									
+									$result_prv 	= $this->db->query($match);
+									
+									if($result_prv->num_rows() > 0){
+										foreach($result_prv->result() as $prv){
+											$datos_perfil  = array(
+												'id_tipo'			=> 1,
+												'id_pais'			=> $prv->id_pais,
+												'id_provincia'		=> $prv->id_provincia,
+												'date_add'			=> date('Y-m-d H:i:s'),
+												'date_upd'			=> date('Y-m-d H:i:s'),
+												'eliminado'			=> 0,
+												'user_add'			=> 0,
+												'user_upd'			=> 0
+											);
+										}
+									}
+									else{	
+										//--- Datos que no puedo traer de su tabla ---//	
+										$datos_perfil  = array(
+											'id_tipo'			=> 1,
+											'date_add'			=> date('Y-m-d H:i:s'),
+											'date_upd'			=> date('Y-m-d H:i:s'),
+											'eliminado'			=> 0,
+											'user_add'			=> 0,
+											'user_upd'			=> 0
+										);
+										
+										//-- Registro Que no tengo cargado en mi base de datos --//
+										$consultaCampoFaltante = 
+													"SELECT 
+														$colFaltante 
+													FROM 
+														$source 
+													WHERE 
+														$id_source = '$id->id_faltante'";
+										
+										$faltante = $this->db->query($consultaCampoFaltante);
+										
+										if($faltante){
+											foreach($faltante->result() as $faltante){
+												$log_error = array(
+													'tipo'		=>	'ERROR',
+													'mensaje'	=>	'No existe el registro "'.$faltante->$colFaltante.'" en nuestra tabla "provincias". Ver ID '.$clientes[$i].' cliente',
+													'fecha'		=>	date('Y-m-d H:i:s'),
+													'origen'	=>	'mssql_model'
+												);
+												$this->db->insert('log_error', $log_error);
+											}
+										}
+									}
 									$this->db->where('id_direccion', $value);
 									$this->db->update($key, $datos_perfil);
 								} 
@@ -739,11 +1118,12 @@ class Mssql_model extends My_Model {
 									$arreglo = array(
 										'id_cliente'	=> $clientes[$i],
 										'id_telefono'	=> $value,
+										'id_db'			=> $id->id_faltante,
 										'date_add'		=> date('Y-m-d H:i:s'),
 										'date_upd'		=> date('Y-m-d H:i:s'),
 										'eliminado'		=> 0,
-										'user_add'		=> $session_data['id_usuario'],
-										'user_upd'		=> $session_data['id_usuario']
+										'user_add'		=> 0,
+										'user_upd'		=> 0
 									);
 									
 									//--- Datos que no puedo traer de su tabla ---//	
@@ -752,8 +1132,8 @@ class Mssql_model extends My_Model {
 										'date_add'			=> date('Y-m-d H:i:s'),
 										'date_upd'			=> date('Y-m-d H:i:s'),
 										'eliminado'			=> 0,
-										'user_add'			=> $session_data['id_usuario'],
-										'user_upd'			=> $session_data['id_usuario']
+										'user_add'			=> 0,
+										'user_upd'			=> 0
 									);
 									
 									$this->db->where('id_telefono', $value);
@@ -763,11 +1143,12 @@ class Mssql_model extends My_Model {
 									$arreglo = array(
 										'id_cliente'	=> $clientes[$i],
 										'id_mail'		=> $value,
+										'id_db'			=> $id->id_faltante,
 										'date_add'		=> date('Y-m-d H:i:s'),
 										'date_upd'		=> date('Y-m-d H:i:s'),
 										'eliminado'		=> 0,
-										'user_add'		=> $session_data['id_usuario'],
-										'user_upd'		=> $session_data['id_usuario']
+										'user_add'		=> 0,
+										'user_upd'		=> 0
 									);
 									
 									//--- Datos que no puedo traer de su tabla ---//	
@@ -776,8 +1157,8 @@ class Mssql_model extends My_Model {
 										'date_add'			=> date('Y-m-d H:i:s'),
 										'date_upd'			=> date('Y-m-d H:i:s'),
 										'eliminado'			=> 0,
-										'user_add'			=> $session_data['id_usuario'],
-										'user_upd'			=> $session_data['id_usuario']
+										'user_add'			=> 0,
+										'user_upd'			=> 0
 									);
 									
 									$this->db->where('id_mail', $value);
@@ -807,5 +1188,315 @@ class Mssql_model extends My_Model {
 		}
 	}
 	
+	function updateTablas($tabla){
+			
+		if(preg_match("/articulos/i",$tabla)){
+			$source 	= $this->prefijo.strtolower($tabla);
+			$target 	= "productos";
+			$id_target	= "id_db";
+			$id_source	= "art_CodGen";//---En caso de cambiar las tablas cambiar el ID---//
+			$id_clave	= "id_producto";
+			
+			$tablasin	= $this->getTablasSin($source);
+			$id_update	= $this->getIdUpdate($source, $target, $id_source, $id_target);
+			
+			if($id_update){
+				foreach($id_update as $id){
+					if($tablasin){
+						foreach($tablasin as $row){
+							$columnassin 	= $this->getColumnasUpdate($row->origen ,$row->destino);
+							if($columnassin){
+								foreach($columnassin as $fila){
+									if($this->db->field_exists($fila->columna,$target)){
+										if($this->db->field_exists($fila->bj_columna,$source)){	
+											$sql =	"UPDATE 
+														$target 
+													SET 
+														$fila->columna = 
+																	(SELECT 
+																		$fila->bj_columna
+													            	FROM 
+													                    $source 
+													                WHERE 
+													                    $source.$id_source = '$id->id_actualizacion') 
+													WHERE 
+														$target.$id_target = '$id->id_actualizacion'";
+														
+											$this->db->query($sql);
+										}	
+									}
+								}
+							}
+						}			
+					}
+				}
+				
+				$log_error = array(
+					'tipo'		=>	'INFO',
+					'mensaje'	=>	'Se actualizaron '.count($id_update).' registros en productos',
+					'fecha'		=>	date('Y-m-d H:i:s'),
+					'origen'	=>	'mssql_model'
+				);
+				$this->db->insert('log_error', $log_error);
+				
+			}
+		}
+
+		else if(preg_match("/clientes/i",$tabla)){
+			$source 	= $this->prefijo.strtolower($tabla);
+			$target 	= "clientes";
+			$id_target	= "id_db";
+			$id_source	= "cli_Cod";//---En caso de cambiar las tablas cambiar el ID---//
+			$id_clave	= "id_cliente";
+			
+			$tablasin	= $this->getTablasSin($source);
+			$id_update	= $this->getIdUpdate($source, $target, $id_source, $id_target);
+			
+			if($id_update){
+				foreach($id_update as $id){
+					if($tablasin){
+						foreach($tablasin as $row){
+							$columnassin 	= $this->getColumnasUpdate($row->origen ,$row->destino);
+							if($columnassin){
+								foreach($columnassin as $fila){
+									if($this->db->field_exists($fila->columna,$target)){
+										if($this->db->field_exists($fila->bj_columna,$source)){	
+											
+											$sql =	"UPDATE 
+														$target 
+													SET 
+														$fila->columna = 
+																	(SELECT 
+																		$fila->bj_columna
+													            	FROM 
+													                    $source 
+													                WHERE 
+													                    $source.$id_source = '$id->id_actualizacion') 
+													WHERE 
+														$target.$id_target = '$id->id_actualizacion'";
+												
+											$this->db->query($sql);
+										}	
+									}
+									
+									if($fila->destino == 'telefonos'){
+										
+											$sql =	"UPDATE 
+														$fila->destino 
+													SET 
+														$fila->columna = (
+													        SELECT 
+													        	$fila->bj_columna 
+													        FROM 
+													        	$source 
+													        WHERE 
+													        	$source.$id_source = $id->id_actualizacion) 
+													WHERE 
+														id_telefono = (
+													        SELECT 
+													        	id_telefono 
+													        FROM 
+													        	sin_clientes_$fila->destino 
+													        WHERE 
+													        	id_db = $id->id_actualizacion)";
+													        	
+											$this->db->query($sql);
+										
+									}
+									else if($fila->destino == 'direcciones'){
+										
+											$sql =	"UPDATE 
+														$fila->destino 
+													SET 
+														$fila->columna = (
+													        SELECT 
+													        	$fila->bj_columna 
+													        FROM 
+													        	$source 
+													        WHERE 
+													        	$source.$id_source = $id->id_actualizacion) 
+													WHERE 
+														id_direccion = (
+													        SELECT 
+													        	id_direccion 
+													        FROM 
+													        	sin_clientes_$fila->destino 
+													        WHERE 
+													        	id_db = $id->id_actualizacion)";
+										
+											$this->db->query($sql);
+										
+									}
+									else if($fila->destino == 'mail'){
+										
+											$sql =	"UPDATE 
+														$fila->destino 
+													SET 
+														$fila->columna = (
+													        SELECT 
+													        	$fila->bj_columna 
+													        FROM 
+													        	$source 
+													        WHERE 
+													        	$source.$id_source = $id->id_actualizacion) 
+													WHERE 
+														id_mail = (
+													        SELECT 
+													        	id_mail 
+													        FROM 
+													        	sin_clientes_$fila->destino 
+													        WHERE 
+													        	id_db = $id->id_actualizacion)";
+										
+											$this->db->query($sql);
+										
+									}
+								}
+							}
+						}			
+					}
+				}
+				
+				$log_error = array(
+					'tipo'		=>	'INFO',
+					'mensaje'	=>	'Se actualizaron '.count($id_update).' registros en clientes',
+					'fecha'		=>	date('Y-m-d H:i:s'),
+					'origen'	=>	'mssql_model'
+				);
+				$this->db->insert('log_error', $log_error);	
+			}
+		}
+		
+		else if(preg_match("/vendedor/i",$tabla)){
+			$source 	= $this->prefijo.strtolower($tabla);
+			$target 	= "vendedores";
+			$id_target	= "id_db";
+			$id_source	= "ven_Cod";//---En caso de cambiar las tablas cambiar el ID---//
+			$id_clave	= "id_vendedor";
+			
+			$tablasin	= $this->getTablasSin($source);
+			$id_update	= $this->getIdUpdate($source, $target, $id_source, $id_target);
+			
+			if($id_update){
+				foreach($id_update as $id){
+					if($tablasin){
+						foreach($tablasin as $row){
+							$columnassin 	= $this->getColumnasUpdate($row->origen ,$row->destino);
+							if($columnassin){
+								foreach($columnassin as $fila){
+									if($this->db->field_exists($fila->columna,$target)){
+										if($this->db->field_exists($fila->bj_columna,$source)){	
+											
+											$sql =	"UPDATE 
+														$target 
+													SET 
+														$fila->columna = 
+																	(SELECT 
+																		$fila->bj_columna
+													            	FROM 
+													                    $source 
+													                WHERE 
+													                    $source.$id_source = '$id->id_actualizacion') 
+													WHERE 
+														$target.$id_target = '$id->id_actualizacion'";
+												
+											$this->db->query($sql);
+										}	
+									}
+									
+									if($fila->destino == 'telefonos'){
+										
+											$sql =	"UPDATE 
+														$fila->destino 
+													SET 
+														$fila->columna = (
+													        SELECT 
+													        	$fila->bj_columna 
+													        FROM 
+													        	$source 
+													        WHERE 
+													        	$source.$id_source = $id->id_actualizacion) 
+													WHERE 
+														id_telefono = (
+													        SELECT 
+													        	id_telefono 
+													        FROM 
+													        	sin_vendedores_$fila->destino 
+													        WHERE 
+													        	id_db = $id->id_actualizacion)";
+													        	
+											$this->db->query($sql);
+										
+									}
+									else if($fila->destino == 'direcciones'){
+										
+											$sql =	"UPDATE 
+														$fila->destino 
+													SET 
+														$fila->columna = (
+													        SELECT 
+													        	$fila->bj_columna 
+													        FROM 
+													        	$source 
+													        WHERE 
+													        	$source.$id_source = $id->id_actualizacion) 
+													WHERE 
+														id_direccion = (
+													        SELECT 
+													        	id_direccion 
+													        FROM 
+													        	sin_vendedores_$fila->destino 
+													        WHERE 
+													        	id_db = $id->id_actualizacion)";
+										
+											$this->db->query($sql);
+										
+									}
+									else if($fila->destino == 'mail'){
+										
+											$sql =	"UPDATE 
+														$fila->destino 
+													SET 
+														$fila->columna = (
+													        SELECT 
+													        	$fila->bj_columna 
+													        FROM 
+													        	$source 
+													        WHERE 
+													        	$source.$id_source = $id->id_actualizacion) 
+													WHERE 
+														id_mail = (
+													        SELECT 
+													        	id_mail 
+													        FROM 
+													        	sin_vendedores_$fila->destino 
+													        WHERE 
+													        	id_db = $id->id_actualizacion)";
+										
+											$this->db->query($sql);
+										
+									}
+								}
+							}
+						}			
+					}
+				}
+				
+				$log_error = array(
+					'tipo'		=>	'INFO',
+					'mensaje'	=>	'Se actualizaron '.count($id_update).' registros en vendedores',
+					'fecha'		=>	date('Y-m-d H:i:s'),
+					'origen'	=>	'mssql_model'
+				);
+				$this->db->insert('log_error', $log_error);	
+			}
+		}
+		
+	}
+
+	function updateSincronizacion($id, $datos){
+		$this->db->where('id_bj_sin_columna', $id);
+		$this->db->update('bj_sin_columnas', $datos);
+	}
 } 
 ?>

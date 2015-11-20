@@ -31,23 +31,8 @@ class Home extends My_Controller {
 		$db['visitas_cantidad'] 	= $this->visitas_model->getCantidad();
 		$db['vendedores'] 			= $this->vendedores_model->getTodo();
 		$db['recibidos']			= $this->mensajes_model->mensajesNuevosHome();
-		/*
-		$coneccion			= $this->mssql_model->pingDB();
 		
-		if($coneccion){
-			$nombreDB 			= 'WEB_Bejerman';
-			$basededatos		= 'mssql';
-			$tablas 			= $this->mssql_model->crearTablas($basededatos,$nombreDB);
-			
-			if($tablas){
-				foreach ($tablas as $row) {
-					$this->mssql_model->crearColumnas($basededatos,$nombreDB,$row->TABLE_NAME);
-					$this->mssql_model->copiarRegistros($basededatos,$nombreDB,$row->TABLE_NAME);
-					$this->mssql_model->mergeTablas($row->TABLE_NAME);
-				}
-			}
-		}
-		*/
+		
 		$this->cargar_vista($db, 'inicio');
 	}
 

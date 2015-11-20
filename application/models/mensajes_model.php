@@ -25,6 +25,7 @@ class Mensajes_model extends My_Model {
 				'id_mensaje'		=> $id_mensaje,
 				'id_receptor'		=> $id,
 				'id_emisor'			=> $session_data['id_usuario'],
+				'papelera'			=> 0,
 				'visto'				=> 1,
 				'id_mensaje_padre'	=> $padre
 			);
@@ -34,6 +35,7 @@ class Mensajes_model extends My_Model {
 				'id_mensaje'	=> $id_mensaje,
 				'id_receptor'	=> $id,
 				'id_emisor'		=> $session_data['id_usuario'],
+				'papelera'		=> 0,
 				'visto'			=> 1
 			);
 		}
@@ -64,52 +66,56 @@ class Mensajes_model extends My_Model {
 	function mensajesNuevosHome(){
 		
 		$session_data = $this->session->userdata('logged_in');
-			
-		$sql = "SELECT
-					mensajes.*,
-					sin_mensajes_vendedores.*,
-					vendedores.nombre,
-					vendedores.apellido,
-					vendedores.imagen
-				FROM 
-					$this->_tablename
-				INNER JOIN
-					sin_mensajes_vendedores
-				USING
-					($this->_id_table)
-				INNER JOIN
-					vendedores
-				ON
-					sin_mensajes_vendedores.id_emisor = vendedores.id_vendedor
-				WHERE 
-					mensajes.id_origen = 1
-				AND
-					id_receptor = ".$session_data['id_usuario']."
-				AND
-					sin_mensajes_vendedores.eliminado = 0
-				ORDER BY
-					sin_mensajes_vendedores.date_add DESC
-				LIMIT
-					4";
-
-		if (!$this->db->query($sql)){	
-			$error = $this->db->error(); 
-			log_message('error', $sql);
-		}
-		else{
-			$query = $this->db->query($sql);
-			
-			if($query->num_rows() > 0)
-			{
-				foreach ($query->result() as $fila)
-				{
-					$data[] = $fila;
-				}
-				return $data;
+		
+		if($session_data){	
+			$sql = "SELECT
+						mensajes.*,
+						sin_mensajes_vendedores.*,
+						vendedores.nombre,
+						vendedores.apellido,
+						vendedores.imagen
+					FROM 
+						$this->_tablename
+					INNER JOIN
+						sin_mensajes_vendedores
+					USING
+						($this->_id_table)
+					INNER JOIN
+						vendedores
+					ON
+						sin_mensajes_vendedores.id_emisor = vendedores.id_vendedor
+					WHERE 
+						mensajes.id_origen = 1
+					AND
+						id_receptor = ".$session_data['id_usuario']."
+					AND
+						sin_mensajes_vendedores.eliminado = 0
+					AND
+						sin_mensajes_vendedores.papelera = 0
+					ORDER BY
+						sin_mensajes_vendedores.date_add DESC
+					LIMIT
+						4";
+		
+			if (!$this->db->query($sql)){	
+				$error = $this->db->error(); 
+				log_message('error', $sql);
 			}
-			else
-			{
-				return FALSE;
+			else{
+				$query = $this->db->query($sql);
+				
+				if($query->num_rows() > 0)
+				{
+					foreach ($query->result() as $fila)
+					{
+						$data[] = $fila;
+					}
+					return $data;
+				}
+				else
+				{
+					return FALSE;
+				}
 			}
 		}
 	}
@@ -165,6 +171,8 @@ class Mensajes_model extends My_Model {
 						id_receptor = ".$session_data['id_usuario']."
 					AND
 						sin_mensajes_vendedores.eliminado = 0
+					AND
+						sin_mensajes_vendedores.papelera = 0
 					ORDER BY
 						sin_mensajes_vendedores.date_add DESC";
 		}
@@ -238,6 +246,8 @@ class Mensajes_model extends My_Model {
 					AND
 						id_emisor = ".$session_data['id_usuario']."
 					AND
+						sin_mensajes_vendedores.papelera = 0
+					AND
 						sin_mensajes_vendedores.eliminado = 0
 					GROUP BY
 						sin_mensajes_vendedores.id_mensaje
@@ -275,9 +285,13 @@ class Mensajes_model extends My_Model {
 					USING
 						($this->_id_table)
 					WHERE
-						id_sin_mensaje_vendedor = $id
+						id_mensaje = $id
 					AND
-						sin_mensajes_vendedores.eliminado = 1";
+						sin_mensajes_vendedores.papelera = 1
+					AND
+						sin_mensajes_vendedores.eliminado = 0
+					GROUP BY
+						sin_mensajes_vendedores.id_mensaje";
 		}
 		else{
 			$sql = "SELECT
@@ -290,7 +304,11 @@ class Mensajes_model extends My_Model {
 					USING
 						($this->_id_table)
 					WHERE 
-						sin_mensajes_vendedores.eliminado = 1
+						sin_mensajes_vendedores.papelera = 1
+					AND
+						sin_mensajes_vendedores.eliminado = 0
+					GROUP BY
+						sin_mensajes_vendedores.id_mensaje
 					ORDER BY
 						sin_mensajes_vendedores.date_add DESC";
 		}
@@ -380,7 +398,29 @@ class Mensajes_model extends My_Model {
 		
 		$arreglo_campos[$campo] = $valor;
 		
-		$this->db->where('id_sin_mensaje_vendedor', $mensaje);
+		$this->db->where('id_mensaje', $mensaje);
+		$this->db->update('sin_mensajes_vendedores', $arreglo_campos);
+		
+		return $this->db->insert_id();
+	}
+	
+	function actualizarMensaje2($mensaje,$campo,$valor){
+			
+		$session_data = $this->session->userdata('logged_in');
+		
+		if($this->db->field_exists('date_upd', $this->_tablename))
+		{
+			$arreglo_campos['date_upd'] = date('Y-m-d H:i:s'); 
+		}
+		
+		if($this->db->field_exists('user_upd', $this->_tablename))
+		{
+			$arreglo_campos['user_upd'] = $session_data['id_usuario']; 
+		}
+		
+		$arreglo_campos[$campo] = $valor;
+		
+		$this->db->where('id_mensaje', $mensaje);
 		$this->db->update('sin_mensajes_vendedores', $arreglo_campos);
 		
 		return $this->db->insert_id();

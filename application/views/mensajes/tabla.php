@@ -165,7 +165,7 @@
                                                 <ul class="dropdown-menu" role="menu">
                                                 	<li><a onclick="funcionRestaurar()"><?php echo $this->lang->line('restaurar').' '.$this->lang->line('mensaje')?></a></li>
 	                                                <li class="divider"></li>
-	                                                <li><a href="#"><?php echo $this->lang->line('eliminar')?></a></li>
+	                                                <li><a onclick="eliminar()"><?php echo $this->lang->line('eliminar')?></a></li>
                                                 </ul>
                                             </div>
 										</div>
@@ -184,11 +184,11 @@
 		                                		<tbody>
 		                                		<?php if($papelera) { foreach($papelera as $row) {  ?>
 												<tr>
-		                                            <td class="small-col"><input type="checkbox" class="input-papelera" name="papelera[]" value="<?php echo $row->id_sin_mensaje_vendedor;?>"/></td>
+		                                            <td class="small-col"><input type="checkbox" class="input-papelera" name="papelera[]" value="<?php echo $row->id_mensaje;?>"/></td>
 		                                            <?php if($row->id_origen == 1) { ?>
 		                                            <td class="name"><a href="#mail6" data-toggle="tab" class="displayblock" onclick="mostrarMensaje3(<?php echo $row->id_sin_mensaje_vendedor;?>)">RECIBIDO</a></td>
 		                                            <?php } else { ?>
-		                                            <td class="name"><a href="#mail6" data-toggle="tab" class="displayblock" onclick="mostrarMensaje3(<?php echo $row->id_sin_mensaje_vendedor;?>)">ENVIADO</a></td>
+		                                            <td class="name"><a href="#mail6" data-toggle="tab" class="displayblock" onclick="mostrarMensaje3(<?php echo $row->id_mensaje;?>)">ENVIADO</a></td>
 		                                            <?php } ?>
 		                                            <td class="subject"><a href="#mail6" data-toggle="tab" class="displayblock" onclick="mostrarMensaje3(<?php echo $row->id_sin_mensaje_vendedor;?>)"><?php echo $row->asunto;?></a></td>
 		                                            <td class="time"><?php $date	= date_create($row->date_add); echo ' '.date_format($date, 'd/m/Y');?></td>
@@ -446,6 +446,26 @@ function funcionRestaurar(){
 				location.reload();
 			},	
 		});
+	}
+}
+
+function eliminar(){
+	var r = confirm("¿Está seguro que quiere Eliminar los mensajes?\nDespués no podrá deshacer los cambios!!!");
+    if (r == true){
+		var aux =  $( ".input-papelera:checked" ).length;
+	
+		if(aux>0){
+			var Datos = $('.input-papelera' ).serializeArray();
+			$.ajax({
+				type: 'POST',
+				url: '<?php echo base_url(); ?>index.php/Mensajes/Eliminar', 
+				data: Datos, 
+			 	success: function(resp) { 
+			 		
+					location.reload();
+				},	
+			});
+		}
 	}
 }
 

@@ -151,6 +151,7 @@ $array_activo = moduloActivo($this->uri->segment(1));
 				          		<li><a href="<?php echo base_url().'index.php/Mails/editarMailsClientes/'?>"><?php echo $this->lang->line('editar').' '.$this->lang->line('correo'); ?></a></li>
 				          		<li><a href="<?php echo base_url().'index.php/Alarmas/nuevaAlarma/'?>"><?php echo $this->lang->line('tipo').' de '.$this->lang->line('alarma'); ?></a></li>
 				          		<li><a href="<?php echo base_url().'index.php/Diccionarios/Diccionarios/'?>"><?php echo $this->lang->line('diccionarios'); ?></a></li>
+				          		<li><a href="<?php echo base_url().'index.php/Mssql/Sincronizacion/'?>"><?php echo $this->lang->line('sincronizacion'); ?></a></li>
 				          	</ul>
 				        </li>
                     </ul>

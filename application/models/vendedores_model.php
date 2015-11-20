@@ -194,7 +194,9 @@ class Vendedores_model extends My_Model {
 				FROM 
 					$this->_tablename  
 				WHERE 
-					$this->_id_table = '$id'";
+					$this->_id_table = '$id'
+				AND 
+					id_origen = 3";
 						
 		$vendedor = $this->db->query($sql);
 		

@@ -141,8 +141,7 @@ class Mensajes extends My_Controller {
 	public function verDetalle2(){
 		
 		$mail = $this->mensajes_model->mensajesEnviados($this->input->post('id'));
-		
-		
+
 		if($mail){
 			foreach($mail as $row){
 		$mensaje = '<div class="col-md-12 col-sm-10">
@@ -215,12 +214,14 @@ class Mensajes extends My_Controller {
 
 	public function verDetalle3(){
 		
-		$mail = $this->mensajes_model->mensajesBorrados($this->input->post('id'));
-		
+		$mail 	= $this->mensajes_model->mensajesBorrados($this->input->post('id'));
+		$aux 	= 0;
 		if($mail){
 			foreach($mail as $row){
-				if($row->id_origen == 1)
-					$mail2 = $this->mensajes_model->mensajesNuevos($this->input->post('id'));
+				if($row->id_origen == 1){
+					$mail2 	= $this->mensajes_model->mensajesNuevos($this->input->post('id'));
+					$aux	= 1;
+				}
 				else
 					$mail2 = $this->mensajes_model->mensajesEnviados($this->input->post('id'));
 			}
@@ -237,38 +238,70 @@ class Mensajes extends My_Controller {
 			}
 		}
 
-
-		if($mail2){
-			foreach($mail2 as $row){ 
-		$date	= date_create($row->date_add);
-		$mensaje .= '<div class="col-md-12 col-sm-10">
+		if($aux == 1){ //-- RECIBIDO --//
+			if($mail2){
+				 foreach($mail2 as $row){
+			$date	= date_create($row->date_add);
+			$mensaje .= '<div class="col-md-12 col-sm-10">
+							<hr style="margin-top: 0px">
+							<a href="#" class="name pull-right">';
+			
+			$mensaje .=	$row->nombre.' '.$row->apellido;
+			
+			$mensaje .=	'</a>
+							<br>
+							<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> '.date_format($date, 'd/m/y H:i:s').'</small>';
+					
+			$mensaje .=	'<img src="'.$row->imagen.'" alt="user image" class="img-perfil-sm img-responsive img-mensajeria">';
+					
+			$mensaje .=	'</div>
+						<div class="col-md-12 col-sm-10">
+							<hr style="margin-top: 30px">
+							<div>      
+								<p class="message">
+									'.$row->mensaje.'
+								</p>
+							</div>
+						</div>';
+				}
+			}	
+		}
+		else{ //-- ENVIADO --//
+			if($mail2){
+				$remitentes = array();
+				foreach($mail2 as $row){
+				 	$date	= date_create($row->date_add);
+				 	$mail	= $row->mensaje;
+					array_push($remitentes,$row->nombre.' '.$row->apellido);
+					$mi_imagen	= $row->Uimagen;
+				}
+				
+				$mensaje .= '<div class="col-md-12 col-sm-10">
 						<hr style="margin-top: 0px">
-						<a href="#" class="name pull-right">';
-				if($row->id_origen == 1)
-					$mensaje .=	$row->nombre.' '.$row->apellido;
-				else
-					$mensaje .=	"YO"; 
-		
-		$mensaje .=	'</a>
+						<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> '.date_format($date, 'd/m/y H:i:s').'</small>
+						<img src="'.$mi_imagen.'" alt="user image" class="img-perfil-sm img-responsive img-mensajeria">
 						<br>
-						<small class="text-muted pull-right"><i class="fa fa-clock-o"></i> '.date_format($date, 'd/m/y H:i:s').'</small>';
-				if($row->id_origen == 1)
-					$mensaje .=	'<img src="'.$row->imagen.'" alt="user image" class="img-perfil-sm img-responsive img-mensajeria">';
-				else
-					$mensaje .=	'<img src="'.$row->Uimagen.'" alt="user image" class="img-perfil-sm img-responsive img-mensajeria">';
-		
-		$mensaje .=	'</div>
-					<div class="col-md-12 col-sm-10">
-						<hr style="margin-top: 30px">
-						<div>      
-							<p class="message">
-								'.$row->mensaje.'
-							</p>
-						</div>
-					</div>';
+						';	
+				
+				
+				for ($i=0; $i < count($remitentes); $i++) { 
+					$mensaje .= '<a href="#" class="name pull-right">
+									'.$remitentes[$i].'
+								</a><br>';				
+				}
+				
+				$mensaje .=	'</div>
+							<div class="col-md-12 col-sm-10">
+								<hr style="margin-top: 30px">
+								<div>      
+									<p class="message">
+										'.$mail.'
+									</p>
+								</div>
+							</div>';
+				
 			}
-		}	
-		
+		}
 		echo $mensaje;
 	}
 
@@ -281,6 +314,7 @@ class Mensajes extends My_Controller {
 				$arreglo = array(
 					'mensaje'			=> $this->input->post('editor'),
 					'asunto'			=> 'RE: '.$row->asunto,
+					'papelera'			=> 0,
 					'eliminado'			=> 0,
 					'id_origen'			=> 2
 				);
@@ -319,7 +353,7 @@ class Mensajes extends My_Controller {
 		$mensaje = '';
 		foreach($this->input->post('recibidos') as $recibido){
 			$mensaje .= "<b>".$recibido. " </b>";
-			$this->mensajes_model->actualizarMensaje($recibido,'eliminado',1);
+			$this->mensajes_model->actualizarMensaje($recibido,'papelera',1);
 		}
 		
 		echo $mensaje;
@@ -329,7 +363,7 @@ class Mensajes extends My_Controller {
 		$mensaje = '';
 		foreach($this->input->post('enviados') as $recibido){
 			$mensaje .= "<b>".$recibido. " </b>";
-			$this->mensajes_model->actualizarMensaje($recibido,'eliminado',1);
+			$this->mensajes_model->actualizarMensaje2($recibido,'papelera',1);
 		}
 		
 		echo $mensaje;
@@ -339,7 +373,17 @@ class Mensajes extends My_Controller {
 		$mensaje = '';
 		foreach($this->input->post('papelera') as $recibido){
 			$mensaje .= "<b>".$recibido. " </b>";
-			$this->mensajes_model->actualizarMensaje($recibido,'eliminado',0);
+			$this->mensajes_model->actualizarMensaje($recibido,'papelera',0);
+		}
+		
+		echo $mensaje;
+	}
+
+	public function Eliminar(){
+		$mensaje = '';
+		foreach($this->input->post('papelera') as $eliminado){
+			$mensaje .= "<b>".$eliminado. " </b>";
+			$this->mensajes_model->actualizarMensaje2($eliminado,'eliminado',1);
 		}
 		
 		echo $mensaje;
