@@ -47,4 +47,25 @@ class Perfil extends My_Controller {
 		
 		$this->Perfil();
 	}
+	
+	public function cambiarCorreoUsuario(){
+			
+		$session_data = $this->session->userdata('logged_in');
+			
+		$arreglo = array(
+			'correo'	=> $this->input->post('correo'),
+		);
+		
+		$this->perfil_model->updateCorreo($arreglo, $session_data['id_usuario']);
+		
+		$log = array(
+			'accion'	=> 'UPDATE',
+			'tabla'		=> 'usuarios',
+			'id_cambio'	=> $session_data['id_usuario']
+		);
+		 
+		$this->usuarios_model->logRegistros($log);
+		
+		$this->Perfil();
+	}
 }

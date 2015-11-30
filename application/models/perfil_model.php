@@ -52,12 +52,14 @@ class Perfil_model extends My_Model {
 	}
 	
 	function updateConfiguracion($arreglo){
-			
-		$session_data = $this->session->userdata('logged_in');
-		
 		$this->db->where('id_config_correo', '1');
 		$this->db->update('config_correo', $arreglo);
 		
+	}
+	
+	function updateCorreo($arreglo, $id){
+		$this->db->where('id_usuario', $id);
+		$this->db->update('usuarios', $arreglo);
 	}
 } 
 ?>
