@@ -14,6 +14,8 @@ class Pedidos extends My_Controller {
 
 		$this->load->library('grocery_CRUD');
 		$this->load->library('email');
+		$this->load->library('My_PHPMailer');
+		
 		
 		$this->load->model('empresas_model');
 		$this->load->model('clientes_model');
@@ -809,23 +811,19 @@ class Pedidos extends My_Controller {
 	
 	function enviarMailPedido($id_pedido){
 		
-		$mails = $this->input->post('mail2');
+		$mails 	= $this->input->post('mail2');
 		$pedido	= $this->pedidos_model->getDetallePedido($id_pedido);
+		$asunto	= utf8_decode($this->input->post('titulo'));
 		
+		$mail = new My_PHPMailer();
+		
+		$mensaje = $this->armarCuerpo($this->input->post('cuerpo2'),$id_pedido);
+
 		if($mails){
-			foreach($mails as $row){
-				$cuerpo = $this->armarCuerpo($this->input->post('cuerpo2'),$id_pedido);
-				$cabeceras  = 'MIME-Version: 1.0' . "\r\n";
-				$cabeceras .= 'Content-type: text/html; charset=UTF-8' . "\r\n";
-				$cabeceras .= 'From: Durox | Enología S.R.L <cristian.nieto@tmsgroup.com.ar>' . "\r\n";
-				$cabeceras	= utf8_decode($cabeceras);
-				$asunto		= utf8_decode($this->input->post('titulo-Mail'));
-				mail($row, $asunto, $cuerpo, $cabeceras);
-				//mail($row, $this->input->post('titulo-Mail'), $cuerpo, $this->input->post('cabecera2'));
+			foreach($mails as $destino){
+				echo $mail->send(utf8_decode($mensaje),$destino,$asunto);
 			}
 		}
-		
-		redirect('Pedidos/pestanas/'.$id_pedido,'refresh');
 	}
 	
 	function traerProducto(){

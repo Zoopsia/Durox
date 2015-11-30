@@ -28,7 +28,7 @@
 	      			<tr>
 				  		<td><a href="<?php echo base_url().'index.php/Visitas/carga/'.$row->id_visita ?>/0" class="displayblock"><?php echo $row->id_visita ?></a></td>
 				  		<td><a href="<?php echo base_url().'index.php/Clientes/pestanas/'.$row->id_cliente ?>" class="displayblock"><?php echo $row->razon_social ?></a></td>
-				  		<td><a href="<?php echo base_url().'index.php/Vendedores/pestanas/'.$row->id_vendedor ?>" class="displayblock"><?php echo $row->Vapellido.', '.$row->Vnombre ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Vendedores/pestanas/'.$row->id_vendedor ?>" class="displayblock"><?php echo $row->Vnombre.' '.$row->Vapellido ?></a></td>
 				  		<?php $date	= date_create($row->fecha); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
 						<td><?php echo $row->origen?></td>
@@ -68,7 +68,7 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-	        <h4 class="modal-title" id="myModalLabel"><span class="fa fa-car"></span><?php echo ' '.$this->lang->line('nuevas').' '.$this->lang->line('visitas') ?></h4>
+	        <h4 class="modal-title" id="myModalLabel"><span class="fa fa-user"></span><?php echo ' '.$this->lang->line('nuevos').' '.$this->lang->line('clientes') ?></h4>
 	      </div>
 	      <div class="modal-body">
 	      	<table class="table table-hover">
@@ -90,7 +90,7 @@
 	      				
 				  		<td><a href="<?php echo base_url().'index.php/Clientes/pestanas/'.$row->id_cliente ?>" class="displayblock"><?php echo $row->id_cliente ?></a></td>
 				  		<td><a href="<?php echo base_url().'index.php/Clientes/pestanas/'.$row->id_cliente ?>" class="displayblock"><?php echo $row->razon_social ?></a></td>
-				  		<?php $date	= date_create($row->date_add); ?>
+				  		<?php $date	= date_create($row->date_upd); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
 				  		<td><?php echo $row->origen?></td>
 				  		<td>
@@ -130,7 +130,7 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-	        <h4 class="modal-title" id="myModalLabel"><span class="fa fa-car"></span><?php echo ' '.$this->lang->line('nuevas').' '.$this->lang->line('visitas') ?></h4>
+	        <h4 class="modal-title" id="myModalLabel"><span class="fa fa-briefcase"></span><?php echo ' '.$this->lang->line('nuevos').' '.$this->lang->line('vendedores') ?></h4>
 	      </div>
 	      <div class="modal-body">
 	      	<table class="table table-hover">
@@ -153,7 +153,7 @@
 				  		<td><a href="<?php echo base_url().'index.php/Vendedores/pestanas/'.$row->id_vendedor ?>" class="displayblock"><?php echo $row->id_vendedor ?></a></td>
 				  		<td><a href="<?php echo base_url().'index.php/Vendedores/pestanas/'.$row->id_vendedor ?>" class="displayblock"><?php echo $row->nombre ?></a></td>
 				  		<td><a href="<?php echo base_url().'index.php/Vendedores/pestanas/'.$row->id_vendedor ?>" class="displayblock"><?php echo $row->apellido ?></a></td>
-				  		<?php $date	= date_create($row->date_add); ?>
+				  		<?php $date	= date_create($row->date_upd); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
 				  		<td><?php echo $row->origen?></td>
 				  		<td>
@@ -193,7 +193,7 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-	        <h4 class="modal-title" id="myModalLabel"><span class="fa fa-car"></span><?php echo ' '.$this->lang->line('nuevas').' '.$this->lang->line('visitas') ?></h4>
+	        <h4 class="modal-title" id="myModalLabel"><span class="fa fa-archive"></span><?php echo ' '.$this->lang->line('nuevos').' '.$this->lang->line('productos') ?></h4>
 	      </div>
 	      <div class="modal-body">
 	      	<table class="table table-hover">
@@ -217,7 +217,7 @@
 				  		<td><a href="<?php echo base_url().'index.php/Productos/pestanas/'.$row->id_producto ?>" class="displayblock"><?php echo $row->id_producto ?></a></td>
 				  		<td><a href="<?php echo base_url().'index.php/Productos/pestanas/'.$row->id_producto ?>" class="displayblock"><?php echo $row->nombre ?></a></td>
 				  		<td><a href="<?php echo base_url().'index.php/Productos/pestanas/'.$row->id_producto ?>" class="displayblock"><?php echo $row->precio ?></a></td>
-				  		<?php $date	= date_create($row->date_add); ?>
+				  		<?php $date	= date_create($row->date_upd); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
 				  		<td><?php echo $row->origen?></td>
 				  		<td>
@@ -257,7 +257,7 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-	        <h4 class="modal-title" id="myModalLabel"><span class="fa fa-car"></span><?php echo ' '.$this->lang->line('nuevas').' '.$this->lang->line('visitas') ?></h4>
+	        <h4 class="modal-title" id="myModalLabel"><span class="fa fa-shopping-cart"></span><?php echo ' '.$this->lang->line('nuevos').' '.$this->lang->line('pedidos') ?></h4>
 	      </div>
 	      <div class="modal-body">
 	      	<table class="table table-hover">
@@ -283,7 +283,7 @@
 				  		<td><a href="<?php echo base_url().'index.php/Presupuestos/pestanas/'.$row->id_presupuesto ?>" class="displayblock"><?php echo $row->id_presupuesto ?></a></td>
 				  		<td><a href="<?php echo base_url().'index.php/Visitas/carga/'.$row->id_visita ?>/0" class="displayblock"><?php echo $row->id_visita ?></a></td>
 				  		<td><a href="<?php echo base_url().'index.php/Clientes/pestanas/'.$row->id_cliente ?>" class="displayblock"><?php echo $row->razon_social ?></a></td>
-				  		<td><a href="<?php echo base_url().'index.php/Vendedores/pestanas/'.$row->id_vendedor ?>" class="displayblock"><?php echo $row->Vapellido.', '.$row->Vnombre ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Vendedores/pestanas/'.$row->id_vendedor ?>" class="displayblock"><?php echo $row->Vnombre.' '.$row->Vapellido ?></a></td>
 				  		<?php $date	= date_create($row->fecha); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
 				  		<td><?php echo $row->origen?></td>
@@ -324,7 +324,7 @@
 	    <div class="modal-content">
 	      <div class="modal-header">
 	        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-	        <h4 class="modal-title" id="myModalLabel"><span class="fa fa-car"></span><?php echo ' '.$this->lang->line('nuevas').' '.$this->lang->line('visitas') ?></h4>
+	        <h4 class="modal-title" id="myModalLabel"><span class="fa fa-book"></span><?php echo ' '.$this->lang->line('nuevos').' '.$this->lang->line('presupuestos') ?></h4>
 	      </div>
 	      <div class="modal-body">
 	      	<table class="table table-hover">
@@ -348,7 +348,7 @@
 	      				<td><a href="<?php echo base_url().'index.php/Presupuestos/pestanas/'.$row->id_presupuesto ?>" class="displayblock"><?php echo $row->id_presupuesto ?></a></td>
 				  		<td><a href="<?php echo base_url().'index.php/Visitas/carga/'.$row->id_visita ?>/0" class="displayblock"><?php echo $row->id_visita ?></a></td>
 				  		<td><a href="<?php echo base_url().'index.php/Clientes/pestanas/'.$row->id_cliente ?>" class="displayblock"><?php echo $row->razon_social ?></a></td>
-				  		<td><a href="<?php echo base_url().'index.php/Vendedores/pestanas/'.$row->id_vendedor ?>" class="displayblock"><?php echo $row->Vapellido.', '.$row->Vnombre ?></a></td>
+				  		<td><a href="<?php echo base_url().'index.php/Vendedores/pestanas/'.$row->id_vendedor ?>" class="displayblock"><?php echo $row->Vnombre.' '.$row->Vapellido ?></a></td>
 				  		<?php $date	= date_create($row->fecha); ?>
 						<td><?php echo date_format($date, 'd/m/Y') ?></td>
 				  		<td><?php echo $row->origen?></td>

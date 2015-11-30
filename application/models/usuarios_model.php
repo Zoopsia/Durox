@@ -21,20 +21,22 @@ class Usuarios_model extends My_Model {
 		);
 	}
 	
-	function login($username, $password)
-	{
+	function login($username, $password){
 		$password = MD5($password);
 		
 		$sql = 
 		"SELECT 
 			id_usuario, 
 			usuario,
-			imagen 
+			imagen,
+			correo
 		FROM 
 			usuarios
 		WHERE
 			usuario = '$username' AND 
-			pass = '$password'";
+			pass = '$password'
+		AND
+			eliminado = 0";
 		
 		$query = $this->db->query($sql);		
 		
@@ -46,7 +48,9 @@ class Usuarios_model extends My_Model {
 		{
 			return false;
 		}
-	 }
+	}
+	
+	
 
 } 
 ?>

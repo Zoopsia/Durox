@@ -44,7 +44,7 @@ class Login extends CI_Controller {
 			$this->load->view('login/inicio');
 			$this->load->view('plantilla/footer.php');
 	   	}
-	   	else
+		else
 	   	{
 	     	//Go to private area
 			redirect('/home/','refresh');
@@ -66,13 +66,14 @@ class Login extends CI_Controller {
 				$sess_array = array(
 					'id_usuario' 	=> $row->id_usuario,
 					'usuario' 		=> $row->usuario,
-					'imagen'		=> $row->imagen
-	       		);
+					'imagen'		=> $row->imagen,
+					'correo'		=> $row->correo
+		    	);
 			}
-		 
+			 
 			$this->session->unset_userdata('logged_in');
 			$this->session->set_userdata('logged_in', $sess_array);
-	     
+		    
 			return TRUE;
 		}
 		else
