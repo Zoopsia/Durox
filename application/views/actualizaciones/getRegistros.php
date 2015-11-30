@@ -4,6 +4,9 @@ if($registros){
 		$json[$array][]=$row;
 	}
 	
-	echo json_encode($json); 
+	$encode = json_encode($json);
+	$encode = str_replace("'", " ", $encode);
+
+	echo $encode; 
 }
 ?>

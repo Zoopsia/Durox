@@ -112,7 +112,7 @@ class Mssql_model extends My_Model {
 					if($fila->IS_NULLABLE == "NO"){
 						$campo = array(
 		                       	'type' 			=> $fila->DATA_TYPE,
-		                        'constraint' 	=> $fila->CHARACTER_MAXIMUM_LENGTH
+		                        'constraint' 	=> $fila->CHARACTER_MAXIMUM_LENGTH,
 						);
 					}
 					else{
@@ -162,6 +162,9 @@ class Mssql_model extends My_Model {
 					}
 				}
 			}
+			
+			$test = "alter table $this->prefijo$tabladestino convert to character set latin1 collate latin1_swedish_ci;";
+			$this->db->query($test);
 		}
 	}
 	
@@ -182,7 +185,7 @@ class Mssql_model extends My_Model {
 						TABLE_NAME = '$tabla'
 					ORDER BY 
 						ORDINAL_POSITION ASC";
-	
+			
 			$query		 	= $db_mssql->query($sql);
 			$numerocol		= $db_mssql->affected_rows();
 			$i = 0;
@@ -210,6 +213,7 @@ class Mssql_model extends My_Model {
 					FROM 
 						$nombreDB.$this->subjet.$tabla";
 	
+			
 			$query		 	= $db_mssql->query($sql);
 			
 			if($query->num_rows() > 0){
@@ -217,6 +221,12 @@ class Mssql_model extends My_Model {
 					
 					if(!$this->buscarRegistro($columna_pri,$this->prefijo.$tabladestino,$row[$columna[0]]))
 					{
+							
+						$this->db->query("SET NAMES 'latin1'");
+                        $this->db->query("SET CHARACTER SET latin1");
+                        $this->db->query("SET character_set_connection=latin1");
+                        $this->db->query("SET character_set_client=latin1");
+						
 						$sql1 = "INSERT INTO
 							$this->prefijo$tabladestino
 							($select)
@@ -230,6 +240,13 @@ class Mssql_model extends My_Model {
 						}
 						
 						$sql1 .= ")";
+						
+						for ($i=0; $i < count($columna) ; $i++) {
+							if($i != count($columna) - 1) 
+								echo $row[$columna[$i]]."<br>";
+							
+						}
+						
 						
 						$insert_id = $this->db->query($sql1);
 						$sql1 = "";

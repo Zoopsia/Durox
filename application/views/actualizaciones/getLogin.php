@@ -10,7 +10,10 @@ if($registros){
 	$resultado[] = array("logstatus" => "0");
 }
 
-echo json_encode($resultado);
+$encode = json_encode($resultado);
+$encode = str_replace("'", " ", $encode);
+
+echo $encode;
 
 
 ?>

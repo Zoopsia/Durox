@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="UTF-8">
+        <meta charset="utf8">
        
         
 		<title>Administración DUROX</title>

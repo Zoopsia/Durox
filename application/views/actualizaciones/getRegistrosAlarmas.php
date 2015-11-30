@@ -8,5 +8,8 @@ if($registros){
 	}
 }
 
-echo json_encode($json);
+$encode = json_encode($json);
+$encode = str_replace("'", " ", $encode);
+
+echo $encode;
 ?>
