@@ -26,12 +26,17 @@ function busqueda(){
 </script>
 
 <?php 
-foreach($css_files as $file): ?>
-	<link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
-<?php endforeach; ?>
-<?php foreach($js_files as $file): ?>
-	<script src="<?php echo $file; ?>"></script>
-<?php endforeach; ?>
+if(isset($css_files)){
+	foreach($css_files as $file){
+		echo '<link type="text/css" rel="stylesheet" href="'.$file.'" />';
+	} 	
+} 
+if(isset($js_files)){
+	foreach($js_files as $file){
+	echo '<script src="'.$file.'"></script>';
+	}
+}
+?>
 
 
 
@@ -46,8 +51,8 @@ foreach($css_files as $file): ?>
 				<div class="panel panel-default">
 		  			<div class="panel-heading">
 		  				<ul class="nav nav-pills">
-							<li class="<?php echo $array_n['listado']?>"><a href="#tab1" data-toggle="tab"><?php echo $this->lang->line('visitas'); ?></a></li>
-					    	<li class="pull-right <?php echo $array_n['busqueda']?>"><a href="#tab2" data-toggle="tab"><?php echo $this->lang->line('busqueda_avanzada'); ?></a></li>
+							<li class="<?php echo $array_n['listado']?>"><a href="<?php echo base_url().'index.php/visitas/visitas_abm/tab1'?>"><?php echo $this->lang->line('visitas'); ?></a></li>
+					    	<li class="pull-right <?php echo $array_n['busqueda']?>"><a href="<?php echo base_url().'index.php/visitas/visitas_abm/tab2'?>" ><?php echo $this->lang->line('busqueda_avanzada'); ?></a></li>
 						</ul>
 		  			</div>
 		  			
@@ -71,101 +76,46 @@ foreach($css_files as $file): ?>
 	    						</div>
 	    					</div>
 	    					<!--BUSQUEDA AVANZADA DE PEDIDOS-->
-	    					<div class="tab-pane <?php echo $array_n['busqueda']?>" id="tab2">
-	    						<div id="busqueda" style="padding: 0 50px">
-	    							
-	    						</div>
-	    						
-	    						<form action="<?php echo base_url()."index.php/visitas/busqueda"?>" class="form-horizontal" method="post">
-	    							<div style="padding: 0 50px">
-	    							
-	    								<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="padding-top: 20px">
-										  <div class="panel panel-default">
-										    <div class="panel-heading" role="tab" id="headingOne">
-										      <h4 class="panel-title">
-										        <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-										         	<?php echo $this->lang->line('visitas'); ?>
-										        </a>
-										      </h4>
-										    </div>
-										    <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-										      <div class="panel-body">
-										        <div class="form-group odd"><!--PANEL DE BUSQUEDA POR VISITA-->
-													<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('visita'); ?></label>
-														<div class="col-sm-3">
-															<input type="text" id="id_visita" class="numeric form-control" pattern="[0-9]*" placeholder="<?php echo $this->lang->line('numero'); ?>"> 	    	
-														</div>
-															
-													<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('fecha'); ?></label>
-														<div class="col-sm-3">
-															<input type="date" id="date_upd" class="numeric form-control" placeholder="<?php echo $this->lang->line('fecha'); ?>"> 	    	
-												  		</div>
-												</div>
-											  </div>
-										    </div>
-										  </div>
-										  <div class="panel panel-default">
-										    <div class="panel-heading" role="tab" id="headingTwo">
-										      <h4 class="panel-title">
-										        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-										        	<?php echo $this->lang->line('clientes'); ?>
-										        </a>
-										      </h4>
-										    </div>
-										    <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-										      <div class="panel-body">
-										      	<div class="form-group even"><!--PANEL DE BUSQUEDA POR CLIENTE-->
-													<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('nombre'); ?></label>
-														<div class="col-sm-3">
-															<input type="text" id="cliente_nombre" class="numeric form-control" pattern="[A-Za-z ]+" placeholder="<?php echo $this->lang->line('nombre'); ?>"> 	    	
-														</div>
-															
-													<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('apellido'); ?></label>
-														<div class="col-sm-3">
-															<input type="text" id="cliente_apellido" class="numeric form-control" pattern="[A-Za-z ]+" placeholder="<?php echo $this->lang->line('apellido'); ?>"> 	    	
-														</div>
-												</div>
-										      </div>
-										    </div>
-										  </div>
-										  <div class="panel panel-default">
-										    <div class="panel-heading" role="tab" id="headingThree">
-										      <h4 class="panel-title">
-										        <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-										        	<?php echo $this->lang->line('vendedores'); ?>
-										        </a>
-										      </h4>
-										    </div>
-										    <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-										      <div class="panel-body">
-										      	<div class="form-group odd"><!--PANEL DE BUSQUEDA POR VENDEDOR-->
-													<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('nombre'); ?></label>
-														<div class="col-sm-3">
-															<input type="text" id="vendedor_nombre" class="numeric form-control" pattern="[A-Za-z ]+" placeholder="<?php echo $this->lang->line('nombre'); ?>"> 	    	
-														</div>
-														
-													<label class="col-sm-1 col-sm-offset-1 control-label"><?php echo $this->lang->line('apellido'); ?></label>
-														<div class="col-sm-3">
-															<input type="text" id="vendedor_apellido" class="numeric form-control" pattern="[A-Za-z ]+" placeholder="<?php echo $this->lang->line('apellido'); ?>"> 	    	
-														</div>
-												</div>
-										      </div>
-										    </div>
-										  </div>
-										</div>	
-
-										<div class="form-group">
-										  	<label class="col-sm-1 control-label"></label>
-									      		<div class="col-md-6 col-md-offset-4">
-											  		<button type="button" class="btn btn-primary" name="btn-save" value="1" onclick="busqueda()"><?php echo $this->lang->line('buscar'); ?></button>	
-										  			<input type="reset" class="btn btn-default" value="<?php echo $this->lang->line('resetear').' '.$this->lang->line('filtro'); ?>">
-										  		</div>
-										</div>
-	    							</div>
-	    							
-	    						</form>
-	    					</div>
 	    					
+	    					<div class="tab-pane <?php echo $array_n['busqueda']?>" id="tab2">
+	    						<div class="panel panel-default">
+									<div class="panel-body">
+								    	<form class="form-inline">
+											<label class="col-md-1">
+												<?php echo $this->lang->line('clientes');?>
+											</label>
+											<div class="col-md-5">	
+										    	<select class="form-control col-md-6" id="clientes">
+										    		<option value=""></option>
+										    		<?php 
+										    		foreach ($clientes as $row) {
+														echo '<option>'.$row->razon_social.'</option>';
+													}
+													?>
+										    	</select>
+										    </div>
+										    <label class="col-md-1">
+												<?php echo $this->lang->line('vendedores');?>
+											</label>
+											<div class="col-md-5">	
+										    	<select class="form-control col-md-6" id="clientes">
+										    		<option value=""></option>
+										    		<?php 
+										    		foreach ($vendedores as $row) {
+														echo '<option>'.$row->nombre.' '.$row->apellido.'</option>';
+													}
+													?>
+										    	</select>
+										    </div>
+										  	
+										  	<div class="form-group">
+										  		<label for="exampleInputEmail2"></label>
+										  		<button type="submit" class="btn btn-default">Buscar</button>
+										  	</div>
+										</form>
+									</div>
+								</div>	
+	    					</div>
 	    				</div><!--contenedor de cada pestaña-->
 		  			</div><!--panel body-->
 				</div><!--panel-->

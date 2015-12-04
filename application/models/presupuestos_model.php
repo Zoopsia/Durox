@@ -46,7 +46,7 @@ class Presupuestos_model extends My_Model {
 					visitas USING(id_visita)
 				INNER JOIN 
 					linea_productos_$this->_tablename USING($this->_id_table)
-				INNER JOIN
+				LEFT JOIN
 					monedas USING (id_moneda)
 				INNER JOIN 
 					productos USING (id_producto)
@@ -54,23 +54,8 @@ class Presupuestos_model extends My_Model {
 					estados_productos_$this->_tablename USING(id_estado_producto_$this->_subject)
 				WHERE 
 					$this->_id_table = '$id'";
-	
 					
-		$query = $this->db->query($sql);
-		
-		if($query->num_rows() > 0)
-		{
-			foreach ($query->result() as $fila)
-			{
-				$data[] = $fila;
-			}
-			return $data;
-		}
-		else
-		{
-			return FALSE;
-		}
-		
+		return $this->getQuery($sql);
 	}
 	
 	function getPresupuesto($id){
@@ -83,20 +68,7 @@ class Presupuestos_model extends My_Model {
 				AND
 					eliminado = 0";
 					
-		$query = $this->db->query($sql);
-		
-		if($query->num_rows() > 0)
-		{
-			foreach ($query->result() as $fila)
-			{
-				$data[] = $fila;
-			}
-			return $data;
-		}
-		else
-		{
-			return FALSE;
-		}
+		return $this->getQuery($sql);
 	}
 	
 	function insertLinea($arreglo){
@@ -104,23 +76,19 @@ class Presupuestos_model extends My_Model {
 		//----INSERTO CAMPOS EN TABLA ----//
 		$session_data = $this->session->userdata('logged_in');
 		
-		if($this->db->field_exists('date_add', $this->_tablename))
-		{
+		if($this->db->field_exists('date_add', $this->_tablename)){
 			$arreglo['date_add'] = date('Y-m-d H:i:s'); 
 		}
 		
-		if($this->db->field_exists('date_upd', $this->_tablename))
-		{
+		if($this->db->field_exists('date_upd', $this->_tablename)){
 			$arreglo['date_upd'] = date('Y-m-d H:i:s'); 
 		}
 		
-		if($this->db->field_exists('user_add', $this->_tablename))
-		{
+		if($this->db->field_exists('user_add', $this->_tablename)){
 			$arreglo['user_add'] = $session_data['id_usuario']; 
 		}
 		
-		if($this->db->field_exists('user_upd', $this->_tablename))
-		{
+		if($this->db->field_exists('user_upd', $this->_tablename)){
 			$arreglo['user_upd'] = $session_data['id_usuario']; 
 		}
 		
@@ -135,23 +103,19 @@ class Presupuestos_model extends My_Model {
 		//----INSERTO CAMPOS EN TABLA CRUCE ----//
 		$session_data = $this->session->userdata('logged_in');
 		
-		if($this->db->field_exists('date_add', $this->_tablename))
-		{
+		if($this->db->field_exists('date_add', $this->_tablename)){
 			$arreglo_cruce['date_add'] = date('Y-m-d H:i:s'); 
 		}
 		
-		if($this->db->field_exists('date_upd', $this->_tablename))
-		{
+		if($this->db->field_exists('date_upd', $this->_tablename)){
 			$arreglo_cruce['date_upd'] = date('Y-m-d H:i:s'); 
 		}
 		
-		if($this->db->field_exists('user_add', $this->_tablename))
-		{
+		if($this->db->field_exists('user_add', $this->_tablename)){
 			$arreglo_cruce['user_add'] = $session_data['id_usuario']; 
 		}
 		
-		if($this->db->field_exists('user_upd', $this->_tablename))
-		{
+		if($this->db->field_exists('user_upd', $this->_tablename)){
 			$arreglo_cruce['user_upd'] = $session_data['id_usuario']; 
 		}
 
@@ -170,13 +134,11 @@ class Presupuestos_model extends My_Model {
 		
 		$session_data = $this->session->userdata('logged_in');
 		
-		if($this->db->field_exists('date_upd', $this->_tablename))
-		{
+		if($this->db->field_exists('date_upd', $this->_tablename)){
 			$arreglo_campos['date_upd'] = date('Y-m-d H:i:s'); 
 		}
 		
-		if($this->db->field_exists('user_upd', $this->_tablename))
-		{
+		if($this->db->field_exists('user_upd', $this->_tablename)){
 			$arreglo_campos['user_upd'] = $session_data['id_usuario']; 
 		}
 		
@@ -217,20 +179,12 @@ class Presupuestos_model extends My_Model {
 				AND
 					presupuestos.eliminado = 0';
 		
-		$query = $this->db->query($sql);
-						
-		if($query->num_rows() > 0){
-			foreach ($query->result() as $fila){
-				$data[] = $fila;
-			}
-			return $data;
-		}else{
-			return FALSE;
-		}							
+		return $this->getQuery($sql);					
 	}
 	
+	
+	
 	function getVisitas(){
-			
 		$sql = 'SELECT 
 					*
 				FROM
@@ -242,20 +196,12 @@ class Presupuestos_model extends My_Model {
 				WHERE 
 					id_pedido IS NULL';
 		
-		$query = $this->db->query($sql);
-						
-		if($query->num_rows() > 0){
-			foreach ($query->result() as $fila){
-				$data[] = $fila;
-			}
-			return $data;
-		}else{
-			return FALSE;
-		}
+		return $this->getQuery($sql);
 	}
 
-	function getModos($id_presupuesto){
 
+
+	function getModos($id_presupuesto){
 		$sql = "SELECT
 					*
 				FROM
@@ -265,20 +211,12 @@ class Presupuestos_model extends My_Model {
 				AND
 					eliminado = 0";
 		
-		$query = $this->db->query($sql);
-						
-		if($query->num_rows() > 0){
-			foreach ($query->result() as $fila){
-				$data[] = $fila;
-			}
-			return $data;
-		}else{
-			return FALSE;
-		}	
+		return $this->getQuery($sql);
 	}
 	
+	
+	
 	function getLinea($id){
-			
 		$sql = "SELECT
 					*
 				FROM
@@ -286,16 +224,7 @@ class Presupuestos_model extends My_Model {
 				WHERE 
 					id_linea_producto_presupuesto = $id";
 		
-		$query = $this->db->query($sql);
-						
-		if($query->num_rows() > 0){
-			foreach ($query->result() as $fila){
-				$data[] = $fila;
-			}
-			return $data;
-		}else{
-			return FALSE;
-		}	
+		return $this->getQuery($sql);
 	}
 } 
 ?>

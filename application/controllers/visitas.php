@@ -72,8 +72,9 @@ class Visitas extends My_Controller {
 		}			
 	}
 
-	public function visitas_abm(){
-			
+	public function visitas_abm($tab){
+		
+		if($tab == 'tab1'){
 			$crud = new grocery_CRUD();
 
 			$crud->set_theme('datatables');
@@ -121,6 +122,12 @@ class Visitas extends My_Controller {
 			$output = $crud->render();
 			
 			$this->crud_tabla($output);
+		}else{
+			$db['clientes'] = $this->clientes_model->getTodo();
+			$db['vendedores'] = $this->vendedores_model->getTodo();
+			
+			$this->cargar_vista($db, 'tabla');
+		}	
 	}
 	
 	public function delete_user($primary_key)

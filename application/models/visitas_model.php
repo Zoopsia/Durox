@@ -145,6 +145,99 @@ class Visitas_model extends My_Model {
 			return FALSE;
 		}							
 	}
+	
+	
+	function getCampos($campos){
+		$join = "";
+		$sql = "SELECT";
+		foreach ($campos as $key => $value) {
+			if($value == 'id_vendedor'){
+				$sql .= " vendedores.nombre as id_vendedor,";
+				$join .= " LEFT JOIN
+							vendedores
+						USING
+							(id_vendedor) ";
+			}else if($value == 'id_cliente'){
+				$sql .= " clientes.razon_social as id_cliente,";
+				$join .= " LEFT JOIN
+							clientes
+						USING
+							(id_cliente) ";
+			}else if($value == 'id_epoca_visita'){
+				$sql .= " epocas_visitas.epoca as id_epoca_visita,";
+				$join .= " LEFT JOIN
+							epocas_visitas
+						USING
+							(id_epoca_visita) ";
+			}else if($value == 'id_origen_visita'){
+				$sql .= " origenes_visita.origen_visita as id_origen_visita,";
+				$join .= " LEFT JOIN
+							origenes_visita
+						USING
+							(id_origen_visita) ";	
+			}else{
+				$sql .= " visitas.".$value.",";
+			}
+				
+		}
+		$sql = trim($sql, ",");
+		
+		$sql .=" FROM 
+					visitas";
+		
+		$sql .= $join; 
+		$sql .=	"WHERE 
+					visitas.eliminado = 0";
+					
+				
+					
+		$query = $this->db->query($sql);			
+		
+		if($query->num_rows() > 0){
+			foreach ($query->result_array() as $row){
+				$data[] = $row;
+			}
+			return $data;
+		}else{
+			return FALSE;
+		}
+	}
+	
+	
+	function listado($opciones){
+		$inicio = explode('/', $opciones['inicio']);
+		$opciones['inicio'] = $inicio[2].'-'.$inicio[1].'-'.$inicio[0];
+		$final = explode('/', $opciones['final']);
+		$opciones['final'] = $final[2].'-'.$final[1].'-'.$final[0];
+		
+		$sql = "SELECT 
+					visitas.*,
+					origen.origen,
+					clientes.razon_social as razon_social,
+					vendedores.nombre as Vnombre,
+					vendedores.apellido	as Vapellido,
+					vendedores.id_vendedor as id_vendedor
+				FROM 
+					visitas 
+				INNER JOIN 
+					origen 
+				USING 
+					(id_origen)
+				INNER JOIN
+					clientes
+				USING
+					(id_cliente)
+				INNER JOIN
+					vendedores
+				USING
+					(id_vendedor)
+				WHERE 
+					visitas.id_vendedor = '$opciones[id_vendedor]' AND
+					visitas.fecha >= '$opciones[inicio]' AND
+					visitas.fecha <= '$opciones[final]' ";
+		
+		return $this->getQuery($sql);
+	}
 		
 } 
 ?>

@@ -299,7 +299,6 @@ $eliminado = 0;
 												<th class="mostrar-col"></th>
 											</tr>
 										</thead>
-									
 										<tfoot>
 											<tr>
 												<th><?php echo $this -> lang -> line('id'); ?></th>
@@ -315,7 +314,7 @@ $eliminado = 0;
 											$mostrar_col = 0;
 											foreach ($presupuesto as $row) {
 												echo '<tr>';
-												echo '<td>' . $row -> id_presupuesto . '</td>';
+												echo '<td><a href="'.base_url().'index.php/presupuestos/pestanas/'.$row->id_presupuesto.'">'.$row->id_presupuesto.'</a></td>';
 												$date = date_create($row -> fecha);
 												echo '<td>' . date_format($date, 'd/m/Y') . '</td>';
 												foreach ($estados as $key) {

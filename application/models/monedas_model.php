@@ -18,8 +18,9 @@ class Monedas_model extends My_Model {
 		);
 	}
 	
+	
+	
 	function deleteMonedaPresupuesto($id){
-		
 		$sql = "SELECT
 					*
 				FROM
@@ -27,19 +28,12 @@ class Monedas_model extends My_Model {
 				WHERE
 					$this->_id_table = $id";
 
-		$query = $this->db->query($sql);
-		
-		if($query->num_rows() > 0)
-		{
-			return FALSE;
-		}
-		else {
-			return TRUE;
-		}
+		return $this->getQuery($sql);
 	}
 	
+	
+	
 	function deleteMonedaPedido($id){
-		
 		$sql = "SELECT
 					*
 				FROM
@@ -47,15 +41,21 @@ class Monedas_model extends My_Model {
 				WHERE
 					$this->_id_table = $id";
 		
-		$query = $this->db->query($sql);
-		
-		if($query->num_rows() > 0)
-		{
-			return FALSE;
-		}
-		else {
-			return TRUE;
-		}
+		return $this->getQuery($sql);
+	}
+	
+	function getDefault(){
+		$sql = "SELECT 
+					`id_moneda`,
+					`valor` 
+				FROM 
+					`monedas` 
+				WHERE 
+					`por_defecto` = 1";
+					
+					
+					
+		return $this->getQuery($sql);
 	}
 } 
 ?>

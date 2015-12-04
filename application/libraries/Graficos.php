@@ -1,8 +1,8 @@
 <?php 
 class Graficos {
-	var $highcharts	= '<script src="http://192.168.1.233/Durox/libraries/highcharts-4.1.9/js/highcharts.js"></script>';
-	var $exporting	= '<script src="http://192.168.1.233/Durox/libraries/highcharts-4.1.9/js/modules/exporting.js"></script>';
-	var $tresD		= '<script src="http://192.168.1.233/Durox/libraries/highcharts-4.1.9/js/highcharts-3d.js"></script>';
+	var $highcharts	= '<script src="http://localhost/Durox/libraries/highcharts-4.1.9/js/highcharts.js"></script>';
+	var $exporting	= '<script src="http://localhost/Durox/libraries/highcharts-4.1.9/js/modules/exporting.js"></script>';
+	var $tresD		= '<script src="http://localhost/Durox/libraries/highcharts-4.1.9/js/highcharts-3d.js"></script>';
 	var $carga; 
 		
 	function __construct(){

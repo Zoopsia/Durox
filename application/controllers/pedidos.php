@@ -6,8 +6,7 @@ class Pedidos extends My_Controller {
 	
 	
 	
-	function __construct()
-	{
+	function __construct(){
 		parent::__construct(
 				$subjet		= $this->_subject 
 		);
@@ -28,16 +27,18 @@ class Pedidos extends My_Controller {
 		$this->load->model('log_linea_pedidos_model');
 		$this->load->model('mails_model');
 		$this->load->model('modos_pago_model');
+		$this->load->model('monedas_model');
 		$this->load->model('condiciones_pago_model');
 		$this->load->model('tiempos_entrega_model');
+		$this->load->model('alarmas_model');
+		$this->load->model('alarmas_sistema_model');
 		
 		
 		$this->load->model($this->_subject.'_model');	
 	}
 	
 
-	public function pestanas($id)
-	{
+	public function pestanas($id){
 		$pedido					= $this->pedidos_model->getRegistro($id);
 		$db['pedido']			= $pedido;
 		
@@ -159,16 +160,13 @@ class Pedidos extends My_Controller {
 				
 	}
 	
-	public function generarNuevoPedido($id_presupuesto)
-	{
+	public function generarNuevoPedido($id_presupuesto){
 		$presupuesto	= $this->presupuestos_model->getRegistro($id_presupuesto);
 		$detalle		= $this->presupuestos_model->getDetallePresupuesto($id_presupuesto);
 		$sin_modos		= $this->presupuestos_model->getModos($id_presupuesto);
 		
-		if($presupuesto)
-		{
-			foreach($presupuesto as $row)
-			{
+		if($presupuesto){
+			foreach($presupuesto as $row){
 				$arreglo	= array(
 					'id_visita'				=> $row->id_visita,
 					'id_presupuesto'		=> $id_presupuesto,
@@ -211,11 +209,35 @@ class Pedidos extends My_Controller {
 		}
 		
 		
-		if($detalle)
-		{
-			foreach($detalle as $row)
-			{
-				if($row->estado_linea!=3){
+		if($detalle){
+			foreach($detalle as $row){
+				if($row->id_moneda == NULL){
+					$session_data = $this->session->userdata('logged_in');
+					$obj_moneda = $this->monedas_model->getDefault();
+					foreach ($obj_moneda as $row_moneda) {
+						$row->id_moneda = $row_moneda->id_moneda;	
+						$row->valor_moneda = $row_moneda->valor;
+						$row->subtotal = $row->valor_moneda * $row->precio * $row->cantidad;
+					}
+					$obj_alarmas_sistema = $this->alarmas_sistema_model->getRegistro(1);
+					foreach ($obj_alarmas_sistema as $row_as) {
+						$mensaje = str_replace("#producto#", $row->producto, $row_as->mensaje);
+						$alarma	= array(
+							'id_tipo_alarma'	=> $row_as->id_tipo_alarma,
+							'mensaje'			=> $mensaje,
+							'visto_back'		=> 0,
+							'visto_front'		=> 0,
+							'eliminado'			=> 0,
+							'id_origen'			=> 2,
+							'id_creador'		=> $session_data['id_usuario'],
+						);
+						$id_alarma 	= $this->alarmas_model->insert($alarma);
+						$id_alarma 			= $this->alarmas_model->insert($alarma);
+						$this->alarmas_model->insertCruce($this->_subject, $id_alarma, $id);
+					}
+				}
+				
+				if($row->estado_linea != 3){
 					$arreglo_linea	= array(
 						'id_pedido'					=> $id,
 						'id_producto'						=> $row->producto,
@@ -224,7 +246,7 @@ class Pedidos extends My_Controller {
 						'cantidad'							=> $row->cantidad,
 						'id_estado_producto_pedido'			=> $row->estado_linea,
 						'id_moneda'							=> $row->id_moneda,
-						'valor_moneda'						=> $row->valor,
+						'valor_moneda'						=> $row->valor_moneda,
 						'aprobado_back'						=> 0,
 						'aprobado_front'					=> 1,
 						'eliminado'							=> 0

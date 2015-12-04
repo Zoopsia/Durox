@@ -6,8 +6,7 @@ class Presupuestos extends My_Controller {
 	
 	
 	
-	function __construct()
-	{
+	function __construct(){
 		parent::__construct(
 				$subjet		= $this->_subject 
 		);
@@ -30,8 +29,7 @@ class Presupuestos extends My_Controller {
 	}
 	
 
-	public function pestanas($id)
-	{
+	public function pestanas($id){
 		$presupuesto			= $this->presupuestos_model->getRegistro($id);
 		$db['presupuesto']		= $presupuesto;
 		
@@ -58,58 +56,57 @@ class Presupuestos extends My_Controller {
 	}
 	
 
-	public function presupuestos_abm()
-	{
-			$crud = new grocery_CRUD();
+	public function presupuestos_abm(){
+		$crud = new grocery_CRUD();
 
-			$crud->set_theme('datatables');
+		$crud->set_theme('datatables');
 			
-			$crud->set_language("spanish");
+		$crud->set_language("spanish");
 			
-			$crud->where('presupuestos.eliminado', 0);
+		$crud->where('presupuestos.eliminado', 0);
 			
-			$crud->set_table('presupuestos');
+		$crud->set_table('presupuestos');
 			
-			$crud->columns('id_presupuesto',
-							'id_cliente',
-							'id_vendedor',
-							'id_estado_presupuesto',
-							'fecha');
+		$crud->columns('id_presupuesto',
+						'id_cliente',
+						'id_vendedor',
+						'id_estado_presupuesto',
+						'fecha');
+		
+		$crud->callback_column('fecha',array($this,'_callback_fecha'));
+		
+		$crud->display_as('id_presupuesto','N° Presupuesto')
+			 ->display_as('id_cliente','Cliente')
+			 ->display_as('id_vendedor','Vendedor')
+			 ->display_as('id_estado_presupuesto','Estado')
+			 ->display_as('date_add','Fecha');
+		
+		$crud->set_subject('Presupuestos');
+		
+		$crud->fields(	'id_presupuesto',
+						'id_cliente',
+						'id_vendedor',
+						'id_estado_presupuesto');
+						
+		$crud->order_by('id_presupuesto','desc');
+						
+		$crud->set_relation('id_cliente','clientes','{razon_social}');
+		$crud->set_relation('id_vendedor','vendedores','{apellido} {nombre}');
+		$crud->set_relation('id_estado_presupuesto','estados_presupuestos','estado');
+		
+		$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
+		$crud->callback_delete(array($this,'delete_user'));
 			
-			$crud->callback_column('fecha',array($this,'_callback_fecha'));
-			
-			$crud->display_as('id_presupuesto','N° Presupuesto')
-				 ->display_as('id_cliente','Cliente')
-				 ->display_as('id_vendedor','Vendedor')
-				 ->display_as('id_estado_presupuesto','Estado')
-				 ->display_as('date_add','Fecha');
-			
-			$crud->set_subject('Presupuestos');
-			
-			$crud->fields(	'id_presupuesto',
-							'id_cliente',
-							'id_vendedor',
-							'id_estado_presupuesto');
-							
-			$crud->order_by('id_presupuesto','desc');
-							
-			$crud->set_relation('id_cliente','clientes','{razon_social}');
-			$crud->set_relation('id_vendedor','vendedores','{apellido} {nombre}');
-			$crud->set_relation('id_estado_presupuesto','estados_presupuestos','estado');
-			
-			$crud->add_action('Ver', '', '','ui-icon-document',array($this,'just_a_test'));
-			$crud->callback_delete(array($this,'delete_user'));
-			
-			$crud->unset_export();
-			$crud->unset_print();
-			$crud->unset_read();
-			$crud->unset_edit();
-			$crud->unset_add();
-			$crud->unset_delete();
-			
-			$output = $crud->render();
-			
-			$this->crud_tabla($output);
+		$crud->unset_export();
+		$crud->unset_print();
+		$crud->unset_read();
+		$crud->unset_edit();
+		$crud->unset_add();
+		$crud->unset_delete();
+		
+		$output = $crud->render();
+		
+		$this->crud_tabla($output);
 	}
 	
 	public function delete_user($primary_key)
