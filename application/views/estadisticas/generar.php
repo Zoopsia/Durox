@@ -10,13 +10,13 @@ if($this->input->post('campos')){
 }
 
 $opciones = array(
-	"=",
-	">",
-	">=",
-	"<",
-	"<=",
-	"!=",
-	"contiene"
+	'=' 	=> "igual",
+	'<'		=> "mayor",
+	'<='	=> "mayor igual",
+	'>'		=> "menor ",
+	'>='	=> "menor igual",
+	'!='	=> "distinto ",
+	'LIKE'	=> "contiene"
 );
 
 ?>
@@ -53,7 +53,7 @@ $opciones = array(
 									<?php 
 									$fields = $this->db->field_data('visitas');
 									foreach ($fields as $field){
-										echo "<option >".$field->name."</option>";
+										echo "<option>".$field->name."</option>";
 									}
 									?>
 								</select>
@@ -61,8 +61,8 @@ $opciones = array(
 							<div class="col-sm-4">
 								<select class="form-control" id="opciones" name="opciones[]">
 									<?php 
-									foreach ($opciones as $opcion){
-										echo "<option value=".$opcion.">".$opcion."</option>";
+									foreach ($opciones as $key => $opcion){
+										echo "<option value=".$key.">".$opcion."</option>";
 									}
 									?>
 								</select>

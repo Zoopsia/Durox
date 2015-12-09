@@ -116,7 +116,7 @@ $menu_item = array(
 				        
 				<li class="treeview <?php echo $array_activo['estadisticas']?>">
 					<a href="#">
-						<i class="fa fa-cog"></i>
+						<i class="fa fa-bar-chart"></i>
 						<?php echo $this->lang->line('estadisticas'); ?>
 						<i class="fa pull-right fa-angle-left"></i>
 					</a> 

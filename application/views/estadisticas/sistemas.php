@@ -61,9 +61,7 @@ $(document).ready(function() {
 			center: 'title',
 			right: 'month,basicWeek,basicDay'
 		},
-		defaultDate: '2015-12-12',
-		editable: true,
-		eventLimit: true, 
+		 
 		events: [
 		<?php 
 		$events = "";
@@ -125,17 +123,17 @@ $(document).ready(function() {
 			</form>
 		</div>
 	</div>	
-			<?php 
-			if($registros){
-			?>
-				
-			
+	
+	<?php 
+	if($registros){
+	?>
+	
 	<div class="row">
 		<div class="col-md-6">	
 			<div class="box box-success">
 				<div class="box-header">
 					<i class="fa fa-calendar"></i>
-					<div class="box-title">Calendario</div>
+					<div class="box-title"><?php echo $this->lang->line('calendario')?></div>
 					<div class="pull-right box-tools">
 						<button class="btn btn-success btn-sm" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>
 					</div>
@@ -151,7 +149,7 @@ $(document).ready(function() {
 			<div class="box box-info">
 				<div class="box-header">
 					<i class="fa fa-star"></i>
-					<div class="box-title">Cantidad de valoraciones</div>
+					<div class="box-title"><?php echo $this->lang->line('cantidad').' '.$this->lang->line('valoracion')?></div>
 					<div class="pull-right box-tools">
 						<button class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>
 					</div>
@@ -170,7 +168,7 @@ $(document).ready(function() {
 			<div class="box box-primary">
 				<div class="box-header">
 					<i class="fa fa-table"></i>
-					<div class="box-title">Tabla</div>
+					<div class="box-title"><?php echo $this->lang->line('registros')?></div>
 					<div class="pull-right box-tools">
 						<button class="btn btn-primary btn-sm" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>
 					</div>
@@ -216,7 +214,7 @@ $(document).ready(function() {
 			<div class="box box-info">
 				<div class="box-header">
 					<i class="fa fa-calendar"></i>
-					<div class="box-title">Cantidad de visitas por cliente</div>
+					<div class="box-title"><?php echo $this->lang->line('cantidad').' '.$this->lang->line('visitas').' '.$this->lang->line('cliente')?></div>
 					<div class="pull-right box-tools">
 						<button class="btn btn-info btn-sm" data-widget="remove" data-toggle="tooltip" title="" data-original-title="Remove"><i class="fa fa-times"></i></button>
 					</div>
@@ -231,10 +229,10 @@ $(document).ready(function() {
 		
 	</div>	
 				
-			<?php	
-			}
-			?>
-		</div>
+	<?php	
+	} // if($registros){
+	?>
+	</div>
 	
 	
 </div>	
@@ -279,6 +277,6 @@ $(function() {
 </script>
 
 
-<link href="<?php echo base_url()?>libraries/plantilla/css/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css" />  		
+<link  href="<?php echo base_url()?>libraries/plantilla/css/fullcalendar/fullcalendar.css" rel="stylesheet" type="text/css" />  		
 <script src='<?php echo base_url()?>libraries/plantilla/js/plugins/fullcalendar/lang.js'></script>
 <script src="<?php echo base_url()?>libraries/plantilla/js/plugins/fullcalendar/fullcalendar.js" type="text/javascript"></script>

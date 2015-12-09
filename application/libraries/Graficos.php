@@ -21,6 +21,10 @@ class Graficos {
 		$return = '';	
 		
 		if($this->carga == 0){
+			$this->highcharts = str_replace("http://localhost/Durox/", base_url(), $this->highcharts);
+			$this->exporting = str_replace("http://localhost/Durox/", base_url(), $this->exporting);
+			$this->tresD = str_replace("http://localhost/Durox/", base_url(), $this->tresD);
+			
 			$return .= $this->highcharts;
 			$return .= $this->exporting;
 			$return .= $this->tresD;
@@ -142,6 +146,10 @@ class Graficos {
 		$return = '';	
 		
 		if($this->carga == 0){
+			$this->highcharts = str_replace("http://localhost/Durox/", base_url(), $this->highcharts);
+			$this->exporting = str_replace("http://localhost/Durox/", base_url(), $this->exporting);
+			$this->tresD = str_replace("http://localhost/Durox/", base_url(), $this->tresD);
+			
 			$return .= $this->highcharts;
 			$return .= $this->exporting;
 			$return .= $this->tresD;
