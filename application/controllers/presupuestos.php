@@ -182,8 +182,7 @@ class Presupuestos extends My_Controller {
 			$db['detalle']			= '';
 			
 			$db['presupuestos']		= $this->presupuestos_model->getRegistro($id_presupuesto);
-			
-			$this->cargar_vista($db, 'carga_productos');
+			$this->cargar_vista($db, 'carga_productos', 'carga_productos_js');
 		}
 	}
 	
@@ -393,11 +392,11 @@ class Presupuestos extends My_Controller {
 								<input type="text" id="valor_moneda'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$valor.'">
 								<input type="text" id="estado'.$this->input->post('aux').'" autocomplete="off" required hidden value="1">
 							</td>
-							<td><input type="text" id="cant'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$this->input->post('cantidad').'">'.$cantidad.'</td>
+							<td ondblclick="editar('.$this->input->post('aux').');"><input type="text" class="editable" disabled onblur="editarCantidad('.$this->input->post('aux').')" id="cant'.$this->input->post('aux').'" autocomplete="off" required value="'.$this->input->post('cantidad').'" pattern="[0-9]*"></td>
 							<td><input type="text" id="precio'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$preciototal.'">'.$abreviatura.$simbolo.' '.$preciototal.'
 								<input type="text" id="simbolo'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$abreviatura.$simbolo.'">
 							</td>
-							<td><input type="text" id="subtotal'.$this->input->post('aux').'" autocomplete="off" required hidden value="'.$subtotal.'">$ '.$subtotal.'</td>
+							<td>$ <input type="text" class="editable" disabled id="subtotal'.$this->input->post('aux').'" autocomplete="off" required value="'.$subtotal.'"></td>
 							<td>Nuevo</td>
 							<td><a class="btn btn-danger btn-xs" onclick="sacarProducto(this,'.$this->input->post('aux').')" role="button" data-toggle="tooltip" data-placement="bottom" title="Sacar Producto"><i class="fa fa-minus"></i></a></td>
 							<td class="text-center" style="width: 20px"><button type="button" onclick="$(\'#open-coment'.$this->input->post('aux').'\').show(); $(\'#text-coment'.$this->input->post('aux').'\').focus()" style="background: transparent; border: transparent; padding-left: 0px"><i class="fa fa-sticky-note-o fa-2x fa-rotate-180"></i></button>
@@ -521,7 +520,7 @@ class Presupuestos extends My_Controller {
 			
 			$db['detalle']			= $detalle;
 						
-			$this->cargar_vista($db, 'carga_productos');
+			$this->cargar_vista($db, 'carga_productos', 'carga_productos_js');
 		}
 	}
 
