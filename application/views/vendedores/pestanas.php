@@ -1,41 +1,29 @@
 <?php 
+	$array_n = array(
+		'tab1'				=> '',
+		'tab2' 				=> '',
+		'cliente1'			=> '',
+		'cliente2' 			=> '',
+		'cliente3' 			=> '',
+	);
+	
 	if($aux==1){
 		if($aux2==1){
-			$array_n = array(
-				'tab1'				=> '',
-				'tab2' 				=> 'active',
-				'cliente1'			=> 'active in',
-				'cliente2' 			=> '',
-				'cliente3' 			=> '',
-			);
+			$array_n['tab2']		= 'active';
+			$array_n['cliente1']	= 'active in';
+			
 		}
 		else if($aux2==2){
-			$array_n = array(
-				'tab1'				=> '',
-				'tab2' 				=> 'active',
-				'cliente1'			=> '',
-				'cliente2' 			=> 'active in',
-				'cliente3' 			=> '',
-			);
+			$array_n['tab2']		= 'active';
+			$array_n['cliente2']	= 'active in';
 		}
 		else if($aux2==3){
-			$array_n = array(
-				'tab1'				=> '',
-				'tab2' 				=> 'active',
-				'cliente1'			=> '',
-				'cliente2' 			=> '',
-				'cliente3' 			=> 'active in',
-			);
+			$array_n['tab2']		= 'active';
+			$array_n['cliente3']	= 'active in';
 		}
 	}
 	else {
-		$array_n = array(
-				'tab1'			=> 'active',
-				'tab2' 			=> '',
-				'cliente1'		=> '',
-				'cliente2' 		=> '',
-				'cliente3' 		=> '',
-		);
+		$array_n['tab1']		= 'active';		
 	}
 ?>
 
@@ -232,7 +220,14 @@ function cambiarSelect(){
 			$('#mensaje').addClass('alert-'+resp);
 		}
 	});
-}				
+}	
+
+
+function modal_motivo(id_sin_vendedor_cliente, id_vendedor, razon_social){
+	$('#motivo_razon_social').val(razon_social);
+	$('#motivo_id_sin_vendedor_cliente').val(id_sin_vendedor_cliente);
+	$('#motivo_id_vendedor').val(id_vendedor);
+}			
 </script>
 
 
@@ -319,10 +314,14 @@ $bandera = 0;
 															echo  "<tr>";								                     
 											                echo  '<td class="padtop">'.$this->lang->line('apellido').':</td>';
 											                echo  '<td class="tabla-datos-importantes"><input class="form-control editable cambio" id="apellido" name="apellido" type="text" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->apellido.'" maxlength="128" disabled placeholder="'.$this->lang->line('apellido').'" autocomplete="off" required></td>';
-											                echo  "</tr><tr class='no-print'>";	
-											                echo  '<td class="padtop">'.$this->lang->line('id').':</td>';
+											                echo  "</tr><tr class='no-print'>";
+															echo  '<td class="padtop">'.$this->lang->line('id').':</td>';
 											                echo  '<td class="tabla-datos-importantes"><input type="text" name="id" class="form-control editable"  value="'.$row->id_vendedor.'" autocomplete="off" disabled style="width: 300px !important;"></td>';
 											                echo  "</tr>";
+															echo  "<tr>";								                     
+											                echo  '<td class="padtop">'.$this->lang->line('usuario').':</td>';
+											                echo  '<td class="tabla-datos-importantes"><input class="form-control editable cambio" id="usuario" name="usuario" type="text" pattern="^[A-Za-z0-9._- ñáéíóú]+$" value="'.$row->usuario.'" maxlength="64" disabled placeholder="'.$this->lang->line('usuario').'" autocomplete="off" required></td>';
+											                echo  "</tr>";	
 															echo  "<tr class='no-print'>";								                     
 											                echo  '<td class="padtop">'.$this->lang->line('contraseña').':</td>';
 											                echo  '<td class="tabla-datos-importantes"><input type="text" name="contraseña" id="contraseña" class="form-control editable cambio" pattern="^[A-Za-z0-9 ]+$" value="'.$row->pass.'" placeholder="'.$this->lang->line('contraseña').'" autocomplete="off" disabled required></td>';
@@ -362,8 +361,7 @@ $bandera = 0;
 										</button>
 			                            
 			                            <button type="button" class="btn btn-default" id="btn-print" onclick="window.print()"><i class="fa fa-print"></i> Print</button>
-                            		
-					            		
+                            							            		
 										<button type="button" id="btn-eliminar" class="btn btn-danger btn-sm pull-right" onclick="eliminar(<?php echo $id?>)" style="margin-left: 5px">
 											<?php echo $this->lang->line('eliminar');?>
 										</button>
@@ -385,6 +383,89 @@ $bandera = 0;
 					            </form>
 					            
 	    					</div> <!--TAB 1 INFO VENDEDOR -->
+	    					
+	    					
+	    					
+	    					<?php
+								$tabla_actuales = '';
+								$tabla_no_actuales = '';
+														
+								if($cruce){
+									foreach ($cruce as $fila) {
+										if($fila->eliminado == 0){
+											$tabla_actuales .= '<tr>';
+											$tabla_actuales .= '<td>'.$fila->id_cliente.'</td>';
+											$tabla_actuales .= '<td>'.$fila->razon_social.'</td>';
+											$tabla_actuales .= "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$fila->id_cliente."' class='btn btn-info btn-xs' style='margin : 0 5px'>";
+											$tabla_actuales .= '<i class="fa fa-search"></i>';
+											$tabla_actuales .= "</a>";
+											//$tabla_actuales .= "<a href='".base_url()."index.php/Vendedores/sacarCliente/".$fila->id_vendedor."/".$fila->id_sin_vendedor_cliente."' class='btn btn-danger btn-xs'  data-toggle='modal' data-target='#myModal'>";
+											$tabla_actuales .= "<button class='btn btn-danger btn-xs' data-toggle='modal' data-target='#myModal'";
+											
+												$razon_social = "'".$fila->razon_social."'";
+												$tabla_actuales .= 'onclick="modal_motivo('.$fila->id_sin_vendedor_cliente.', '.$fila->id_vendedor.", ".$razon_social.')">';
+											$tabla_actuales .= '<i class="fa fa-minus"></i></button>';
+											$tabla_actuales .= '</a></td>';
+											$tabla_actuales .= "</tr>";	
+										}else{
+											$tabla_no_actuales .= '<tr>';
+											$tabla_no_actuales .= '<td>'.$fila->id_cliente.'</td>';
+											$tabla_no_actuales .= '<td>'.$fila->razon_social.'</td>';
+											$date = date_create($fila->date_upd);
+											$tabla_no_actuales .= "<td><span style='visibility:hidden;display:none;'>".$fila->date_upd."</span>".date_format($date, 'd/m/Y');
+											$tabla_no_actuales .= '<td>'.$fila->nota.'</td>';
+											$tabla_no_actuales .= "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$fila->id_cliente."' class='btn btn-info btn-xs' style='margin : 0 5px'>";
+											$tabla_no_actuales .= '<i class="fa fa-search"></i>';
+											$tabla_no_actuales .= "</a>";
+											$tabla_no_actuales .= '<a href="'.base_url().'index.php/Vendedores/volverCargarCliente/'.$fila->id_cliente.'/'.$fila->id_vendedor.'" class="btn btn-success btn-xs" role="button">';
+											$tabla_no_actuales .= '<i class="fa fa-plus"></i>';
+											$tabla_no_actuales .= "</a>";
+											$tabla_no_actuales .= "</td></tr>";
+										}
+									}
+								}
+							?>
+							<!-- Button trigger modal -->
+
+
+							<!-- Modal -->
+							<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  							<div class="modal-dialog" role="document">
+	    							<div class="modal-content">
+	    							<form class="form-horizontal" method="post" action="<?php echo base_url()."index.php/Vendedores/sacarCliente/" ?>">
+	      								<div class="modal-header">
+	        								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        								<h4 class="modal-title" id="myModalLabel"><?php echo $this->lang->line('motivo_desv')?></h4>
+	      								</div>
+	      								<div class="modal-body">
+											
+												<div class="form-group">
+													<label class="col-sm-2 control-label"><?php echo $this->lang->line('cliente')?></label>
+													<div class="col-sm-10">
+														<input type="text" class="form-control" id="motivo_razon_social" placeholder="<?php echo $this->lang->line('cliente')?>" disabled>
+													</div>
+												</div>
+											  <div class="form-group">
+											    <label class="col-sm-2 control-label"><?php echo $this->lang->line('motivo')?></label>
+											    <div class="col-sm-10">
+											      <textarea class="form-control" id="motivo_descripcion" name="motivo_descripcion" placeholder="<?php echo $this->lang->line('motivo')?>" row="5"></textarea>
+											    </div>
+											  </div>
+											  
+											  <input type="hidden" name="motivo_id_sin_vendedor_cliente" id="motivo_id_sin_vendedor_cliente"/>
+											  <input type="hidden" name="motivo_id_vendedor" id="motivo_id_vendedor"/>
+											
+	      								</div>
+	      								
+	      								<div class="modal-footer">
+	        								<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->lang->line('cerrar')?></button>
+	        								<button type="submit" class="btn btn-primary"><?php echo $this->lang->line('enviar')?></button>
+	      								</div>
+	      							</form>
+	    							</div>
+	  							</div>
+							</div>
+							
 	     					<div class="tab-pane <?php echo $array_n['tab2']; ?>" id="tab2">
 	     						
 	     						<div class="col-sm-2">
@@ -420,28 +501,8 @@ $bandera = 0;
 										 
 										        <tbody>
 										        	<?php
-											        	foreach ($vendedores as $value) { 
-											            	if($clientes){						                
-														      	foreach ($clientes as $row) 
-														      	{
-														      		foreach($cruce as $key){
-														      			if($key->id_cliente == $row->id_cliente && $key->eliminado==0){
-																      		echo '<tr>';
-																			echo '<td>'.$row->id_cliente.'</td>';
-																			echo '<td>'.$row->razon_social.'</td>';
-																			echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs' style='margin : 0 5px'>";
-																			echo '<i class="fa fa-search"></i>';
-																			echo "</a>";
-																			echo "<a href='".base_url()."index.php/Vendedores/sacarCliente/".$row->id_cliente."/".$value->id_vendedor."' class='btn btn-danger btn-xs' role='button'>";
-																			echo '<i class="fa fa-minus"></i>';
-																			echo "</a></td>";;
-																			echo "</tr>";
-																		}
-																	}
-																}
-															}
-														}
-												 	?>
+														echo $tabla_actuales;
+													?>
 										        </tbody>
 										    </table>
 										</div>
@@ -456,6 +517,7 @@ $bandera = 0;
 										            	<th><?php echo $this->lang->line('id'); ?></th>
 										            	<th><?php echo $this->lang->line('razon_social'); ?></th>
 										                <th><?php echo $this->lang->line('date'); ?></th>
+										                <th><?php echo $this->lang->line('motivo'); ?></th>
 										                <th style="text-align: center"><?php echo $this->lang->line('acciones'); ?></th>
 										            </tr>
 										        </thead>
@@ -465,33 +527,14 @@ $bandera = 0;
 										            	<th><?php echo $this->lang->line('id'); ?></th>
 										            	<th><?php echo $this->lang->line('razon_social'); ?></th>
 										                <th><?php echo $this->lang->line('date'); ?></th>
+										                <th><?php echo $this->lang->line('motivo'); ?></th>
 										                <th style="text-align: center"><?php echo $this->lang->line('acciones'); ?></th>
 										            </tr>
 										        </tfoot>
 										 
 										        <tbody>
 										        	<?php 
-										            	if($clientes){							                
-													      	foreach ($clientes as $row) 
-													      	{
-													      		foreach($cruce as $key){
-													      			if($key->id_cliente == $row->id_cliente && $key->eliminado==1){
-															      		echo '<tr>';
-																		echo '<td>'.$row->id_cliente.'</td>';
-																		echo '<td>'.$row->razon_social.'</td>';
-																		$date = date_create($key->date_upd);
-																		echo "<td><span style='visibility:hidden;display:none;'>".$key->date_upd."</span>".date_format($date, 'd/m/Y');
-																		echo "<td style='text-align: center;'><a href='".base_url()."index.php/Clientes/pestanas/".$row->id_cliente."' class='btn btn-info btn-xs' style='margin : 0 5px'>";
-																		echo '<i class="fa fa-search"></i>';
-																		echo "</a>";
-																		echo '<a href="'.base_url().'index.php/Vendedores/volverCargarCliente/'.$row->id_cliente.'/'.$value->id_vendedor.'" class="btn btn-success btn-xs" role="button">';
-																		echo '<i class="fa fa-plus"></i>';
-																		echo "</a></td>";
-																		echo "</tr>";
-																	}
-																}
-															}
-														}
+										        		echo $tabla_no_actuales;
 												 	?>
 										        </tbody>
 										    </table>

@@ -46,28 +46,22 @@ class Vendedores_model extends My_Model {
 	}
 	
 	function sinCruce($id){
-		
 		$sql = "SELECT 
-					* 
+					sin_vendedores_clientes.id_sin_vendedor_cliente,
+					sin_vendedores_clientes.id_cliente,
+					sin_vendedores_clientes.id_vendedor,
+					sin_vendedores_clientes.eliminado,
+					sin_vendedores_clientes.date_upd,
+					sin_vendedores_clientes.nota,
+					clientes.razon_social 
 				FROM 
 					sin_vendedores_clientes 
+				LEFT JOIN 
+					clientes ON(sin_vendedores_clientes.id_cliente = clientes.id_cliente)
 				WHERE 
 					$this->_id_table = '$id'";
-					
-		$query = $this->db->query($sql);
-		
-		if($query->num_rows() > 0)
-		{
-			foreach ($query->result() as $fila)
-			{
-				$data[] = $fila;
-			}
-			return $data;
-		}
-		else
-		{
-			return FALSE;
-		}
+	
+		return $this->getQuery($sql);
 	}
 	
 	function updateSin($arreglo_campos, $id){
@@ -90,6 +84,7 @@ class Vendedores_model extends My_Model {
 		return $this->db->insert_id();
 	}
 	
+	
 	function getPresupuestos($id){
 			
 		$sql = "SELECT 
@@ -105,21 +100,9 @@ class Vendedores_model extends My_Model {
 				AND
 					presupuestos.eliminado = 0";
 					
-		$query = $this->db->query($sql);
-		
-		if($query->num_rows() > 0)
-		{
-			foreach ($query->result() as $fila)
-			{
-				$data[] = $fila;
-			}
-			return $data;
-		}
-		else
-		{
-			return FALSE;
-		}
+		return $this->getQuery($sql);
 	}
+	
 	
 	function getPedidos($id){
 			
@@ -136,21 +119,9 @@ class Vendedores_model extends My_Model {
 				AND
 					pedidos.eliminado = 0";
 					
-		$query = $this->db->query($sql);
-		
-		if($query->num_rows() > 0)
-		{
-			foreach ($query->result() as $fila)
-			{
-				$data[] = $fila;
-			}
-			return $data;
-		}
-		else
-		{
-			return FALSE;
-		}
+		return $this->getQuery($sql);
 	}
+	
 	
 	function getVisitas($id){
 			
@@ -167,21 +138,9 @@ class Vendedores_model extends My_Model {
 				AND
 					visitas.eliminado = 0";
 					
-		$query = $this->db->query($sql);
-		
-		if($query->num_rows() > 0)
-		{
-			foreach ($query->result() as $fila)
-			{
-				$data[] = $fila;
-			}
-			return $data;
-		}
-		else
-		{
-			return FALSE;
-		}
+		return $this->getQuery($sql);
 	}
+	
 	
 	function traerDatosDBExterna($id){
 		
@@ -237,26 +196,24 @@ class Vendedores_model extends My_Model {
 		}
 	}
 	
+	
 	function login($username, $password){
 		$sql = 
 		"SELECT 
 			id_vendedor, 
-			nombre, 
+			usuario, 
 			pass 
 		FROM 
 			vendedores
 		WHERE
-			nombre = '$username' AND 
-			pass = '$password'";
+			usuario = '$username' AND 
+			pass	= '$password'";
 		
 		$query = $this->db->query($sql);		
 		
-		if($query->num_rows() == 1)
-		{
+		if($query->num_rows() == 1){
 			return $query->result();
-		}
-		else
-		{
+		} else {
 			return false;
 		}
 	}

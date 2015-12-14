@@ -28,6 +28,8 @@ class Actualizaciones extends CI_Controller {
 		
 	}
 	
+	
+	
 	public function setLog($tipo, $tabla, $id_vendedor = NULL){
 		if($tipo == 'DEBUG'){
 			if($id_vendedor){
@@ -37,21 +39,22 @@ class Actualizaciones extends CI_Controller {
 	}
 	
 	
+	
 	public function getClientes(){
 		if(isset($_POST['id_vendedor'])){	
 			$tablas = array(
 				'clientes'		=> 'clientes',
-				'grupos'			=> 'grupos',
-				'iva'					=> 'iva',
-				'tipos'				=> 'tipos',
+				'grupos'		=> 'grupos',
+				'iva'			=> 'iva',
+				'tipos'			=> 'tipos',
 				'telefonos'		=> 'telefonos',
-				'mails'				=> 'mails',
+				'mails'			=> 'mails',
 				'direcciones'	=> 'direcciones',
 				'sin_clientes_telefonos'	=> 'sin_clientes_telefonos',
-				'sin_clientes_mails'			=> 'sin_clientes_mails',
-				'sin_clientes_direcciones'=> 'sin_clientes_direcciones',
+				'sin_clientes_mails'		=> 'sin_clientes_mails',
+				'sin_clientes_direcciones'	=> 'sin_clientes_direcciones',
 				'departamentos'	=> 'departamentos',
-				'provincias'		=> 'provincias',
+				'provincias'	=> 'provincias',
 				
 			);
 			
@@ -154,70 +157,70 @@ class Actualizaciones extends CI_Controller {
 				if($cliente_db){
 					foreach($cliente_db as $row){
 						$log =	array(
-						  'id_cliente' => $_POST['id_back'],
-						  'razon_social_old' => $row->razon_social,
-						  'razon_social_new' => $_POST['razon_social'],
-						  'nombre_old' => $row->nombre,
-						  'nombre_new' => $_POST['nombre'],
-						  'apellido_old' => $row->apellido,
-						  'apellido_new' => $_POST['apellido'],
-						  'cuit_old' => $row->cuit,
-						  'cuit_new' => $_POST['cuit'],
-						  'id_grupo_cliente_old' => $row->id_grupo_cliente,
-						  'id_grupo_cliente_new' => $_POST['id_grupo_cliente'],		
-						  'id_iva_old' => $row->id_iva,
-						  'id_iva_new' => $_POST['id_iva'],
-						  'nombre_fantasia_old' => $row->nombre_fantasia,
-						  'nombre_fantasia_new' => $_POST['nombre_fantasia'],
-						  'web_old' => $row->web,
-						  'web_new' => $_POST['web'],
-						  'date_upd' => date("Y-m-d H:i:s"),
-						  'id_vendedor' => $_POST['id_vendedor']
+						  'id_cliente'			=> $_POST['id_back'],
+						  'razon_social_old'	=> $row->razon_social,
+						  'razon_social_new'	=> $_POST['razon_social'],
+						  'nombre_old'			=> $row->nombre,
+						  'nombre_new'			=> $_POST['nombre'],
+						  'apellido_old'		=> $row->apellido,
+						  'apellido_new'		=> $_POST['apellido'],
+						  'cuit_old'			=> $row->cuit,
+						  'cuit_new'			=> $_POST['cuit'],
+						  'id_grupo_cliente_old'=> $row->id_grupo_cliente,
+						  'id_grupo_cliente_new'=> $_POST['id_grupo_cliente'],		
+						  'id_iva_old'			=> $row->id_iva,
+						  'id_iva_new'			=> $_POST['id_iva'],
+						  'nombre_fantasia_old'	=> $row->nombre_fantasia,
+						  'nombre_fantasia_new'	=> $_POST['nombre_fantasia'],
+						  'web_old'				=> $row->web,
+						  'web_new'				=> $_POST['web'],
+						  'date_upd'			=> date("Y-m-d H:i:s"),
+						  'id_vendedor'			=> $_POST['id_vendedor']
 						);
 						
 						$this->db->insert("clientes_log_front", $log);
 					}
 				}
 				$cliente = array(
-					'razon_social' => $_POST['razon_social'],
-					'nombre_fantasia' => $_POST['nombre_fantasia'],
-					'nombre' => $_POST['nombre'],
-					'apellido' => $_POST['apellido'],
-					'id_grupo_cliente' => $_POST['id_grupo_cliente'],
-					'id_iva' => $_POST['id_iva'],
-					'web' => $_POST['web'],
-					'cuit' => $_POST['cuit'],
-					'visto' => 0,
-					'id_origen' => 1,
-					'date_upd' => date("Y-m-d H:i:s")
+					'razon_social'		=> $_POST['razon_social'],
+					'nombre_fantasia'	=> $_POST['nombre_fantasia'],
+					'nombre'			=> $_POST['nombre'],
+					'apellido'			=> $_POST['apellido'],
+					'id_grupo_cliente'	=> $_POST['id_grupo_cliente'],
+					'id_iva'			=> $_POST['id_iva'],
+					'web'				=> $_POST['web'],
+					'cuit'				=> $_POST['cuit'],
+					'visto'				=> 0,
+					'id_origen'			=> 1,
+					'date_upd'			=> date("Y-m-d H:i:s")
 				);
 				$this->db->update('clientes', $cliente, array('id_cliente' => $_POST['id_back']));
 				
 				log_message('DEBUG', 'Update del cliente '.$_POST['id_back']);
 			}else{
 				$cliente = array(
-					'razon_social' => $_POST['razon_social'],
-					'nombre_fantasia' => $_POST['nombre_fantasia'],
-					'nombre' => $_POST['nombre'],
-					'apellido' => $_POST['apellido'],
-					'id_grupo_cliente' => $_POST['id_grupo_cliente'],
-					'id_iva' => $_POST['id_iva'],
-					'web' => $_POST['web'],
-					'cuit' => $_POST['cuit'],
-					'visto' => 0,
-					'id_origen' => 1,
-					'date_add' => date("Y-m-d H:i:s"),
-					'date_upd' => date("Y-m-d H:i:s")
+					'razon_social'		=> $_POST['razon_social'],
+					'nombre_fantasia'	=> $_POST['nombre_fantasia'],
+					'nombre'			=> $_POST['nombre'],
+					'apellido'			=> $_POST['apellido'],
+					'id_grupo_cliente'	=> $_POST['id_grupo_cliente'],
+					'id_iva'			=> $_POST['id_iva'],
+					'web'				=> $_POST['web'],
+					'cuit'				=> $_POST['cuit'],
+					'visto'				=> 0,
+					'id_origen'			=> 1,
+					'date_add'			=> date("Y-m-d H:i:s"),
+					'date_upd'			=> date("Y-m-d H:i:s")
 				);
 				
 				$this->db->insert('clientes', $cliente);
 				$id = $this->db->insert_id();
 				
 				$sin = array(
-					'id_vendedor' => $_POST['id_vendedor'],
-					'id_cliente' => $id,
-					'date_add' => date("Y-m-d H:i:s"),
-					'date_upd' => date("Y-m-d H:i:s")
+					'id_vendedor'		=> $_POST['id_vendedor'],
+					'id_cliente'		=> $id,
+					'date_add'			=> date("Y-m-d H:i:s"),
+					'date_upd'			=> date("Y-m-d H:i:s")
 				);
 				$this->db->insert('sin_vendedores_clientes', $sin);
 				
@@ -235,15 +238,15 @@ class Actualizaciones extends CI_Controller {
 			if($telefono_db){
 				foreach($telefono_db as $row){
 					$log =	array(
-					  'id_telefono' => $_POST['id_back'],
-					  'telefono_old' => $row->telefono,
-					  'telefono_new' => $_POST['telefono'],
-					  'cod_area_old' => $row->cod_area,
-					  'cod_area_new' => $_POST['cod_area'],
-					  'id_tipo_old' => $row->id_tipo,
-					  'id_tipo_new' => $_POST['id_tipo'],
-					  'date_upd' => date("Y-m-d H:i:s"),
-					  'id_vendedor' => $_POST['id_vendedor']
+					  'id_telefono'		=> $_POST['id_back'],
+					  'telefono_old'	=> $row->telefono,
+					  'telefono_new'	=> $_POST['telefono'],
+					  'cod_area_old'	=> $row->cod_area,
+					  'cod_area_new'	=> $_POST['cod_area'],
+					  'id_tipo_old'		=> $row->id_tipo,
+					  'id_tipo_new'		=> $_POST['id_tipo'],
+					  'date_upd'		=> date("Y-m-d H:i:s"),
+					  'id_vendedor'		=> $_POST['id_vendedor']
 					);
 					
 					$this->db->insert("clientes_log_telefonos_front", $log);
@@ -251,10 +254,10 @@ class Actualizaciones extends CI_Controller {
 			}
 		
 			$telefono = array(
-				'telefono' => $_POST['telefono'],
-				'cod_area' => $_POST['cod_area'],
-				'id_tipo' => $_POST['id_tipo'],
-				'date_upd' => date("Y-m-d H:i:s")
+				'telefono'	=> $_POST['telefono'],
+				'cod_area'	=> $_POST['cod_area'],
+				'id_tipo'	=> $_POST['id_tipo'],
+				'date_upd'	=> date("Y-m-d H:i:s")
 			);
 			
 			$this->db->update('telefonos', $telefono, array('id_telefono' => $_POST['id_back']));
@@ -271,17 +274,17 @@ class Actualizaciones extends CI_Controller {
 			if($direccion_db){
 				foreach($direccion_db as $row){
 					$log =	array(
-					  'id_direccion' => $_POST['id_back'],
-					  'direccion_old' => $row->direccion,
-					  'direccion_new' => $_POST['direccion'],
-					  'id_departamento_old' => $row->id_departamento,
-					  'id_departamento_new' => $_POST['id_departamento'],
-					  'id_provincia_old' => $row->id_provincia,
-					  'id_provincia_new' => $_POST['id_provincia'],
-					  'id_tipo_old' => $row->id_tipo,
-					  'id_tipo_new' => $_POST['id_tipo'],
-					  'date_upd' => date("Y-m-d H:i:s"),
-					  'id_vendedor' => $_POST['id_vendedor']
+					  'id_direccion'	=> $_POST['id_back'],
+					  'direccion_old'	=> $row->direccion,
+					  'direccion_new'	=> $_POST['direccion'],
+					  'id_departamento_old'	=> $row->id_departamento,
+					  'id_departamento_new'	=> $_POST['id_departamento'],
+					  'id_provincia_old'	=> $row->id_provincia,
+					  'id_provincia_new'	=> $_POST['id_provincia'],
+					  'id_tipo_old'		=> $row->id_tipo,
+					  'id_tipo_new'		=> $_POST['id_tipo'],
+					  'date_upd'		=> date("Y-m-d H:i:s"),
+					  'id_vendedor'		=> $_POST['id_vendedor']
 					);
 					
 					$this->db->insert("clientes_log_direcciones_front", $log);
@@ -289,11 +292,11 @@ class Actualizaciones extends CI_Controller {
 			}
 		
 			$direccion = array(
-				'direccion' => $_POST['direccion'],
-				'id_departamento' => $_POST['id_departamento'],
-				'id_provincia' => $_POST['id_provincia'],
-				'id_tipo' => $_POST['id_tipo'],
-				'date_upd' => date("Y-m-d H:i:s")
+				'direccion'			=> $_POST['direccion'],
+				'id_departamento'	=> $_POST['id_departamento'],
+				'id_provincia'		=> $_POST['id_provincia'],
+				'id_tipo'			=> $_POST['id_tipo'],
+				'date_upd'			=> date("Y-m-d H:i:s")
 			);
 			
 			$this->db->update('direcciones', $direccion, array('id_direccion' => $_POST['id_back']));
@@ -870,11 +873,11 @@ class Actualizaciones extends CI_Controller {
 		
 		foreach($sin as $table => $id_table){
 			$sql = "SELECT 
-								*
-						FROM 
-								$table
-						WHERE 
-							eliminado = 0";
+						*
+					FROM 
+						$table
+					WHERE 
+						eliminado = 0";
 				
 			$query = $this->db->query($sql);
 			
@@ -920,8 +923,8 @@ class Actualizaciones extends CI_Controller {
 		if(isset($_POST['id_alarma'])){		
 			$registro = array(
 				'id_front'				=> $_POST['id_alarma'],
-				'id_tipo_alarma'	=> $_POST['id_tipo_alarma'],
- 				'mensaje'					=> $_POST['mensaje'],
+				'id_tipo_alarma'		=> $_POST['id_tipo_alarma'],
+ 				'mensaje'				=> $_POST['mensaje'],
  				'id_creador'			=> $_POST['id_creador'],
  				'id_origen'				=> $_POST['id_origen'],
  				'visto_back'			=> $_POST['visto_back'],

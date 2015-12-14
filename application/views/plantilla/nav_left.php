@@ -51,7 +51,7 @@ $menu_item = array(
 				<div class="pull-left image">
 					<?php
 					if( $session_data['imagen'] != '' ){ 
-						$url = getimagesize($session_data['imagen']);
+						$url = @getimagesize($session_data['imagen']);
 						if(is_array($url)){
 							$src = $session_data['imagen'];
 						}else{

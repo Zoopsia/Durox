@@ -190,16 +190,13 @@ class Clientes extends My_Controller {
 		$destino 	= 'img/clientes/';
 		
 		if(devolverDir($destino)){
-			if(isset($_FILES['imagen']['tmp_name']))
-			{
-				
+			if(isset($_FILES['imagen']['tmp_name'])){
 				$origen 	= $_FILES['imagen']['tmp_name'];
 				$url		= $destino.$_FILES['imagen']['name'];
 				$imagen		= base_url().$url;
 				if(!empty($_FILES['imagen']['tmp_name'])){
 					copy($origen, $url);	
-				}
-				else {
+				} else {
 					foreach ($registro as $key) {
 						$imagen = $key->imagen;
 					}
@@ -239,6 +236,8 @@ class Clientes extends My_Controller {
 		redirect('clientes/pestanas/'.$id_cliente,'refresh');
 	}
 	
+	
+	
 	function editarVisto($id=null){
 		if($id){
 			$arreglo = array(
@@ -265,6 +264,8 @@ class Clientes extends My_Controller {
 		}
 		redirect($this->input->post('url'),'refresh');
 	}
+
+
 
 	public function getAlarmas(){
 		$alarmas = $this->clientes_model->getAlarmas($this->input->post('id'));

@@ -61,7 +61,8 @@ class Vendedores extends My_Controller {
 			
 			$crud->columns(	'id_vendedor',
 							'nombre',
-							'apellido');
+							'apellido',
+							'usuario');
 			
 			$crud->display_as('id_vendedor','ID')
 				 ->display_as('nombre','Nombre')
@@ -153,16 +154,14 @@ class Vendedores extends My_Controller {
 		$destino 	= 'img/vendedores/';
 		
 		if(devolverDir($destino)){
-			if(isset($_FILES['imagen']['tmp_name']))
-			{
+			if(isset($_FILES['imagen']['tmp_name'])){
 				
 				$origen 	= $_FILES['imagen']['tmp_name'];
 				$url		= $destino.$_FILES['imagen']['name'];
 				$imagen		= base_url().$url;
 				if(!empty($_FILES['imagen']['tmp_name'])){
 					copy($origen, $url);	
-				}
-				else {
+				} else {
 					foreach ($registro as $key) {
 						$imagen = $key->imagen;
 					}
@@ -171,6 +170,7 @@ class Vendedores extends My_Controller {
 				$vendedor	= array(
 						'nombre'			=> $this->input->post('nombre'),
 						'apellido'			=> $this->input->post('apellido'),		
+						'usuario'			=> $this->input->post('usuario'),
 						'pass' 				=> $this->input->post('contraseña'),
 						'imagen'			=> $imagen,
 						'eliminado'			=> 0
@@ -180,7 +180,8 @@ class Vendedores extends My_Controller {
 			else {
 				$vendedor	= array(
 						'nombre'			=> $this->input->post('nombre'),
-						'apellido'			=> $this->input->post('apellido'),		
+						'apellido'			=> $this->input->post('apellido'),	
+						'usuario'			=> $this->input->post('usuario'),	
 						'pass' 				=> $this->input->post('contraseña'),
 						'eliminado'			=> 0
 				);
@@ -201,7 +202,7 @@ class Vendedores extends My_Controller {
  	public function cargarCliente($id_cliente,$id_vendedor){
 
 		//----- 2 PORQUE ES TIPO VENDEDOR -----//
-		$this->clientes_model->insertCruce(2,$id_cliente,$id_vendedor);
+		$this->clientes_model->insertCruce(2, $id_cliente, $id_vendedor);
 		$aux = 1;
 		$aux2 = 3;
 		
@@ -241,21 +242,16 @@ class Vendedores extends My_Controller {
  --------------------------------------------------------------------------------
  --------------------------------------------------------------------------------*/	
 
- 		public function sacarCliente($id_cliente,$id_vendedor){
-
-		//----- 2 PORQUE ES TIPO VENDEDOR -----//
-		
-		$cruce		= $this->vendedores_model->sinCruce($id_vendedor);
+	public function sacarCliente($id_vendedor, $id_sin){
 		$aux  = 1;
 		$aux2 = 1;
 		
-		foreach($cruce as $row){
-			if($id_cliente == $row->id_cliente)
-				$id_sin = $row->id_sin_vendedor_cliente;
-		}
-
+		$id_sin = $this->input->post('motivo_id_sin_vendedor_cliente');
+		$id_vendedor = $this->input->post('motivo_id_vendedor');
+		
 		$sin = array(
-			'eliminado'		=> 1
+			'eliminado'		=> 1,
+			'nota'			=> $this->input->post('motivo_descripcion'),
 		);
 		
 		$id_cliente	= $this->vendedores_model->updateSin($sin,$id_sin);
