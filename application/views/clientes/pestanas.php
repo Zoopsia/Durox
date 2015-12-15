@@ -1,6 +1,19 @@
 <?php
 $bandera = 0;
 ?>
+
+<?php 
+$cliente_nombre = '';
+
+if($clientes){
+	foreach ($clientes as $cliente) {
+		$cliente_nombre = $cliente->razon_social;
+	}
+}
+?>
+<script>
+$('.content-header > h1 > small').append('. Cliente: <b><?php  echo $cliente_nombre.'.';?></b>');
+</script>
 <!--
 <nav class="navbar" role="navigation">
 

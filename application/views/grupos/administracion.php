@@ -1,7 +1,16 @@
 <script>
 var id_grupo_cliente = 0;
+$( document ).ready(function() {
+	$('#div_cliete_regla').hide();
+});
+
+
 function grupoElegido($id_grupo_cliente){
 	id_grupo_cliente = $id_grupo_cliente;
+	$('td').css("background-color", "#fff");
+	$('#col'+id_grupo_cliente).css("background-color", "#ccc");
+	$('#div_cliete_regla').show('slow','linear');
+	
 }
 function reglasActivas(){
  	if(id_grupo_cliente){
@@ -95,7 +104,7 @@ function clientesActivos(){
 													if($grupos){
 														foreach($grupos as $row){
 															echo "<tr>";
-															echo "<td ondblclick='grupoElegido(".$row->id_grupo_cliente."),reglasActivas(),clientesActivos()'>".$row->grupo_nombre."</td>";
+															echo "<td style='cursor: pointer' id='col".$row->id_grupo_cliente."' onclick='grupoElegido(".$row->id_grupo_cliente."),reglasActivas(),clientesActivos()'>".$row->grupo_nombre."</td>";
 															echo "</tr>";
 														}
 													}
@@ -104,7 +113,7 @@ function clientesActivos(){
 											</table>
 									</div>
 	    							
-									<div class="col-md-7"><!--DIV DE COL PRUEBA-->
+									<div class="col-md-7" id="div_cliete_regla"><!--DIV DE COL PRUEBA-->
 										<div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true" style="padding-top: 20px">
 										  <div class="panel panel-default">
 										    <div class="panel-heading" role="tab" id="headingOne">

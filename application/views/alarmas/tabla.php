@@ -42,7 +42,7 @@
 													$tipo_alarma = str_replace('<i class="fa ', "", $row->tipo_alarma);
 													$tipo_alarma = str_replace('"></i>', "", $tipo_alarma);
 													
-													echo "<td ondblclick='armarEditar(\"{$row->id_tipo_alarma}\",\"{$row->nombre}\",\"{$row->color}\",\"{$tipo_alarma}\")'>".$row->nombre."</td>";
+													echo "<td style='cursor: pointer' id='col".$row->id_tipo_alarma."' onclick='armarEditar(\"{$row->id_tipo_alarma}\",\"{$row->nombre}\",\"{$row->color}\",\"{$tipo_alarma}\")'>".$row->nombre."</td>";
 													echo "</tr>";
 												}
 											}
@@ -188,6 +188,9 @@ $(function() {
 function armarEditar($id,$nombre,$color,$tipo_alarma){
 	
 	$('#alarma_editar').show('slow','linear');	
+	
+	$('td').css("background-color", "#fff");
+	$('#col'+$id).css("background-color", "#ccc");
 	
 	$('#alarma_formato').html('<div class="alert alert-'+$color+' alert-dismissable">'+
 	'<i class="fa '+$tipo_alarma+'"></i>'+

@@ -29,6 +29,19 @@
 
 <script>
 
+<?php 
+$ven_nombre = '';
+
+if($vendedores){
+	foreach ($vendedores as $vendedor) {
+		$ven_nombre = $vendedor->apellido.' '.$vendedor->nombre;
+	}
+}
+?>
+
+$('.content-header > h1 > small').append('. Vendedor: <b><?php  echo $ven_nombre.'.';?></b>');
+
+
 $( document ).ready(function() {
     getAlarmas(<?php echo $id?>);
     if(location.hash == "#tab7")
@@ -227,7 +240,14 @@ function modal_motivo(id_sin_vendedor_cliente, id_vendedor, razon_social){
 	$('#motivo_razon_social').val(razon_social);
 	$('#motivo_id_sin_vendedor_cliente').val(id_sin_vendedor_cliente);
 	$('#motivo_id_vendedor').val(id_vendedor);
-}			
+	
+}	
+
+$(document).ready(function() {
+    $(".modal").on('shown.bs.modal', function () {
+        $("[data-modalfocus]", this).focus();
+    });
+});	
 </script>
 
 
@@ -360,7 +380,9 @@ $bandera = 0;
 											<i class="fa fa-info-circle"></i>
 										</button>
 			                            
-			                            <button type="button" class="btn btn-default" id="btn-print" onclick="window.print()"><i class="fa fa-print"></i> Print</button>
+			                            <button type="button" class="btn btn-default" id="btn-print" onclick="window.print()">
+			                            	<i class="fa fa-print"></i> Print
+			                            </button>
                             							            		
 										<button type="button" id="btn-eliminar" class="btn btn-danger btn-sm pull-right" onclick="eliminar(<?php echo $id?>)" style="margin-left: 5px">
 											<?php echo $this->lang->line('eliminar');?>
@@ -438,28 +460,32 @@ $bandera = 0;
 	        								<h4 class="modal-title" id="myModalLabel"><?php echo $this->lang->line('motivo_desv')?></h4>
 	      								</div>
 	      								<div class="modal-body">
-											
-												<div class="form-group">
-													<label class="col-sm-2 control-label"><?php echo $this->lang->line('cliente')?></label>
-													<div class="col-sm-10">
-														<input type="text" class="form-control" id="motivo_razon_social" placeholder="<?php echo $this->lang->line('cliente')?>" disabled>
-													</div>
+											<div class="form-group">
+												<label class="col-sm-2 control-label">
+													<?php echo $this->lang->line('cliente')?>
+												</label>
+												<div class="col-sm-10">
+													<input type="text" class="form-control" id="motivo_razon_social" placeholder="<?php echo $this->lang->line('cliente')?>" disabled>
 												</div>
-											  <div class="form-group">
-											    <label class="col-sm-2 control-label"><?php echo $this->lang->line('motivo')?></label>
+											</div>
+											<div class="form-group">
+											    <label class="col-sm-2 control-label">
+											    	<?php echo $this->lang->line('motivo')?>
+											    </label>
 											    <div class="col-sm-10">
-											      <textarea class="form-control" id="motivo_descripcion" name="motivo_descripcion" placeholder="<?php echo $this->lang->line('motivo')?>" row="5"></textarea>
+											      <textarea data-modalfocus class="form-control" id="motivo_descripcion" name="motivo_descripcion" placeholder="<?php echo $this->lang->line('motivo')?>" rows="7" style="resize: none;"></textarea>
 											    </div>
-											  </div>
-											  
-											  <input type="hidden" name="motivo_id_sin_vendedor_cliente" id="motivo_id_sin_vendedor_cliente"/>
-											  <input type="hidden" name="motivo_id_vendedor" id="motivo_id_vendedor"/>
-											
-	      								</div>
-	      								
+											</div>
+											<input type="hidden" name="motivo_id_sin_vendedor_cliente" id="motivo_id_sin_vendedor_cliente"/>
+											<input type="hidden" name="motivo_id_vendedor" id="motivo_id_vendedor"/>
+										</div>
 	      								<div class="modal-footer">
-	        								<button type="button" class="btn btn-default" data-dismiss="modal"><?php echo $this->lang->line('cerrar')?></button>
-	        								<button type="submit" class="btn btn-primary"><?php echo $this->lang->line('enviar')?></button>
+	        								<button type="button" class="btn btn-default" data-dismiss="modal">
+	        									<?php echo $this->lang->line('cerrar')?>
+	        								</button>
+	        								<button type="submit" class="btn btn-primary">
+	        									<?php echo $this->lang->line('enviar')?>
+	        								</button>
 	      								</div>
 	      							</form>
 	    							</div>

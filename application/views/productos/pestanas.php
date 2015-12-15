@@ -146,6 +146,20 @@ function cambiarSelect(){
 	});
 }
 
+
+<?php 
+$producto_nombre = '';
+
+if($productos){
+	foreach ($productos as $producto) {
+		$producto_nombre = $producto->nombre;
+	}
+}
+?>
+
+$('.content-header > h1 > small').append('. Producto: <b><?php  echo $producto_nombre.'.';?></b>');
+
+
 </script>
 <?php
 $bandera = 0;

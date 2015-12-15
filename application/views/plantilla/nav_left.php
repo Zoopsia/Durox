@@ -100,12 +100,21 @@ $menu_item = array(
 					echo '<ul class="treeview-menu" style="display: none;">';
 					foreach ($option['items'] as $items) {
 						if($items == 'listado_de'){
-					 		echo '<li><a href="'.base_url().'index.php/'.$name.'/'.$name.'_abm/tab1">'.$this->lang->line('listado_de').' '.$this->lang->line($name).'</a></li>';
+							$url = base_url().'index.php/'.$name.'/'.$name.'_abm/tab1';
+							$li  = '<li><a href="'.$url.'">'.$this->lang->line('listado_de').' '.$this->lang->line($name).'</a></li>';
 					 	}else if($items == 'carga'){
-					 		echo '<li><a href="'.base_url().'index.php/'.$name.'/carga">'.$this->lang->line('nuevo_'.$name).'</a></li>';
+					 		if($name == 'visitas' || $name == 'presupuestos' || $name == 'pedidos'){
+					 			$url = base_url().'index.php/'.$name.'/carga';
+					 		}else{
+					 			$url = base_url().'index.php/'.$name.'/'.$name.'_abm/tab1/add';
+					 		}
+							$li  = '<li><a href="'.$url.'">'.$this->lang->line('nuevo_'.$name).'</a></li>';
 						}else if($items == 'busqueda_avanzada'){
-							echo '<li><a href="'.base_url().'index.php/'.$name.'/'.$name.'_abm/tab2">'.$this->lang->line('busqueda_avanzada').'</a></li>';
+							$url = base_url().'index.php/'.$name.'/'.$name.'_abm/tab2';
+							$li  = '<li><a href="'.$url.'">'.$this->lang->line('busqueda_avanzada').'</a></li>';
 						}
+						
+						echo $li;
 					}
 					echo '</ul>';
 					echo '</li>';
@@ -160,7 +169,12 @@ $menu_item = array(
 				?>
 			</h1>
 			<ol class="breadcrumb">
-				<li><a href="#"><i class="fa fa-dashboard"></i> <?php echo $this->uri->segment(1);?></a></li>
+				<li>
+					<a href="#">
+						<i class="fa fa-dashboard"></i> 
+						<?php echo $this->uri->segment(1);?>
+					</a>
+				</li>
 				<li><a href="#"><?php echo $this->uri->segment(2);?></a></li>
 			</ol>
 		</section>
