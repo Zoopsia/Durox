@@ -47,12 +47,16 @@ class Mssql extends My_Controller {
 		set_time_limit(30);
 	}
 
+
+
 	public function sincronizacion(){
 		
 		$db['sincronizacion']	= $this->mssql_model->getSincronizacion();
 		
 		$this->cargar_vista($db, 'tabla'); 
 	}
+	
+	
 	
 	public function guardarActualizacion(){
 		

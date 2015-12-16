@@ -6,8 +6,7 @@ class Estadisticas extends My_Controller {
 	
 	
 	
-	function __construct()
-	{
+	function __construct(){
 		parent::__construct(
 				$subjet		= $this->_subject 
 		);		
@@ -19,9 +18,36 @@ class Estadisticas extends My_Controller {
 	
 	public function generar(){
 		$db['registros']		= $this->visitas_model->getTodo();
-		if($this->input->post('campos')){
-			$db['registros']	= $this->visitas_model->getCampos($this->input->post('campos'));
+		$filtros = array();
+		
+		if($this->input->post('filtros')){
+			foreach ($this->input->post('filtros') as $registro) {
+				$filtros['filtros'][] = $registro;	
+			}
+			foreach ($this->input->post('opciones') as $registro) {
+				$filtros['opciones'][] = $registro;	
+			}
+			foreach ($this->input->post('valores') as $registro) {
+				$filtros['valores'][] = $registro;	
+			}
+			foreach ($this->input->post('condiciones') as $registro) {
+				$filtros['condiciones'][] = $registro;	
+			}
 		}
+		
+		if($this->input->post('valor')){
+			$filtros['filtros'][]	= $this->input->post('filtro');
+			$filtros['opciones'][]	= $this->input->post('opcion');
+			$filtros['valores'][]	= $this->input->post('valor');
+			$filtros['condiciones'][]	= $this->input->post('condicion');
+		}
+		
+
+		if($this->input->post('campos')){
+			$db['registros']	= $this->visitas_model->getCampos($this->input->post('campos'), $filtros);
+		}
+		
+		
 		$this->cargar_vista($db, 'generar');
 	}
 	

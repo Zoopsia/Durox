@@ -727,7 +727,7 @@ class Actualizaciones extends CI_Controller {
 				log_message('ERROR', 'Usuario y pass erroneos en el login; user: '.$username.' pass: '.$password);
 			}else{
 				foreach($db['registros'] as $row){
-					log_message('DEBUG', 'El vendedor '.$row->nombre.' ha realizado login');
+					log_message('DEBUG', 'El vendedor '.$row->usuario.' ha realizado login');
 				}
 			}
 		

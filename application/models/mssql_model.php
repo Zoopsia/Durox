@@ -10,6 +10,8 @@ class Mssql_model extends My_Model {
 		parent::__construct();
 	}
 	
+	
+	
 	function pingDB(){
 		$waitTimeoutInSeconds = 1; 
 		if($fp = @fsockopen($this->host,$this->port,$errCode,$errStr,$waitTimeoutInSeconds)){
@@ -34,6 +36,8 @@ class Mssql_model extends My_Model {
 		} 
 		fclose($fp);
 	}
+	
+	
 	
 	function crearTablas($db, $nombreDB){
 			
@@ -75,6 +79,8 @@ class Mssql_model extends My_Model {
 			}
 		}
 	}
+	
+	
 	
 	function crearColumnas($db, $nombreDB ,$tabla){
 		
@@ -167,6 +173,8 @@ class Mssql_model extends My_Model {
 			$this->db->query($test);
 		}
 	}
+	
+	
 	
 	function copiarRegistros($db, $nombreDB ,$tabla){
 			

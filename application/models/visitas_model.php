@@ -147,9 +147,11 @@ class Visitas_model extends My_Model {
 	}
 	
 	
-	function getCampos($campos){
+	function getCampos($campos, $filtros = NULL){
 		$join = "";
+		$where = "";
 		$sql = "SELECT";
+		
 		foreach ($campos as $key => $value) {
 			if($value == 'id_vendedor'){
 				$sql .= " vendedores.nombre as id_vendedor,";
@@ -178,19 +180,64 @@ class Visitas_model extends My_Model {
 			}else{
 				$sql .= " visitas.".$value.",";
 			}
-				
 		}
 		$sql = trim($sql, ",");
 		
+		
+		
+		if($filtros !== NULL && isset($filtros['filtros'])){
+			$cantidad = count($filtros['filtros']) ;
+		
+			$opciones = array(
+				"igual" 		=> '=' ,
+				"mayor"			=> '>',
+				"mayor_igual"	=> '>=',
+				"menor"			=> '<',
+				"menor_igual"	=> '<=',
+				"distinto"		=> '!=',
+				"contiene"		=> '=',
+			);
+			
+			$condiciones = array(
+				"y" 		=> ' AND' ,
+				"o"			=> ' OR',
+			);
+			
+			for ($i = 0; $i < $cantidad; $i++) {
+				if($i == 0){
+					$condicion = '';
+				}else{
+					$condicion = ' AND';
+					$condicion = $condiciones[$filtros['condiciones'][$i]];
+				}	
+				
+				$where .= $condicion;
+				
+				if($filtros['filtros'][$i] == 'id_vendedor'){
+					$where .= " vendedores.nombre ";
+				}else if($filtros['filtros'][$i] == 'id_cliente'){
+					$where .= " clientes.razon_social ";
+				}else if($filtros['filtros'][$i] == 'id_epoca_visita'){
+					$where .= " epocas_visitas.epoca ";
+				}else if($filtros['filtros'][$i] ==  'id_origen_visita'){
+					$where .= " origenes_visita.origen_visita ";
+				}else{
+					$where .= " visitas.".$filtros['filtros'][$i]." ";
+				}	
+				
+				$where .= $opciones[$filtros['opciones'][$i]]." '".$filtros['valores'][$i]."' ";	
+			}
+			
+		}else{
+			$where = 1;
+		}
+		
 		$sql .=" FROM 
 					visitas";
-		
 		$sql .= $join; 
-		$sql .=	"WHERE 
-					visitas.eliminado = 0";
-					
-				
-					
+		$sql .=	"WHERE ";
+		$sql .= $where;
+		
 		$query = $this->db->query($sql);			
 		
 		if($query->num_rows() > 0){
