@@ -1,7 +1,10 @@
 $(document).ready(function(){
 
     $('.prueba').DataTable({
-
+    	dom: 'T<"clear">lfrtip',
+    	tableTools: {
+            "sSwfPath": "http://localhost/durox/swf/copy_csv_xls_pdf.swf"
+       },
     	"language": {
 			"sProcessing":     "Procesando...",
 			"sLengthMenu":     "Mostrar _MENU_ registros",

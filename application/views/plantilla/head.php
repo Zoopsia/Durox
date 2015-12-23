@@ -58,7 +58,10 @@
 		--------------------------------------------------------------------->
 		
 		<link href="<?php echo base_url().'libraries/datatables/media/css/jquery.dataTables.css'?>" rel="stylesheet"/>
+		<link href="<?php echo base_url().'libraries/datatables/extensions/TableTools/css/dataTables.tableTools.css'?>" rel="stylesheet" type="text/css">
+		
 		<script src="<?php echo base_url().'libraries/datatables/media/js/jquery.dataTables.min.js'?>"></script>
+		<script src="<?php echo base_url().'libraries/datatables/extensions/TableTools/js/dataTables.tableTools.js'?>" type="text/javascript" language="javascript"></script>
 		
 		<!--------------------------------------------------------------------
 		----------------------------------------------------------------------

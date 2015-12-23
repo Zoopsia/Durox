@@ -85,7 +85,6 @@ class Visitas_model extends My_Model {
 	}
 
 	function getEpocas(){
-		
 		$sql = "SELECT 
 					* 
 				FROM 
@@ -93,16 +92,7 @@ class Visitas_model extends My_Model {
 				WHERE 
 					eliminado = 0";
 				
-		$query = $this->db->query($sql);
-						
-		if($query->num_rows() > 0){
-			foreach ($query->result() as $fila){
-				$data[] = $fila;
-			}
-			return $data;
-		}else{
-			return FALSE;
-		}	
+		return $this->getQuery($sql);
 	}
 	
 	function visitasNuevas(){
@@ -134,16 +124,7 @@ class Visitas_model extends My_Model {
 				WHERE
 					visitas.visto = 0';
 		
-		$query = $this->db->query($sql);
-						
-		if($query->num_rows() > 0){
-			foreach ($query->result() as $fila){
-				$data[] = $fila;
-			}
-			return $data;
-		}else{
-			return FALSE;
-		}							
+		return $this->getQuery($sql);				
 	}
 	
 	
@@ -238,16 +219,7 @@ class Visitas_model extends My_Model {
 		$sql .=	"WHERE ";
 		$sql .= $where;
 		
-		$query = $this->db->query($sql);			
-		
-		if($query->num_rows() > 0){
-			foreach ($query->result_array() as $row){
-				$data[] = $row;
-			}
-			return $data;
-		}else{
-			return FALSE;
-		}
+		return $this->getQuery($sql, 'array');
 	}
 	
 	
