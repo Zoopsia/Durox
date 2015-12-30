@@ -50,18 +50,7 @@ $menu_item = array(
 			<div class="user-panel">
 				<div class="pull-left image">
 					<?php
-					if( $session_data['imagen'] != '' ){ 
-						$url = @getimagesize($session_data['imagen']);
-						if(is_array($url)){
-							$src = $session_data['imagen'];
-						}else{
-							$src = base_url().'img/icon-user-default.png';
-						}
-					}else{
-						$src = base_url().'img/icon-user-default.png';
-					}
-					
-					echo '<img src="'.$src.'" class="img-circle" alt="User Image" />';	
+					echo '<img src="'.$session_data['imagen'].'" class="img-circle" alt="User Image" />';	
 					
 					?>
 				</div>

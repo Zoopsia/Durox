@@ -5,8 +5,7 @@ class Home extends My_Controller {
 	protected $_subject		= 'home';
 	
 	
-	function __construct()
-	{
+	function __construct(){
 		parent::__construct(
 				$subjet		= $this->_subject 
 		);
@@ -22,9 +21,10 @@ class Home extends My_Controller {
 		
 		$this->load->dbforge();
 	}
+	
+	
 
-	public function index()
-	{
+	public function index(){
 		$db['clientes_cantidad'] 	= $this->clientes_model->getCantidad();
 		$db['productos_cantidad'] 	= $this->productos_model->getCantidad();
 		$db['pedidos_cantidad'] 	= $this->pedidos_model->getCantidad();
@@ -35,6 +35,5 @@ class Home extends My_Controller {
 		
 		$this->cargar_vista($db, 'inicio');
 	}
-
 		
 }
